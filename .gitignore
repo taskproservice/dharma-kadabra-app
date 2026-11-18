@@ -78,6 +78,9 @@ web_modules/
 .next
 out
 
+# Generated Prisma Client (created by `npm run db:generate`)
+/generated/prisma/
+
 # Nuxt.js build / generate output
 .nuxt
 dist
