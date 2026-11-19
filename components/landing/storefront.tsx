@@ -2,16 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, ShoppingBag } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, MoonStar, ShoppingBag } from "lucide-react";
 import { products, formatPrice } from "../../lib/data/products";
 import { services, formatSessionPrice } from "../../lib/data/services";
 import { useCartStore } from "../../stores/cart";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
+import { BookingDialog } from "./booking-dialog";
 
 const eyebrow = "mb-5 flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#8B6D16] before:h-px before:w-10 before:bg-[#8B6D16]/50";
 
-export function Storefront() {
+type RitualEvent = { id: string; title: string; description: string; date: string; products: string[] };
+
+export function Storefront({ events }: { events: RitualEvent[] }) {
   const add = useCartStore((state) => state.add);
   const items = useCartStore((state) => state.items);
   const count = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -68,6 +71,29 @@ export function Storefront() {
         </div>
       </section>
 
+      <section aria-labelledby="rituales-heading" className="border-y border-[#D4AF37]/20 bg-[#F4ECD8] px-5 py-14 sm:px-8 lg:py-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className={eyebrow}>Calendario lunar · Encuentros conscientes</p>
+              <h2 id="rituales-heading" className="font-display text-3xl text-[#2A1B17] sm:text-4xl">Próximos <em className="italic text-[#8B6D16]">Rituales.</em></h2>
+            </div>
+            <a href="/dashboard/eventos" className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#8B6D16] transition hover:text-[#3E2723]">Ver calendario <ArrowRight size={14} /></a>
+          </div>
+          {events.length ? <div className="mt-7 grid gap-4 md:grid-cols-2">
+            {events.map((event) => <article key={event.id} className="flex gap-4 border border-[#3E2723]/10 bg-white/45 p-5">
+              <div className="grid size-11 shrink-0 place-items-center rounded-full bg-[#EEE4CF] text-[#8B6D16]"><MoonStar size={20} /></div>
+              <div className="min-w-0">
+                <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-[.15em] text-[#8B6D16]"><CalendarDays size={13} />{new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "long", year: "numeric" }).format(new Date(event.date))}</p>
+                <h3 className="mt-1 font-display text-xl text-[#2A1B17]">{event.title}</h3>
+                <p className="mt-1 text-xs leading-5 text-[#3E2723]/65">{event.description}</p>
+                {event.products.length > 0 && <p className="mt-2 text-[10px] font-medium text-[#3E2723]/55">Objetos rituales: {event.products.join(" · ")}</p>}
+              </div>
+            </article>)}
+          </div> : <p className="mt-6 text-sm text-[#3E2723]/60">Muy pronto compartiremos nuevos encuentros y rituales.</p>}
+        </div>
+      </section>
+
       <section id="servicios" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-24 text-[#F4ECD8] sm:px-8 lg:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-2xl">
@@ -88,7 +114,7 @@ export function Storefront() {
                 <div className="mt-auto pt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#F4ECD8]/15">
                   <span className="font-display text-xl text-[#E6C766]">{formatSessionPrice(service.price)}</span>
                   <Dialog trigger={<button type="button" className="inline-flex items-center gap-2 border border-[#D4AF37]/60 bg-[#D4AF37]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#F4ECD8] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Agendar Sesión <ArrowRight size={14} /></button>} title={`Agendar · ${service.name}`}>
-                    {(close) => <div className="space-y-5"><p className="font-display text-2xl text-[#2A1B17]">Selecciona fecha y hora</p><p className="text-sm leading-6 text-[#3E2723]/75">Continúa a la Agenda para consultar disponibilidad y elegir el momento que mejor te acompañe.</p><Link href="/dashboard/agenda" onClick={close} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-6 text-sm font-semibold tracking-wide text-[#1A1A1A] transition-all duration-300 hover:bg-[#E6C766] shadow-sm hover:shadow">Ir a la Agenda <ArrowRight size={15} /></Link></div>}
+                    {(close) => <BookingDialog service={service} close={close} />}
                   </Dialog>
                 </div>
               </article>

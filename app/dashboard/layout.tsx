@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   LogOut,
   Megaphone,
+  MoonStar,
   Palette,
   Settings,
   Share2,
@@ -51,6 +52,7 @@ const sections: NavSection[] = [
       { label: "Punto de Venta", href: "/dashboard/pos", icon: ShoppingCart },
       { label: "Módulo de Ventas", href: "/dashboard/ventas", icon: ShoppingBag },
       { label: "Agenda Electrónica", href: "/dashboard/agenda", icon: CalendarDays },
+      { label: "Eventos Especiales", href: "/dashboard/eventos", icon: MoonStar },
     ],
   },
   {
@@ -104,7 +106,7 @@ const ROLE_MODULES_CONFIG: Record<Role, {
     name: "Ingeniero (Soporte)",
     // Ve todo, excepto Pasarela de Pagos y Runas
     allowedModules: [
-      "Resumen", "Perfil", "Punto de Venta", "Módulo de Ventas", "Agenda Electrónica",
+      "Resumen", "Perfil", "Punto de Venta", "Módulo de Ventas", "Agenda Electrónica", "Eventos Especiales",
       "Redes Sociales", "Audio", "Video", "Diseño Base",
       "Cozy (Chatbot)", "Agente de Ventas", "Agente de Marketing",
       "Colaboradores", "Panel Administrativo", "Información General"

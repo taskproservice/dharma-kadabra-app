@@ -1,6 +1,6 @@
 /**
  * Dharma Kadabra - Sistema de Control de Acceso Basado en Roles (RBAC)
- * Production-ready Role & Permission management.
+ * Permisos de navegación de demostración; requieren una sesión verificada en producción.
  */
 
 export type Role = "ADMIN" | "ENGINEER" | "SOCIAL_MEDIA" | "COLLABORATOR" | "CLIENT";
@@ -41,6 +41,7 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
       "/dashboard/pos",
       "/dashboard/ventas",
       "/dashboard/agenda",
+      "/dashboard/eventos",
       "/dashboard/audio",
       "/dashboard/video",
       "/dashboard/diseno",
