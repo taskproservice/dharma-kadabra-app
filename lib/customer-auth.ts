@@ -1,25 +1,14 @@
-import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { getAuthSecret } from "./auth-secret";
+
+export { hashPassword, verifyPassword } from "./password";
 
 const COOKIE_NAME = "dk_customer_session";
 const SESSION_LIFETIME_SECONDS = 60 * 60 * 24 * 30;
-const getSecret = () => process.env.AUTH_SECRET || (process.env.NODE_ENV === "production" ? "" : "local-only-dharma-kadabra-secret");
+const getSecret = () => getAuthSecret() ?? "";
 
 export type CustomerSession = { id: string; email: string; name: string; expiresAt: number };
-
-export function hashPassword(password: string) {
-  const salt = randomBytes(16).toString("hex");
-  const digest = scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${digest}`;
-}
-
-export function verifyPassword(password: string, stored: string) {
-  const [salt, digest] = stored.split(":");
-  if (!salt || !digest) return false;
-  const expected = Buffer.from(digest, "hex");
-  const actual = scryptSync(password, salt, expected.length);
-  return expected.length === actual.length && timingSafeEqual(expected, actual);
-}
 
 function signature(value: string) {
   const secret = getSecret();

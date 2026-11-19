@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { products as catalog } from "../../../lib/data/products";
 import { prisma } from "../../../lib/prisma";
+import { authorize } from "../../../lib/rbac";
+
+export const dynamic = "force-dynamic";
 
 const eventSchema = z.object({
   title: z.string().trim().min(3).max(160),
@@ -11,6 +14,9 @@ const eventSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  const auth = await authorize("events", "POST");
+  if (!auth.ok) return auth.response;
+
   const parsed = eventSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Completa el título, la descripción y la fecha del evento." }, { status: 400 });
   const date = new Date(parsed.data.date);

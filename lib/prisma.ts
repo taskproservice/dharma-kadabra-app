@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { products as catalogProducts } from "./data/products";
+import { hashPassword } from "./password";
+import type { Role } from "./rbac-config";
 
 export type AppointmentStatus = "PENDING" | "CONFIRMED" | "COMPLETED";
 
@@ -24,6 +26,17 @@ export type CustomerRecord = {
   email: string;
   phone: string | null;
   passwordHash: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type StaffUserRecord = {
+  id: string;
+  name: string;
+  email: string;
+  passwordHash: string;
+  role: Role;
+  active: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -61,9 +74,36 @@ const initialAppointmentsData: Appointment[] = [
 const id = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const cloneProduct = (product: ProductRecord): ProductRecord => ({ ...product });
 
+/**
+ * Sin base de datos no existe ninguna cuenta del equipo. Solo en desarrollo
+ * se puede crear una administradora local con DEV_ADMIN_EMAIL y DEV_ADMIN_PASSWORD.
+ */
+function bootstrapDevStaff(): StaffUserRecord[] {
+  const email = process.env.DEV_ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.DEV_ADMIN_PASSWORD;
+  if (process.env.NODE_ENV === "production" || !email || !password) return [];
+  return [{ id: "staff-dev-admin", name: "Administradora (local)", email, passwordHash: hashPassword(password), role: "ADMIN", active: true, createdAt: now, updatedAt: now }];
+}
+
 class MemoryPrismaClient {
   private appointments = [...initialAppointmentsData];
   private customers: CustomerRecord[] = [];
+  private staff: StaffUserRecord[] = bootstrapDevStaff();
+  // Cola que serializa las transacciones en memoria (equivalente local a SERIALIZABLE).
+  private txQueue: Promise<unknown> = Promise.resolve();
+
+  async $transaction<T>(fn: (tx: MemoryPrismaClient) => Promise<T>, _options?: unknown): Promise<T> {
+    const run = this.txQueue.then(() => fn(this));
+    this.txQueue = run.catch(() => undefined);
+    return run;
+  }
+
+  user = {
+    findUnique: async ({ where }: any): Promise<StaffUserRecord | null> => {
+      const found = where.email ? this.staff.find((item) => item.email === String(where.email).toLowerCase()) : this.staff.find((item) => item.id === where.id);
+      return found ?? null;
+    },
+  };
   private catalog = catalogProducts.map((product) => ({ ...product, createdAt: now, updatedAt: now }));
   private events: SpecialEventRecord[] = [
     {
@@ -97,9 +137,12 @@ class MemoryPrismaClient {
       if (where?.customerId) result = result.filter((item) => item.customerId === where.customerId);
       if (where?.date?.gte) result = result.filter((item) => item.date >= new Date(where.date.gte));
       if (where?.date?.lte) result = result.filter((item) => item.date <= new Date(where.date.lte));
+      if (where?.date instanceof Date || typeof where?.date === "string") result = result.filter((item) => item.date.getTime() === new Date(where.date).getTime());
+      if (where?.id?.not) result = result.filter((item) => item.id !== where.id.not);
       if (args?.orderBy?.date) result.sort((a, b) => (a.date.getTime() - b.date.getTime()) * (args.orderBy.date === "desc" ? -1 : 1));
       return result;
     },
+    findFirst: async (args?: any): Promise<Appointment | null> => (await this.appointment.findMany(args))[0] ?? null,
     findUnique: async ({ where }: any): Promise<Appointment | null> => this.appointments.find((item) => item.id === where.id) ?? null,
     create: async ({ data }: any): Promise<Appointment> => {
       const created: Appointment = {
@@ -213,4 +256,6 @@ try {
   prismaClientInstance = null;
 }
 
-export const prisma: any = prismaClientInstance || new MemoryPrismaClient();
+// Instancia única por proceso: todas las rutas comparten datos y la cola de transacciones.
+const globalForMemory = globalThis as unknown as { dkMemoryPrisma?: MemoryPrismaClient };
+export const prisma: any = prismaClientInstance || (globalForMemory.dkMemoryPrisma ??= new MemoryPrismaClient());

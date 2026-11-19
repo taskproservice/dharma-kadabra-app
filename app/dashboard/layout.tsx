@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   AudioLines,
   Bell,
@@ -9,7 +10,6 @@ import {
   Flame,
   Headphones,
   LayoutDashboard,
-  LogOut,
   Megaphone,
   MoonStar,
   Palette,
@@ -25,7 +25,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { RoleSelector } from "../../components/dashboard/role-selector";
-import { ROLE_PERMISSIONS, normalizeRole, type Role } from "../../lib/rbac";
+import { SignOutButton } from "../../components/dashboard/sign-out-button";
+import { ROLE_PERMISSIONS, ROLE_PREVIEW_COOKIE, getStaffPrincipal, parseRole, type Role } from "../../lib/rbac";
 
 interface NavLink {
   label: string;
@@ -166,10 +167,16 @@ const ROLE_MODULES_CONFIG: Record<Role, {
 };
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  // Rol REAL: sale de la sesión de NextAuth, revalidada contra la base de datos.
+  const staff = await getStaffPrincipal();
+  if (!staff) redirect("/login?callbackUrl=/dashboard");
+  const isRealAdmin = staff.role === "ADMIN";
+
+  // Una ADMIN real puede previsualizar la navegación de otro rol (solo UI).
   const cookieStore = await cookies();
-  const rawRole = cookieStore.get("role")?.value;
-  const currentRole: Role = normalizeRole(rawRole || "ADMIN");
-  const roleConfig = ROLE_PERMISSIONS[currentRole] ?? ROLE_PERMISSIONS.ADMIN;
+  const previewRole = isRealAdmin ? parseRole(cookieStore.get(ROLE_PREVIEW_COOKIE)?.value) : null;
+  const currentRole: Role = previewRole ?? staff.role;
+  const roleConfig = ROLE_PERMISSIONS[currentRole];
 
   // Filtramos las secciones visibles de acuerdo a los permisos específicos del rol
   const visibleSections = sections
@@ -241,8 +248,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       {/* Contenido principal */}
       <div className="ml-72 min-h-screen">
         <header className="sticky top-0 z-20 flex h-[76px] items-center justify-between border-b border-[#3E2723]/10 bg-[#F4ECD8]/90 px-8 backdrop-blur-md">
-          {/* Selector interactivo de rol para pruebas y demostración */}
-          <RoleSelector currentRole={currentRole} />
+          {/* Selector de vista por rol: solo para una ADMIN autenticada (rol de la sesión) */}
+          {isRealAdmin ? <RoleSelector currentRole={currentRole} /> : <span />}
 
           <div className="flex items-center gap-5">
             <button
@@ -255,16 +262,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             </button>
             <div className="h-8 w-px bg-[#3E2723]/15" />
             <div className="text-right">
-              <p className="text-sm font-semibold">Paola Hernández</p>
+              <p className="text-sm font-semibold">{staff.name}</p>
               <p className="text-xs text-[#3E2723]/55">{roleTitleMap[currentRole]}</p>
             </div>
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-xl border border-[#3E2723]/15 px-3.5 py-2 text-sm font-medium transition hover:bg-white/70"
-            >
-              <LogOut size={16} />
-              Cerrar Sesión
-            </button>
+            <SignOutButton />
           </div>
         </header>
         <main className="p-8">{children}</main>

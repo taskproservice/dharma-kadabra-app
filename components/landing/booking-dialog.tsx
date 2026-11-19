@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ export function BookingDialog({ service, close }: { service: Service; close: () 
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState("");
   const [bookingId, setBookingId] = useState("");
+  const [needsLogin, setNeedsLogin] = useState(false);
   const [bookingInfo, setBookingInfo] = useState<BookingValues | null>(null);
   const { register, handleSubmit, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: "", time: "" } });
   const deposit = Math.round(service.price * 0.2);
@@ -39,6 +41,7 @@ export function BookingDialog({ service, close }: { service: Service; close: () 
 
   async function payDeposit() {
     setError("");
+    setNeedsLogin(false);
     setIsPaying(true);
     try {
       if (!bookingInfo) throw new Error("Completa tus datos antes de continuar.");
@@ -51,6 +54,7 @@ export function BookingDialog({ service, close }: { service: Service; close: () 
       };
       const response = await fetch("/api/appointments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json();
+      if (response.status === 401) setNeedsLogin(true);
       if (!response.ok) throw new Error(result.error || "No fue posible completar la reserva.");
       setBookingId(result.appointment.id);
       setStep(3);
@@ -92,22 +96,22 @@ export function BookingDialog({ service, close }: { service: Service; close: () 
         <SummaryRow label="Anticipo para reservar · 20%" value={`$${deposit.toLocaleString("es-MX")} MXN`} emphasis />
         <SummaryRow label="Resto el día de tu sesión" value={`$${(service.price - deposit).toLocaleString("es-MX")} MXN`} />
       </div>
-      <p className="flex items-start gap-2 text-xs leading-5 text-[#3E2723]/65"><CreditCard size={15} className="mt-0.5 shrink-0" />Pago de demostración: no se realizará un cargo real. Al continuar, guardaremos tu cita con el anticipo marcado como pagado.</p>
-      {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+      <p className="flex items-start gap-2 text-xs leading-5 text-[#3E2723]/65"><CreditCard size={15} className="mt-0.5 shrink-0" />Al continuar apartaremos tu horario con estado pendiente. La cita se confirma únicamente cuando el procesador de pagos acredite el anticipo; todavía no se realiza ningún cargo.</p>
+      {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{error}{needsLogin && <> <Link href="/mi-cuenta" className="font-semibold underline underline-offset-4">Ir a Mi Cuenta</Link></>}</p>}
       <div className="flex gap-3">
         <button type="button" onClick={() => setStep(1)} className="inline-flex h-12 items-center gap-2 rounded-xl border border-[#3E2723]/15 px-4 text-sm"><ArrowLeft size={15} /> Volver</button>
-        <button type="button" disabled={isPaying} onClick={payDeposit} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-4 text-sm font-bold text-[#1A1A1A] shadow-sm transition hover:bg-[#E6C766] disabled:cursor-wait disabled:opacity-70">{isPaying ? <><LoaderCircle size={16} className="animate-spin" /> Procesando…</> : <>Pagar Anticipo (20%) <ArrowRight size={15} /></>}</button>
+        <button type="button" disabled={isPaying} onClick={payDeposit} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-4 text-sm font-bold text-[#1A1A1A] shadow-sm transition hover:bg-[#E6C766] disabled:cursor-wait disabled:opacity-70">{isPaying ? <><LoaderCircle size={16} className="animate-spin" /> Procesando…</> : <>Apartar y pagar anticipo (20%) <ArrowRight size={15} /></>}</button>
       </div>
     </div>}
 
     {step === 3 && <div className="space-y-5 py-2">
       <div className="mx-auto grid size-14 place-items-center rounded-full bg-[#E4E8D7] text-[#657147]"><Check size={28} /></div>
-      <div className="text-center"><p className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#8B6D16]">Reserva confirmada</p><h3 className="mt-2 font-display text-3xl">Tu espacio está reservado.</h3><p className="mt-2 text-sm text-[#3E2723]/65">Folio {bookingId.slice(-8).toUpperCase()}</p></div>
+      <div className="text-center"><p className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#8B6D16]">Reserva registrada</p><h3 className="mt-2 font-display text-3xl">Tu horario está apartado.</h3><p className="mt-2 text-sm text-[#3E2723]/65">Folio {bookingId.slice(-8).toUpperCase()}</p></div>
       <div className="rounded-xl border border-[#D4AF37]/30 bg-[#EEE4CF] p-4">
         <p className="flex items-center gap-2 font-semibold"><Sparkles size={16} className="text-[#8B6D16]" /> Prepara tu espacio</p>
         <p className="mt-2 text-sm leading-6 text-[#3E2723]/75">Busca un lugar sin ruido, usa audífonos y ten cerca tus registros o runas. Recibirás el link de la videollamada por correo y WhatsApp.</p>
       </div>
-      <p className="flex items-center gap-2 text-xs text-[#3E2723]/60"><CalendarDays size={14} /> Estado de la cita: pendiente de confirmación.</p>
+      <p className="flex items-center gap-2 text-xs text-[#3E2723]/60"><CalendarDays size={14} /> Estado de la cita: pendiente de pago del anticipo. Te confirmaremos en cuanto se acredite.</p>
       <button type="button" onClick={close} className="h-12 w-full rounded-xl bg-[#1A1A1A] text-sm font-semibold text-[#F4ECD8]">Listo</button>
     </div>}
   </div>;

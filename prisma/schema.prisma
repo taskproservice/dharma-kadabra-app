@@ -24,6 +24,19 @@ enum AppointmentStatus {
   COMPLETED
 }
 
+// Cuentas del equipo (dashboard). Se autentican con NextAuth (Credentials).
+// Los clientes de la tienda usan el modelo Customer y su propia sesión.
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(COLLABORATOR)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model Appointment {
   id                String            @id @default(cuid())
   clientName        String

@@ -1,68 +1,38 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isRouteAllowedForRole, normalizeRole, type Role } from "./lib/rbac";
+import { getToken } from "next-auth/jwt";
+import { getAuthSecret } from "./lib/auth-secret";
+import { ROLE_PREVIEW_COOKIE, isRouteAllowedForRole, parseRole, type Role } from "./lib/rbac-config";
 
-export function middleware(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
+/**
+ * Protección del dashboard: exige una sesión de NextAuth y aplica los
+ * permisos de navegación del rol contenido en el JWT cifrado.
+ * Ya no se aceptan roles desde query params, cabeceras ni cookies editables.
+ */
+export async function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
 
-  // Solo intervenimos en rutas del dashboard
-  if (!pathname.startsWith("/dashboard")) {
-    return NextResponse.next();
+  const token = await getToken({ req: request, secret: getAuthSecret() }).catch(() => null);
+  const sessionRole = parseRole(token?.role);
+
+  if (!token || !sessionRole) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", `${pathname}${search}`);
+    return NextResponse.redirect(loginUrl);
   }
 
-  // Si ya estamos en /dashboard exactamente, permitimos el acceso
-  if (pathname === "/dashboard") {
-    // Si viene un parámetro role en la URL, aseguramos guardarlo en cookies para la sesión
-    const paramRole = searchParams.get("role");
-    if (paramRole) {
-      const normalized = normalizeRole(paramRole);
-      const response = NextResponse.next();
-      response.cookies.set("role", normalized, { path: "/", sameSite: "lax" });
-      return response;
-    }
-    return NextResponse.next();
+  // Solo una ADMIN real puede previsualizar la navegación de otro rol (UI únicamente;
+  // la API siempre autoriza con el rol verdadero de la sesión).
+  const previewRole = sessionRole === "ADMIN" ? parseRole(request.cookies.get(ROLE_PREVIEW_COOKIE)?.value) : null;
+  const effectiveRole: Role = previewRole ?? sessionRole;
+
+  if (pathname !== "/dashboard" && !isRouteAllowedForRole(effectiveRole, pathname)) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  // Determinamos el rol actual del usuario desde parámetros, headers o cookies
-  const roleParam = searchParams.get("role");
-  const roleHeader =
-    request.headers.get("x-user-role") ||
-    request.headers.get("role") ||
-    request.headers.get("x-role");
-  const roleCookie =
-    request.cookies.get("role")?.value ||
-    request.cookies.get("user_role")?.value ||
-    request.cookies.get("x-user-role")?.value ||
-    request.cookies.get("auth_role")?.value;
-
-  const currentRole: Role = normalizeRole(roleParam || roleHeader || roleCookie || "ADMIN");
-
-  // Validamos si el rol tiene permiso para la ruta solicitada
-  const allowed = isRouteAllowedForRole(currentRole, pathname);
-
-  if (!allowed) {
-    // Si un SOCIAL_MEDIA (o cualquier rol sin permiso) intenta entrar a una ruta no autorizada
-    // como /dashboard/pos, el middleware debe rebotarlo y mandarlo a /dashboard
-    const redirectUrl = new URL("/dashboard", request.url);
-    if (roleParam) {
-      redirectUrl.searchParams.set("role", currentRole);
-    }
-    const response = NextResponse.redirect(redirectUrl);
-    if (roleParam || (roleCookie && roleCookie !== currentRole)) {
-      response.cookies.set("role", currentRole, { path: "/", sameSite: "lax" });
-    }
-    return response;
-  }
-
-  const response = NextResponse.next();
-  if (roleParam) {
-    response.cookies.set("role", currentRole, { path: "/", sameSite: "lax" });
-  }
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-  ],
+  matcher: ["/dashboard", "/dashboard/:path*"],
 };

@@ -172,6 +172,10 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
     try {
       const response = await fetch("/api/cron/notifications", { method: "POST" });
       const data = await response.json();
+      if (!response.ok) {
+        setSimulationLog([data.error || "No tienes permiso para ejecutar el motor de notificaciones."]);
+        return;
+      }
 
       const logs: string[] = [];
       if (data.notifications && data.notifications.length > 0) {
