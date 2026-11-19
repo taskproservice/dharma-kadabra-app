@@ -98,8 +98,8 @@ export function CozyWidget() {
         >
           {/* Encabezado */}
           <header className="flex items-center gap-3 border-b border-[#D4AF37]/30 bg-[#1A1A1A] px-4 py-3.5 text-[#F4ECD8] pt-[max(0.875rem,env(safe-area-inset-top))] sm:pt-3.5">
-            <span className="grid size-10 shrink-0 place-items-center rounded-full border border-[#D4AF37]/70 bg-[#D4AF37]/10">
-              <Flame size={18} className="text-[#D4AF37]" aria-hidden="true" />
+            <span className="grid size-10 shrink-0 place-items-center bg-transparent">
+              <Flame size={22} className="text-[#FF7300] cozy-flame-live" aria-hidden="true" />
             </span>
             <div className="min-w-0 flex-1">
               <h2 id={titleId} className="truncate font-display text-lg leading-tight">
@@ -125,8 +125,8 @@ export function CozyWidget() {
             {messages.map((message) => (
               <div key={message.id} className={`flex items-end gap-2 ${message.from === "user" ? "justify-end" : "justify-start"}`}>
                 {message.from === "cozy" && (
-                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#D4AF37]/20" aria-hidden="true">
-                    <Flame size={13} className="text-[#D4AF37]" />
+                  <span className="grid size-7 shrink-0 place-items-center bg-transparent" aria-hidden="true">
+                    <Flame size={15} className="text-[#FF7300] cozy-flame-live" />
                   </span>
                 )}
                 <div
@@ -145,8 +145,8 @@ export function CozyWidget() {
 
             {typing && (
               <div className="flex items-end gap-2" aria-label="Cozy está escribiendo">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#D4AF37]/20" aria-hidden="true">
-                  <Flame size={13} className="text-[#D4AF37]" />
+                <span className="grid size-7 shrink-0 place-items-center bg-transparent" aria-hidden="true">
+                  <Flame size={15} className="text-[#FF7300] cozy-flame-live" />
                 </span>
                 <div className="flex gap-1 rounded-2xl rounded-bl-sm border border-[#D4AF37]/25 bg-white/70 px-4 py-3.5">
                   {[0, 150, 300].map((delay) => (
@@ -203,13 +203,13 @@ export function CozyWidget() {
         onClick={() => (open ? close() : setOpen(true))}
         aria-label={open ? "Cerrar chat con Cozy" : "Abrir chat con Cozy, tu guía interior"}
         aria-expanded={open}
-        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center p-2 text-[#D4AF37] transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${open ? "max-sm:hidden" : ""}`}
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center bg-transparent border-0 shadow-none p-0 text-[#FF7300] transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:outline-none focus-visible:ring-0 ${open ? "max-sm:hidden" : ""}`}
       >
         {open ? (
-          <X className="w-10 h-10 text-[#D4AF37] filter drop-shadow-[0_0_20px_rgba(212,175,55,0.6)]" />
+          <X className="w-10 h-10 text-[#FF7300] filter drop-shadow-[0_0_15px_rgba(255,115,0,0.8)]" />
         ) : (
           <Flame
-            className="w-10 h-10 text-[#D4AF37] filter drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] animate-pulse"
+            className="w-11 h-11 text-[#FF7300] cozy-flame-live"
             aria-hidden="true"
           />
         )}
