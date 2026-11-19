@@ -10,6 +10,7 @@ import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { Storefront } from "../components/landing/storefront";
+import { prisma } from "../lib/prisma";
 
 const heroImages = [
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
@@ -55,7 +56,19 @@ function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?
   );
 }
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const upcomingEvents = await prisma.specialEvent.findMany({
+    where: { date: { gte: new Date() } },
+    orderBy: { date: "asc" },
+    take: 2,
+    include: { products: true },
+  });
+  const ritualEvents = upcomingEvents.map((event: { id: string; title: string; description: string; date: Date; products: { name: string }[] }) => ({
+    id: event.id, title: event.title, description: event.description, date: event.date.toISOString(), products: event.products.map((product) => product.name),
+  }));
+
   return (
     <>
     <main className="relative bg-[#F4ECD8] text-[#3E2723]">
@@ -68,7 +81,10 @@ export default function HomePage() {
           <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/85 lg:flex">
             {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
           </nav>
-          <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] text-[#F4ECD8] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
+          <div className="flex items-center gap-3">
+            <Link href="/mi-cuenta" className="hidden text-[10px] font-semibold uppercase tracking-[.18em] text-[#F4ECD8] transition hover:text-[#D4AF37] sm:inline">Mi cuenta</Link>
+            <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] text-[#F4ECD8] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
+          </div>
         </div>
       </header>
 
@@ -139,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* Tienda y servicios */}
-      <Storefront />
+      <Storefront events={ritualEvents} />
 
       {/* Equipo — retratos editoriales */}
       <section id="equipo" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
