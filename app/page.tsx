@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Flame, Heart, Sparkles, Sun } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Heart, Sparkles, Sun } from "lucide-react";
 import { HeroCarousel, type HeroSlide } from "../components/landing/hero-carousel";
+import { BrandLogo } from "../components/landing/brand-logo";
+import { CozyWidget } from "../components/landing/cozy-widget";
 import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
@@ -57,13 +59,13 @@ function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?
 
 export default function HomePage() {
   return (
+    <>
     <main className="relative bg-[#F4ECD8] text-[#3E2723]">
       {/* Navegación translúcida fija */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-[#D4AF37]/15 bg-[#1A1A1A]/35 text-[#F4ECD8] backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-          <Link href="#inicio" className="flex items-center gap-3">
-            <Flame size={20} className="text-[#D4AF37]" />
-            <span className="font-display text-xl tracking-wide">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></span>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2.5 sm:px-8">
+          <Link href="#inicio" aria-label="Dharma Kadabra · Inicio" className="flex items-center justify-start">
+            <BrandLogo size={48} />
           </Link>
           <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/70 lg:flex">
             {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
@@ -216,7 +218,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-[#D4AF37]/15 bg-[#141414] px-5 py-10 text-[#F4ECD8] sm:px-8">
+      <footer className="border-t border-[#D4AF37]/15 bg-[#141414] px-5 pb-28 pt-10 text-[#F4ECD8] sm:px-8 sm:pb-10 sm:pr-28 2xl:pr-8">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
           <Link href="#inicio" className="font-display text-lg">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></Link>
           <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">© 2026 Dharma Kadabra · Un camino hacia ti</p>
@@ -224,5 +226,9 @@ export default function HomePage() {
         </div>
       </footer>
     </main>
+
+    {/* Cozy: fuera del contenedor principal para estar siempre visible */}
+    <CozyWidget />
+    </>
   );
 }

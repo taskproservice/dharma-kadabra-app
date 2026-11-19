@@ -122,7 +122,7 @@ export function HeroCarousel({ slides, children, interval = 7000 }: HeroCarousel
 
       {/* Controles */}
       <div className="absolute inset-x-0 bottom-0 z-10 border-t border-[#D4AF37]/15 bg-[#1A1A1A]/30 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 py-4 pl-5 pr-24 sm:pl-8 sm:pr-28 2xl:pr-8">
           <p className="font-display text-sm tabular-nums text-[#F4ECD8]/80" aria-live="polite">
             <span className="text-[#D4AF37]">{pad(active + 1)}</span>
             <span className="mx-2 text-[#F4ECD8]/30">/</span>
