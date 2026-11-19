@@ -93,8 +93,9 @@ export function HeroCarousel({ slides, children, interval = 7000 }: HeroCarousel
       })}
 
       {/* Velos cinematográficos */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/45 to-[#0F0F0F]/35" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(10,10,10,.55)_100%)]" />
+      {/* Overlay oscuro uniforme para legibilidad del título y el botón */}
+      <div className="pointer-events-none absolute inset-0 bg-black/40" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-28 sm:px-8 sm:pb-32 lg:pb-36">
         <div key={active} className="max-w-3xl">

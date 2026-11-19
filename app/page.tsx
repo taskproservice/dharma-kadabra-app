@@ -5,6 +5,7 @@ import { HeroCarousel, type HeroSlide } from "../components/landing/hero-carouse
 import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
+import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 
 const heroImages = [
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
@@ -99,28 +100,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Paola — Oscuro */}
-      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] text-[#F4ECD8]">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-8 md:grid-cols-[.9fr_1.1fr] lg:gap-24 lg:py-32">
-          <figure className="relative">
-            <div className="absolute -inset-3 border border-[#D4AF37]/20" />
-            <div className="relative aspect-[4/5] overflow-hidden">
-              <Image src={sabiduriaAncestral} alt="Libro antiguo de sabiduría con un medallón dorado" fill sizes="(min-width: 768px) 45vw, 100vw" placeholder="blur" className="object-cover object-[62%_center]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/70 via-transparent to-transparent" />
+      {/* Paola Hernández — Tarjeta editorial Papiro sobre fondo oscuro */}
+      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-24 sm:px-8 lg:py-32">
+        <article className="relative mx-auto max-w-6xl border border-[#D4AF37]/35 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-[0_40px_90px_-40px_rgba(0,0,0,.8)] sm:p-10 lg:p-16">
+          {/* Filete interior dorado: detalle de tarjeta editorial */}
+          <div className="pointer-events-none absolute inset-3 border border-[#D4AF37]/25 sm:inset-4" />
+          <div className="relative grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
+            <figure className="mx-auto w-full max-w-sm md:max-w-none">
+              <div className="relative aspect-[4/5] overflow-hidden border-2 border-[#D4AF37] shadow-[0_24px_50px_-20px_rgba(62,39,35,.45)]">
+                <Image
+                  src={paolaHernandez}
+                  alt="Retrato de Paola Hernández, fundadora y guía de Dharma Kadabra"
+                  fill
+                  sizes="(min-width: 1152px) 420px, (min-width: 768px) 40vw, 90vw"
+                  quality={90}
+                  placeholder="blur"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#3E2723]/55">Fundadora · Dharma Kadabra</figcaption>
+            </figure>
+            <div>
+              <Eyebrow>Una guía cercana</Eyebrow>
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#2A1B17] sm:text-6xl">Paola <em className="italic text-[#8B6D16]">Hernández</em></h2>
+              <p className="mt-5 font-display text-xl italic text-[#8B6D16] sm:text-2xl">&ldquo;Tu protección hecha arte&rdquo;</p>
+              <div className="mt-8 h-px w-16 bg-[#D4AF37]" />
+              <div className="mt-8 space-y-5 font-sans text-base leading-8 text-[#3E2723]/75">
+                <p>Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p>
+                <p>Dharma Kadabra nace del deseo de acercar prácticas ancestrales al mundo moderno: con calidez, sencillez y respeto por el ritmo único de cada quien.</p>
+              </div>
+              <div className="mt-10 flex flex-wrap items-center gap-8">
+                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#8B6D16]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6D16] transition hover:border-[#8B6D16]">Conoce nuestra historia <ArrowRight size={14} /></a>
+                <span className="font-display text-lg italic text-[#3E2723]/60">Con amor, Paola</span>
+              </div>
             </div>
-            <figcaption className="absolute -bottom-6 right-6 border border-[#D4AF37]/25 bg-[#1A1A1A]/60 px-6 py-4 backdrop-blur-md">
-              <span className="block font-display text-lg italic text-[#D4AF37]">Con amor,</span>
-              <span className="text-[11px] uppercase tracking-[.25em] text-[#F4ECD8]/70">Paola Hernández</span>
-            </figcaption>
-          </figure>
-          <div>
-            <Eyebrow tone="light">Una guía cercana</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] sm:text-6xl">Hola, soy <em className="italic text-[#E6C766]">Paola.</em></h2>
-            <p className="mt-8 max-w-xl text-base font-light leading-8 text-[#F4ECD8]/70">Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p>
-            <p className="mt-5 max-w-xl text-base font-light leading-8 text-[#F4ECD8]/70">Dharma Kadabra nace del deseo de acercar prácticas ancestrales al mundo moderno: con calidez, sencillez y respeto por el ritmo único de cada quien.</p>
-            <a href="#nosotros" className="mt-10 inline-flex items-center gap-3 border-b border-[#D4AF37]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#D4AF37] transition hover:border-[#D4AF37]">Conoce nuestra historia <ArrowRight size={14} /></a>
           </div>
-        </div>
+        </article>
       </section>
 
       {/* Equipo — Papiro */}
