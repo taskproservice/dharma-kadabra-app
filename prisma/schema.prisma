@@ -1,0 +1,31 @@
+// Prisma schema for Dharma Kadabra
+// Production schema for appointments & automated notification reminders
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+}
+
+model Appointment {
+  id                String            @id @default(cuid())
+  clientName        String
+  clientPhone       String
+  date              DateTime
+  service           String
+  status            AppointmentStatus @default(PENDING)
+  notificationsSent Json              @default("[]")
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([date, status])
+}
