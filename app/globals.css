@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root { color-scheme: light; }
+html, body { min-height: 100%; }
+body { margin: 0; background: #F4ECD8; color: #3E2723; font-family: Arial, Helvetica, sans-serif; }
+button, input, select, textarea { font: inherit; }
+* { box-sizing: border-box; }
+.calendar-papiro .fc { color: #3E2723; font-size: 13px; }
+.calendar-papiro .fc .fc-toolbar-title { font-size: 1.15rem; font-weight: 600; }
+.calendar-papiro .fc .fc-button { border: 1px solid rgba(62,39,35,.18); border-radius: 9px; background: rgba(255,255,255,.65); color: #3E2723; box-shadow: none; text-transform: capitalize; }
+.calendar-papiro .fc .fc-button:hover, .calendar-papiro .fc .fc-button-primary:not(:disabled).fc-button-active { border-color: #D4AF37; background: #D4AF37; color: #3E2723; }
+.calendar-papiro .fc .fc-button:focus { box-shadow: 0 0 0 2px rgba(212,175,55,.25); }
+.calendar-papiro .fc .fc-scrollgrid, .calendar-papiro .fc td, .calendar-papiro .fc th { border-color: rgba(62,39,35,.12); }
+.calendar-papiro .fc .fc-col-header-cell-cushion, .calendar-papiro .fc .fc-daygrid-day-number { padding: 8px; color: #3E2723; text-decoration: none; }
+.calendar-papiro .fc .fc-timegrid-slot { height: 2.8rem; }
+.calendar-papiro .fc .fc-event { border-radius: 6px; padding: 2px 4px; cursor: pointer; }
+.calendar-papiro .fc .fc-day-today { background: rgba(212,175,55,.08) !important; }
