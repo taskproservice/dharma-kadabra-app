@@ -32,10 +32,21 @@ export function Storefront() {
           </div>
           <div className="mt-10 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
             {products.map((product) => (
-              <article key={product.id} className="group flex h-full flex-col">
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#E1D4B8]">
-                  <Image src={product.imageUrl} alt={product.name} fill sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
-                  <span className="absolute left-3 top-3 bg-[#F4ECD8]/90 px-2.5 py-1.5 text-[9px] uppercase tracking-[.2em] text-[#3E2723]">{product.category}</span>
+              <article
+                key={product.id}
+                className="group flex h-full flex-col rounded-2xl bg-[#F4ECD8]/70 p-4 border border-[#D4AF37]/20 shadow-lg shadow-[#1A1A1A]/5 hover:-translate-y-1 transition-transform duration-300"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#E1D4B8]">
+                  <Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-[#F4ECD8]/90 px-3 py-1 text-[9px] font-medium uppercase tracking-[.2em] text-[#3E2723] shadow-sm backdrop-blur-sm">
+                    {product.category}
+                  </span>
                 </div>
                 <div className="flex flex-1 flex-col pt-4">
                   <h3 className="font-display text-xl leading-snug text-[#2A1B17]">{product.name}</h3>
@@ -44,7 +55,7 @@ export function Storefront() {
                   <button
                     type="button"
                     onClick={() => add({ ...product, emoji: "✧", currency: "USD" })}
-                    className="mt-auto flex items-center justify-center gap-2 w-full py-3 bg-[#1A1A1A] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-all duration-300 font-medium tracking-wide text-xs whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B6D16]"
+                    className="mt-auto flex items-center justify-center gap-2.5 w-full py-3.5 px-4 rounded-lg bg-[#1A1A1A] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-all duration-300 font-medium tracking-wide text-xs whitespace-nowrap shadow-sm hover:shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4AF37]"
                   >
                     <ShoppingBag className="w-4 h-4 shrink-0" />
                     <span>Añadir al carrito</span>

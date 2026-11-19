@@ -196,21 +196,20 @@ export function CozyWidget() {
         </section>
       )}
 
-      {/* Botón de Acción Flotante: El Fuego Sagrado (solo la llama, sin círculo oscuro ni borde sólido) */}
+      {/* Botón de Acción Flotante: Solo el ícono de la llama, sin fondo ni recuadro */}
       <button
         ref={fabRef}
         type="button"
         onClick={() => (open ? close() : setOpen(true))}
         aria-label={open ? "Cerrar chat con Cozy" : "Abrir chat con Cozy, tu guía interior"}
         aria-expanded={open}
-        className={`fixed bottom-6 right-6 z-50 grid size-16 place-items-center rounded-full bg-transparent text-[#D4AF37] transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] flame-glow ${open ? "max-sm:hidden" : ""}`}
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center p-2 text-[#D4AF37] transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${open ? "max-sm:hidden" : ""}`}
       >
         {open ? (
-          <X size={28} className="text-[#D4AF37] drop-shadow-[0_0_12px_rgba(212,175,55,0.7)]" />
+          <X className="w-10 h-10 text-[#D4AF37] filter drop-shadow-[0_0_20px_rgba(212,175,55,0.6)]" />
         ) : (
           <Flame
-            size={40}
-            className="cozy-flame text-[#D4AF37] drop-shadow-[0_0_16px_rgba(212,175,55,0.85)]"
+            className="w-10 h-10 text-[#D4AF37] filter drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] animate-pulse"
             aria-hidden="true"
           />
         )}

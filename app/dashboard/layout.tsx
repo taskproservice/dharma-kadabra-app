@@ -118,8 +118,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <main className="p-8">{children}</main>
       </div>
 
-      <button type="button" aria-label="Abrir asistente Cozy" className="fixed bottom-6 right-6 z-40 grid size-14 place-items-center rounded-full bg-[#3E2723] text-[#D4AF37] shadow-xl ring-4 ring-white/70 transition hover:scale-105">
-        <Flame size={27} />
+      <button
+        type="button"
+        aria-label="Abrir asistente Cozy"
+        className="fixed bottom-6 right-6 z-40 flex items-center justify-center p-2 text-[#D4AF37] transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
+      >
+        <Flame className="w-10 h-10 text-[#D4AF37] filter drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] animate-pulse" />
       </button>
     </div>
   );
