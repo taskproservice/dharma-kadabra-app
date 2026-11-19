@@ -11,6 +11,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  ENGINEER
+  SOCIAL_MEDIA
+  COLLABORATOR
+  CLIENT
+}
+
 enum AppointmentStatus {
   PENDING
   CONFIRMED

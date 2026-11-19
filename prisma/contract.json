@@ -143,6 +143,17 @@
                 "COMPLETED"
               ],
               "typeName": "AppointmentStatus"
+            },
+            "Role": {
+              "kind": "postgres-enum",
+              "members": [
+                "ADMIN",
+                "ENGINEER",
+                "SOCIAL_MEDIA",
+                "COLLABORATOR",
+                "CLIENT"
+              ],
+              "typeName": "Role"
             }
           },
           "table": {
@@ -251,6 +262,16 @@
                 "CONFIRMED",
                 "COMPLETED"
               ]
+            },
+            "Role": {
+              "kind": "valueSet",
+              "values": [
+                "ADMIN",
+                "ENGINEER",
+                "SOCIAL_MEDIA",
+                "COLLABORATOR",
+                "CLIENT"
+              ]
             }
           }
         },
@@ -258,7 +279,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "1019fa2a848cd574651ddb95d954bc1140a1a2d3e20a93a970d88089734f5482"
+    "storageHash": "d42a126679f0d9e0810ab8d264d36a8a5df0a225436f2546ba8f5301df50ce08"
   },
   "execution": {
     "executionHash": "dcdc92d10f6f6ec532f3195f148446b824a52d53c425c83af945cb366904632a",
