@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../src/generated/prisma";
 import { collaborators as initialCollaborators } from "./data/collaborators";
 import { products as initialProducts } from "./data/products";
 
