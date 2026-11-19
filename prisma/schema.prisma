@@ -1,19 +1,44 @@
 // Prisma schema for Dharma Kadabra
-// Production schema for appointments & automated notification reminders
+// PostgreSQL / Supabase production schema
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  COLLABORATOR
 }
 
 enum AppointmentStatus {
   PENDING
   CONFIRMED
   COMPLETED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(COLLABORATOR)
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Appointment {
@@ -24,8 +49,57 @@ model Appointment {
   service           String
   status            AppointmentStatus @default(PENDING)
   notificationsSent Json              @default("[]")
+  notes             String?
+  collaboratorId    String?
+  collaborator      Collaborator?     @relation(fields: [collaboratorId], references: [id], onDelete: SetNull)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
   @@index([date, status])
+  @@map("appointments")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    String
+  imageUrl    String
+  stock       Int      @default(10)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Collaborator {
+  id           String        @id @default(cuid())
+  name         String
+  role         String
+  specialty    String
+  bio          String
+  imageUrl     String
+  email        String
+  phone        String
+  active       Boolean       @default(true)
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("collaborators")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customerName  String
+  customerEmail String
+  total         Float
+  status        OrderStatus @default(PENDING)
+  items         Json
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("orders")
 }

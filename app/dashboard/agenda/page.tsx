@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -23,6 +23,11 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
+import {
+  getAppointments,
+  createAppointment,
+  updateAppointment,
+} from "../../../lib/actions/appointments";
 
 export type AppointmentItem = {
   id: string;
@@ -194,24 +199,72 @@ export default function AgendaPage() {
     setIsModalOpen(true);
   };
 
-  // Guardar nueva cita
-  const handleSaveAppointment = (e: React.FormEvent) => {
+  // Cargar citas reales de la base de datos al montar
+  useEffect(() => {
+    async function loadDbAppointments() {
+      try {
+        const dbApts = await getAppointments();
+        if (dbApts && dbApts.length > 0) {
+          const mapped: AppointmentItem[] = dbApts.map((a) => {
+            const d = new Date(a.date);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            const h = String(d.getHours()).padStart(2, "0");
+            const min = String(d.getMinutes()).padStart(2, "0");
+            const sec = String(d.getSeconds()).padStart(2, "0");
+            return {
+              id: a.id,
+              clientName: a.clientName,
+              clientPhone: a.clientPhone,
+              date: `${y}-${m}-${day}T${h}:${min}:${sec}`,
+              service: a.service,
+              status: a.status as "CONFIRMED" | "PENDING" | "COMPLETED",
+              notificationsSent: (a.notificationsSent || []) as ("7_DAYS" | "1_DAY" | "1_HOUR")[],
+              notes: a.notes || undefined,
+            };
+          });
+          setAppointments(mapped);
+        }
+      } catch (err) {
+        console.error("Error al cargar citas de la base de datos:", err);
+      }
+    }
+    loadDbAppointments();
+  }, []);
+
+  // Guardar nueva cita en la base de datos real
+  const handleSaveAppointment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!modalClientName.trim()) return;
 
     const hourPadded = modalHour.padStart(2, "0");
-    const newApt: AppointmentItem = {
-      id: `apt-${Date.now()}`,
-      clientName: modalClientName.trim(),
-      clientPhone: modalClientPhone.trim() || "+52 55 0000 0000",
-      date: `${selectedDate}T${hourPadded}:00:00`,
-      service: modalService,
-      status: modalStatus,
-      notificationsSent: [],
-    };
+    const dateStr = `${selectedDate}T${hourPadded}:00:00`;
 
-    setAppointments((prev) => [...prev, newApt]);
-    setIsModalOpen(false);
+    try {
+      const saved = await createAppointment({
+        clientName: modalClientName.trim(),
+        clientPhone: modalClientPhone.trim() || "+52 55 0000 0000",
+        date: dateStr,
+        service: modalService,
+        status: modalStatus,
+      });
+
+      const newApt: AppointmentItem = {
+        id: saved.id,
+        clientName: saved.clientName,
+        clientPhone: saved.clientPhone,
+        date: dateStr,
+        service: saved.service,
+        status: saved.status as "CONFIRMED" | "PENDING" | "COMPLETED",
+        notificationsSent: (saved.notificationsSent || []) as ("7_DAYS" | "1_DAY" | "1_HOUR")[],
+      };
+
+      setAppointments((prev) => [...prev, newApt]);
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error al guardar cita en base de datos:", err);
+    }
   };
 
   // Ejecutar motor de simulación de notificaciones
@@ -244,20 +297,30 @@ export default function AgendaPage() {
     }
   };
 
-  // Simular envío individual a un cliente
-  const simulateDirectWhatsApp = (apt: AppointmentItem, type: "7_DAYS" | "1_DAY" | "1_HOUR") => {
+  // Simular envío individual a un cliente y actualizar en base de datos
+  const simulateDirectWhatsApp = async (apt: AppointmentItem, type: "7_DAYS" | "1_DAY" | "1_HOUR") => {
     const label = type === "7_DAYS" ? "1 semana antes" : type === "1_DAY" ? "1 día antes" : "1 hora antes";
     const msg = `Simulando envío de WhatsApp a: ${apt.clientPhone} (${apt.clientName}) - Recordatorio: [${label}] para tu sesión de ${apt.service}.`;
     console.log(msg);
+
+    const updatedSent = apt.notificationsSent.includes(type)
+      ? apt.notificationsSent
+      : [...apt.notificationsSent, type];
+
+    try {
+      await updateAppointment(apt.id, {
+        notificationsSent: updatedSent,
+      });
+    } catch (err) {
+      console.error("Error al actualizar recordatorio en base de datos:", err);
+    }
 
     setAppointments((prev) =>
       prev.map((item) =>
         item.id === apt.id
           ? {
               ...item,
-              notificationsSent: item.notificationsSent.includes(type)
-                ? item.notificationsSent
-                : [...item.notificationsSent, type],
+              notificationsSent: updatedSent,
             }
           : item
       )

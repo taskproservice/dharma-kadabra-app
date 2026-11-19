@@ -26,7 +26,7 @@ export type Product = {
   /** Precio en USD (se formatea con `formatPrice`). */
   price: number;
   imageUrl: string;
-  category: "Talismanes" | "Ritual" | "Cristales";
+  category: "Talismanes" | "Ritual" | "Cristales" | string;
 };
 
 export const products: Product[] = [

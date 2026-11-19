@@ -10,6 +10,7 @@ import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { Storefront } from "../components/landing/storefront";
+import { getProducts } from "../lib/actions/products";
 
 const heroImages = [
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
@@ -55,7 +56,9 @@ function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const dbProducts = await getProducts();
+
   return (
     <>
     <main className="relative bg-[#F4ECD8] text-[#3E2723]">
@@ -139,7 +142,7 @@ export default function HomePage() {
       </section>
 
       {/* Tienda y servicios */}
-      <Storefront />
+      <Storefront initialProducts={dbProducts} />
 
       {/* Equipo — retratos editoriales */}
       <section id="equipo" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">

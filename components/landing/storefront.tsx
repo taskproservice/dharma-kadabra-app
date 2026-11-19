@@ -1,20 +1,47 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, ShoppingBag } from "lucide-react";
-import { products, formatPrice } from "../../lib/data/products";
+import { products as fallbackProducts, formatPrice, type Product } from "../../lib/data/products";
 import { services, formatSessionPrice } from "../../lib/data/services";
 import { useCartStore } from "../../stores/cart";
+import { getProducts } from "../../lib/actions/products";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 
 const eyebrow = "mb-5 flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#8B6D16] before:h-px before:w-10 before:bg-[#8B6D16]/50";
 
-export function Storefront() {
+export function Storefront({ initialProducts }: { initialProducts?: Product[] }) {
+  const [productList, setProductList] = useState<Product[]>(initialProducts || fallbackProducts);
   const add = useCartStore((state) => state.add);
   const items = useCartStore((state) => state.items);
   const count = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Sincronizar catálogo con la base de datos real (prisma.product.findMany())
+  useEffect(() => {
+    async function loadCatalog() {
+      try {
+        const dbItems = await getProducts();
+        if (dbItems && dbItems.length > 0) {
+          setProductList(
+            dbItems.map((p) => ({
+              id: p.id,
+              name: p.name,
+              description: p.description,
+              price: p.price,
+              imageUrl: p.imageUrl,
+              category: p.category as any,
+            }))
+          );
+        }
+      } catch (err) {
+        console.error("Error al cargar productos desde la base de datos:", err);
+      }
+    }
+    loadCatalog();
+  }, []);
 
   return (
     <>
@@ -31,7 +58,7 @@ export function Storefront() {
             </Link>
           </div>
           <div className="mt-10 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
-            {products.map((product) => (
+            {productList.map((product) => (
               <article
                 key={product.id}
                 className="group flex h-full flex-col rounded-2xl bg-[#F4ECD8]/70 p-4 border border-[#D4AF37]/20 shadow-lg shadow-[#1A1A1A]/5 hover:-translate-y-1 transition-transform duration-300"
