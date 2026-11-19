@@ -1,4 +1,6 @@
 "use client";
+
+import Image from "next/image";
 import { useState } from "react";
 import { Pencil, Plus, Trash2, UserRound } from "lucide-react";
 import { Button } from "../../../components/ui/button";
@@ -6,18 +8,67 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui
 import { Dialog } from "../../../components/ui/dialog";
 import { Input } from "../../../components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
+import { collaborators as seed, getInitials, type Collaborator } from "../../../lib/data/collaborators";
 
-type Collaborator = { id: number; name: string; specialty: string; email: string; initials: string };
-const seed: Collaborator[] = [
-  { id: 1, name: "Lucía Moreno", specialty: "Terapeuta holística", email: "lucia@dharmakadabra.mx", initials: "LM" },
-  { id: 2, name: "Mateo Sánchez", specialty: "Lector de runas", email: "mateo@dharmakadabra.mx", initials: "MS" },
-  { id: 3, name: "Isabel Vega", specialty: "Guía de meditación", email: "isabel@dharmakadabra.mx", initials: "IV" },
-];
+/** CRUD local API-ready: reemplazar las mutaciones por llamadas al servicio al conectar backend. */
 export default function ColaboradoresPage() {
-  const [people, setPeople] = useState(seed); const [editing, setEditing] = useState<Collaborator | null>(null);
-  const editor = (person?: Collaborator) => <Dialog trigger={<Button variant={person ? "outline" : "default"} size={person ? "sm" : "default"}>{person ? <><Pencil size={14}/>Editar</> : <><Plus size={16}/>Agregar colaborador</>}</Button>} title={person ? "Editar colaborador" : "Nuevo colaborador"}>{(close) => <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); const data = new FormData(e.currentTarget); const name = String(data.get("name")); const specialty = String(data.get("specialty")); const email = String(data.get("email")); const initials = name.split(" ").map((x) => x[0]).slice(0, 2).join("").toUpperCase(); if (person) setPeople((list) => list.map((p) => p.id === person.id ? { ...p, name, specialty, email, initials } : p)); else setPeople((list) => [...list, { id: Date.now(), name, specialty, email, initials }]); close(); }}>
-    <label className="block space-y-1.5 text-sm font-medium">Nombre<Input name="name" required defaultValue={person?.name}/></label><label className="block space-y-1.5 text-sm font-medium">Especialidad<Input name="specialty" required defaultValue={person?.specialty}/></label><label className="block space-y-1.5 text-sm font-medium">Correo<Input name="email" type="email" required defaultValue={person?.email}/></label><div className="flex justify-end gap-2 pt-2"><Button type="button" variant="ghost" onClick={close}>Cancelar</Button><Button type="submit">Guardar</Button></div>
-  </form>}</Dialog>;
-  return <div className="mx-auto max-w-7xl space-y-7"><div className="flex flex-wrap items-end justify-between gap-4"><div><h1 className="text-3xl font-semibold">Colaboradores</h1><p className="mt-2 text-[#3E2723]/60">Administra el equipo y sus especialidades.</p></div>{editor()}</div>
-    <Card><CardHeader><CardTitle>Equipo <span className="ml-2 text-sm font-normal text-[#3E2723]/50">{people.length} personas</span></CardTitle></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Colaborador</TableHead><TableHead>Especialidad</TableHead><TableHead>Correo</TableHead><TableHead className="text-right">Acciones</TableHead></TableRow></TableHeader><TableBody>{people.map((p) => <TableRow key={p.id}><TableCell><div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-full bg-[#E8DCC0] text-xs font-semibold text-[#8B6D16]">{p.initials || <UserRound size={18}/>}</span><span className="font-medium">{p.name}</span></div></TableCell><TableCell>{p.specialty}</TableCell><TableCell>{p.email}</TableCell><TableCell><div className="flex justify-end gap-2">{editor(p)}<Button size="sm" variant="ghost" aria-label={`Eliminar ${p.name}`} onClick={() => setPeople((list) => list.filter((x) => x.id !== p.id))}><Trash2 size={16} className="text-red-700"/></Button></div></TableCell></TableRow>)}</TableBody></Table>{people.length === 0 && <p className="py-8 text-center text-sm text-[#3E2723]/55">Aún no hay colaboradores.</p>}</CardContent></Card></div>;
+  const [people, setPeople] = useState<Collaborator[]>(() => seed.map((person) => ({ ...person })));
+
+  const editor = (person?: Collaborator) => (
+    <Dialog
+      trigger={<Button variant={person ? "outline" : "default"} size={person ? "sm" : "default"}>{person ? <><Pencil size={14} />Editar</> : <><Plus size={16} />Nuevo Colaborador</>}</Button>}
+      title={person ? "Editar colaborador" : "Nuevo colaborador"}
+    >
+      {(close) => (
+        <form className="space-y-4" onSubmit={(event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          const name = String(data.get("name") ?? "").trim();
+          const specialty = String(data.get("specialty") ?? "").trim();
+          const bio = String(data.get("bio") ?? "").trim();
+          const photoUrl = String(data.get("photoUrl") ?? "").trim();
+          const email = String(data.get("email") ?? "").trim();
+          if (!name || !specialty || !bio || !email) return;
+          const updated: Collaborator = { id: person?.id ?? `collaborator-${crypto.randomUUID()}`, name, specialty, bio, photoUrl, email };
+          if (person) setPeople((current) => current.map((entry) => entry.id === person.id ? updated : entry));
+          else setPeople((current) => [...current, updated]);
+          close();
+        }}>
+          <label className="block space-y-1.5 text-sm font-medium">Nombre<Input name="name" required maxLength={100} defaultValue={person?.name} autoComplete="name" /></label>
+          <label className="block space-y-1.5 text-sm font-medium">Especialidad<Input name="specialty" required maxLength={120} defaultValue={person?.specialty} /></label>
+          <label className="block space-y-1.5 text-sm font-medium">Bio<textarea name="bio" required maxLength={1200} rows={4} defaultValue={person?.bio} className="w-full rounded-xl border border-[#3E2723]/15 bg-white/70 px-3 py-2 text-sm outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20" /></label>
+          <label className="block space-y-1.5 text-sm font-medium">Foto (ruta pública o URL)<Input name="photoUrl" type="text" placeholder="/images/equipo/nombre.jpg" defaultValue={person?.photoUrl} /></label>
+          <label className="block space-y-1.5 text-sm font-medium">Correo electrónico<Input name="email" type="email" required maxLength={160} defaultValue={person?.email} autoComplete="email" /></label>
+          <div className="flex justify-end gap-2 pt-2"><Button type="button" variant="ghost" onClick={close}>Cancelar</Button><Button type="submit">Guardar colaborador</Button></div>
+        </form>
+      )}
+    </Dialog>
+  );
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-7">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div><h1 className="text-3xl font-semibold">Colaboradores</h1><p className="mt-2 text-[#3E2723]/60">Administra perfiles que se muestran en la Landing Page.</p></div>
+        {editor()}
+      </div>
+      <Card>
+        <CardHeader><CardTitle>Equipo <span className="ml-2 text-sm font-normal text-[#3E2723]/50">{people.length} {people.length === 1 ? "persona" : "personas"}</span></CardTitle></CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader><TableRow><TableHead>Colaborador</TableHead><TableHead>Especialidad</TableHead><TableHead>Biografía</TableHead><TableHead>Correo</TableHead><TableHead className="text-right">Acciones</TableHead></TableRow></TableHeader>
+            <TableBody>{people.map((person) => (
+              <TableRow key={person.id}>
+                <TableCell><div className="flex min-w-48 items-center gap-3">{person.photoUrl ? <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-[#E8DCC0]"><Image src={person.photoUrl} alt={`Retrato de ${person.name}`} fill sizes="44px" unoptimized className="object-cover" /></div> : <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#E8DCC0] text-xs font-semibold text-[#8B6D16]">{getInitials(person.name) || <UserRound size={18} />}</span>}<span className="font-medium">{person.name}</span></div></TableCell>
+                <TableCell className="min-w-40">{person.specialty}</TableCell>
+                <TableCell className="min-w-64 max-w-sm text-xs leading-5 text-[#3E2723]/65">{person.bio}</TableCell>
+                <TableCell className="whitespace-nowrap">{person.email}</TableCell>
+                <TableCell><div className="flex justify-end gap-2">{editor(person)}<Button size="sm" variant="ghost" aria-label={`Eliminar ${person.name}`} onClick={() => { if (window.confirm(`¿Eliminar a ${person.name} del equipo?`)) setPeople((current) => current.filter((entry) => entry.id !== person.id)); }}><Trash2 size={16} className="text-red-700" /></Button></div></TableCell>
+              </TableRow>
+            ))}</TableBody>
+          </Table>
+          {people.length === 0 && <p className="py-8 text-center text-sm text-[#3E2723]/55">Aún no hay colaboradores.</p>}
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

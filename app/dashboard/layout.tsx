@@ -69,6 +69,11 @@ const sections: {
   },
 ];
 
+// Fuente del rol: conectar a la sesión real cuando se habilite autenticación.
+// Paola tiene acceso administrativo en la experiencia actual del Dashboard.
+const currentUser = { name: "Paola Hernández", role: "ADMIN" as "ADMIN" | "COLLABORATOR" };
+const visibleSections = currentUser.role === "ADMIN" ? sections : sections.filter((section) => section.title !== "Administración");
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[#F4ECD8] text-[#3E2723]">
@@ -78,7 +83,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <span className="text-xl font-semibold tracking-tight">Dharma <span className="text-[#A98419]">Kadabra</span></span>
         </Link>
         <nav className="space-y-6" aria-label="Navegación principal">
-          {sections.map((section) => (
+          {visibleSections.map((section) => (
             <section key={section.title}>
               <h2 className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#3E2723]/55">{section.title}</h2>
               <ul className="space-y-1">
@@ -103,8 +108,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </button>
           <div className="h-8 w-px bg-[#3E2723]/15" />
           <div className="text-right">
-            <p className="text-sm font-semibold">Paola Hernández</p>
-            <p className="text-xs text-[#3E2723]/55">Administradora</p>
+            <p className="text-sm font-semibold">{currentUser.name}</p>
+            <p className="text-xs text-[#3E2723]/55">{currentUser.role === "ADMIN" ? "Administradora" : "Colaboradora"}</p>
           </div>
           <button type="button" className="flex items-center gap-2 rounded-xl border border-[#3E2723]/15 px-3.5 py-2 text-sm font-medium transition hover:bg-white/70">
             <LogOut size={16} />Cerrar Sesión

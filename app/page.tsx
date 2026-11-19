@@ -8,6 +8,8 @@ import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
+import { collaborators } from "../lib/data/collaborators";
+import { Storefront } from "../components/landing/storefront";
 
 const heroImages = [
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
@@ -27,12 +29,6 @@ const pillars = [
   { icon: Sparkles, title: "Prácticas para tu día", text: "Rituales, recursos y momentos de pausa que caben en la vida real." },
 ];
 
-const team = [
-  { name: "Lucía Moreno", role: "Terapeuta holística", initials: "LM" },
-  { name: "Mateo Sánchez", role: "Lector de runas", initials: "MS" },
-  { name: "Isabel Vega", role: "Guía de meditación", initials: "IV" },
-];
-
 const benefits = [
   { title: "Sesiones personalizadas", text: "Con guías de confianza, a tu medida." },
   { title: "Biblioteca viva", text: "Audios, rituales y recursos para cada ciclo." },
@@ -43,6 +39,8 @@ const benefits = [
 const nav = [
   { href: "#manifiesto", label: "Manifiesto" },
   { href: "#paola", label: "Nuestra guía" },
+  { href: "#coleccion", label: "Colección" },
+  { href: "#servicios", label: "Servicios" },
   { href: "#equipo", label: "Colaboradores" },
   { href: "#nosotros", label: "Pilares" },
   { href: "#beneficios", label: "Beneficios" },
@@ -70,7 +68,7 @@ export default function HomePage() {
           <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/70 lg:flex">
             {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
           </nav>
-          <a href="#prueba" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Comienza gratis</a>
+          <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
         </div>
       </header>
 
@@ -140,7 +138,10 @@ export default function HomePage() {
         </article>
       </section>
 
-      {/* Equipo — Papiro */}
+      {/* Tienda y servicios */}
+      <Storefront />
+
+      {/* Equipo — retratos editoriales */}
       <section id="equipo" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#3E2723]/10 pb-10">
@@ -151,12 +152,14 @@ export default function HomePage() {
             <p className="max-w-sm text-sm leading-7 text-[#3E2723]/65">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p>
           </div>
           <div className="mt-14 grid gap-px bg-[#3E2723]/10 sm:grid-cols-3">
-            {team.map((member, index) => (
-              <article key={member.name} className="group bg-[#F4ECD8] p-8 transition hover:bg-[#EFE4CB] lg:p-10">
+            {collaborators.map((member, index) => (
+              <article key={member.id} className="group bg-[#F4ECD8] p-6 transition hover:bg-[#EFE4CB] lg:p-8">
                 <span className="font-display text-sm text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
-                <div className="mt-8 grid size-24 place-items-center rounded-full border border-[#8B6D16]/40 font-display text-3xl italic text-[#2A1B17] transition group-hover:border-[#8B6D16]">{member.initials}</div>
-                <h3 className="mt-8 font-display text-2xl text-[#2A1B17]">{member.name}</h3>
-                <p className="mt-2 text-[11px] uppercase tracking-[.25em] text-[#3E2723]/55">{member.role}</p>
+                <div className="relative mt-5 aspect-[4/5] overflow-hidden bg-[#E1D4B8]">
+                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 30vw, 100vw" className="object-cover grayscale sepia-[.2] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:sepia-0" />
+                </div>
+                <h3 className="mt-6 font-display text-2xl text-[#2A1B17]">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#3E2723]/55">{member.specialty}</p>
               </article>
             ))}
           </div>
@@ -211,8 +214,8 @@ export default function HomePage() {
           <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
           <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
           <p className="mx-auto mt-6 max-w-lg text-base font-light leading-7 text-[#F4ECD8]/65">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
-          <Link href="/dashboard" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
-            Comenzar mi prueba gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <Link href="/dashboard/pos" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
+            Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">Sin compromiso · Empieza cuando estés lista</p>
         </div>

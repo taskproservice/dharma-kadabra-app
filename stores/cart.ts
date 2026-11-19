@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Product = { id: string; name: string; category: string; price: number; emoji: string; description: string };
+export type Product = { id: string; name: string; category: string; price: number; emoji: string; description: string; currency?: "MXN" | "USD"; imageUrl?: string };
 type CartItem = Product & { quantity: number };
 type CartState = { items: CartItem[]; add: (product: Product) => void; decrement: (id: string) => void; remove: (id: string) => void; clear: () => void };
 

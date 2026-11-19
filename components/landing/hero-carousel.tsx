@@ -113,7 +113,7 @@ export function HeroCarousel({ slides, children, interval = 7000 }: HeroCarousel
             <a href="#prueba" className="group inline-flex items-center gap-3 border border-[#D4AF37]/70 bg-[#D4AF37]/10 px-7 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#F4ECD8] backdrop-blur-md transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">
               Prueba gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <a href="#manifiesto" className="text-[11px] font-medium uppercase tracking-[.28em] text-[#F4ECD8]/70 underline-offset-8 transition hover:text-[#F4ECD8] hover:underline">
+            <a href="#servicios" className="text-[11px] font-medium uppercase tracking-[.28em] text-[#F4ECD8]/70 underline-offset-8 transition hover:text-[#F4ECD8] hover:underline">
               Descubrir
             </a>
           </div>
