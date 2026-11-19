@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   Megaphone,
+  MoonStar,
   Palette,
   Settings,
   ShoppingBag,
@@ -39,6 +40,7 @@ const sections: {
       { label: "Punto de Venta", href: "/dashboard/pos", icon: ShoppingCart },
       { label: "Módulo de Ventas", href: "/dashboard/ventas", icon: ShoppingBag },
       { label: "Agenda Electrónica", href: "/dashboard/agenda", icon: CalendarDays },
+      { label: "Eventos Especiales", href: "/dashboard/eventos", icon: MoonStar },
     ],
   },
   {

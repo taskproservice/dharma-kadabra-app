@@ -1,9 +1,8 @@
 // Prisma schema for Dharma Kadabra
-// Production schema for appointments & automated notification reminders
+// PostgreSQL persistence for bookings, customers, store items and ritual events.
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -20,13 +19,79 @@ enum AppointmentStatus {
 model Appointment {
   id                String            @id @default(cuid())
   clientName        String
+  clientEmail       String
   clientPhone       String
   date              DateTime
   service           String
   status            AppointmentStatus @default(PENDING)
+  depositPaid       Boolean           @default(false)
   notificationsSent Json              @default("[]")
+  customerId        String?
+  customer          Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
   @@index([date, status])
+  @@index([clientEmail, date])
+}
+
+model Customer {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  phone          String?
+  passwordHash   String
+  appointments   Appointment[]
+  purchases      Purchase[]
+  audioPurchases AudioPurchase[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Product {
+  id          String         @id
+  name        String
+  description String
+  price       Float
+  imageUrl    String
+  category    String
+  events      SpecialEvent[] @relation("EventProducts")
+  purchases   Purchase[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model SpecialEvent {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  products    Product[] @relation("EventProducts")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([date])
+}
+
+model Purchase {
+  id         String   @id @default(cuid())
+  customerId String
+  productId  String?
+  title      String
+  purchasedAt DateTime @default(now())
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([customerId, purchasedAt])
+}
+
+model AudioPurchase {
+  id          String   @id @default(cuid())
+  customerId  String
+  title       String
+  audioUrl    String?
+  purchasedAt DateTime @default(now())
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId, purchasedAt])
 }
