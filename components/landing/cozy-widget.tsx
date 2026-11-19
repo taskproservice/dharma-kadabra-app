@@ -125,7 +125,7 @@ export function CozyWidget() {
             {messages.map((message) => (
               <div key={message.id} className={`flex items-end gap-2 ${message.from === "user" ? "justify-end" : "justify-start"}`}>
                 {message.from === "cozy" && (
-                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#1A1A1A]" aria-hidden="true">
+                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#D4AF37]/20" aria-hidden="true">
                     <Flame size={13} className="text-[#D4AF37]" />
                   </span>
                 )}
@@ -145,7 +145,7 @@ export function CozyWidget() {
 
             {typing && (
               <div className="flex items-end gap-2" aria-label="Cozy está escribiendo">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#1A1A1A]" aria-hidden="true">
+                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#D4AF37]/20" aria-hidden="true">
                   <Flame size={13} className="text-[#D4AF37]" />
                 </span>
                 <div className="flex gap-1 rounded-2xl rounded-bl-sm border border-[#D4AF37]/25 bg-white/70 px-4 py-3.5">
@@ -196,16 +196,24 @@ export function CozyWidget() {
         </section>
       )}
 
-      {/* Botón de Acción Flotante — en móvil se oculta mientras el chat ocupa la pantalla */}
+      {/* Botón de Acción Flotante: El Fuego Sagrado (solo la llama, sin círculo oscuro ni borde sólido) */}
       <button
         ref={fabRef}
         type="button"
         onClick={() => (open ? close() : setOpen(true))}
         aria-label={open ? "Cerrar chat con Cozy" : "Abrir chat con Cozy, tu guía interior"}
         aria-expanded={open}
-        className={`cozy-fab group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full border border-[#D4AF37] bg-[#1A1A1A] text-[#D4AF37] transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A1A] ${open ? "max-sm:hidden" : ""}`}
+        className={`fixed bottom-6 right-6 z-50 grid size-16 place-items-center rounded-full bg-transparent text-[#D4AF37] transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] flame-glow ${open ? "max-sm:hidden" : ""}`}
       >
-        {open ? <X size={22} /> : <Flame size={24} className="cozy-flame" />}
+        {open ? (
+          <X size={28} className="text-[#D4AF37] drop-shadow-[0_0_12px_rgba(212,175,55,0.7)]" />
+        ) : (
+          <Flame
+            size={40}
+            className="cozy-flame text-[#D4AF37] drop-shadow-[0_0_16px_rgba(212,175,55,0.85)]"
+            aria-hidden="true"
+          />
+        )}
       </button>
     </>
   );

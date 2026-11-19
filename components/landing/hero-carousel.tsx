@@ -106,14 +106,14 @@ export function HeroCarousel({ slides, children, interval = 7000 }: HeroCarousel
           <h1 className="hero-rise mt-6 font-display text-[2.75rem] font-normal leading-[1.02] tracking-[-.01em] [animation-delay:120ms] sm:text-6xl lg:text-[5.5rem]">
             {current.title} <em className="font-normal italic text-[#E6C766]">{current.accent}</em>
           </h1>
-          <p className="hero-rise mt-6 max-w-xl text-base font-light leading-7 text-[#F4ECD8]/75 [animation-delay:240ms] sm:text-lg">
+          <p className="hero-rise mt-6 max-w-xl text-base font-light leading-7 text-[#F4ECD8]/90 [animation-delay:240ms] sm:text-lg">
             {current.text}
           </p>
           <div className="hero-rise mt-10 flex flex-wrap items-center gap-6 [animation-delay:360ms]">
             <a href="#prueba" className="group inline-flex items-center gap-3 border border-[#D4AF37]/70 bg-[#D4AF37]/10 px-7 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#F4ECD8] backdrop-blur-md transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">
               Prueba gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <a href="#servicios" className="text-[11px] font-medium uppercase tracking-[.28em] text-[#F4ECD8]/70 underline-offset-8 transition hover:text-[#F4ECD8] hover:underline">
+            <a href="#servicios" className="text-[11px] font-medium uppercase tracking-[.28em] text-[#F4ECD8]/90 underline-offset-8 transition hover:text-[#D4AF37] hover:underline">
               Descubrir
             </a>
           </div>
@@ -123,9 +123,9 @@ export function HeroCarousel({ slides, children, interval = 7000 }: HeroCarousel
       {/* Controles */}
       <div className="absolute inset-x-0 bottom-0 z-10 border-t border-[#D4AF37]/15 bg-[#1A1A1A]/30 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 py-4 pl-5 pr-24 sm:pl-8 sm:pr-28 2xl:pr-8">
-          <p className="font-display text-sm tabular-nums text-[#F4ECD8]/80" aria-live="polite">
+          <p className="font-display text-sm tabular-nums text-[#F4ECD8]" aria-live="polite">
             <span className="text-[#D4AF37]">{pad(active + 1)}</span>
-            <span className="mx-2 text-[#F4ECD8]/30">/</span>
+            <span className="mx-2 text-[#F4ECD8]/50">/</span>
             {pad(total)}
           </p>
           <div className="hidden flex-1 items-center gap-3 sm:flex">

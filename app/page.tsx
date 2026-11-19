@@ -65,10 +65,10 @@ export default function HomePage() {
           <Link href="#inicio" aria-label="Dharma Kadabra · Inicio" className="flex items-center justify-start">
             <BrandLogo size={48} />
           </Link>
-          <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/70 lg:flex">
+          <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/85 lg:flex">
             {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
           </nav>
-          <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
+          <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] text-[#F4ECD8] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
         </div>
       </header>
 
@@ -173,14 +173,14 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl px-5 py-28 sm:px-8 lg:py-40">
           <div className="max-w-2xl">
             <Eyebrow tone="light">Información general</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] sm:text-6xl">Un refugio para tu <em className="italic text-[#E6C766]">bienestar.</em></h2>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Un refugio para tu <em className="italic text-[#E6C766]">bienestar.</em></h2>
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
               <article key={title} className="border border-[#D4AF37]/20 bg-[#1A1A1A]/40 p-8 backdrop-blur-xl transition hover:border-[#D4AF37]/50 lg:p-10">
                 <Icon size={22} strokeWidth={1.25} className="text-[#D4AF37]" />
-                <h3 className="mt-10 font-display text-2xl">{title}</h3>
-                <p className="mt-4 text-sm font-light leading-7 text-[#F4ECD8]/65">{text}</p>
+                <h3 className="mt-10 font-display text-2xl text-[#F4ECD8]">{title}</h3>
+                <p className="mt-4 text-sm font-light leading-7 text-[#F4ECD8]/90">{text}</p>
               </article>
             ))}
           </div>
@@ -212,20 +212,20 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-5xl border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-16 text-center backdrop-blur-sm sm:px-16 sm:py-24">
           <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#D4AF37]" />
           <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
-          <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
-          <p className="mx-auto mt-6 max-w-lg text-base font-light leading-7 text-[#F4ECD8]/65">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
+          <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
+          <p className="mx-auto mt-6 max-w-lg text-base font-light leading-7 text-[#F4ECD8]/90">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
           <Link href="/dashboard/pos" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
             Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">Sin compromiso · Empieza cuando estés lista</p>
+          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">Sin compromiso · Empieza cuando estés lista</p>
         </div>
       </section>
 
       <footer className="border-t border-[#D4AF37]/15 bg-[#141414] px-5 pb-28 pt-10 text-[#F4ECD8] sm:px-8 sm:pb-10 sm:pr-28 2xl:pr-8">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
-          <Link href="#inicio" className="font-display text-lg">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></Link>
-          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">© 2026 Dharma Kadabra · Un camino hacia ti</p>
-          <a href="#inicio" className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/60 transition hover:text-[#D4AF37]">Volver arriba ↑</a>
+          <Link href="#inicio" className="font-display text-lg text-[#F4ECD8]">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></Link>
+          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">© 2026 Dharma Kadabra · Un camino hacia ti</p>
+          <a href="#inicio" className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/85 transition hover:text-[#D4AF37]">Volver arriba ↑</a>
         </div>
       </footer>
     </main>
