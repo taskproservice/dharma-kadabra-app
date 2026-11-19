@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { Flame, SendHorizontal, X } from "lucide-react";
+import { Flame, RotateCcw, SendHorizontal, X } from "lucide-react";
 
 type Message = { id: number; from: "cozy" | "user"; text: string; time: string };
 
-// Datos de ejemplo: bienvenida simulada mientras se conecta el agente real.
+// Bienvenida inicial (local). Las respuestas posteriores vienen de DeepSeek vía /api/cozy.
 const WELCOME: Message[] = [
   { id: 1, from: "cozy", text: "Hola, alma bonita. Soy Cozy, la llama que te acompaña en Dharma Kadabra. 🔥", time: "Ahora" },
   { id: 2, from: "cozy", text: "Estoy aquí para escucharte y ayudarte a encontrar el talismán, la lectura o el ritual que tu camino necesita hoy.", time: "Ahora" },
@@ -14,8 +14,8 @@ const WELCOME: Message[] = [
 
 const SUGGESTIONS = ["Talismanes maestros", "Registros akáshicos", "Agendar una sesión"];
 
-const SAMPLE_REPLY =
-  "Gracias por compartirlo conmigo. Respira profundo: muy pronto podré guiarte paso a paso. Mientras tanto, puedes comenzar tu prueba gratis y conocer a nuestras guías.";
+const FALLBACK_ERROR = "No pude conectar con mi llama interior en este momento. Respira, y vuelve a intentarlo en un instante.";
+const HISTORY_LIMIT = 12;
 
 function now() {
   return new Intl.DateTimeFormat("es-MX", { hour: "2-digit", minute: "2-digit" }).format(new Date());
@@ -23,6 +23,7 @@ function now() {
 
 /**
  * Widget flotante de Cozy (la llama).
+ * - Conversa con la IA real a través de la ruta segura `/api/cozy` (DeepSeek).
  * - FAB fijo en la esquina inferior derecha con resplandor dorado animado.
  * - Panel de chat Papiro Premium: pantalla completa en móvil, ventana flotante en escritorio.
  */
@@ -31,10 +32,11 @@ export function CozyWidget() {
   const [messages, setMessages] = useState<Message[]>(WELCOME);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
+  const [error, setError] = useState<{ text: string; retry: string } | null>(null);
   const fabRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestRef = useRef<AbortController | null>(null);
   const titleId = useId();
   const nextId = useRef(WELCOME.length + 1);
 
@@ -63,21 +65,59 @@ export function CozyWidget() {
   useEffect(() => {
     const list = listRef.current;
     if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
-  }, [messages, typing, open]);
+  }, [messages, typing, error, open]);
 
-  useEffect(() => () => { if (replyTimer.current) clearTimeout(replyTimer.current); }, []);
+  // Cancela cualquier petición en curso al desmontar.
+  useEffect(() => () => requestRef.current?.abort(), []);
+
+  /** Pide a /api/cozy la respuesta de la IA para el historial dado. */
+  const askCozy = async (history: Message[], retryText: string) => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    setError(null);
+    setTyping(true);
+
+    try {
+      const response = await fetch("/api/cozy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: history.slice(-HISTORY_LIMIT).map((message) => ({
+            role: message.from === "user" ? "user" : "assistant",
+            content: message.text,
+          })),
+        }),
+        signal: controller.signal,
+      });
+      const data = (await response.json().catch(() => null)) as { reply?: string; error?: string } | null;
+      if (!response.ok || !data?.reply) throw new Error(data?.error || FALLBACK_ERROR);
+      setMessages((current) => [...current, { id: nextId.current++, from: "cozy", text: data.reply!, time: now() }]);
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      setError({ text: err instanceof Error && err.message ? err.message : FALLBACK_ERROR, retry: retryText });
+    } finally {
+      if (requestRef.current === controller) {
+        requestRef.current = null;
+        setTyping(false);
+      }
+    }
+  };
 
   const send = (text: string) => {
     const clean = text.trim();
-    if (!clean) return;
-    setMessages((current) => [...current, { id: nextId.current++, from: "user", text: clean, time: now() }]);
+    if (!clean || typing) return;
+    const userMessage: Message = { id: nextId.current++, from: "user", text: clean, time: now() };
+    const history = [...messages, userMessage];
+    setMessages(history);
     setDraft("");
-    setTyping(true);
-    if (replyTimer.current) clearTimeout(replyTimer.current);
-    replyTimer.current = setTimeout(() => {
-      setTyping(false);
-      setMessages((current) => [...current, { id: nextId.current++, from: "cozy", text: SAMPLE_REPLY, time: now() }]);
-    }, 1200);
+    void askCozy(history, clean);
+  };
+
+  /** Reintenta la última petición fallida sin duplicar el mensaje del usuario. */
+  const retry = () => {
+    if (!error || typing) return;
+    void askCozy(messages, error.retry);
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -137,7 +177,7 @@ export function CozyWidget() {
                   }`}
                 >
                   <span className="sr-only">{message.from === "cozy" ? "Cozy dice:" : "Tú dices:"} </span>
-                  {message.text}
+                  <span className="whitespace-pre-line">{message.text}</span>
                   <span className={`mt-1 block text-[10px] ${message.from === "user" ? "text-[#F4ECD8]/50" : "text-[#3E2723]/40"}`}>{message.time}</span>
                 </div>
               </div>
@@ -156,7 +196,25 @@ export function CozyWidget() {
               </div>
             )}
 
-            {showSuggestions && !typing && (
+            {error && !typing && (
+              <div className="flex items-end gap-2" role="alert">
+                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#1A1A1A]" aria-hidden="true">
+                  <Flame size={13} className="text-[#D4AF37]/60" />
+                </span>
+                <div className="max-w-[80%] rounded-2xl rounded-bl-sm border border-[#8B3A2B]/30 bg-[#8B3A2B]/[0.07] px-4 py-2.5 text-sm leading-6 text-[#5D2A1F]">
+                  {error.text}
+                  <button
+                    type="button"
+                    onClick={retry}
+                    className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[.18em] text-[#8B6D16] transition hover:text-[#3E2723]"
+                  >
+                    <RotateCcw size={12} aria-hidden="true" /> Reintentar
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {showSuggestions && !typing && !error && (
               <div className="flex flex-wrap gap-2 pl-9">
                 {SUGGESTIONS.map((suggestion) => (
                   <button
@@ -180,13 +238,14 @@ export function CozyWidget() {
               id={`${titleId}-input`}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder="Escribe lo que sientes…"
+              placeholder={typing ? "Cozy está escribiendo…" : "Escribe lo que sientes…"}
+              maxLength={1000}
               autoComplete="off"
               className="h-11 min-w-0 flex-1 rounded-full border border-[#3E2723]/15 bg-white/80 px-4 text-sm text-[#3E2723] outline-none placeholder:text-[#3E2723]/40 focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/25"
             />
             <button
               type="submit"
-              disabled={!draft.trim()}
+              disabled={!draft.trim() || typing}
               aria-label="Enviar mensaje"
               className="grid size-11 shrink-0 place-items-center rounded-full bg-[#3E2723] text-[#F4ECD8] transition hover:bg-[#55362f] disabled:opacity-40"
             >
