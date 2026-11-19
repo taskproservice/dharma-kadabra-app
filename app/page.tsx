@@ -1,41 +1,213 @@
-"use client";
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowLeft, ArrowRight, Check, ChevronRight, Flame, Heart, Moon, Sparkles, Star, Sun, Users, WandSparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Flame, Heart, Sparkles, Sun } from "lucide-react";
+import { HeroCarousel, type HeroSlide } from "../components/landing/hero-carousel";
+import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
+import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
+import altarRitual from "../public/images/hero/altar-ritual.jpg";
 
-const slides = [
-  { eyebrow: "Un espacio para volver a ti", title: "La sabiduría antigua, viva en tu presente.", text: "Encuentra guía, calma y herramientas para caminar tu propio sendero.", symbol: "☼", tag: "Honra tu luz" },
-  { eyebrow: "Escucha lo que tu alma ya sabe", title: "Tu camino interior merece ser escuchado.", text: "Rituales, lecturas y acompañamiento consciente para cada etapa.", symbol: "☾", tag: "Abre nuevos ciclos" },
-  { eyebrow: "Pequeños rituales, grandes comienzos", title: "Crea una vida que se sienta como tuya.", text: "Una comunidad que te acompaña a crecer con intención y amor.", symbol: "✧", tag: "Florece a tu ritmo" },
+const heroImages = [
+  { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
+  { src: sabiduriaAncestral, alt: "Libro antiguo abierto con un medallón dorado, compás y pergaminos sobre una mesa de madera" },
+  { src: altarRitual, alt: "Altar con velas encendidas, merkaba dorada, cuarzos, lavanda e incienso sobre un pergamino de símbolos" },
 ];
+
+const slides: HeroSlide[] = [
+  { eyebrow: "Un espacio para volver a ti", title: "La sabiduría antigua, viva en tu", accent: "presente.", text: "Encuentra guía, calma y herramientas para caminar tu propio sendero." },
+  { eyebrow: "Escucha lo que tu alma ya sabe", title: "Tu camino interior merece ser", accent: "escuchado.", text: "Rituales, lecturas y acompañamiento consciente para cada etapa." },
+  { eyebrow: "Pequeños rituales, grandes comienzos", title: "Crea una vida que se sienta como", accent: "tuya.", text: "Una comunidad que te acompaña a crecer con intención y amor." },
+];
+
+const pillars = [
+  { icon: Sun, title: "Sabiduría viva", text: "Tradiciones ancestrales compartidas con cuidado, contexto y corazón." },
+  { icon: Heart, title: "Acompañamiento humano", text: "Guías y especialistas que te escuchan sin juicios y a tu propio ritmo." },
+  { icon: Sparkles, title: "Prácticas para tu día", text: "Rituales, recursos y momentos de pausa que caben en la vida real." },
+];
+
 const team = [
-  { name: "Lucía Moreno", role: "Terapeuta holística", initials: "LM", color: "#DCC9A3" },
-  { name: "Mateo Sánchez", role: "Lector de runas", initials: "MS", color: "#C6D0B9" },
-  { name: "Isabel Vega", role: "Guía de meditación", initials: "IV", color: "#E8C6B7" },
+  { name: "Lucía Moreno", role: "Terapeuta holística", initials: "LM" },
+  { name: "Mateo Sánchez", role: "Lector de runas", initials: "MS" },
+  { name: "Isabel Vega", role: "Guía de meditación", initials: "IV" },
 ];
 
-function HeroArtwork({ index }: { index: number }) {
-  const scenes = [
-    <><circle cx="490" cy="180" r="96" fill="#D4AF37"/><path d="M0 420 180 240l116 111 123-176 221 245H0Z" fill="#957C4D"/><path d="m0 420 203-99 120 112 154-104 163 91H0Z" fill="#3E5143"/><path d="M358 420c12-65 27-101 48-138 22 42 38 80 48 138" fill="#F4ECD8" opacity=".9"/><path d="M380 420c7-39 15-63 26-86 13 28 20 51 26 86" fill="#B89749"/></>,
-    <><circle cx="475" cy="155" r="87" fill="#F4ECD8"/><circle cx="510" cy="130" r="83" fill="#A29374"/><path d="M0 420q130-144 276 0 142-195 364 0H0Z" fill="#53614A"/><path d="M0 420q133-74 249 0 135-99 391 0H0Z" fill="#9D8150"/><path d="M310 420c22-95 57-157 112-222 52 66 83 129 101 222" fill="#465642"/></>,
-    <><circle cx="500" cy="150" r="84" fill="#D4AF37"/><circle cx="500" cy="150" r="111" fill="none" stroke="#F4ECD8" strokeOpacity=".45" strokeWidth="2"/><path d="M0 330q102-132 205 0t205 0 205 0 205 0v150H0Z" fill="#9E8050"/><path d="M0 370q110-108 220 0t220 0 220 0 180 0v110H0Z" fill="#425441"/><path d="M0 412q137-65 274 0t274 0 272 0v68H0Z" fill="#293B35"/><path d="M117 274 132 230l15 44 45 15-45 15-15 45-15-45-45-15z" fill="#F4ECD8"/></>,
-  ];
-  return <svg viewBox="0 0 720 480" role="img" aria-label={`Ilustración espiritual ${index + 1}`} className="h-full w-full"><defs><linearGradient id={`sky-${index}`} x1="0" x2="0" y1="0" y2="1"><stop stopColor={index === 1 ? "#6B7563" : "#C6B58E"}/><stop offset="1" stopColor="#E8DCC0"/></linearGradient></defs><rect width="720" height="480" fill={`url(#sky-${index})`}/><g opacity=".2" fill="#F4ECD8"><circle cx="110" cy="100" r="3"/><circle cx="200" cy="66" r="2"/><circle cx="610" cy="84" r="3"/><circle cx="550" cy="225" r="2"/><circle cx="330" cy="76" r="2"/></g>{scenes[index]}</svg>;
+const benefits = [
+  { title: "Sesiones personalizadas", text: "Con guías de confianza, a tu medida." },
+  { title: "Biblioteca viva", text: "Audios, rituales y recursos para cada ciclo." },
+  { title: "Agenda flexible", text: "Reserva a tu ritmo, desde donde estés." },
+  { title: "Comunidad", text: "Personas que crecen y aprenden contigo." },
+];
+
+const nav = [
+  { href: "#manifiesto", label: "Manifiesto" },
+  { href: "#paola", label: "Nuestra guía" },
+  { href: "#equipo", label: "Colaboradores" },
+  { href: "#nosotros", label: "Pilares" },
+  { href: "#beneficios", label: "Beneficios" },
+];
+
+function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?: "dark" | "light" }) {
+  return (
+    <p className={`flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] ${tone === "light" ? "text-[#D4AF37]" : "text-[#8B6D16]"}`}>
+      <span className={`h-px w-10 ${tone === "light" ? "bg-[#D4AF37]/60" : "bg-[#8B6D16]/50"}`} />
+      {children}
+    </p>
+  );
 }
 
 export default function HomePage() {
-  const [slide, setSlide] = useState(0); const current = slides[slide];
-  const next = () => setSlide((value) => (value + 1) % slides.length); const previous = () => setSlide((value) => (value + slides.length - 1) % slides.length);
-  return <main className="overflow-hidden bg-[#F4ECD8] text-[#3E2723]">
-    <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8"><Link href="#inicio" className="flex items-center gap-3"><span className="grid size-11 place-items-center rounded-2xl bg-[#3E2723] text-[#D4AF37]"><Flame size={24}/></span><span className="text-lg font-semibold tracking-tight">Dharma <span className="text-[#A98419]">Kadabra</span></span></Link><nav className="hidden items-center gap-8 text-sm font-medium text-[#3E2723]/70 md:flex"><a href="#paola" className="hover:text-[#8B6D16]">Nuestra guía</a><a href="#nosotros" className="hover:text-[#8B6D16]">Nosotros</a><a href="#equipo" className="hover:text-[#8B6D16]">Colaboradores</a><a href="#beneficios" className="hover:text-[#8B6D16]">Beneficios</a></nav><a href="#prueba" className="rounded-xl bg-[#3E2723] px-4 py-2.5 text-sm font-semibold text-[#F4ECD8] transition hover:bg-[#573a32]">Comienza gratis</a></header>
-    <section id="inicio" className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-20 pt-8 sm:px-8 lg:grid-cols-[.92fr_1.08fr] lg:gap-14 lg:pb-28 lg:pt-12"><div className="relative z-[1]"><p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[.15em] text-[#80651b]"><Sparkles size={14}/>{current.eyebrow}</p><h1 className="max-w-xl text-5xl font-medium leading-[1.08] tracking-tight sm:text-6xl">{current.title.split(" ").slice(0, -2).join(" ")} <span className="font-serif italic text-[#9A7B28]">{current.title.split(" ").slice(-2).join(" ")}</span></h1><p className="mt-6 max-w-lg text-base leading-7 text-[#3E2723]/65 sm:text-lg">{current.text}</p><div className="mt-8 flex flex-wrap items-center gap-4"><a href="#prueba" className="inline-flex items-center gap-2 rounded-xl bg-[#D4AF37] px-6 py-3.5 text-sm font-bold text-[#3E2723] shadow-lg shadow-[#D4AF37]/20 transition hover:-translate-y-0.5 hover:bg-[#c4a02e]">Prueba gratis <ChevronRight size={17}/></a><a href="#nosotros" className="text-sm font-semibold text-[#3E2723]/70 hover:text-[#8B6D16]">Conoce nuestro espacio</a></div><div className="mt-10 flex items-center gap-3 text-xs text-[#3E2723]/55"><div className="flex -space-x-2"><span className="grid size-8 place-items-center rounded-full border-2 border-[#F4ECD8] bg-[#DCC9A3]">✧</span><span className="grid size-8 place-items-center rounded-full border-2 border-[#F4ECD8] bg-[#C6D0B9]">☼</span><span className="grid size-8 place-items-center rounded-full border-2 border-[#F4ECD8] bg-[#E8C6B7]">☾</span></div><span>Una comunidad creciendo con intención</span></div></div>
-      <div className="relative"><div className="absolute -inset-5 rounded-[2.5rem] bg-[#D4AF37]/10 blur-2xl"/><div className="relative aspect-[1.3] overflow-hidden rounded-[2rem] border border-white/70 bg-[#E8DCC0] shadow-2xl"><HeroArtwork index={slide}/><div className="absolute bottom-5 left-5 rounded-xl border border-white/40 bg-[#F4ECD8]/85 px-4 py-2.5 text-sm font-semibold shadow-lg backdrop-blur"><span className="mr-2 text-[#9A7B28]">✧</span>{current.tag}</div><div className="absolute bottom-5 right-5 flex gap-2"><button aria-label="Imagen anterior" onClick={previous} className="grid size-10 place-items-center rounded-full border border-white/50 bg-[#F4ECD8]/85 transition hover:bg-white"><ArrowLeft size={17}/></button><button aria-label="Siguiente imagen" onClick={next} className="grid size-10 place-items-center rounded-full border border-white/50 bg-[#F4ECD8]/85 transition hover:bg-white"><ArrowRight size={17}/></button></div><div className="absolute right-5 top-5 flex gap-1.5">{slides.map((_, i) => <button key={i} aria-label={`Ver imagen ${i + 1}`} onClick={() => setSlide(i)} className={`h-1.5 rounded-full transition-all ${slide === i ? "w-7 bg-[#3E2723]" : "w-1.5 bg-white/80"}`}/>)}</div></div><div className="absolute -bottom-5 -left-4 hidden items-center gap-3 rounded-2xl border border-white/80 bg-white/80 p-4 shadow-lg backdrop-blur sm:flex"><span className="grid size-10 place-items-center rounded-xl bg-[#D4AF37]/20 text-[#8B6D16]"><Moon size={19}/></span><span><strong className="block text-sm">Un momento para ti</strong><small className="text-xs text-[#3E2723]/55">Respira. Estás en el lugar correcto.</small></span></div></div>
-    </section>
-    <section id="paola" className="border-y border-[#3E2723]/5 bg-[#E8DCC0]/50"><div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:px-8 md:grid-cols-[.75fr_1.25fr] lg:py-28"><div className="relative mx-auto w-full max-w-sm"><div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#D4AF37]/35 via-[#E8DCC0] to-[#87927A]/50 p-5"><div className="grid h-full place-items-center rounded-[1.5rem] border border-white/50 bg-[#F4ECD8]/25"><div className="grid size-44 place-items-center rounded-full border border-white/60 bg-[#D4AF37]/20 text-7xl text-[#8B6D16] shadow-inner">P</div></div></div><div className="absolute -bottom-4 -right-3 rounded-2xl bg-[#3E2723] px-5 py-3 text-[#F4ECD8] shadow-xl"><span className="block font-serif text-lg italic">Con amor,</span><span className="text-sm font-semibold">Paola Hernández</span></div></div><div><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#9A7B28]">Una guía cercana</p><h2 className="mt-3 max-w-xl text-4xl font-medium leading-tight sm:text-5xl">Hola, soy <span className="font-serif italic text-[#9A7B28]">Paola.</span></h2><p className="mt-6 max-w-2xl text-base leading-8 text-[#3E2723]/70">Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p><p className="mt-4 max-w-2xl text-base leading-8 text-[#3E2723]/70">Dharma Kadabra nace del deseo de acercar prácticas ancestrales al mundo moderno: con calidez, sencillez y respeto por el ritmo único de cada quien.</p><a href="#nosotros" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#8B6D16]">Conoce nuestra historia <ArrowRight size={16}/></a></div></div></section>
-    <section id="nosotros" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28"><div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#9A7B28]">Información general</p><h2 className="mt-3 text-4xl font-medium leading-tight sm:text-5xl">Un refugio para tu <span className="font-serif italic text-[#9A7B28]">bienestar.</span></h2><p className="mt-5 text-base leading-7 text-[#3E2723]/65">Unimos sabiduría espiritual ancestral y herramientas cotidianas para que cultives una relación más consciente contigo y con el mundo que te rodea.</p></div><div className="mt-12 grid gap-5 md:grid-cols-3">{[{ icon: Sun, title: "Sabiduría viva", text: "Tradiciones ancestrales compartidas con cuidado, contexto y corazón." }, { icon: Heart, title: "Acompañamiento humano", text: "Guías y especialistas que te escuchan sin juicios y a tu propio ritmo." }, { icon: Sparkles, title: "Prácticas para tu día", text: "Rituales, recursos y momentos de pausa que caben en la vida real." }].map(({ icon: Icon, title, text }) => <article key={title} className="rounded-3xl border border-white/80 bg-white/50 p-7 shadow-[0_12px_36px_-28px_rgba(62,39,35,.45)]"><span className="grid size-12 place-items-center rounded-2xl bg-[#D4AF37]/15 text-[#9A7B28]"><Icon size={22}/></span><h3 className="mt-5 text-xl font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#3E2723]/65">{text}</p></article>)}</div></section>
-    <section id="equipo" className="bg-[#3E2723] text-[#F4ECD8]"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-24"><div className="flex flex-wrap items-end justify-between gap-6"><div><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#D4AF37]">Nuestra comunidad</p><h2 className="mt-3 text-4xl font-medium sm:text-5xl">Personas que <span className="font-serif italic text-[#D4AF37]">acompañan.</span></h2></div><p className="max-w-md text-sm leading-6 text-[#F4ECD8]/65">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p></div><div className="mt-10 grid gap-5 sm:grid-cols-2 md:grid-cols-3">{team.map((member) => <article key={member.name} className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"><div style={{ background: `linear-gradient(140deg, ${member.color}, #D4AF37)` }} className="grid h-48 place-items-center"><span className="grid size-24 place-items-center rounded-full border-4 border-[#F4ECD8]/50 bg-[#3E2723]/80 font-serif text-3xl text-[#F4ECD8]">{member.initials}</span></div><div className="p-5"><h3 className="text-lg font-semibold">{member.name}</h3><p className="mt-1 text-sm text-[#F4ECD8]/60">{member.role}</p></div></article>)}</div></div></section>
-    <section id="beneficios" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28"><div className="grid items-center gap-12 lg:grid-cols-2"><div><p className="text-sm font-semibold uppercase tracking-[.18em] text-[#9A7B28]">Tu espacio, a tu manera</p><h2 className="mt-3 text-4xl font-medium leading-tight sm:text-5xl">Beneficios para acompañar <span className="font-serif italic text-[#9A7B28]">tu viaje.</span></h2><p className="mt-5 max-w-xl leading-7 text-[#3E2723]/65">Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa, desde donde estés.</p><ul className="mt-7 space-y-4">{["Sesiones personalizadas con guías de confianza", "Biblioteca de audios, rituales y recursos", "Agenda flexible para reservar a tu ritmo", "Una comunidad que crece y aprende contigo"].map((item) => <li key={item} className="flex items-start gap-3 text-sm"><span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#D4AF37]/20 text-[#8B6D16]"><Check size={13}/></span>{item}</li>)}</ul></div><div className="relative grid min-h-80 place-items-center overflow-hidden rounded-[2rem] bg-[#E8DCC0]"><div className="absolute size-64 rounded-full border border-[#9A7B28]/20"/><div className="absolute size-48 rounded-full border border-[#9A7B28]/25"/><div className="absolute size-32 rounded-full border border-[#9A7B28]/35"/><div className="relative grid size-24 place-items-center rounded-full bg-[#3E2723] text-[#D4AF37] shadow-xl"><WandSparkles size={35}/></div><div className="absolute left-[14%] top-[22%] grid size-12 place-items-center rounded-2xl bg-white/80 text-[#9A7B28] shadow-lg"><Sun size={20}/></div><div className="absolute right-[15%] top-[28%] grid size-12 place-items-center rounded-2xl bg-white/80 text-[#9A7B28] shadow-lg"><Moon size={20}/></div><div className="absolute bottom-[18%] left-[25%] grid size-12 place-items-center rounded-2xl bg-white/80 text-[#9A7B28] shadow-lg"><Users size={20}/></div><div className="absolute bottom-[18%] right-[24%] grid size-12 place-items-center rounded-2xl bg-white/80 text-[#9A7B28] shadow-lg"><Star size={20}/></div></div></div></section>
-    <section id="prueba" className="px-5 pb-20 sm:px-8 lg:pb-28"><div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[#D4AF37] px-6 py-14 text-center sm:px-12 sm:py-20"><div className="absolute -left-20 -top-32 size-72 rounded-full border border-[#3E2723]/10"/><div className="absolute -bottom-44 -right-12 size-96 rounded-full border border-[#3E2723]/10"/><div className="relative mx-auto max-w-2xl"><p className="text-sm font-bold uppercase tracking-[.18em] text-[#3E2723]/60">Tu primer paso empieza aquí</p><h2 className="mt-3 text-4xl font-medium leading-tight sm:text-5xl">Regálate un momento para <span className="font-serif italic">reconectar.</span></h2><p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-[#3E2723]/70">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p><Link href="/dashboard" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#3E2723] px-7 py-3.5 text-sm font-bold text-[#F4ECD8] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#573a32]">Comenzar mi prueba gratis <ArrowRight size={17}/></Link><p className="mt-3 text-xs text-[#3E2723]/60">Sin compromiso · Empieza cuando estés lista</p></div></div></section>
-    <footer className="border-t border-[#3E2723]/10 px-5 py-7 sm:px-8"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4"><Link href="#inicio" className="flex items-center gap-2 text-sm font-semibold"><Flame size={18} className="text-[#9A7B28]"/>Dharma Kadabra</Link><p className="text-xs text-[#3E2723]/50">© 2026 Dharma Kadabra · Un camino hacia ti</p><a href="#inicio" className="flex items-center gap-1 text-xs font-medium text-[#3E2723]/60 hover:text-[#8B6D16]">Volver arriba <ArrowDown size={13} className="rotate-180"/></a></div></footer>
-  </main>;
+  return (
+    <main className="relative bg-[#F4ECD8] text-[#3E2723]">
+      {/* Navegación translúcida fija */}
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-[#D4AF37]/15 bg-[#1A1A1A]/35 text-[#F4ECD8] backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+          <Link href="#inicio" className="flex items-center gap-3">
+            <Flame size={20} className="text-[#D4AF37]" />
+            <span className="font-display text-xl tracking-wide">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></span>
+          </Link>
+          <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/70 lg:flex">
+            {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
+          </nav>
+          <a href="#prueba" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Comienza gratis</a>
+        </div>
+      </header>
+
+      {/* Hero cinematográfico */}
+      <HeroCarousel slides={slides}>
+        {heroImages.map((image, index) => (
+          <Image
+            key={image.alt}
+            src={image.src}
+            alt={image.alt}
+            priority={index === 0}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            sizes="100vw"
+            quality={90}
+            placeholder="blur"
+            className="object-cover w-full h-screen"
+          />
+        ))}
+      </HeroCarousel>
+
+      {/* Manifiesto — Papiro */}
+      <section id="manifiesto" className="scroll-mt-16 px-5 py-28 sm:px-8 lg:py-40">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="flex justify-center"><Eyebrow>Manifiesto</Eyebrow></div>
+          <p className="mt-10 font-display text-3xl leading-[1.3] text-[#2A1B17] sm:text-4xl lg:text-5xl">
+            Unimos la sabiduría espiritual ancestral con herramientas cotidianas para que cultives una relación <em className="italic text-[#8B6D16]">más consciente</em> contigo y con el mundo que te rodea.
+          </p>
+          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-[#8B6D16]/60 to-transparent" />
+        </div>
+      </section>
+
+      {/* Paola — Oscuro */}
+      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] text-[#F4ECD8]">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-8 md:grid-cols-[.9fr_1.1fr] lg:gap-24 lg:py-32">
+          <figure className="relative">
+            <div className="absolute -inset-3 border border-[#D4AF37]/20" />
+            <div className="relative aspect-[4/5] overflow-hidden">
+              <Image src={sabiduriaAncestral} alt="Libro antiguo de sabiduría con un medallón dorado" fill sizes="(min-width: 768px) 45vw, 100vw" placeholder="blur" className="object-cover object-[62%_center]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/70 via-transparent to-transparent" />
+            </div>
+            <figcaption className="absolute -bottom-6 right-6 border border-[#D4AF37]/25 bg-[#1A1A1A]/60 px-6 py-4 backdrop-blur-md">
+              <span className="block font-display text-lg italic text-[#D4AF37]">Con amor,</span>
+              <span className="text-[11px] uppercase tracking-[.25em] text-[#F4ECD8]/70">Paola Hernández</span>
+            </figcaption>
+          </figure>
+          <div>
+            <Eyebrow tone="light">Una guía cercana</Eyebrow>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] sm:text-6xl">Hola, soy <em className="italic text-[#E6C766]">Paola.</em></h2>
+            <p className="mt-8 max-w-xl text-base font-light leading-8 text-[#F4ECD8]/70">Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p>
+            <p className="mt-5 max-w-xl text-base font-light leading-8 text-[#F4ECD8]/70">Dharma Kadabra nace del deseo de acercar prácticas ancestrales al mundo moderno: con calidez, sencillez y respeto por el ritmo único de cada quien.</p>
+            <a href="#nosotros" className="mt-10 inline-flex items-center gap-3 border-b border-[#D4AF37]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#D4AF37] transition hover:border-[#D4AF37]">Conoce nuestra historia <ArrowRight size={14} /></a>
+          </div>
+        </div>
+      </section>
+
+      {/* Equipo — Papiro */}
+      <section id="equipo" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#3E2723]/10 pb-10">
+            <div>
+              <Eyebrow>Nuestra comunidad</Eyebrow>
+              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#2A1B17] sm:text-6xl">Personas que <em className="italic text-[#8B6D16]">acompañan.</em></h2>
+            </div>
+            <p className="max-w-sm text-sm leading-7 text-[#3E2723]/65">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p>
+          </div>
+          <div className="mt-14 grid gap-px bg-[#3E2723]/10 sm:grid-cols-3">
+            {team.map((member, index) => (
+              <article key={member.name} className="group bg-[#F4ECD8] p-8 transition hover:bg-[#EFE4CB] lg:p-10">
+                <span className="font-display text-sm text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
+                <div className="mt-8 grid size-24 place-items-center rounded-full border border-[#8B6D16]/40 font-display text-3xl italic text-[#2A1B17] transition group-hover:border-[#8B6D16]">{member.initials}</div>
+                <h3 className="mt-8 font-display text-2xl text-[#2A1B17]">{member.name}</h3>
+                <p className="mt-2 text-[11px] uppercase tracking-[.25em] text-[#3E2723]/55">{member.role}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pilares — Oscuro sobre imagen, tarjetas de vidrio */}
+      <section id="nosotros" className="relative scroll-mt-16 overflow-hidden bg-[#1A1A1A] text-[#F4ECD8]">
+        <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/60 to-[#1A1A1A]" />
+        <div className="relative mx-auto max-w-7xl px-5 py-28 sm:px-8 lg:py-40">
+          <div className="max-w-2xl">
+            <Eyebrow tone="light">Información general</Eyebrow>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] sm:text-6xl">Un refugio para tu <em className="italic text-[#E6C766]">bienestar.</em></h2>
+          </div>
+          <div className="mt-16 grid gap-5 md:grid-cols-3">
+            {pillars.map(({ icon: Icon, title, text }) => (
+              <article key={title} className="border border-[#D4AF37]/20 bg-[#1A1A1A]/40 p-8 backdrop-blur-xl transition hover:border-[#D4AF37]/50 lg:p-10">
+                <Icon size={22} strokeWidth={1.25} className="text-[#D4AF37]" />
+                <h3 className="mt-10 font-display text-2xl">{title}</h3>
+                <p className="mt-4 text-sm font-light leading-7 text-[#F4ECD8]/65">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Beneficios — Papiro */}
+      <section id="beneficios" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
+        <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
+          <div>
+            <Eyebrow>Tu espacio, a tu manera</Eyebrow>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#2A1B17] sm:text-6xl">Beneficios para acompañar <em className="italic text-[#8B6D16]">tu viaje.</em></h2>
+            <p className="mt-8 max-w-md leading-7 text-[#3E2723]/65">Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa, desde donde estés.</p>
+          </div>
+          <ol className="border-t border-[#3E2723]/15">
+            {benefits.map((benefit, index) => (
+              <li key={benefit.title} className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-[#3E2723]/15 py-7 sm:grid-cols-[4rem_1fr_1fr]">
+                <span className="font-display text-lg italic text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="font-display text-2xl text-[#2A1B17]">{benefit.title}</h3>
+                <p className="col-start-2 text-sm leading-6 text-[#3E2723]/60 sm:col-start-3">{benefit.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Prueba — Oscuro */}
+      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-28 text-[#F4ECD8] sm:px-8 lg:py-36">
+        <div className="relative mx-auto max-w-5xl border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-16 text-center backdrop-blur-sm sm:px-16 sm:py-24">
+          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#D4AF37]" />
+          <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
+          <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
+          <p className="mx-auto mt-6 max-w-lg text-base font-light leading-7 text-[#F4ECD8]/65">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
+          <Link href="/dashboard" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
+            Comenzar mi prueba gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">Sin compromiso · Empieza cuando estés lista</p>
+        </div>
+      </section>
+
+      <footer className="border-t border-[#D4AF37]/15 bg-[#141414] px-5 py-10 text-[#F4ECD8] sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
+          <Link href="#inicio" className="font-display text-lg">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></Link>
+          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/40">© 2026 Dharma Kadabra · Un camino hacia ti</p>
+          <a href="#inicio" className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/60 transition hover:text-[#D4AF37]">Volver arriba ↑</a>
+        </div>
+      </footer>
+    </main>
+  );
 }
