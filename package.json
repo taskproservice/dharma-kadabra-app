@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
+    "prebuild": "npx prisma contract emit && npm run generate:client",
     "build": "next build",
+    "generate:client": "npx --yes prisma@6.19.3 --config prisma.client.config.ts generate --schema prisma/schema.prisma",
     "start": "next start --hostname 0.0.0.0",
     "lint": "next lint"
   },
@@ -26,11 +28,13 @@
   },
   "devDependencies": {
     "@prisma/engines": "^6.19.3",
+    "@prisma/orm-postgres": "8.0.0-rc.24",
+    "dotenv": "^17.4.2",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^22.19.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "prisma": "^6.19.3",
+    "prisma": "8.0.0-rc.34",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   }
