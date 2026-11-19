@@ -107,10 +107,10 @@ export default function HomePage() {
           <div className="pointer-events-none absolute inset-3 border border-[#D4AF37]/25 sm:inset-4" />
           <div className="relative grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[4/5] overflow-hidden border-2 border-[#D4AF37] shadow-[0_24px_50px_-20px_rgba(62,39,35,.45)]">
+              <div className="relative aspect-[2/3] overflow-hidden border-2 border-[#D4AF37] shadow-[0_24px_50px_-20px_rgba(62,39,35,.45)]">
                 <Image
                   src={paolaHernandez}
-                  alt="Retrato de Paola Hernández, fundadora y guía de Dharma Kadabra"
+                  alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
                   fill
                   sizes="(min-width: 1152px) 420px, (min-width: 768px) 40vw, 90vw"
                   quality={90}
