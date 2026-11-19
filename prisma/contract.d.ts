@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1019fa2a848cd574651ddb95d954bc1140a1a2d3e20a93a970d88089734f5482'>;
+  StorageHashBase<'d42a126679f0d9e0810ab8d264d36a8a5df0a225436f2546ba8f5301df50ce08'>;
 export type ExecutionHash =
   ExecutionHashBase<'dcdc92d10f6f6ec532f3195f148446b824a52d53c425c83af945cb366904632a'>;
 export type ProfileHash =
@@ -453,6 +453,16 @@ type ContractBase = Omit<
             readonly AppointmentStatus: {
               readonly kind: 'valueSet';
               readonly values: readonly ['PENDING', 'CONFIRMED', 'COMPLETED'];
+            };
+            readonly Role: {
+              readonly kind: 'valueSet';
+              readonly values: readonly [
+                'ADMIN',
+                'ENGINEER',
+                'SOCIAL_MEDIA',
+                'COLLABORATOR',
+                'CLIENT',
+              ];
             };
           };
         };
