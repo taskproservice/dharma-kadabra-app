@@ -24,7 +24,7 @@ export interface CheckAppointmentsResult {
 
 /**
  * Motor de notificaciones automatizadas para citas en Dharma Kadabra.
- * Evalúa las citas programadas para los próximos 7 días, 1 día y 1 hora,
+ * Evalúa las citas programadas para los7 días, 1 día y 1 hora,
  * verifica que no hayan sido enviadas previamente y simula el envío vía WhatsApp.
  */
 export async function checkUpcomingAppointments(referenceDate = new Date()): Promise<CheckAppointmentsResult> {
@@ -32,8 +32,8 @@ export async function checkUpcomingAppointments(referenceDate = new Date()): Pro
   // Ventana máxima de búsqueda: desde ahora hasta 7 días + 2 horas de margen
   const maxWindow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000);
 
-  // 1. Buscar en la base de datos las citas próximas en estado CONFIRMED o PENDING
-  const appointments: Appointment[] = await prisma.appointment.findMany({
+  // 1. Buscar en la base de datos las citas próximas
+  const rawAppointments = await prisma.appointment.findMany({
     where: {
       status: { in: ["CONFIRMED", "PENDING"] },
       date: {
@@ -46,6 +46,30 @@ export async function checkUpcomingAppointments(referenceDate = new Date()): Pro
     },
   });
 
+  // 2. Mapeo seguro de JsonValue a string[] para cumplir estrictamente con la interfaz Appointment
+  const appointments: Appointment[] = rawAppointments.map((row) => {
+    let sentList: string[] = [];
+    
+    if (Array.isArray(row.notificationsSent)) {
+      // Type guard: filtra y garantiza que solo queden strings
+      sentList = row.notificationsSent.filter((v): v is string => typeof v === "string");
+    } else if (typeof row.notificationsSent === "string") {
+      try {
+        const parsed = JSON.parse(row.notificationsSent);
+        if (Array.isArray(parsed)) {
+          sentList = parsed.filter((v): v is string => typeof v === "string");
+        }
+      } catch {
+        sentList = [];
+      }
+    }
+
+    return {
+      ...row,
+      notificationsSent: sentList,
+    } as Appointment;
+  });
+
   const notificationsGenerated: SimulatedNotification[] = [];
 
   for (const appointment of appointments) {
@@ -53,18 +77,8 @@ export async function checkUpcomingAppointments(referenceDate = new Date()): Pro
     const diffMs = aptDate.getTime() - now.getTime();
     const diffHours = diffMs / (1000 * 60 * 60);
 
-    // Asegurarse de que notificationsSent sea un arreglo de strings
-    let sentList: string[] = [];
-    if (Array.isArray(appointment.notificationsSent)) {
-      sentList = [...appointment.notificationsSent];
-    } else if (typeof appointment.notificationsSent === "string") {
-      try {
-        sentList = JSON.parse(appointment.notificationsSent);
-      } catch {
-        sentList = [];
-      }
-    }
-
+    // Ya garantizado como string[] por el mapeo anterior
+    const sentList = [...appointment.notificationsSent];
     const pendingTypes: { type: NotificationType; label: string; text: string }[] = [];
 
     // Formateadores de fecha en español
@@ -159,7 +173,29 @@ export async function checkUpcomingAppointments(referenceDate = new Date()): Pro
  * Obtener todas las citas para el panel editorial
  */
 export async function getAllAppointments(): Promise<Appointment[]> {
-  return prisma.appointment.findMany({
+  const rawAppointments = await prisma.appointment.findMany({
     orderBy: { date: "asc" },
+  });
+
+  // Aplicamos el mismo mapeo seguro para garantizar el tipo de retorno
+  return rawAppointments.map((row) => {
+    let sentList: string[] = [];
+    if (Array.isArray(row.notificationsSent)) {
+      sentList = row.notificationsSent.filter((v): v is string => typeof v === "string");
+    } else if (typeof row.notificationsSent === "string") {
+      try {
+        const parsed = JSON.parse(row.notificationsSent);
+        if (Array.isArray(parsed)) {
+          sentList = parsed.filter((v): v is string => typeof v === "string");
+        }
+      } catch {
+        sentList = [];
+      }
+    }
+
+    return {
+      ...row,
+      notificationsSent: sentList,
+    } as Appointment;
   });
 }
