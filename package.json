@@ -6,6 +6,7 @@
     "dev": "next dev --hostname 0.0.0.0",
     "prebuild": "npx prisma contract emit && npm run generate:client",
     "build": "next build",
+    "postinstall": "npm run generate:client",
     "generate:client": "npx --yes prisma@6.19.3 --config prisma.client.config.ts generate --schema prisma/schema.prisma",
     "start": "next start --hostname 0.0.0.0",
     "lint": "next lint"

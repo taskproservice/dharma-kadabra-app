@@ -1,3 +1,5 @@
+// The schema uses Prisma's default client output, so this resolves to the
+// generated node_modules/@prisma/client created by `generate:client`.
 import { PrismaClient } from "@prisma/client";
 import { products as catalogProducts } from "./data/products";
 
@@ -202,15 +204,20 @@ class MemoryPrismaClient {
   };
 }
 
-let prismaClientInstance: any = null;
-try {
-  if (process.env.DATABASE_URL) {
-    const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
-    prismaClientInstance = globalForPrisma.prisma ?? new PrismaClient();
-    if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prismaClientInstance;
-  }
-} catch {
-  prismaClientInstance = null;
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+// Do not silently serve the in-memory demo store in production: that makes a
+// missing Vercel DATABASE_URL look like a successful but non-persistent app.
+if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is required in production; configure it in Vercel Project Settings > Environment Variables.");
 }
 
-export const prisma: any = prismaClientInstance || new MemoryPrismaClient();
+const prismaClientInstance = process.env.DATABASE_URL
+  ? (globalForPrisma.prisma ?? new PrismaClient())
+  : null;
+
+if (prismaClientInstance && process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prismaClientInstance;
+}
+
+export const prisma: any = prismaClientInstance ?? new MemoryPrismaClient();

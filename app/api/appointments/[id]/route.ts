@@ -13,7 +13,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const date = new Date(parsed.data.dateTime);
   if (date.getTime() <= Date.now()) return NextResponse.json({ error: "Elige una fecha futura." }, { status: 400 });
   const { id } = await params;
-  const appointment = await prisma.appointment.findUnique({ where: { id } });
+  const appointment = await prisma.appointment.findUnique({
+    where: { id },
+    select: { id: true, customerId: true, clientEmail: true, status: true },
+  });
   if (!appointment || (appointment.customerId !== session.id && appointment.clientEmail.toLowerCase() !== session.email.toLowerCase())) return NextResponse.json({ error: "No encontramos esa cita en tu cuenta." }, { status: 404 });
   if (appointment.status === "COMPLETED") return NextResponse.json({ error: "Las sesiones completadas no se pueden reagendar." }, { status: 409 });
   const appointmentsAtSlot = await prisma.appointment.findMany({ where: { date } });
