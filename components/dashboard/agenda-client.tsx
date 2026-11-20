@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -23,6 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import { AgendaSlotSkeleton } from "../ui/skeleton";
 
 export type AppointmentItem = {
   id: string;
@@ -81,6 +82,15 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
   const [isSimulating, setIsSimulating] = useState(false);
 
   const modalTitleId = useId();
+
+  // Skeleton loaders: al montar y al cambiar de día se muestran slots
+  // grises animados mientras "cargan" las citas del día seleccionado.
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 550);
+    return () => clearTimeout(timer);
+  }, [selectedDate]);
 
   // Fecha seleccionada formateada en estilo editorial largo: "Miércoles, 18 de Noviembre"
   const formattedLongDate = useMemo(() => {
@@ -418,8 +428,10 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
             <span>Detalles del Cliente y Estado</span>
           </div>
 
-          <div className="space-y-3.5">
-            {TIME_SLOTS.map((slot) => {
+          <div className="space-y-3.5" aria-busy={isLoading}>
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, index) => <AgendaSlotSkeleton key={index} />)
+            ) : TIME_SLOTS.map((slot) => {
               const appointment = appointmentsByHour.get(slot.hour);
 
               if (appointment) {

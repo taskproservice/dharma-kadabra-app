@@ -4,7 +4,14 @@ import { prisma } from "../../../lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function AgendaPage() {
-  const appointments = await prisma.appointment.findMany({ orderBy: { date: "asc" } });
+  // Sin base de datos o con error de conexión: agenda vacía (slots libres)
+  // en lugar de fallar. Los Skeleton Loaders cubren la carga inicial.
+  let appointments: Awaited<ReturnType<typeof prisma.appointment.findMany>> = [];
+  try {
+    appointments = await prisma.appointment.findMany({ orderBy: { date: "asc" } });
+  } catch {
+    appointments = [];
+  }
   const initialAppointments: AppointmentItem[] = appointments.map((appointment: {
     id: string;
     clientName: string;

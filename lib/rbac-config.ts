@@ -157,7 +157,7 @@ export function isRouteAllowedForRole(role: Role, path: string): boolean {
 /* -------------------------------------------------------------------------- */
 
 export type ApiAction = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type ApiResource = "appointments" | "events" | "notifications";
+export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos";
 
 /**
  * Matriz de autorización de la API: recurso → método HTTP → roles permitidos.
@@ -186,6 +186,14 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
     // GET lo ejecuta Vercel Cron (con CRON_SECRET) o una administradora.
     GET: ["ADMIN"],
     // POST es el disparo manual desde la Agenda.
+    POST: ["ADMIN", "ENGINEER"],
+  },
+  products: {
+    // Catálogo del Punto de Venta: solo el equipo que opera la terminal.
+    GET: ["ADMIN", "ENGINEER"],
+  },
+  pos: {
+    // Cobro en terminal: registra la venta en la base de datos.
     POST: ["ADMIN", "ENGINEER"],
   },
 };
