@@ -224,16 +224,16 @@ export default async function HomePage() {
       </section>
 
       {/* Prueba — Oscuro */}
-      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-16 text-[#F4ECD8] sm:px-8 lg:py-20">
-        <div className="relative mx-auto max-w-5xl border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-10 text-center backdrop-blur-sm sm:px-16 sm:py-12">
+      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-8 text-[#F4ECD8] sm:px-8 lg:py-10">
+        <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-4 border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-8 text-center backdrop-blur-sm sm:px-16 sm:py-10">
           <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#D4AF37]" />
           <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
-          <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
-          <p className="mx-auto mt-6 max-w-lg text-base font-light leading-7 text-[#F4ECD8]/90">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
-          <Link href="/dashboard/pos" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
+          <h2 className="mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
+          <p className="mx-auto max-w-lg text-base font-light leading-7 text-[#F4ECD8]/90">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
+          <Link href="/dashboard/pos" className="group inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
             Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
+          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
         </div>
       </section>
 

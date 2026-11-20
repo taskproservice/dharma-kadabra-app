@@ -623,7 +623,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
             role="dialog"
             aria-modal="true"
             aria-labelledby={modalTitleId}
-            className="w-full max-w-lg rounded-2xl border border-[#D4AF37]/40 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-2xl"
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[#D4AF37]/40 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-[#3E2723]/15 pb-4">
               <div>

@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
   AudioLines,
-  Bell,
   BookOpen,
   CalendarDays,
   CreditCard,
@@ -24,8 +24,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { RoleSelector } from "../../components/dashboard/role-selector";
-import { SignOutButton } from "../../components/dashboard/sign-out-button";
+import { DashboardHeader } from "../../components/dashboard/dashboard-header";
 import { ROLE_PERMISSIONS, ROLE_PREVIEW_COOKIE, getStaffPrincipal, parseRole, type Role } from "../../lib/rbac";
 
 interface NavLink {
@@ -38,6 +37,12 @@ interface NavSection {
   title: string;
   links: NavLink[];
 }
+
+const collaboratorLabels: Record<string, string> = {
+  "/dashboard/perfil": "Mi Perfil",
+  "/dashboard/agenda": "Mi Agenda",
+  "/dashboard/audio": "Audios",
+};
 
 const sections: NavSection[] = [
   {
@@ -85,87 +90,6 @@ const sections: NavSection[] = [
   },
 ];
 
-/**
- * Objeto de configuración en app/dashboard/layout.tsx que define qué módulos ve cada rol:
- * - ADMIN: Ve todo.
- * - ENGINEER: Ve todo, excepto Pasarela de Pagos y Runas.
- * - SOCIAL_MEDIA: Solo ve Resumen (Métricas), Audio/Video, y Redes Sociales.
- * - COLLABORATOR: Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio.
- * - CLIENT: Solo ve Perfil.
- */
-const ROLE_MODULES_CONFIG: Record<Role, {
-  name: string;
-  allowedModules: string[];
-  isAllowed: (href: string) => boolean;
-}> = {
-  ADMIN: {
-    name: "Administradora",
-    allowedModules: ["*"], // Ve todo
-    isAllowed: () => true,
-  },
-  ENGINEER: {
-    name: "Ingeniero (Soporte)",
-    // Ve todo, excepto Pasarela de Pagos y Runas
-    allowedModules: [
-      "Resumen", "Perfil", "Punto de Venta", "Módulo de Ventas", "Agenda Electrónica", "Eventos Especiales",
-      "Redes Sociales", "Audio", "Video", "Diseño Base",
-      "Cozy (Chatbot)", "Agente de Ventas", "Agente de Marketing",
-      "Colaboradores", "Panel Administrativo", "Información General"
-    ],
-    isAllowed: (href: string) => {
-      const clean = href.split("?")[0].replace(/\/$/, "");
-      return (
-        clean !== "/dashboard/pagos" &&
-        !clean.startsWith("/dashboard/pagos/") &&
-        clean !== "/dashboard/pasarela-pagos" &&
-        !clean.startsWith("/dashboard/pasarela-pagos/") &&
-        clean !== "/dashboard/runas" &&
-        !clean.startsWith("/dashboard/runas/")
-      );
-    },
-  },
-  SOCIAL_MEDIA: {
-    name: "Social Media",
-    // Solo ve Resumen (Métricas), Audio/Video, y un nuevo módulo "Redes Sociales"
-    allowedModules: ["Resumen", "Redes Sociales", "Audio", "Video"],
-    isAllowed: (href: string) => {
-      const clean = href.split("?")[0].replace(/\/$/, "");
-      if (clean === "/dashboard") return true;
-      const allowedPrefixes = [
-        "/dashboard/resumen",
-        "/dashboard/audio",
-        "/dashboard/video",
-        "/dashboard/redes",
-      ];
-      return allowedPrefixes.some((allowed) => clean === allowed || clean.startsWith(allowed + "/"));
-    },
-  },
-  COLLABORATOR: {
-    name: "Colaboradora",
-    // Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio
-    allowedModules: ["Perfil", "Agenda Electrónica", "Audio"],
-    isAllowed: (href: string) => {
-      const clean = href.split("?")[0].replace(/\/$/, "");
-      if (clean === "/dashboard") return true;
-      const allowedPrefixes = [
-        "/dashboard/perfil",
-        "/dashboard/agenda",
-        "/dashboard/audio",
-      ];
-      return allowedPrefixes.some((allowed) => clean === allowed || clean.startsWith(allowed + "/"));
-    },
-  },
-  CLIENT: {
-    name: "Cliente",
-    allowedModules: ["Perfil"],
-    isAllowed: (href: string) => {
-      const clean = href.split("?")[0].replace(/\/$/, "");
-      if (clean === "/dashboard") return true;
-      return clean === "/dashboard/perfil" || clean.startsWith("/dashboard/perfil/");
-    },
-  },
-};
-
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   // Rol REAL: sale de la sesión de NextAuth, revalidada contra la base de datos.
   const staff = await getStaffPrincipal();
@@ -182,26 +106,28 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const visibleSections = sections
     .map((section) => ({
       ...section,
-      links: section.links.filter((link) => roleConfig.isAllowed(link.href)),
+      links: section.links
+        .filter((link) => roleConfig.isAllowed(link.href))
+        .map((link) => currentRole === "COLLABORATOR"
+          ? { ...link, label: collaboratorLabels[link.href] ?? link.label }
+          : link),
     }))
     .filter((section) => section.links.length > 0);
 
-  const roleTitleMap: Record<Role, string> = {
-    ADMIN: "Administradora",
-    ENGINEER: "Ingeniero (Soporte)",
-    SOCIAL_MEDIA: "Social Media Manager",
-    COLLABORATOR: "Colaboradora",
-    CLIENT: "Cliente",
-  };
 
   return (
     <div className="min-h-screen bg-[#F4ECD8] text-[#3E2723]">
       {/* Barra lateral */}
       <aside className="fixed inset-y-0 left-0 z-30 flex w-72 flex-col overflow-y-auto border-r border-[#3E2723]/10 bg-[#E8DCC0] px-5 py-6">
         <Link href="/dashboard" className="mb-8 flex items-center gap-3 px-2 group">
-          <span className="grid size-11 place-items-center bg-transparent text-[#FF7300]">
-            <Flame size={32} className="text-[#FF7300] cozy-flame-live" aria-hidden="true" />
-          </span>
+          <Image
+            src="/images/logo.png"
+            alt="Dharma Kadabra"
+            width={44}
+            height={44}
+            priority
+            className="shrink-0 border-0 bg-transparent object-contain drop-shadow-[0_0_8px_rgba(169,132,25,0.25)]"
+          />
           <span className="text-xl font-semibold tracking-tight">
             Dharma <span className="text-[#A98419]">Kadabra</span>
           </span>
@@ -217,7 +143,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               {roleConfig.badge}
             </span>
           </div>
-          <p className="mt-1 text-sm font-semibold text-[#3E2723]">{roleTitleMap[currentRole]}</p>
+          <p className="mt-1 text-sm font-semibold text-[#3E2723]">{roleConfig.label}</p>
           <p className="mt-0.5 text-[11px] leading-relaxed text-[#3E2723]/65">{roleConfig.description}</p>
         </div>
 
@@ -247,27 +173,12 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
       {/* Contenido principal */}
       <div className="ml-72 min-h-screen">
-        <header className="sticky top-0 z-20 flex h-[76px] items-center justify-between border-b border-[#3E2723]/10 bg-[#F4ECD8]/90 px-8 backdrop-blur-md">
-          {/* Selector de vista por rol: solo para una ADMIN autenticada (rol de la sesión) */}
-          {isRealAdmin ? <RoleSelector currentRole={currentRole} /> : <span />}
-
-          <div className="flex items-center gap-5">
-            <button
-              type="button"
-              aria-label="Notificaciones"
-              className="relative rounded-full p-2.5 transition hover:bg-white/70"
-            >
-              <Bell size={20} />
-              <span className="absolute right-2 top-2 size-2 rounded-full bg-[#D4AF37]" />
-            </button>
-            <div className="h-8 w-px bg-[#3E2723]/15" />
-            <div className="text-right">
-              <p className="text-sm font-semibold">{staff.name}</p>
-              <p className="text-xs text-[#3E2723]/55">{roleTitleMap[currentRole]}</p>
-            </div>
-            <SignOutButton />
-          </div>
-        </header>
+        <DashboardHeader
+          name={staff.name}
+          roleTitle={roleConfig.label}
+          currentRole={currentRole}
+          isRealAdmin={isRealAdmin}
+        />
         <main className="p-8">{children}</main>
       </div>
 
