@@ -27,16 +27,39 @@ export async function POST(request: Request) {
 
   const email = parsed.data.email.toLowerCase();
   let customer = await prisma.customer.findUnique({ where: { email } });
+
   if (parsed.data.mode === "register") {
     if (customer) return NextResponse.json({ error: "Ya existe una cuenta con ese correo. Inicia sesión." }, { status: 409 });
     if (!parsed.data.name) return NextResponse.json({ error: "Escribe tu nombre." }, { status: 400 });
+    
     try {
-      customer = await prisma.customer.create({ data: { name: parsed.data.name, email, phone: parsed.data.phone || null, passwordHash: hashPassword(parsed.data.password) } });
+      customer = await prisma.customer.create({ 
+        data: { 
+          name: parsed.data.name, 
+          email, 
+          phone: parsed.data.phone || null, 
+          passwordHash: hashPassword(parsed.data.password) 
+        } 
+      });
     } catch {
       return NextResponse.json({ error: "No fue posible crear la cuenta con ese correo." }, { status: 409 });
     }
-  } else if (!(customer ? verifyPassword(parsed.data.password, customer.passwordHash) : burnPasswordCheck(parsed.data.password))) {
-    return NextResponse.json({ error: "Correo o contraseña incorrectos." }, { status: 401 });
+  } else {
+    // MODO LOGIN
+    if (!customer) {
+      // Ejecutamos la comprobación de contraseña falsa para evitar ataques de tiempo
+      burnPasswordCheck(parsed.data.password);
+      return NextResponse.json({ error: "Correo o contraseña incorrectos." }, { status: 401 });
+    }
+    
+    if (!verifyPassword(parsed.data.password, customer.passwordHash)) {
+      return NextResponse.json({ error: "Correo o contraseña incorrectos." }, { status: 401 });
+    }
+  }
+
+  // Comprobación de seguridad final para TypeScript (lógicamente nunca será null aquí)
+  if (!customer) {
+    return NextResponse.json({ error: "Error interno de autenticación." }, { status: 500 });
   }
 
   const response = NextResponse.json({ customer: { name: customer.name, email: customer.email } });

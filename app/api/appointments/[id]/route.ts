@@ -20,7 +20,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (date.getTime() <= Date.now()) return NextResponse.json({ error: "Elige una fecha futura." }, { status: 400 });
   const { id } = await params;
 
-  const appointment = await prisma.appointment.findUnique({ where: { id } });
+  const appointment = await prisma.appointment.findUnique({ where: { id } }) as Appointment | null;
   const ownsAppointment = principal.kind === "staff" || (appointment && (appointment.customerId === principal.id || appointment.clientEmail.toLowerCase() === principal.email.toLowerCase()));
   // 404 (no 403) para no revelar la existencia de citas ajenas.
   if (!appointment || !ownsAppointment) return NextResponse.json({ error: "No encontramos esa cita en tu cuenta." }, { status: 404 });
