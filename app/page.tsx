@@ -10,6 +10,7 @@ import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { Storefront } from "../components/landing/storefront";
+import { PremiumFooter } from "../components/landing/premium-footer";
 import { prisma } from "../lib/prisma";
 
 const heroImages = [
@@ -59,12 +60,19 @@ function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const upcomingEvents = await prisma.specialEvent.findMany({
-    where: { date: { gte: new Date() } },
-    orderBy: { date: "asc" },
-    take: 2,
-    include: { products: true },
-  });
+  // Sin base de datos (o con error de conexión) la landing se muestra sin
+  // eventos en lugar de fallar: el resto del contenido es estático.
+  let upcomingEvents: Awaited<ReturnType<typeof prisma.specialEvent.findMany>> = [];
+  try {
+    upcomingEvents = await prisma.specialEvent.findMany({
+      where: { date: { gte: new Date() } },
+      orderBy: { date: "asc" },
+      take: 2,
+      include: { products: true },
+    });
+  } catch {
+    upcomingEvents = [];
+  }
   const ritualEvents = upcomingEvents.map((event: { id: string; title: string; description: string; date: Date; products: { name: string }[] }) => ({
     id: event.id, title: event.title, description: event.description, date: event.date.toISOString(), products: event.products.map((product) => product.name),
   }));
@@ -141,9 +149,8 @@ export default async function HomePage() {
               <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#2A1B17] sm:text-6xl">Paola <em className="italic text-[#8B6D16]">Hernández</em></h2>
               <p className="mt-5 font-display text-xl italic text-[#8B6D16] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
               <div className="mt-8 h-px w-16 bg-[#D4AF37]" />
-              <div className="mt-8 space-y-5 font-sans text-base leading-8 text-[#3E2723]/75">
-                <p>Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p>
-                <p>Dharma Kadabra nace del deseo de acercar prácticas ancestrales al mundo moderno: con calidez, sencillez y respeto por el ritmo único de cada quien.</p>
+              <div className="mt-8 font-sans text-base leading-8 text-[#3E2723]/75">
+                <p>Cada alma guarda una sabiduría profunda que merece un espacio seguro para expresarse. A través de mis canalizaciones, camino contigo desde el amor para que reconectes con tu esencia y encuentres tus propias respuestas. Dharma Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y profundo respeto por el ritmo de cada alma.</p>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-8">
                 <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#8B6D16]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6D16] transition hover:border-[#8B6D16]">Conoce nuestra historia <ArrowRight size={14} /></a>
@@ -169,10 +176,11 @@ export default async function HomePage() {
           </div>
           <div className="mt-14 grid gap-px bg-[#3E2723]/10 sm:grid-cols-3">
             {collaborators.map((member, index) => (
-              <article key={member.id} className="group bg-[#F4ECD8] p-6 transition hover:bg-[#EFE4CB] lg:p-8">
+              <article key={member.id} className="group bg-[#F4ECD8] p-6 text-center transition hover:bg-[#EFE4CB] lg:p-8">
                 <span className="font-display text-sm text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
-                <div className="relative mt-5 aspect-[4/5] overflow-hidden bg-[#E1D4B8]">
-                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 30vw, 100vw" className="object-cover grayscale sepia-[.2] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:sepia-0" />
+                {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante */}
+                <div className="relative mx-auto mt-5 aspect-[4/5] w-[60%] overflow-hidden bg-[#E1D4B8] shadow-[0_18px_36px_-18px_rgba(62,39,35,.4)]">
+                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 18vw, 60vw" className="object-cover grayscale sepia-[.2] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:sepia-0" />
                 </div>
                 <h3 className="mt-6 font-display text-2xl text-[#2A1B17]">{member.name}</h3>
                 <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#3E2723]/55">{member.specialty}</p>
@@ -237,13 +245,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-[#D4AF37]/15 bg-[#141414] px-5 pb-28 pt-10 text-[#F4ECD8] sm:px-8 sm:pb-10 sm:pr-28 2xl:pr-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
-          <Link href="#inicio" className="font-display text-lg text-[#F4ECD8]">Dharma <em className="italic text-[#D4AF37]">Kadabra</em></Link>
-          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">© 2026 Dharma Kadabra · Un camino hacia ti</p>
-          <a href="#inicio" className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/85 transition hover:text-[#D4AF37]">Volver arriba ↑</a>
-        </div>
-      </footer>
+      <PremiumFooter />
     </main>
 
     {/* Cozy: fuera del contenedor principal para estar siempre visible */}

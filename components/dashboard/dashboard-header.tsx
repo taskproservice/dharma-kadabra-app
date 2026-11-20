@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { Bell } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import type { Role } from "../../lib/rbac-config";
 import { RoleSelector } from "./role-selector";
 import { SignOutButton } from "./sign-out-button";
@@ -9,17 +11,29 @@ export function DashboardHeader({
   roleTitle,
   currentRole,
   isRealAdmin,
+  onMenuClick,
 }: {
   name: string;
   roleTitle: string;
   currentRole: Role;
   isRealAdmin: boolean;
+  onMenuClick?: () => void;
 }) {
   const firstName = name.trim().split(/\s+/)[0] || "Paola";
 
   return (
-    <header className="sticky top-0 z-20 flex min-h-[76px] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-[#D4AF37]/25 bg-[#F4ECD8]/95 px-5 py-3 shadow-[0_4px_20px_rgba(62,39,35,0.04)] backdrop-blur-md sm:px-8">
-      <div className="flex min-w-0 items-center gap-4">
+    <header className="sticky top-0 z-20 flex min-h-[76px] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-[#D4AF37]/25 bg-[#F4ECD8]/95 px-4 py-3 shadow-[0_4px_20px_rgba(62,39,35,0.04)] backdrop-blur-md sm:px-8">
+      <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+        {onMenuClick && (
+          <button
+            type="button"
+            aria-label="Abrir menú"
+            onClick={onMenuClick}
+            className="grid size-10 shrink-0 place-items-center rounded-xl border border-[#3E2723]/15 text-[#3E2723] transition hover:bg-white/70 lg:hidden"
+          >
+            <Menu size={19} />
+          </button>
+        )}
         <Image
           src="/images/logo.png"
           alt="Dharma Kadabra"
