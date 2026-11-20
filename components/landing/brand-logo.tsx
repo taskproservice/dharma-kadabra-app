@@ -25,10 +25,10 @@ export function BrandLogo({ size = 48 }: { size?: number }) {
     <Image
       src={LOGO_SRC}
       alt="Dharma Kadabra"
-      width={48}
-      height={48}
+      width={size}
+      height={size}
       priority
-      className="object-contain drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+      className="border-none bg-transparent object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.25)]"
       onError={() => setFailed(true)}
     />
   );
