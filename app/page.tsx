@@ -106,7 +106,7 @@ export default async function HomePage() {
       </HeroCarousel>
 
       {/* Manifiesto — Papiro */}
-      <section id="manifiesto" className="scroll-mt-16 px-5 py-28 sm:px-8 lg:py-40">
+      <section id="manifiesto" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
         <div className="mx-auto max-w-4xl text-center">
           <div className="flex justify-center"><Eyebrow>Manifiesto</Eyebrow></div>
           <p className="mt-10 font-display text-3xl leading-[1.3] text-[#2A1B17] sm:text-4xl lg:text-5xl">
@@ -117,7 +117,7 @@ export default async function HomePage() {
       </section>
 
       {/* Paola Hernández — Tarjeta editorial Papiro sobre fondo oscuro */}
-      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-24 sm:px-8 lg:py-32">
+      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-16 sm:px-8 lg:py-20">
         <article className="relative mx-auto max-w-6xl border border-[#D4AF37]/35 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-[0_40px_90px_-40px_rgba(0,0,0,.8)] sm:p-10 lg:p-16">
           {/* Filete interior dorado: detalle de tarjeta editorial */}
           <div className="pointer-events-none absolute inset-3 border border-[#D4AF37]/25 sm:inset-4" />
@@ -139,7 +139,7 @@ export default async function HomePage() {
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
               <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#2A1B17] sm:text-6xl">Paola <em className="italic text-[#8B6D16]">Hernández</em></h2>
-              <p className="mt-5 font-display text-xl italic text-[#8B6D16] sm:text-2xl">&ldquo;Tu protección hecha arte&rdquo;</p>
+              <p className="mt-5 font-display text-xl italic text-[#8B6D16] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
               <div className="mt-8 h-px w-16 bg-[#D4AF37]" />
               <div className="mt-8 space-y-5 font-sans text-base leading-8 text-[#3E2723]/75">
                 <p>Creo que cada persona guarda una sabiduría profunda, esperando un espacio seguro para manifestarse. Mi camino es acompañarte a escucharla, reconectar con tu esencia y descubrir tus propias respuestas.</p>
@@ -158,7 +158,7 @@ export default async function HomePage() {
       <Storefront events={ritualEvents} />
 
       {/* Equipo — retratos editoriales */}
-      <section id="equipo" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
+      <section id="equipo" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#3E2723]/10 pb-10">
             <div>
@@ -186,7 +186,7 @@ export default async function HomePage() {
       <section id="nosotros" className="relative scroll-mt-16 overflow-hidden bg-[#1A1A1A] text-[#F4ECD8]">
         <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-45" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/60 to-[#1A1A1A]" />
-        <div className="relative mx-auto max-w-7xl px-5 py-28 sm:px-8 lg:py-40">
+        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20">
           <div className="max-w-2xl">
             <Eyebrow tone="light">Información general</Eyebrow>
             <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Un refugio para tu <em className="italic text-[#E6C766]">bienestar.</em></h2>
@@ -204,7 +204,7 @@ export default async function HomePage() {
       </section>
 
       {/* Beneficios — Papiro */}
-      <section id="beneficios" className="scroll-mt-16 px-5 py-24 sm:px-8 lg:py-32">
+      <section id="beneficios" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
           <div>
             <Eyebrow>Tu espacio, a tu manera</Eyebrow>
@@ -224,8 +224,8 @@ export default async function HomePage() {
       </section>
 
       {/* Prueba — Oscuro */}
-      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-28 text-[#F4ECD8] sm:px-8 lg:py-36">
-        <div className="relative mx-auto max-w-5xl border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-16 text-center backdrop-blur-sm sm:px-16 sm:py-24">
+      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-16 text-[#F4ECD8] sm:px-8 lg:py-20">
+        <div className="relative mx-auto max-w-5xl border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-10 text-center backdrop-blur-sm sm:px-16 sm:py-12">
           <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#D4AF37]" />
           <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
           <h2 className="mx-auto mt-8 max-w-3xl font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
@@ -233,7 +233,7 @@ export default async function HomePage() {
           <Link href="/dashboard/pos" className="group mt-12 inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
             Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">Sin compromiso · Empieza cuando estés lista</p>
+          <p className="mt-5 text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
         </div>
       </section>
 

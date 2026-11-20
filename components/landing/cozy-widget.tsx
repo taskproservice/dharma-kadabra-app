@@ -94,7 +94,7 @@ export function CozyWidget() {
           role="dialog"
           aria-modal="false"
           aria-labelledby={titleId}
-          className="cozy-panel fixed inset-0 z-[55] flex flex-col bg-[#F4ECD8] text-[#3E2723] sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[min(600px,calc(100dvh-8rem))] sm:w-[380px] sm:overflow-hidden sm:rounded-2xl sm:border sm:border-[#D4AF37]/40 sm:shadow-[0_30px_80px_-20px_rgba(26,26,26,.55)]"
+          className="cozy-panel fixed inset-0 z-[55] flex flex-col bg-[#F4ECD8] text-[#3E2723] sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[min(600px,calc(100dvh-8rem))] sm:w-[380px] sm:overflow-hidden sm:rounded-2xl sm:border sm:border-[#D4AF37]/40 shadow-[0_0_20px_rgba(255,115,0,0.4),0_0_40px_rgba(212,175,55,0.2)]"
         >
           {/* Encabezado */}
           <header className="flex items-center gap-3 border-b border-[#D4AF37]/30 bg-[#1A1A1A] px-4 py-3.5 text-[#F4ECD8] pt-[max(0.875rem,env(safe-area-inset-top))] sm:pt-3.5">
@@ -203,13 +203,13 @@ export function CozyWidget() {
         onClick={() => (open ? close() : setOpen(true))}
         aria-label={open ? "Cerrar chat con Cozy" : "Abrir chat con Cozy, tu guía interior"}
         aria-expanded={open}
-        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center bg-transparent border-0 shadow-none p-0 text-[#FF7300] transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:outline-none focus-visible:ring-0 ${open ? "max-sm:hidden" : ""}`}
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center bg-transparent border-0 shadow-none p-0 text-[#FF7300] transition-transform duration-300 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4AF37] ${open ? "max-sm:hidden" : ""}`}
       >
         {open ? (
           <X className="w-10 h-10 text-[#FF7300] filter drop-shadow-[0_0_15px_rgba(255,115,0,0.8)]" />
         ) : (
           <Flame
-            className="w-11 h-11 text-[#FF7300] cozy-flame-live"
+            className="h-16 w-16 text-[#FF7300] cozy-flame-live"
             aria-hidden="true"
           />
         )}
