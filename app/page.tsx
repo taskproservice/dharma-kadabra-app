@@ -62,19 +62,18 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   // Sin base de datos (o con error de conexión) la landing se muestra sin
   // eventos en lugar de fallar: el resto del contenido es estático.
-  let upcomingEvents: Awaited<ReturnType<typeof prisma.specialEvent.findMany>> = [];
-  try {
-    upcomingEvents = await prisma.specialEvent.findMany({
-      where: { date: { gte: new Date() } },
-      orderBy: { date: "asc" },
-      take: 2,
-      include: { products: true },
-    });
-  } catch {
-    upcomingEvents = [];
-  }
-  const ritualEvents = upcomingEvents.map((event: { id: string; title: string; description: string; date: Date; products: { name: string }[] }) => ({
-    id: event.id, title: event.title, description: event.description, date: event.date.toISOString(), products: event.products.map((product) => product.name),
+  const upcomingEvents = await prisma.specialEvent.findMany({
+    where: { date: { gte: new Date() } },
+    orderBy: { date: "asc" },
+    take: 2,
+    include: { products: true },
+  }).catch(() => []);
+  const ritualEvents = upcomingEvents.map((event) => ({
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    date: event.date.toISOString(),
+    products: event.products.map((product) => product.name),
   }));
 
   return (
