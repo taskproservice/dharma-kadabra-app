@@ -59,12 +59,19 @@ function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const upcomingEvents = await prisma.specialEvent.findMany({
-    where: { date: { gte: new Date() } },
-    orderBy: { date: "asc" },
-    take: 2,
-    include: { products: true },
-  });
+  // Los eventos son contenido complementario: si la base no está disponible,
+  // la landing debe seguir respondiendo en vez de convertir toda / en un 500.
+  let upcomingEvents: Awaited<ReturnType<typeof prisma.specialEvent.findMany>> = [];
+  try {
+    upcomingEvents = await prisma.specialEvent.findMany({
+      where: { date: { gte: new Date() } },
+      orderBy: { date: "asc" },
+      take: 2,
+      include: { products: true },
+    });
+  } catch (error) {
+    console.error("No se pudieron cargar eventos para la landing; se continúa sin eventos.", error);
+  }
   const ritualEvents = upcomingEvents.map((event: { id: string; title: string; description: string; date: Date; products: { name: string }[] }) => ({
     id: event.id, title: event.title, description: event.description, date: event.date.toISOString(), products: event.products.map((product) => product.name),
   }));
