@@ -71,7 +71,7 @@ export function Storefront({ events }: { events: RitualEvent[] }) {
         </div>
       </section>
 
-      <section aria-labelledby="rituales-heading" className="border-y border-[#D4AF37]/20 bg-[#F4ECD8] px-5 py-14 sm:px-8 lg:py-16">
+      <section aria-labelledby="rituales-heading" className="border-y border-[#D4AF37]/20 bg-[#F4ECD8] px-5 py-7 sm:px-8 lg:py-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
@@ -94,7 +94,7 @@ export function Storefront({ events }: { events: RitualEvent[] }) {
         </div>
       </section>
 
-      <section id="servicios" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-16 text-[#F4ECD8] sm:px-8 lg:py-20">
+      <section id="servicios" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-8 text-[#F4ECD8] sm:px-8 lg:py-10">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-2xl">
             <p className="mb-5 flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#D4AF37] before:h-px before:w-10 before:bg-[#D4AF37]/60">Encuentros para tu camino</p>

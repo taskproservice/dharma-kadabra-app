@@ -117,7 +117,7 @@ export function EventsCalendar({ initialEvents, products }: { initialEvents: Cal
     </section>
 
     {showForm && <div className="fixed inset-0 z-[70] grid place-items-center bg-[#211410]/55 p-4" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setShowForm(false); }}>
-      <section role="dialog" aria-modal="true" aria-labelledby="event-form-title" className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#D4AF37]/35 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-2xl sm:p-8">
+      <section role="dialog" aria-modal="true" aria-labelledby="event-form-title" className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#D4AF37]/35 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-2xl sm:p-8">
         <div className="mb-6 flex items-start justify-between gap-4 border-b border-[#3E2723]/10 pb-4">
           <div><p className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#8B6D16]">Calendario lunar</p><h2 id="event-form-title" className="mt-1 font-display text-2xl">Nuevo evento especial</h2></div>
           <button type="button" onClick={() => setShowForm(false)} aria-label="Cerrar" className="rounded-lg p-2 hover:bg-[#3E2723]/5"><X size={18} /></button>
