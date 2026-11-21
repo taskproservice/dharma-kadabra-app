@@ -15,7 +15,7 @@ type HeroCarouselProps = {
   slides: HeroSlide[];
   /** Un <Image> por diapositiva, en el mismo orden que `slides` (renderizados en el servidor). */
   children: ReactNode;
-  /** Tarjeta de cristal de marca que acompaña al hero (opcional). */
+  /** Emblema de marca flotante que acompaña al hero (opcional). */
   medallion?: ReactNode;
   interval?: number;
 };
@@ -194,21 +194,10 @@ export function HeroCarousel({ slides, children, medallion, interval = 8000 }: H
   );
 }
 
-/** Tarjeta de cristal del hero: logo, tagline y CTA "Conoce más". */
+/** Marca editorial flotante del hero: logo, tagline y CTA "Conoce más". */
 export function HeroMedallion() {
   return (
-    <div className="relative">
-      {/* Resplandor exterior */}
-      <span
-        aria-hidden="true"
-        className="glow-pulse absolute inset-[-14%] rounded-[42%] bg-[radial-gradient(circle,rgba(199,164,90,.28),transparent_62%)] blur-2xl"
-      />
-      <div className="relative overflow-hidden rounded-[2rem] border border-[#c7a45a]/35 bg-[linear-gradient(155deg,rgba(28,36,56,.82)_0%,rgba(11,16,32,.72)_55%,rgba(199,164,90,.10)_100%)] px-7 pb-7 pt-8 text-center shadow-[0_40px_110px_-40px_rgba(0,0,0,.95),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl sm:px-9 sm:pb-8 sm:pt-9">
-        {/* Órbita decorativa */}
-        <span aria-hidden="true" className="spin-slow pointer-events-none absolute inset-3 rounded-[1.6rem] border border-[#c7a45a]/15" />
-        <span aria-hidden="true" className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#e3c57c]/70 to-transparent" />
-        <span aria-hidden="true" className="pointer-events-none absolute inset-x-12 bottom-0 h-px bg-gradient-to-r from-transparent via-[#c7a45a]/40 to-transparent" />
-
+    <div className="relative mx-auto w-full max-w-[360px] text-center sm:max-w-[400px]">
         <div className="relative mx-auto w-fit">
           <span aria-hidden="true" className="glow-pulse absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(227,197,124,.35),transparent_62%)] blur-xl" />
           <Image
@@ -217,27 +206,27 @@ export function HeroMedallion() {
             width={150}
             height={150}
             priority
-            className="relative mx-auto h-[118px] w-[118px] object-contain drop-shadow-[0_0_26px_rgba(216,188,127,.55)] sm:h-[132px] sm:w-[132px]"
+            className="relative mx-auto h-[118px] w-[118px] object-contain drop-shadow-[0_0_20px_rgba(197,160,89,0.4)] sm:h-[132px] sm:w-[132px]"
           />
         </div>
 
-        <p className="relative mt-5 font-display text-[26px] leading-[1.05] tracking-[.08em] text-[#f7f2e7] sm:text-[30px]">
+        <p className="relative mt-5 font-display text-[26px] leading-[1.05] tracking-[.08em] text-[#f7f2e7] drop-shadow-md sm:text-[30px]">
           DHARMA
           <br />
           <span className="text-[#e3c57c]">KADABRA</span>
         </p>
-        <p className="relative mx-auto mt-3 max-w-[15rem] text-[8.5px] font-medium uppercase leading-relaxed tracking-[.24em] text-[#e9e2d2]/55">
+        <p className="relative mx-auto mt-3 max-w-[15rem] text-[8.5px] font-medium uppercase leading-relaxed tracking-[.24em] text-[#e9e2d2]/75 drop-shadow-md">
           Talismanes maestros
           <br />
           Registros akáshicos
         </p>
-        <p className="relative mt-5 font-display text-[15px] italic text-[#e3c57c] sm:text-base">
+        <p className="relative mt-5 font-display text-[15px] italic text-[#e3c57c] drop-shadow-md sm:text-base">
           Conecta · Transforma · Armoniza
         </p>
 
         <a
           href="#manifiesto"
-          className="group relative mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#c7a45a]/55 bg-white/[0.03] px-6 py-3 text-[10px] font-semibold uppercase tracking-[.24em] text-[#f7f2e7] transition hover:border-[#e3c57c] hover:bg-[#c7a45a]/15"
+          className="group relative mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#c7a45a]/70 bg-[#080c16]/35 px-6 py-3 text-[10px] font-semibold uppercase tracking-[.24em] text-[#f7f2e7] transition hover:border-[#e3c57c] hover:bg-[#c7a45a] hover:text-[#0b1020] hover:shadow-[0_0_28px_-6px_rgba(199,164,90,.65)]"
         >
           Conoce más
           <ArrowRight size={13} className="transition group-hover:translate-x-1" />
@@ -248,7 +237,6 @@ export function HeroMedallion() {
           <span className="h-px w-10 bg-[#c7a45a]/25" />
           <Sparkles size={11} />
         </span>
-      </div>
     </div>
   );
 }
