@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Heart, Sparkles, Sun } from "lucide-react";
 import { HeroCarousel, HeroMedallion, type HeroSlide } from "../components/landing/hero-carousel";
-import { PublicHeader, QuickAccessBar } from "../components/landing/public-header";
+import { PublicHeader } from "../components/landing/public-header";
 import { CozyWidget } from "../components/landing/cozy-widget";
 import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
@@ -67,7 +67,7 @@ export default async function HomePage() {
       <PublicHeader />
 
       {/* Hero cinematográfico con tarjeta de cristal */}
-      <HeroCarousel slides={slides} medallion={<HeroMedallion />} quickAccess={<QuickAccessBar />}>
+      <HeroCarousel slides={slides} medallion={<HeroMedallion />}>
         {heroImages.map((image, index) => (
           <Image
             key={image.alt}

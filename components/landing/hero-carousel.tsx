@@ -2,7 +2,6 @@
 
 import { Children, useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowLeft, ArrowRight, MoveUpRight, Sparkles } from "lucide-react";
 
 export type HeroSlide = {
@@ -18,14 +17,12 @@ type HeroCarouselProps = {
   children: ReactNode;
   /** Tarjeta de cristal de marca que acompaña al hero (opcional). */
   medallion?: ReactNode;
-  /** Barra flotante de accesos rápidos bajo el hero (opcional). */
-  quickAccess?: ReactNode;
   interval?: number;
 };
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
-export function HeroCarousel({ slides, children, medallion, quickAccess, interval = 8000 }: HeroCarouselProps) {
+export function HeroCarousel({ slides, children, medallion, interval = 8000 }: HeroCarouselProps) {
   const images = Children.toArray(children);
   const total = slides.length;
   const [active, setActive] = useState(0);
@@ -123,17 +120,17 @@ export function HeroCarousel({ slides, children, medallion, quickAccess, interva
             <p className="hero-rise mt-7 max-w-xl text-[15px] font-light leading-7 text-[#e9e2d2]/80 [animation-delay:240ms] sm:text-lg sm:leading-8">
               {current.text}
             </p>
-            <div className="hero-rise mt-10 flex flex-wrap items-center gap-4 [animation-delay:360ms] sm:gap-8">
-              <Link
-                href="/dashboard/pos"
+            <div className="hero-rise mt-10 flex flex-wrap items-center gap-4 [animation-delay:360ms] sm:gap-5">
+              <a
+                href="#coleccion"
                 className="group inline-flex items-center gap-3 rounded-full border border-[#c7a45a] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#f7f2e7] transition duration-300 hover:bg-[#c7a45a] hover:text-[#0b1020] hover:shadow-[0_0_40px_-6px_rgba(199,164,90,.7)]"
               >
-                Prueba gratis
+                Explorar colección
                 <ArrowRight size={14} className="transition group-hover:translate-x-1" />
-              </Link>
+              </a>
               <a
-                href="#servicios"
-                className="group inline-flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[.28em] text-[#e9e2d2]/80 underline-offset-[10px] transition hover:text-[#e3c57c] hover:underline"
+                href="#manifiesto"
+                className="group inline-flex items-center gap-3 rounded-full border border-[#c7a45a]/50 bg-transparent px-7 py-3.5 text-[10px] font-medium uppercase tracking-[.28em] text-[#e9e2d2]/85 transition duration-300 hover:border-[#c7a45a] hover:text-[#e3c57c] hover:shadow-[0_0_30px_-8px_rgba(199,164,90,.5)]"
               >
                 Descubrir
                 <MoveUpRight size={13} className="text-[#d8bc7f]/70 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -149,9 +146,6 @@ export function HeroCarousel({ slides, children, medallion, quickAccess, interva
           )}
         </div>
       </div>
-
-      {/* Barra flotante de accesos rápidos */}
-      {quickAccess && <div className="relative z-10 mt-4 w-full lg:mt-0">{quickAccess}</div>}
 
       {/* Controles inferiores */}
       <div className="relative z-10 mt-6">
