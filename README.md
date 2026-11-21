@@ -50,3 +50,7 @@ npm run build
 La migración amplía una base existente que ya contiene la tabla `Appointment`; para una base vacía se necesita primero una migración inicial o establecer la línea base correspondiente. El despliegue necesita acceso al servidor oficial de motores de Prisma para generar el cliente.
 
 La migración de reservas, clientes, productos y eventos está en `prisma/migrations/20261119000000_booking_customers_rituals/`. Sin `DATABASE_URL`, el proyecto usa un almacén en memoria para la previsualización local; esos registros no son persistentes entre reinicios.
+
+### Página de Lectura de Runas
+
+`app/servicios/runas` usa `Cormorant Garamond` de `next/font/google` únicamente en sus títulos; el cuerpo hereda `Inter` del layout. Para que el build funcione también sin acceso a `fonts.googleapis.com`, `next.config.js` activa un mock local con la misma fuente (SIL OFL 1.1) incluida en `config/fonts/`. Los glifos del Elder Futhark se sirven desde `public/fonts/` con Noto Sans Runic (SIL OFL 1.1).

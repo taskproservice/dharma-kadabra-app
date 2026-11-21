@@ -1,3 +1,13 @@
+const path = require("path");
+const fs = require("fs");
+
+// next/font/google necesita red durante el build; usamos una copia local de la
+// fuente (misma licencia OFL) cuando el entorno no puede contactar a Google.
+const googleFontsMock = path.join(__dirname, "config/google-fonts-mock.js");
+if (fs.existsSync(googleFontsMock)) {
+  process.env.NEXT_FONT_GOOGLE_MOCKED_RESPONSES = googleFontsMock;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
