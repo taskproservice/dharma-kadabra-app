@@ -20,9 +20,9 @@ const shortcuts: Record<Role, { title: string; description: string; href: string
     { title: "Audios", description: "Accede a los recursos de audio del equipo.", href: "/dashboard/audio", icon: AudioLines, label: "Escuchar audios" },
   ],
   SOCIAL_MEDIA: [
+    { title: "Redes Sociales", description: "Organiza el contenido y las publicaciones.", href: "/dashboard/redes", icon: Palette, label: "Ver contenido" },
     { title: "Audios", description: "Gestiona y consulta los recursos de audio.", href: "/dashboard/audio", icon: AudioLines, label: "Abrir audios" },
     { title: "Video", description: "Consulta el espacio de video del equipo.", href: "/dashboard/video", icon: Video, label: "Abrir videos" },
-    { title: "Redes Sociales", description: "Organiza el contenido y las publicaciones.", href: "/dashboard/redes", icon: Palette, label: "Ver contenido" },
   ],
   CLIENT: [
     { title: "Mi Perfil", description: "Consulta tu información personal.", href: "/dashboard/perfil", icon: UserRound, label: "Ver mi perfil" },
@@ -139,31 +139,37 @@ export default async function DashboardPage() {
   const points = kpis.week.map((item, index) => `${40 + index * 94},${190 - (item.amount / weekMax) * 140}`).join(" ");
 
   return <div className="mx-auto max-w-7xl space-y-7">
-    <div>
-      <p className="text-sm font-medium capitalize text-[#9A7B28]">{new Intl.DateTimeFormat("es-MX", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}</p>
-      <h1 className="mt-1 font-display text-3xl font-semibold">Centro de comando</h1>
-      <p className="mt-2 text-[#3E2723]/60">{isAdmin ? "Una mirada serena a la actividad de tu negocio." : "Tus espacios de trabajo, reunidos en un solo lugar."}</p>
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p className="eyebrow-gold">{new Intl.DateTimeFormat("es-MX", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}</p>
+        <h1 className="mt-3 font-display text-4xl text-[#f7f2e7]">Centro de comando</h1>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-[#e9e2d2]/55">{isAdmin ? "Una mirada serena a la actividad de tu negocio." : "Tus espacios de trabajo, reunidos en un solo lugar."}</p>
+      </div>
+      <span className="rounded-full border border-[#c7a45a]/30 bg-[#c7a45a]/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]">
+        {roleConfig.label}
+      </span>
     </div>
 
     {quickAccess.length > 0 && (
       <section aria-label="Acceso rápido" className="grid gap-5 md:grid-cols-2">
         {quickAccess.map(({ title, description, href, icon: Icon, label, meta }) => (
-          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#A98419] focus-visible:ring-offset-2">
-            <article className="relative h-full overflow-hidden rounded-2xl bg-[#1A1A1A] p-6 text-[#F4ECD8] shadow-[0_24px_50px_-24px_rgba(26,26,26,0.6)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-24px_rgba(26,26,26,0.7)] sm:p-8">
-              <span className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-[#D4AF37]/15 blur-2xl transition group-hover:bg-[#D4AF37]/25" aria-hidden="true" />
+          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#c7a45a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1020]">
+            <article className="relative h-full overflow-hidden rounded-2xl border border-[#c7a45a]/25 bg-[linear-gradient(150deg,rgba(199,164,90,.16)_0%,rgba(17,24,43,.85)_45%,rgba(11,16,32,.9)_100%)] p-6 text-[#f7f2e7] shadow-[0_30px_70px_-34px_rgba(0,0,0,.9)] transition duration-300 group-hover:-translate-y-1 group-hover:border-[#c7a45a]/55 sm:p-8">
+              <span className="pointer-events-none absolute -right-10 -top-10 size-44 rounded-full bg-[#c7a45a]/20 blur-3xl transition group-hover:bg-[#c7a45a]/30" aria-hidden="true" />
+              <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e3c57c]/70 to-transparent" />
               <div className="relative flex items-start justify-between gap-4">
-                <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-[#D4AF37] text-[#1A1A1A] transition group-hover:scale-105">
-                  <Icon size={26} strokeWidth={1.7} />
+                <span className="grid size-14 shrink-0 place-items-center rounded-2xl border border-[#c7a45a]/40 bg-[#c7a45a]/15 text-[#e3c57c] transition group-hover:scale-105">
+                  <Icon size={26} strokeWidth={1.5} />
                 </span>
-                <ArrowUpRight size={22} className="text-[#D4AF37] transition group-hover:-translate-y-1 group-hover:translate-x-1" />
+                <ArrowUpRight size={22} className="text-[#d8bc7f] transition group-hover:-translate-y-1 group-hover:translate-x-1" />
               </div>
               <h2 className="relative mt-6 font-display text-3xl leading-tight">{title}</h2>
-              <p className="relative mt-2 max-w-md text-sm font-light leading-6 text-[#F4ECD8]/75">{description}</p>
+              <p className="relative mt-2 max-w-md text-sm font-light leading-6 text-[#e9e2d2]/65">{description}</p>
               <div className="relative mt-6 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 bg-[#D4AF37] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[.2em] text-[#1A1A1A] transition group-hover:bg-[#E6C766]">
-                  {label} <ArrowUpRight size={14} />
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#c7a45a] px-4 py-2 text-[10px] font-semibold uppercase tracking-[.2em] text-[#0b1020] transition group-hover:bg-[#e3c57c]">
+                  {label} <ArrowUpRight size={13} />
                 </span>
-                <span className="text-xs text-[#F4ECD8]/60">{meta}</span>
+                <span className="text-xs text-[#e9e2d2]/50">{meta}</span>
               </div>
             </article>
           </Link>
@@ -174,16 +180,16 @@ export default async function DashboardPage() {
     {cards.length > 0 && (
       <section aria-label="Accesos rápidos" className={`grid gap-5 ${cards.length > 2 ? "md:grid-cols-2 xl:grid-cols-3" : "md:grid-cols-2"}`}>
         {cards.map(({ title, description, href, icon: Icon, label }) => (
-          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#A98419] focus-visible:ring-offset-2">
-            <Card className="h-full border-[#D4AF37]/20 bg-white/55 transition duration-200 group-hover:-translate-y-1 group-hover:border-[#D4AF37]/55 group-hover:bg-white/80 group-hover:shadow-[0_18px_38px_rgba(62,39,35,0.09)]">
+          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#c7a45a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1020]">
+            <Card className="glass-panel-hover h-full">
               <CardHeader className="flex-row items-start justify-between gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-[#D4AF37]/15 text-[#8B6D16] transition group-hover:bg-[#D4AF37]/25"><Icon size={22} strokeWidth={1.7} /></span>
-                <ArrowUpRight size={18} className="text-[#3E2723]/35 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#8B6D16]" />
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f] transition group-hover:border-[#c7a45a]/60 group-hover:bg-[#c7a45a]/18"><Icon size={22} strokeWidth={1.6} /></span>
+                <ArrowUpRight size={18} className="text-[#e9e2d2]/25 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#d8bc7f]" />
               </CardHeader>
               <CardContent>
                 <CardTitle className="text-xl">{title}</CardTitle>
                 <CardDescription className="mt-2 min-h-10 leading-6">{description}</CardDescription>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.14em] text-[#8B6D16]">{label}<ArrowUpRight size={14} /></span>
+                <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#d8bc7f]">{label}<ArrowUpRight size={13} /></span>
               </CardContent>
             </Card>
           </Link>
@@ -193,22 +199,29 @@ export default async function DashboardPage() {
 
     {showKpis && <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ventas del día</CardDescription><CardTitle className="mt-2 text-2xl">{money(kpis.salesToday)}</CardTitle></div><span className="rounded-xl bg-[#D4AF37]/15 p-3 text-[#9A7B28]"><TrendingUp size={21}/></span></CardHeader><CardContent><p className="text-xs text-[#3E2723]/50">{kpis.salesCount} {kpis.salesCount === 1 ? "transacción completada" : "transacciones completadas"}</p></CardContent></Card>
-        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ticket promedio</CardDescription><CardTitle className="mt-2 text-2xl">{money(kpis.averageTicket, 2)}</CardTitle></div><span className="rounded-xl bg-[#D4AF37]/15 p-3 text-[#9A7B28]"><CreditCard size={21}/></span></CardHeader><CardContent><p className="text-xs text-[#3E2723]/50">En las ventas de hoy</p></CardContent></Card>
-        <Card className="sm:col-span-2 lg:col-span-1"><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Citas agendadas</CardDescription><CardTitle className="mt-2 text-2xl">{kpis.appointmentsToday} <span className="text-sm font-medium text-[#3E2723]/50">para hoy</span></CardTitle></div><span className="rounded-xl bg-[#D4AF37]/15 p-3 text-[#9A7B28]"><CalendarDays size={21}/></span></CardHeader><CardContent><p className="text-xs text-[#3E2723]/50">{kpis.nextAppointmentLabel}</p></CardContent></Card>
+        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ventas del día</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.salesToday)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><TrendingUp size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">{kpis.salesCount} {kpis.salesCount === 1 ? "transacción completada" : "transacciones completadas"}</p></CardContent></Card>
+        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ticket promedio</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.averageTicket, 2)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><CreditCard size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">En las ventas de hoy</p></CardContent></Card>
+        <Card className="sm:col-span-2 lg:col-span-1"><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Citas agendadas</CardDescription><CardTitle className="mt-2 font-display text-3xl">{kpis.appointmentsToday} <span className="text-sm font-sans font-medium text-[#e9e2d2]/45">para hoy</span></CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><CalendarDays size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">{kpis.nextAppointmentLabel}</p></CardContent></Card>
       </div>
-      <Card><CardHeader><CardTitle>Ventas semanales</CardTitle><CardDescription>Ingresos de los últimos siete días · Total {money(kpis.weekTotal)}</CardDescription></CardHeader><CardContent>
-        <div className="flex items-center gap-2 text-sm font-medium"><span className="size-2.5 rounded-full bg-[#D4AF37]"/>Ingresos</div>
+      <Card><CardHeader><CardTitle className="font-display text-2xl">Ventas semanales</CardTitle><CardDescription>Ingresos de los últimos siete días · Total {money(kpis.weekTotal)}</CardDescription></CardHeader><CardContent>
+        <div className="flex items-center gap-2 text-sm font-medium text-[#e9e2d2]/80"><span className="size-2.5 rounded-full bg-[#e3c57c] shadow-[0_0_10px_rgba(227,197,124,.8)]"/>Ingresos</div>
         <div className="mt-5 overflow-hidden">
           {kpis.weekTotal === 0 ? (
-            <p className="grid h-64 place-items-center rounded-xl border border-dashed border-[#3E2723]/15 text-center text-sm text-[#3E2723]/55">
+            <p className="grid h-64 place-items-center rounded-xl border border-dashed border-[#c7a45a]/20 text-center text-sm text-[#e9e2d2]/40">
               Aún no hay ventas en los últimos 7 días.
             </p>
           ) : (
             <svg viewBox="0 0 650 230" className="h-64 w-full" role="img" aria-label="Gráfica de ventas semanales">
-              {[40, 90, 140, 190].map((y) => <g key={y}><line x1="40" y1={y} x2="604" y2={y} stroke="#3E2723" strokeOpacity=".1" strokeDasharray="4 5"/><text x="6" y={y + 4} fontSize="11" fill="#3E2723" opacity=".5">${Math.round((190-y)*80)}k</text></g>)}
-              <polyline points={points} fill="none" stroke="#D4AF37" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-              {kpis.week.map((item, i) => <g key={`${item.day}-${i}`}><circle cx={40 + i * 94} cy={190 - (item.amount / weekMax) * 140} r="5" fill="#3E2723"/><text x={40 + i * 94} y="218" textAnchor="middle" fontSize="12" fill="#3E2723" opacity=".65">{item.day}</text></g>)}
+              <defs>
+                <linearGradient id="salesArea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#c7a45a" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#c7a45a" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              {[40, 90, 140, 190].map((y) => <g key={y}><line x1="40" y1={y} x2="604" y2={y} stroke="#c7a45a" strokeOpacity=".14" strokeDasharray="4 5"/><text x="6" y={y + 4} fontSize="11" fill="#e9e2d2" opacity=".35">${Math.round((190-y)*80)}k</text></g>)}
+              <polyline points={`40,190 ${points} 604,190`} fill="url(#salesArea)" stroke="none" />
+              <polyline points={points} fill="none" stroke="#d8bc7f" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+              {kpis.week.map((item, i) => <g key={`${item.day}-${i}`}><circle cx={40 + i * 94} cy={190 - (item.amount / weekMax) * 140} r="5" fill="#0b1020" stroke="#e3c57c" strokeWidth="2.5"/><text x={40 + i * 94} y="218" textAnchor="middle" fontSize="12" fill="#e9e2d2" opacity=".5">{item.day}</text></g>)}
             </svg>
           )}
         </div>

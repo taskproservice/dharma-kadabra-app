@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Heart, Sparkles, Sun } from "lucide-react";
-import { HeroCarousel, type HeroSlide } from "../components/landing/hero-carousel";
-import { BrandLogo } from "../components/landing/brand-logo";
+import { HeroCarousel, HeroMedallion, type HeroSlide } from "../components/landing/hero-carousel";
+import { PublicHeader, QuickAccessBar } from "../components/landing/public-header";
 import { CozyWidget } from "../components/landing/cozy-widget";
 import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
@@ -38,23 +38,8 @@ const benefits = [
   { title: "Comunidad", text: "Personas que crecen y aprenden contigo." },
 ];
 
-const nav = [
-  { href: "#manifiesto", label: "Manifiesto" },
-  { href: "#paola", label: "Nuestra guía" },
-  { href: "#coleccion", label: "Colección" },
-  { href: "#servicios", label: "Servicios" },
-  { href: "#equipo", label: "Colaboradores" },
-  { href: "#nosotros", label: "Pilares" },
-  { href: "#beneficios", label: "Beneficios" },
-];
-
-function Eyebrow({ children, tone = "dark" }: { children: React.ReactNode; tone?: "dark" | "light" }) {
-  return (
-    <p className={`flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] ${tone === "light" ? "text-[#D4AF37]" : "text-[#8B6D16]"}`}>
-      <span className={`h-px w-10 ${tone === "light" ? "bg-[#D4AF37]/60" : "bg-[#8B6D16]/50"}`} />
-      {children}
-    </p>
-  );
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <p className="eyebrow-gold">{children}</p>;
 }
 
 export const dynamic = "force-dynamic";
@@ -78,25 +63,11 @@ export default async function HomePage() {
 
   return (
     <>
-    <main className="relative bg-[#F4ECD8] text-[#3E2723]">
-      {/* Navegación translúcida fija */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-[#D4AF37]/15 bg-[#1A1A1A]/35 text-[#F4ECD8] backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2.5 sm:px-8">
-          <Link href="#inicio" aria-label="Dharma Kadabra · Inicio" className="flex items-center justify-start">
-            <BrandLogo size={48} />
-          </Link>
-          <nav className="hidden items-center gap-9 text-[11px] font-medium uppercase tracking-[.25em] text-[#F4ECD8]/85 lg:flex">
-            {nav.map((item) => <a key={item.href} href={item.href} className="transition hover:text-[#D4AF37]">{item.label}</a>)}
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href="/mi-cuenta" className="hidden text-[10px] font-semibold uppercase tracking-[.18em] text-[#F4ECD8] transition hover:text-[#D4AF37] sm:inline">Mi cuenta</Link>
-            <a href="#coleccion" className="border border-[#D4AF37]/50 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[.25em] text-[#F4ECD8] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]">Ver piezas consagradas</a>
-          </div>
-        </div>
-      </header>
+    <main className="relative bg-[#0b1020] text-[#e9e2d2]">
+      <PublicHeader />
 
-      {/* Hero cinematográfico */}
-      <HeroCarousel slides={slides}>
+      {/* Hero cinematográfico con tarjeta de cristal */}
+      <HeroCarousel slides={slides} medallion={<HeroMedallion />} quickAccess={<QuickAccessBar />}>
         {heroImages.map((image, index) => (
           <Image
             key={image.alt}
@@ -107,30 +78,32 @@ export default async function HomePage() {
             sizes="100vw"
             quality={90}
             placeholder="blur"
-            className="object-cover w-full h-screen"
+            className="object-cover w-full h-full"
           />
         ))}
       </HeroCarousel>
 
-      {/* Manifiesto — Papiro */}
-      <section id="manifiesto" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
-        <div className="mx-auto max-w-4xl text-center">
+      {/* Manifiesto */}
+      <section id="manifiesto" className="relative scroll-mt-24 overflow-hidden px-5 py-20 sm:px-8 lg:py-28">
+        <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 size-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(199,164,90,.10),transparent_70%)] blur-3xl" />
+        <div className="relative mx-auto max-w-4xl text-center">
           <div className="flex justify-center"><Eyebrow>Manifiesto</Eyebrow></div>
-          <p className="mt-10 font-display text-3xl leading-[1.3] text-[#2A1B17] sm:text-4xl lg:text-5xl">
-            Unimos la sabiduría espiritual ancestral con herramientas cotidianas para que cultives una relación <em className="italic text-[#8B6D16]">más consciente</em> contigo y con el mundo que te rodea.
+          <p className="mt-10 font-display text-3xl leading-[1.32] text-[#f7f2e7] sm:text-4xl lg:text-[3.2rem]">
+            Unimos la sabiduría espiritual ancestral con herramientas cotidianas para que cultives una relación <em className="italic text-[#e3c57c]">más consciente</em> contigo y con el mundo que te rodea.
           </p>
-          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-[#8B6D16]/60 to-transparent" />
+          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-[#c7a45a]/70 to-transparent" />
         </div>
       </section>
 
-      {/* Paola Hernández — Tarjeta editorial Papiro sobre fondo oscuro */}
-      <section id="paola" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-16 sm:px-8 lg:py-20">
-        <article className="relative mx-auto max-w-6xl border border-[#D4AF37]/35 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-[0_40px_90px_-40px_rgba(0,0,0,.8)] sm:p-10 lg:p-16">
-          {/* Filete interior dorado: detalle de tarjeta editorial */}
-          <div className="pointer-events-none absolute inset-3 border border-[#D4AF37]/25 sm:inset-4" />
+      {/* Paola Hernández — tarjeta de cristal con retrato */}
+      <section id="paola" className="relative scroll-mt-24 overflow-hidden bg-[#080c16] px-5 py-16 sm:px-8 lg:py-24">
+        <Image src={sabiduriaAncestral} alt="" fill sizes="100vw" className="object-cover opacity-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080c16] via-[#080c16]/85 to-[#080c16]" />
+        <article className="glass-panel relative mx-auto max-w-6xl overflow-hidden p-6 sm:p-10 lg:p-16">
+          <div className="pointer-events-none absolute inset-4 border border-[#c7a45a]/15" />
           <div className="relative grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[2/3] overflow-hidden border-2 border-[#D4AF37] shadow-[0_24px_50px_-20px_rgba(62,39,35,.45)]">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-sm border border-[#c7a45a]/60 shadow-[0_30px_70px_-30px_rgba(0,0,0,.9)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -140,20 +113,21 @@ export default async function HomePage() {
                   placeholder="blur"
                   className="object-cover"
                 />
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080c16]/60 via-transparent to-transparent" />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#3E2723]/55">Fundadora · Dharma Kadabra</figcaption>
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#e9e2d2]/40">Fundadora · Dharma Kadabra</figcaption>
             </figure>
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#2A1B17] sm:text-6xl">Paola <em className="italic text-[#8B6D16]">Hernández</em></h2>
-              <p className="mt-5 font-display text-xl italic text-[#8B6D16] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
-              <div className="mt-8 h-px w-16 bg-[#D4AF37]" />
-              <div className="mt-8 font-sans text-base leading-8 text-[#3E2723]/75">
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#f7f2e7] sm:text-6xl">Paola <em className="italic text-[#e3c57c]">Hernández</em></h2>
+              <p className="mt-5 font-display text-xl italic text-[#d8bc7f] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
+              <div className="mt-8 h-px w-16 bg-gradient-to-r from-[#c7a45a] to-transparent" />
+              <div className="mt-8 font-sans text-base leading-8 text-[#e9e2d2]/70">
                 <p>Cada alma guarda una sabiduría profunda que merece un espacio seguro para expresarse. A través de mis canalizaciones, camino contigo desde el amor para que reconectes con tu esencia y encuentres tus propias respuestas. Dharma Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y profundo respeto por el ritmo de cada alma.</p>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-8">
-                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#8B6D16]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6D16] transition hover:border-[#8B6D16]">Conoce nuestra historia <ArrowRight size={14} /></a>
-                <span className="font-display text-lg italic text-[#3E2723]/60">Con amor, Paola</span>
+                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#c7a45a]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#d8bc7f] transition hover:border-[#c7a45a] hover:text-[#e3c57c]">Conoce nuestra historia <ArrowRight size={14} /></a>
+                <span className="font-display text-lg italic text-[#e9e2d2]/45">Con amor, Paola</span>
               </div>
             </div>
           </div>
@@ -164,83 +138,85 @@ export default async function HomePage() {
       <Storefront events={ritualEvents} />
 
       {/* Equipo — retratos editoriales */}
-      <section id="equipo" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
+      <section id="equipo" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#3E2723]/10 pb-10">
+          <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#c7a45a]/15 pb-10">
             <div>
               <Eyebrow>Nuestra comunidad</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#2A1B17] sm:text-6xl">Personas que <em className="italic text-[#8B6D16]">acompañan.</em></h2>
+              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#f7f2e7] sm:text-6xl">Personas que <em className="italic text-[#e3c57c]">acompañan.</em></h2>
             </div>
-            <p className="max-w-sm text-sm leading-7 text-[#3E2723]/65">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p>
+            <p className="max-w-sm text-sm leading-7 text-[#e9e2d2]/55">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p>
           </div>
-          <div className="mt-14 grid gap-px bg-[#3E2723]/10 sm:grid-cols-3">
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-[#c7a45a]/15 bg-[#c7a45a]/12 sm:grid-cols-3">
             {collaborators.map((member, index) => (
-              <article key={member.id} className="group bg-[#F4ECD8] p-6 text-center transition hover:bg-[#EFE4CB] lg:p-8">
-                <span className="font-display text-sm text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
+              <article key={member.id} className="group bg-[#0b1020] p-6 text-center transition hover:bg-[#11182b] lg:p-8">
+                <span className="font-display text-sm text-[#c7a45a]">{String(index + 1).padStart(2, "0")}</span>
                 {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante */}
-                <div className="relative mx-auto mt-5 aspect-[4/5] w-[60%] overflow-hidden bg-[#E1D4B8] shadow-[0_18px_36px_-18px_rgba(62,39,35,.4)]">
-                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 18vw, 60vw" className="object-cover grayscale sepia-[.2] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:sepia-0" />
+                <div className="relative mx-auto mt-5 aspect-[4/5] w-[60%] overflow-hidden border border-[#c7a45a]/25 bg-[#11182b] shadow-[0_24px_50px_-24px_rgba(0,0,0,.8)]">
+                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 18vw, 60vw" className="object-cover grayscale transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0" />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-[#2A1B17]">{member.name}</h3>
-                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#3E2723]/55">{member.specialty}</p>
+                <h3 className="mt-6 font-display text-2xl text-[#f7f2e7]">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#e9e2d2]/45">{member.specialty}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pilares — Oscuro sobre imagen, tarjetas de vidrio */}
-      <section id="nosotros" className="relative scroll-mt-16 overflow-hidden bg-[#1A1A1A] text-[#F4ECD8]">
-        <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-45" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/60 to-[#1A1A1A]" />
-        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20">
+      {/* Pilares — imagen de altar con tarjetas de cristal */}
+      <section id="nosotros" className="relative scroll-mt-24 overflow-hidden bg-[#080c16] text-[#f7f2e7]">
+        <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080c16] via-[#080c16]/70 to-[#080c16]" />
+        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
           <div className="max-w-2xl">
-            <Eyebrow tone="light">Información general</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Un refugio para tu <em className="italic text-[#E6C766]">bienestar.</em></h2>
+            <Eyebrow>Información general</Eyebrow>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#f7f2e7] sm:text-6xl">Un refugio para tu <em className="italic text-[#e3c57c]">bienestar.</em></h2>
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="border border-[#D4AF37]/20 bg-[#1A1A1A]/40 p-8 backdrop-blur-xl transition hover:border-[#D4AF37]/50 lg:p-10">
-                <Icon size={22} strokeWidth={1.25} className="text-[#D4AF37]" />
-                <h3 className="mt-10 font-display text-2xl text-[#F4ECD8]">{title}</h3>
-                <p className="mt-4 text-sm font-light leading-7 text-[#F4ECD8]/90">{text}</p>
+              <article key={title} className="group relative overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-[linear-gradient(160deg,rgba(28,36,56,.6),rgba(11,16,32,.5))] p-8 backdrop-blur-xl transition hover:border-[#c7a45a]/50 lg:p-10">
+                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-[#c7a45a]/10 blur-2xl transition group-hover:bg-[#c7a45a]/20" />
+                <Icon size={22} strokeWidth={1.25} className="relative text-[#d8bc7f]" />
+                <h3 className="relative mt-10 font-display text-2xl text-[#f7f2e7]">{title}</h3>
+                <p className="relative mt-4 text-sm font-light leading-7 text-[#e9e2d2]/70">{text}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Beneficios — Papiro */}
-      <section id="beneficios" className="scroll-mt-16 px-5 py-16 sm:px-8 lg:py-20">
+      {/* Beneficios */}
+      <section id="beneficios" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
           <div>
             <Eyebrow>Tu espacio, a tu manera</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#2A1B17] sm:text-6xl">Beneficios para acompañar <em className="italic text-[#8B6D16]">tu viaje.</em></h2>
-            <p className="mt-8 max-w-md leading-7 text-[#3E2723]/65">Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa, desde donde estés.</p>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[#f7f2e7] sm:text-6xl">Beneficios para acompañar <em className="italic text-[#e3c57c]">tu viaje.</em></h2>
+            <p className="mt-8 max-w-md leading-7 text-[#e9e2d2]/55">Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa, desde donde estés.</p>
           </div>
-          <ol className="border-t border-[#3E2723]/15">
+          <ol className="border-t border-[#c7a45a]/15">
             {benefits.map((benefit, index) => (
-              <li key={benefit.title} className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-[#3E2723]/15 py-7 sm:grid-cols-[4rem_1fr_1fr]">
-                <span className="font-display text-lg italic text-[#8B6D16]">{String(index + 1).padStart(2, "0")}</span>
-                <h3 className="font-display text-2xl text-[#2A1B17]">{benefit.title}</h3>
-                <p className="col-start-2 text-sm leading-6 text-[#3E2723]/60 sm:col-start-3">{benefit.text}</p>
+              <li key={benefit.title} className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-[#c7a45a]/15 py-7 sm:grid-cols-[4rem_1fr_1fr]">
+                <span className="font-display text-lg italic text-[#c7a45a]">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="font-display text-2xl text-[#f7f2e7]">{benefit.title}</h3>
+                <p className="col-start-2 text-sm leading-6 text-[#e9e2d2]/50 sm:col-start-3">{benefit.text}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* Prueba — Oscuro */}
-      <section id="prueba" className="scroll-mt-16 bg-[#1A1A1A] px-5 py-8 text-[#F4ECD8] sm:px-8 lg:py-10">
-        <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-4 border border-[#D4AF37]/25 bg-white/[0.02] px-6 py-8 text-center backdrop-blur-sm sm:px-16 sm:py-10">
-          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#D4AF37]" />
-          <div className="flex justify-center"><Eyebrow tone="light">Tu primer paso empieza aquí</Eyebrow></div>
-          <h2 className="mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#F4ECD8] sm:text-6xl">Regálate un momento para <em className="italic text-[#E6C766]">reconectar.</em></h2>
-          <p className="mx-auto max-w-lg text-base font-light leading-7 text-[#F4ECD8]/90">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
-          <Link href="/dashboard/pos" className="group inline-flex items-center gap-3 bg-[#D4AF37] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition hover:bg-[#E6C766]">
-            Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      {/* Prueba gratis — tarjeta de cristal */}
+      <section id="prueba" className="scroll-mt-24 bg-[#080c16] px-5 py-12 sm:px-8 lg:py-16">
+        <div className="glass-panel relative mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
+          <span aria-hidden="true" className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(199,164,90,.22),transparent_70%)] blur-2xl" />
+          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#d8bc7f] shadow-[0_0_12px_rgba(216,188,127,.9)]" />
+          <div className="relative flex justify-center"><Eyebrow>Tu primer paso empieza aquí</Eyebrow></div>
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#f7f2e7] sm:text-6xl">Regálate un momento para <em className="italic text-[#e3c57c]">reconectar.</em></h2>
+          <p className="relative mx-auto max-w-lg text-base font-light leading-7 text-[#e9e2d2]/65">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
+          <Link href="/dashboard/pos" className="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#d8bc7f] via-[#c7a45a] to-[#e3c57c] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#0b1020] shadow-[0_18px_50px_-20px_rgba(199,164,90,.8)] transition hover:brightness-110">
+            Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
-          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4ECD8]/75">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-[#e9e2d2]/40">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
         </div>
       </section>
 
