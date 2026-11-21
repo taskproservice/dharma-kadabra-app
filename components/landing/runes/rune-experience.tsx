@@ -171,7 +171,7 @@ function Hero() {
 function Knowledge() {
   return (
     <section id="conocimiento" className="relative scroll-mt-20 bg-[#F7F3EA] text-[#2E231D]">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:py-28">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12 lg:py-10">
         <figure>
           <div className="relative aspect-[4/5] overflow-hidden border border-[#2E231D]/15 shadow-[0_30px_70px_-40px_rgba(46,35,29,.65)]">
             <Image
@@ -183,18 +183,18 @@ function Knowledge() {
               className="object-cover"
             />
           </div>
-          <figcaption className="mt-4 text-[10px] uppercase tracking-[.24em] text-[#2E231D]/50">
+          <figcaption className="mt-3 text-[10px] uppercase tracking-[.24em] text-[#2E231D]/50">
             Piedras, fuego y silencio · El ritual de la lectura
           </figcaption>
         </figure>
 
         <div>
           <Eyebrow light>01 · Conocimiento</Eyebrow>
-          <h2 className="rune-display mt-7 text-5xl font-light leading-[1.03] sm:text-6xl">
+          <h2 className="rune-display mt-5 text-5xl font-light leading-[1.03] sm:text-6xl">
             Un alfabeto de símbolos para <em className="italic text-[#967325]">mirar el presente.</em>
           </h2>
-          <div className="mt-8 h-px w-24 bg-gradient-to-r from-[#967325] to-transparent" />
-          <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#2E231D]/75">
+          <div className="mt-5 h-px w-24 bg-gradient-to-r from-[#967325] to-transparent" />
+          <div className="mt-5 space-y-3 text-[14px] leading-7 text-[#2E231D]/75">
             <p>
               El Futhark antiguo fue el alfabeto de los pueblos nórdicos. Cada signo guardaba una idea fuerza: el ganado, el hielo, el sol, la cosecha. Leer las runas es acercarse a esas imágenes con una pregunta concreta y observar qué responden.
             </p>
@@ -202,15 +202,15 @@ function Knowledge() {
               No se trata de adivinar un futuro cerrado, sino de conversar con lo que está ocurriendo ahora. La piedra que aparece no decide por ti: ilumina un ángulo que todavía no habías mirado.
             </p>
           </div>
-          <dl className="mt-10 grid grid-cols-3 gap-4 border-y border-[#2E231D]/12 py-7">
+          <dl className="mt-7 grid grid-cols-3 gap-3 border-y border-[#2E231D]/12 py-5">
             {[
               { value: "24", label: "Runas históricas" },
               { value: "+1", label: "Runa vacía" },
               { value: "3", label: "Posiciones" },
             ].map((stat) => (
               <div key={stat.label}>
-                <dt className="rune-display text-4xl text-[#967325]">{stat.value}</dt>
-                <dd className="mt-1 text-[9px] uppercase tracking-[.2em] text-[#2E231D]/55">{stat.label}</dd>
+                <dt className="rune-display text-3xl text-[#967325]">{stat.value}</dt>
+                <dd className="mt-0.5 text-[9px] uppercase tracking-[.2em] text-[#2E231D]/55">{stat.label}</dd>
               </div>
             ))}
           </dl>
@@ -223,26 +223,26 @@ function Knowledge() {
 function Purpose() {
   return (
     <section className="bg-[#F7F3EA] text-[#2E231D]">
-      <div className="mx-auto max-w-7xl px-5 pb-20 sm:px-8 lg:pb-28">
+      <div className="mx-auto max-w-7xl px-5 pb-8 sm:px-8 lg:pb-10">
         <div className="max-w-3xl">
           <Eyebrow light>02 · Propósito</Eyebrow>
-          <h2 className="rune-display mt-7 text-5xl font-light leading-[1.03] sm:text-6xl">
+          <h2 className="rune-display mt-5 text-5xl font-light leading-[1.03] sm:text-6xl">
             Cuatro maneras de <em className="italic text-[#967325]">escucharte.</em>
           </h2>
-          <p className="mt-6 max-w-2xl text-[15px] leading-8 text-[#2E231D]/70">
+          <p className="mt-4 max-w-2xl text-[14px] leading-7 text-[#2E231D]/70">
             Cada lectura es distinta, pero todas tienen un propósito concreto: poner palabras a aquello que el día a día deja sin nombrar.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-px border border-[#2E231D]/12 bg-[#2E231D]/12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-7 grid gap-px border border-[#2E231D]/12 bg-[#2E231D]/12 sm:grid-cols-2 lg:grid-cols-4">
           {purposes.map(({ icon: Icon, title, text }, index) => (
-            <article key={title} className="group bg-[#F7F3EA] p-7 transition-colors hover:bg-[#efe8d8] lg:p-8">
+            <article key={title} className="group bg-[#F7F3EA] p-4 transition-colors hover:bg-[#efe8d8] lg:p-5">
               <div className="flex items-start justify-between">
-                <Icon size={25} strokeWidth={1.25} className="text-[#967325]" aria-hidden="true" />
-                <span className="rune-display text-lg text-[#2E231D]/30">{String(index + 1).padStart(2, "0")}</span>
+                <Icon size={20} strokeWidth={1.25} className="text-[#967325]" aria-hidden="true" />
+                <span className="rune-display text-sm text-[#2E231D]/30">{String(index + 1).padStart(2, "0")}</span>
               </div>
-              <h3 className="rune-display mt-12 text-3xl">{title}</h3>
-              <p className="mt-4 text-[13px] leading-7 text-[#2E231D]/65">{text}</p>
+              <h3 className="rune-display mt-6 text-2xl">{title}</h3>
+              <p className="mt-2 text-[12px] leading-6 text-[#2E231D]/65">{text}</p>
             </article>
           ))}
         </div>
@@ -253,7 +253,7 @@ function Purpose() {
 
 function EditorialBreak() {
   return (
-    <section className="relative flex min-h-[46vh] items-center overflow-hidden bg-[#121212]">
+    <section className="relative flex min-h-[32vh] items-center overflow-hidden bg-[#121212]">
       <Image
         src={IMAGES.editorial}
         alt="Piedras negras con runas doradas extendidas sobre un paño de lino"
@@ -263,12 +263,12 @@ function EditorialBreak() {
         className="object-cover opacity-40"
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,18,18,.35),rgba(18,18,18,.92))]" />
-      <div className="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
-        <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059]">ᛟ</span>
-        <p className="rune-display mt-7 text-3xl font-light italic leading-tight text-[#F7F3EA] sm:text-5xl">
+      <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
+        <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059]">ᛟ</span>
+        <p className="rune-display mt-4 text-2xl font-light italic leading-tight text-[#F7F3EA] sm:text-4xl">
           &ldquo;La runa no predice el destino:revela la pregunta que el alma ya estaba haciendo.&rdquo;
         </p>
-        <div className="rune-hairline mx-auto mt-8 h-px w-40" />
+        <div className="rune-hairline mx-auto mt-5 h-px w-40" />
       </div>
     </section>
   );
@@ -276,45 +276,45 @@ function EditorialBreak() {
 
 function Library({ onSelect }: { onSelect: (rune: Rune) => void }) {
   return (
-    <section id="biblioteca" className="scroll-mt-20 bg-[#121212] py-20 text-[#F7F3EA] sm:py-28">
+    <section id="biblioteca" className="scroll-mt-20 bg-[#121212] py-8 text-[#F7F3EA] sm:py-10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-8 border-b border-[#C5A059]/20 pb-9">
+        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/20 pb-5">
           <div>
             <Eyebrow>03 · Biblioteca</Eyebrow>
-            <h2 className="rune-display mt-6 text-5xl font-light leading-none sm:text-6xl">
+            <h2 className="rune-display mt-4 text-5xl font-light leading-none sm:text-6xl">
               Los <em className="italic text-[#C5A059]">25 símbolos</em>
             </h2>
           </div>
-          <p className="max-w-sm text-[13px] leading-7 text-[#F7F3EA]/55">
+          <p className="max-w-sm text-[12px] leading-6 text-[#F7F3EA]/55">
             Veinticuatro runas del Futhark antiguo y la runa vacía que completa la tirada. Toca cualquier símbolo para leer su significado.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-2.5 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
+        <div className="mt-5 grid grid-cols-3 gap-1.5 sm:gap-2 md:grid-cols-4 lg:grid-cols-5">
           {runes.map((rune) => (
             <button
               key={rune.id}
               type="button"
               onClick={() => onSelect(rune)}
               aria-label={`Ver significado de ${rune.name}`}
-              className="group relative flex aspect-[4/5] flex-col items-center justify-center border border-[#C5A059]/20 bg-[linear-gradient(160deg,rgba(197,160,89,.07),rgba(255,255,255,.015))] px-2 text-center transition duration-300 hover:-translate-y-1 hover:border-[#C5A059]/70 hover:bg-[#C5A059]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059]"
+              className="group relative flex flex-col items-center justify-center gap-1.5 border border-[#C5A059]/20 bg-[linear-gradient(160deg,rgba(197,160,89,.07),rgba(255,255,255,.015))] px-2 py-3 text-center transition duration-300 hover:-translate-y-1 hover:border-[#C5A059]/70 hover:bg-[#C5A059]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:py-4"
             >
-              <span className="absolute left-3 top-3 text-[9px] tracking-[.18em] text-[#C5A059]/60">
+              <span className="absolute left-2 top-1.5 text-[8px] tracking-[.18em] text-[#C5A059]/60">
                 {String(rune.number).padStart(2, "0")}
               </span>
-              <span aria-hidden="true" className="rune-glyph text-4xl text-[#C5A059] transition group-hover:scale-110 sm:text-5xl">
+              <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059] transition group-hover:scale-110 sm:text-4xl">
                 {rune.symbol}
               </span>
-              <span className="rune-display mt-4 text-base leading-tight text-[#F7F3EA] sm:text-xl">{rune.name}</span>
-              <span className="mt-2 hidden text-[9px] uppercase tracking-[.16em] text-[#F7F3EA]/40 sm:block">
+              <span className="rune-display text-sm leading-tight text-[#F7F3EA] sm:text-base">{rune.name}</span>
+              <span className="hidden text-[8px] uppercase tracking-[.16em] text-[#F7F3EA]/40 sm:block">
                 {rune.keywords[0]}
               </span>
-              <span aria-hidden="true" className="absolute bottom-3 right-3 text-[#C5A059]/0 transition group-hover:text-[#C5A059]/80">↗</span>
+              <span aria-hidden="true" className="absolute bottom-1.5 right-2 text-[#C5A059]/0 transition group-hover:text-[#C5A059]/80">↗</span>
             </button>
           ))}
         </div>
 
-        <p className="mt-8 text-[11px] leading-6 text-[#F7F3EA]/40">
+        <p className="mt-5 text-[10px] leading-5 text-[#F7F3EA]/40">
           Nota histórica: el Elder Futhark tiene 24 caracteres. La runa vacía (Wyrd) es un complemento moderno de los juegos de lectura y aparece aquí como vigésimo quinta piedra.
         </p>
       </div>
@@ -324,7 +324,7 @@ function Library({ onSelect }: { onSelect: (rune: Rune) => void }) {
 
 function Spread() {
   return (
-    <section id="tirada" className="relative scroll-mt-20 overflow-hidden border-y border-[#C5A059]/20 bg-[#121212] py-20 sm:py-28">
+    <section id="tirada" className="relative scroll-mt-20 overflow-hidden border-y border-[#C5A059]/20 bg-[#121212] py-8 sm:py-10">
       <Image
         src={IMAGES.spread}
         alt="Tres runas negras con símbolos dorados sobre un mantel violeta iluminado por una vela"
@@ -337,14 +337,14 @@ function Spread() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <Eyebrow>04 · Tirada de 3 runas</Eyebrow>
-          <h2 className="rune-display mt-7 text-5xl font-light leading-[1.02] sm:text-6xl">
+          <h2 className="rune-display mt-4 text-5xl font-light leading-[1.02] sm:text-6xl">
             Tres piedras, <em className="italic text-[#C5A059]">una conversación.</em>
           </h2>
-          <p className="mt-6 text-[15px] leading-8 text-[#F7F3EA]/65">
+          <p className="mt-3 text-[14px] leading-7 text-[#F7F3EA]/65">
             Voltea las cartas una a una. Cada runa llega de forma aleatoria de la biblioteca y habla desde una posición: pasado, presente y futuro.
           </p>
         </div>
-        <div className="mt-14">
+        <div className="mt-7">
           <ThreeRuneSpread />
         </div>
       </div>
@@ -354,23 +354,23 @@ function Spread() {
 
 function Transformations() {
   return (
-    <section className="bg-[#121212] py-20 text-[#F7F3EA] sm:py-28">
+    <section className="bg-[#121212] py-8 text-[#F7F3EA] sm:py-10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-[#C5A059]/20 pb-9">
+        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/20 pb-5">
           <div>
             <Eyebrow>05 · Los umbrales</Eyebrow>
-            <h2 className="rune-display mt-6 text-5xl font-light leading-none sm:text-6xl">
+            <h2 className="rune-display mt-4 text-5xl font-light leading-none sm:text-6xl">
               Protección, transformación <em className="italic text-[#C5A059]">y destino.</em>
             </h2>
           </div>
-          <p className="max-w-xs text-[13px] leading-7 text-[#F7F3EA]/50">
+          <p className="max-w-xs text-[12px] leading-6 text-[#F7F3EA]/50">
             Cuatro miradas sobre el mismo recorrido: cuidar, soltar, elegir e integrar.
           </p>
         </div>
 
-        <div className="mt-9 grid gap-4 md:grid-cols-2">
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
           {pillars.map((pillar) => (
-            <article key={pillar.title} className="group relative min-h-[360px] overflow-hidden border border-[#C5A059]/20 p-8 sm:p-10">
+            <article key={pillar.title} className="group relative min-h-[190px] overflow-hidden border border-[#C5A059]/20 p-4 sm:p-5">
               <Image
                 src={pillar.image}
                 alt=""
@@ -382,12 +382,12 @@ function Transformations() {
               <div className="relative flex h-full flex-col">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-[.28em] text-[#C5A059]">{pillar.number}</span>
-                  <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059]/70">{pillar.glyph}</span>
+                  <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059]/70">{pillar.glyph}</span>
                 </div>
                 <div className="mt-auto">
-                  <h3 className="rune-display text-4xl font-light sm:text-5xl">{pillar.title}</h3>
-                  <div className="rune-hairline my-5 h-px w-24" />
-                  <p className="max-w-md text-[13px] leading-7 text-[#F7F3EA]/65">{pillar.text}</p>
+                  <h3 className="rune-display text-3xl font-light sm:text-4xl">{pillar.title}</h3>
+                  <div className="rune-hairline my-3 h-px w-20" />
+                  <p className="max-w-md text-[12px] leading-6 text-[#F7F3EA]/65">{pillar.text}</p>
                 </div>
               </div>
             </article>
@@ -402,7 +402,7 @@ function Consultation() {
   const service = services.find((item) => item.id === "lectura-de-runas");
 
   return (
-    <section id="consulta" className="relative scroll-mt-20 overflow-hidden bg-[#0e0e0e] px-5 py-24 text-center sm:px-8 sm:py-32">
+    <section id="consulta" className="relative scroll-mt-20 overflow-hidden bg-[#0e0e0e] px-5 py-10 text-center sm:px-8 sm:py-12">
       <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 size-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.2),transparent_70%)] blur-3xl" />
       <span aria-hidden="true" className="absolute left-1/2 top-0 size-2 -translate-x-1/2 rotate-45 bg-[#C5A059] shadow-[0_0_14px_rgba(197,160,89,.9)]" />
       <div className="relative mx-auto max-w-4xl">
