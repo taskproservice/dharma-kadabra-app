@@ -276,36 +276,36 @@ function EditorialBreak() {
 
 function Library({ onSelect }: { onSelect: (rune: Rune) => void }) {
   return (
-    <section id="biblioteca" className="scroll-mt-20 bg-[#121212] py-8 text-[#F7F3EA] sm:py-10">
+    <section id="biblioteca" className="scroll-mt-20 bg-[#121212] py-4 text-[#F7F3EA] sm:py-5">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/20 pb-5">
+        <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#C5A059]/20 pb-3">
           <div>
             <Eyebrow>03 · Biblioteca</Eyebrow>
-            <h2 className="rune-display mt-4 text-5xl font-light leading-none sm:text-6xl">
+            <h2 className="rune-display mt-2 text-4xl font-light leading-none sm:text-5xl">
               Los <em className="italic text-[#C5A059]">25 símbolos</em>
             </h2>
           </div>
-          <p className="max-w-sm text-[12px] leading-6 text-[#F7F3EA]/55">
+          <p className="max-w-sm text-xs leading-5 text-[#F7F3EA]/55">
             Veinticuatro runas del Futhark antiguo y la runa vacía que completa la tirada. Toca cualquier símbolo para leer su significado.
           </p>
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-1.5 sm:gap-2 md:grid-cols-4 lg:grid-cols-5">
+        <div className="mt-3 grid grid-cols-3 gap-1 sm:gap-1.5 md:grid-cols-4 lg:grid-cols-5">
           {runes.map((rune) => (
             <button
               key={rune.id}
               type="button"
               onClick={() => onSelect(rune)}
               aria-label={`Ver significado de ${rune.name}`}
-              className="group relative flex flex-col items-center justify-center gap-1.5 border border-[#C5A059]/20 bg-[linear-gradient(160deg,rgba(197,160,89,.07),rgba(255,255,255,.015))] px-2 py-3 text-center transition duration-300 hover:-translate-y-1 hover:border-[#C5A059]/70 hover:bg-[#C5A059]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:py-4"
+              className="group relative flex min-h-[72px] flex-col items-center justify-center gap-1 border border-[#C5A059]/20 bg-[linear-gradient(160deg,rgba(197,160,89,.07),rgba(255,255,255,.015))] p-1.5 text-center transition duration-300 hover:-translate-y-1 hover:border-[#C5A059]/70 hover:bg-[#C5A059]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:min-h-[84px] sm:p-2"
             >
               <span className="absolute left-2 top-1.5 text-[8px] tracking-[.18em] text-[#C5A059]/60">
                 {String(rune.number).padStart(2, "0")}
               </span>
-              <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059] transition group-hover:scale-110 sm:text-4xl">
+              <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059] transition group-hover:scale-110 sm:text-3xl">
                 {rune.symbol}
               </span>
-              <span className="rune-display text-sm leading-tight text-[#F7F3EA] sm:text-base">{rune.name}</span>
+              <span className="rune-display text-xs leading-tight text-[#F7F3EA] sm:text-sm">{rune.name}</span>
               <span className="hidden text-[8px] uppercase tracking-[.16em] text-[#F7F3EA]/40 sm:block">
                 {rune.keywords[0]}
               </span>
@@ -314,7 +314,7 @@ function Library({ onSelect }: { onSelect: (rune: Rune) => void }) {
           ))}
         </div>
 
-        <p className="mt-5 text-[10px] leading-5 text-[#F7F3EA]/40">
+        <p className="mt-3 text-[10px] leading-5 text-[#F7F3EA]/40">
           Nota histórica: el Elder Futhark tiene 24 caracteres. La runa vacía (Wyrd) es un complemento moderno de los juegos de lectura y aparece aquí como vigésimo quinta piedra.
         </p>
       </div>
@@ -324,7 +324,7 @@ function Library({ onSelect }: { onSelect: (rune: Rune) => void }) {
 
 function Spread() {
   return (
-    <section id="tirada" className="relative scroll-mt-20 overflow-hidden border-y border-[#C5A059]/20 bg-[#121212] py-8 sm:py-10">
+    <section id="tirada" className="relative scroll-mt-20 overflow-hidden border-y border-[#C5A059]/20 bg-[#121212] py-3 sm:py-4">
       <Image
         src={IMAGES.spread}
         alt="Tres runas negras con símbolos dorados sobre un mantel violeta iluminado por una vela"
@@ -337,14 +337,14 @@ function Spread() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <Eyebrow>04 · Tirada de 3 runas</Eyebrow>
-          <h2 className="rune-display mt-4 text-5xl font-light leading-[1.02] sm:text-6xl">
+          <h2 className="rune-display mt-2 text-3xl font-light leading-[1.02] sm:text-4xl">
             Tres piedras, <em className="italic text-[#C5A059]">una conversación.</em>
           </h2>
-          <p className="mt-3 text-[14px] leading-7 text-[#F7F3EA]/65">
+          <p className="mt-2 text-[13px] leading-6 text-[#F7F3EA]/65">
             Voltea las cartas una a una. Cada runa llega de forma aleatoria de la biblioteca y habla desde una posición: pasado, presente y futuro.
           </p>
         </div>
-        <div className="mt-7">
+        <div className="mt-3">
           <ThreeRuneSpread />
         </div>
       </div>
@@ -354,23 +354,23 @@ function Spread() {
 
 function Transformations() {
   return (
-    <section className="bg-[#121212] py-8 text-[#F7F3EA] sm:py-10">
+    <section className="bg-[#121212] py-3 text-[#F7F3EA] sm:py-4">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/20 pb-5">
+        <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#C5A059]/20 pb-2">
           <div>
             <Eyebrow>05 · Los umbrales</Eyebrow>
-            <h2 className="rune-display mt-4 text-5xl font-light leading-none sm:text-6xl">
+            <h2 className="rune-display mt-2 text-3xl font-light leading-none sm:text-4xl">
               Protección, transformación <em className="italic text-[#C5A059]">y destino.</em>
             </h2>
           </div>
-          <p className="max-w-xs text-[12px] leading-6 text-[#F7F3EA]/50">
+          <p className="max-w-xs text-xs leading-5 text-[#F7F3EA]/50">
             Cuatro miradas sobre el mismo recorrido: cuidar, soltar, elegir e integrar.
           </p>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-3 grid gap-1.5 sm:gap-2 md:grid-cols-2">
           {pillars.map((pillar) => (
-            <article key={pillar.title} className="group relative min-h-[190px] overflow-hidden border border-[#C5A059]/20 p-4 sm:p-5">
+            <article key={pillar.title} className="group relative min-h-[120px] overflow-hidden border border-[#C5A059]/20 p-3 sm:p-3">
               <Image
                 src={pillar.image}
                 alt=""
@@ -382,12 +382,12 @@ function Transformations() {
               <div className="relative flex h-full flex-col">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-[.28em] text-[#C5A059]">{pillar.number}</span>
-                  <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059]/70">{pillar.glyph}</span>
+                  <span aria-hidden="true" className="rune-glyph text-xl text-[#C5A059]/70">{pillar.glyph}</span>
                 </div>
                 <div className="mt-auto">
-                  <h3 className="rune-display text-3xl font-light sm:text-4xl">{pillar.title}</h3>
-                  <div className="rune-hairline my-3 h-px w-20" />
-                  <p className="max-w-md text-[12px] leading-6 text-[#F7F3EA]/65">{pillar.text}</p>
+                  <h3 className="rune-display text-2xl font-light sm:text-3xl">{pillar.title}</h3>
+                  <div className="rune-hairline my-1.5 h-px w-20" />
+                  <p className="max-w-md text-xs leading-5 text-[#F7F3EA]/65">{pillar.text}</p>
                 </div>
               </div>
             </article>
@@ -402,35 +402,35 @@ function Consultation() {
   const service = services.find((item) => item.id === "lectura-de-runas");
 
   return (
-    <section id="consulta" className="relative scroll-mt-20 overflow-hidden bg-[#0e0e0e] px-5 py-10 text-center sm:px-8 sm:py-12">
+    <section id="consulta" className="relative scroll-mt-20 overflow-hidden bg-[#0e0e0e] px-5 py-3 text-center sm:px-8 sm:py-4">
       <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 size-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.2),transparent_70%)] blur-3xl" />
       <span aria-hidden="true" className="absolute left-1/2 top-0 size-2 -translate-x-1/2 rotate-45 bg-[#C5A059] shadow-[0_0_14px_rgba(197,160,89,.9)]" />
       <div className="relative mx-auto max-w-4xl">
         <div className="flex justify-center">
           <Eyebrow>Tu siguiente paso</Eyebrow>
         </div>
-        <h2 className="rune-display mt-9 text-5xl font-light leading-[1.04] text-[#F7F3EA] sm:text-7xl">
+        <h2 className="rune-display mt-2 text-3xl font-light leading-[1.04] text-[#F7F3EA] sm:text-4xl">
           El destino tiene un lenguaje.
           <br />
           <em className="italic text-[#C5A059]">Aprende a interpretarlo.</em>
         </h2>
-        <p className="mx-auto mt-8 max-w-xl text-[15px] leading-8 text-[#F7F3EA]/60">
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-[#F7F3EA]/60">
           Una sesión de 45 minutos para poner tus runas sobre la mesa, escuchar lo que dicen y salir con una decisión concreta.
         </p>
-        <div className="mt-11 flex justify-center">
+        <div className="mt-3 flex justify-center">
           <RuneBookingCTA
-            className="group inline-flex items-center gap-4 rounded-full bg-[#C5A059] px-10 py-5 text-[11px] font-semibold uppercase tracking-[.26em] text-[#121212] shadow-[0_22px_60px_-22px_rgba(197,160,89,.9)] transition hover:bg-[#d9b673]"
+            className="group inline-flex items-center gap-3 rounded-full bg-[#C5A059] px-6 py-3 text-[10px] font-semibold uppercase tracking-[.26em] text-[#121212] shadow-[0_22px_60px_-22px_rgba(197,160,89,.9)] transition hover:bg-[#d9b673]"
             label="Iniciar mi consulta de Lectura de Runas"
           >
             INICIAR MI CONSULTA <ArrowRight size={16} className="transition group-hover:translate-x-1" />
           </RuneBookingCTA>
         </div>
         {service && (
-          <p className="mt-6 text-[10px] uppercase tracking-[.24em] text-[#F7F3EA]/40">
+          <p className="mt-2 text-[10px] uppercase tracking-[.24em] text-[#F7F3EA]/40">
             {service.duration} · {formatSessionPrice(service.price)} · Reserva con anticipo del 20%
           </p>
         )}
-        <p className="mt-3 text-[11px] text-[#F7F3EA]/40">
+        <p className="mt-1.5 text-[11px] text-[#F7F3EA]/40">
           ¿Ya tienes cuenta? <Link href="/mi-cuenta" className="text-[#C5A059] underline underline-offset-4">Accede a Mi Cuenta</Link> para ver tus lecturas agendadas.
         </p>
       </div>
