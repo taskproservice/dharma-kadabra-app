@@ -55,8 +55,8 @@ function ProductCard({
   const showImage = Boolean(product.imageUrl) && !imgError;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/70 bg-white/70 shadow-[0_12px_40px_-24px_rgba(62,39,35,0.35)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/60 hover:shadow-[0_20px_44px_-20px_rgba(62,39,35,0.35)]">
-      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-[#E8DCC0]/70 to-[#D4AF37]/15">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-[#11182b]/80  backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#c7a45a]/60 hover:shadow-[0_20px_44px_-20px_rgba(0,0,0,0.55)]">
+      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-[#1c2438] to-[#c7a45a]/10">
         {showImage ? (
           <Image
             src={product.imageUrl}
@@ -67,19 +67,19 @@ function ProductCard({
             onError={() => setImgError(true)}
           />
         ) : (
-          <span className="grid h-full w-full place-items-center text-5xl text-[#9A7B28]" aria-hidden="true">
+          <span className="grid h-full w-full place-items-center text-5xl text-[#d8bc7f]" aria-hidden="true">
             {CATEGORY_EMOJI[product.category] ?? "✧"}
           </span>
         )}
-        <span className="absolute left-2.5 top-2.5 rounded-full bg-[#F4ECD8]/90 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-[#3E2723] shadow-sm backdrop-blur-sm">
+        <span className="absolute left-2.5 top-2.5 rounded-full bg-[#0b1020]/85 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-[#e9d3a1] shadow-sm backdrop-blur-sm">
           {product.category}
         </span>
       </div>
       <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-        <h2 className="line-clamp-1 font-display text-base leading-snug text-[#2A1B17] sm:text-lg">{product.name}</h2>
-        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#3E2723]/55">{product.description}</p>
+        <h2 className="line-clamp-1 font-display text-base leading-snug text-[#f7f2e7] sm:text-lg">{product.name}</h2>
+        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#e9e2d2]/45">{product.description}</p>
         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-          <span className="text-sm font-bold text-[#8B6D16]">{money(product.price)}</span>
+          <span className="text-sm font-bold text-[#d8bc7f]">{money(product.price)}</span>
         </div>
         <button
           type="button"
@@ -88,7 +88,7 @@ function ProductCard({
           className={`mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold uppercase tracking-[.14em] transition-all duration-300 ${
             added
               ? "bg-emerald-600 text-white"
-              : "bg-[#3E2723] text-[#F4ECD8] hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
+              : "border border-[#c7a45a]/45 bg-[#c7a45a]/12 text-[#e3c57c] hover:bg-[#c7a45a] hover:text-[#0b1020]"
           }`}
         >
           {added ? (
@@ -214,10 +214,10 @@ export function PosClient() {
       <section className="min-w-0 flex-1" aria-label="Catálogo de productos">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-[#9A7B28]">Terminal de venta</p>
-            <h1 className="mt-1 font-display text-3xl font-semibold text-[#2A1B17]">Punto de Venta</h1>
+            <p className="text-sm font-medium text-[#d8bc7f]">Terminal de venta</p>
+            <h1 className="mt-1 font-display text-3xl font-semibold text-[#f7f2e7]">Punto de Venta</h1>
           </div>
-          <div className="rounded-xl bg-white/60 px-4 py-2 text-sm capitalize text-[#3E2723]/65">
+          <div className="rounded-xl bg-white/[0.04] px-4 py-2 text-sm capitalize text-[#e9e2d2]/55">
             {new Date().toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" })}
           </div>
         </div>
@@ -225,7 +225,7 @@ export function PosClient() {
         {/* Buscador + filtros de categoría */}
         <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center">
           <div className="relative flex-1">
-            <Search size={17} className="absolute left-3 top-3 text-[#3E2723]/40" />
+            <Search size={17} className="absolute left-3 top-3 text-[#e9e2d2]/40" />
             <Input
               className="pl-9"
               placeholder="Buscar productos..."
@@ -245,11 +245,11 @@ export function PosClient() {
                   aria-pressed={active}
                   onClick={() => setCategory(item)}
                   className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition ${
-                    active ? "bg-[#3E2723] text-[#F4ECD8] shadow-sm" : "bg-white/60 hover:bg-white"
+                    active ? "border border-[#c7a45a]/55 bg-[#c7a45a]/18 text-[#f7f2e7] shadow-sm" : "bg-white/[0.04] hover:bg-white/[0.06]"
                   }`}
                 >
                   {item}
-                  <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${active ? "bg-[#D4AF37]/25 text-[#E6C766]" : "bg-[#3E2723]/8 text-[#3E2723]/55"}`}>
+                  <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${active ? "bg-[#c7a45a]/20 text-[#e3c57c]" : "bg-white/[0.06] text-[#e9e2d2]/45"}`}>
                     {itemCount}
                   </span>
                 </button>
@@ -266,21 +266,21 @@ export function PosClient() {
             ))}
           </div>
         ) : error ? (
-          <div className="grid place-items-center rounded-2xl border border-dashed border-[#3E2723]/20 bg-white/40 px-6 py-16 text-center">
+          <div className="grid place-items-center rounded-2xl border border-dashed border-[#c7a45a]/20 bg-white/[0.025] px-6 py-16 text-center">
             <div>
-              <p className="font-display text-xl text-[#2A1B17]">No pudimos cargar el catálogo</p>
-              <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#3E2723]/60">{error}</p>
+              <p className="font-display text-xl text-[#f7f2e7]">No pudimos cargar el catálogo</p>
+              <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#e9e2d2]/55">{error}</p>
               <Button variant="outline" className="mt-5" onClick={loadProducts}>
                 <RefreshCw size={15} /> Reintentar
               </Button>
             </div>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="grid place-items-center rounded-2xl border border-dashed border-[#3E2723]/20 bg-white/40 px-6 py-16 text-center">
+          <div className="grid place-items-center rounded-2xl border border-dashed border-[#c7a45a]/20 bg-white/[0.025] px-6 py-16 text-center">
             <div>
-              <Sparkles size={26} className="mx-auto text-[#9A7B28]" />
-              <p className="mt-3 font-display text-xl text-[#2A1B17]">Aún no hay piezas en esta categoría</p>
-              <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#3E2723]/60">
+              <Sparkles size={26} className="mx-auto text-[#d8bc7f]" />
+              <p className="mt-3 font-display text-xl text-[#f7f2e7]">Aún no hay piezas en esta categoría</p>
+              <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#e9e2d2]/55">
                 {category === "Todos"
                   ? "Cuando agregues productos desde la base de datos, aparecerán aquí."
                   : `La categoría ${category} todavía no tiene productos. Explora otra categoría o agrega piezas nuevas.`}
@@ -297,15 +297,15 @@ export function PosClient() {
       </section>
 
       {/* Carrito lateral */}
-      <aside className="flex w-full flex-col rounded-2xl border border-white/70 bg-[#E8DCC0]/60 p-5 shadow-[0_12px_40px_-24px_rgba(62,39,35,0.35)] backdrop-blur-xl sm:p-6 xl:sticky xl:top-[92px] xl:h-[calc(100vh-116px)] xl:w-[370px] xl:shrink-0">
+      <aside className="flex w-full flex-col rounded-2xl border border-[#c7a45a]/20 bg-[#11182b]/60 p-5  backdrop-blur-xl sm:p-6 xl:sticky xl:top-[92px] xl:h-[calc(100vh-116px)] xl:w-[370px] xl:shrink-0">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 font-display text-xl font-semibold text-[#2A1B17]">
-            <ShoppingBag size={20} className="text-[#9A7B28]" /> Carrito
+          <h2 className="flex items-center gap-2 font-display text-xl font-semibold text-[#f7f2e7]">
+            <ShoppingBag size={20} className="text-[#d8bc7f]" /> Carrito
           </h2>
           <span
             key={count}
             aria-live="polite"
-            className={`cart-pop rounded-full bg-[#D4AF37]/25 px-2.5 py-1 text-xs font-bold text-[#8B6D16] ${count > 0 ? "" : ""}`}
+            className={`cart-pop rounded-full bg-[#c7a45a]/20 px-2.5 py-1 text-xs font-bold text-[#d8bc7f] ${count > 0 ? "" : ""}`}
           >
             {count}
           </span>
@@ -316,18 +316,18 @@ export function PosClient() {
             items.map((item) => (
               <div
                 key={`${item.id}-${item.quantity}`}
-                className="cart-item-in rounded-2xl border border-white/70 bg-white/75 p-4"
+                className="cart-item-in rounded-2xl border border-[#c7a45a]/20 bg-white/[0.05] p-4"
               >
                 <div className="flex justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-[#2A1B17]">{item.name}</p>
-                    <p className="mt-1 text-sm text-[#3E2723]/55">{money(item.price)} c/u</p>
+                    <p className="truncate font-semibold text-[#f7f2e7]">{item.name}</p>
+                    <p className="mt-1 text-sm text-[#e9e2d2]/45">{money(item.price)} c/u</p>
                   </div>
                   <button
                     type="button"
                     aria-label={`Quitar ${item.name}`}
                     onClick={() => remove(item.id)}
-                    className="self-start rounded-lg p-1.5 text-[#3E2723]/50 transition hover:bg-red-50 hover:text-red-700"
+                    className="self-start rounded-lg p-1.5 text-[#e9e2d2]/40 transition hover:bg-red-500/15 hover:text-red-300"
                   >
                     <Trash2 size={15} />
                   </button>
@@ -338,7 +338,7 @@ export function PosClient() {
                       type="button"
                       aria-label={`Quitar uno de ${item.name}`}
                       onClick={() => decrement(item.id)}
-                      className="grid size-7 place-items-center rounded-lg border border-[#3E2723]/15 transition hover:bg-white"
+                      className="grid size-7 place-items-center rounded-lg border border-[#c7a45a]/18 transition hover:bg-white/[0.06]"
                     >
                       <Minus size={13} />
                     </button>
@@ -347,17 +347,17 @@ export function PosClient() {
                       type="button"
                       aria-label={`Agregar uno de ${item.name}`}
                       onClick={() => add(item)}
-                      className="grid size-7 place-items-center rounded-lg border border-[#3E2723]/15 transition hover:bg-white"
+                      className="grid size-7 place-items-center rounded-lg border border-[#c7a45a]/18 transition hover:bg-white/[0.06]"
                     >
                       <Plus size={13} />
                     </button>
                   </div>
-                  <span className="font-bold text-[#2A1B17]">{money(item.price * item.quantity)}</span>
+                  <span className="font-bold text-[#f7f2e7]">{money(item.price * item.quantity)}</span>
                 </div>
               </div>
             ))
           ) : (
-            <div className="grid min-h-48 place-items-center rounded-2xl border border-dashed border-[#3E2723]/20 px-4 text-center text-sm text-[#3E2723]/45">
+            <div className="grid min-h-48 place-items-center rounded-2xl border border-dashed border-[#c7a45a]/20 px-4 text-center text-sm text-[#e9e2d2]/35">
               <div>
                 <ShoppingBag size={26} className="mx-auto mb-2 opacity-50" />
                 El carrito está vacío.
@@ -368,30 +368,30 @@ export function PosClient() {
           )}
         </div>
 
-        <div className="mt-5 shrink-0 space-y-3 border-t border-[#3E2723]/15 pt-5">
-          <div className="flex justify-between text-sm text-[#3E2723]/65">
+        <div className="mt-5 shrink-0 space-y-3 border-t border-[#c7a45a]/18 pt-5">
+          <div className="flex justify-between text-sm text-[#e9e2d2]/55">
             <span>Subtotal</span>
             <span aria-live="polite">{money(subtotal)}</span>
           </div>
-          <div className="flex justify-between text-sm text-[#3E2723]/65">
+          <div className="flex justify-between text-sm text-[#e9e2d2]/55">
             <span>Impuestos</span>
             <span>Incluidos</span>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className="text-base font-semibold text-[#2A1B17]">Total</span>
-            <span key={subtotal} aria-live="polite" className="total-tick font-display text-2xl font-bold text-[#2A1B17]">
+            <span className="text-base font-semibold text-[#f7f2e7]">Total</span>
+            <span key={subtotal} aria-live="polite" className="total-tick font-display text-2xl font-bold text-[#f7f2e7]">
               {money(subtotal)}
             </span>
           </div>
           {checkoutError && (
-            <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-xs leading-5 text-red-800">
+            <p role="alert" className="rounded-xl bg-red-500/10 px-3 py-2 text-xs leading-5 text-red-300">
               {checkoutError}
             </p>
           )}
           <Button
             disabled={!items.length || checkoutState === "sending"}
             onClick={checkout}
-            className="h-12 w-full bg-[#D4AF37] text-[#3E2723] hover:bg-[#c4a02e]"
+            className="h-12 w-full bg-[#c7a45a] text-[#e9e2d2] hover:bg-[#c4a02e]"
           >
             {checkoutState === "sending" ? (
               <>
@@ -407,7 +407,7 @@ export function PosClient() {
               </>
             )}
           </Button>
-          <p className="flex items-center justify-center gap-1 text-center text-[11px] text-[#3E2723]/50">
+          <p className="flex items-center justify-center gap-1 text-center text-[11px] text-[#e9e2d2]/40">
             <Check size={12} /> Cobro seguro · Pago registrado al confirmar
           </p>
         </div>
@@ -417,9 +417,9 @@ export function PosClient() {
       {toast && (
         <div
           role="status"
-          className="toast-in fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2.5 rounded-full bg-[#1A1A1A] px-5 py-3 text-sm font-medium text-[#F4ECD8] shadow-2xl"
+          className="toast-in fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2.5 rounded-full bg-[#0b1020] px-5 py-3 text-sm font-medium text-[#f7f2e7] shadow-2xl"
         >
-          <span className="grid size-6 place-items-center rounded-full bg-[#D4AF37] text-[#1A1A1A]">
+          <span className="grid size-6 place-items-center rounded-full bg-[#c7a45a] text-[#0b1020]">
             <Check size={13} />
           </span>
           {toast}

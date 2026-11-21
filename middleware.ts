@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getAuthSecret } from "./lib/auth-secret";
-import { ROLE_PREVIEW_COOKIE, isRouteAllowedForRole, parseRole, type Role } from "./lib/rbac-config";
+import { DASHBOARD_HOME_BY_ROLE, ROLE_PREVIEW_COOKIE, isRouteAllowedForRole, parseRole, type Role } from "./lib/rbac-config";
 
 /**
  * Protección del dashboard: exige una sesión de NextAuth y aplica los
@@ -27,7 +27,8 @@ export async function middleware(request: NextRequest) {
   const effectiveRole: Role = previewRole ?? sessionRole;
 
   if (pathname !== "/dashboard" && !isRouteAllowedForRole(effectiveRole, pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    // Cada rol vuelve a su propio punto de entrada permitido (no todos tienen /dashboard).
+    return NextResponse.redirect(new URL(DASHBOARD_HOME_BY_ROLE[effectiveRole], request.url));
   }
 
   return NextResponse.next();

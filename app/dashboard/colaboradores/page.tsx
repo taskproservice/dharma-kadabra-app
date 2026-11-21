@@ -36,7 +36,7 @@ export default function ColaboradoresPage() {
         }}>
           <label className="block space-y-1.5 text-sm font-medium">Nombre<Input name="name" required maxLength={100} defaultValue={person?.name} autoComplete="name" /></label>
           <label className="block space-y-1.5 text-sm font-medium">Especialidad<Input name="specialty" required maxLength={120} defaultValue={person?.specialty} /></label>
-          <label className="block space-y-1.5 text-sm font-medium">Bio<textarea name="bio" required maxLength={1200} rows={4} defaultValue={person?.bio} className="w-full rounded-xl border border-[#3E2723]/15 bg-white/70 px-3 py-2 text-sm outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20" /></label>
+          <label className="block space-y-1.5 text-sm font-medium">Bio<textarea name="bio" required maxLength={1200} rows={4} defaultValue={person?.bio} className="w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 px-3 py-2 text-sm outline-none focus:border-[#c7a45a] focus:ring-2 focus:ring-[#D4AF37]/20" /></label>
           <label className="block space-y-1.5 text-sm font-medium">Foto (ruta pública o URL)<Input name="photoUrl" type="text" placeholder="/images/equipo/nombre.jpg" defaultValue={person?.photoUrl} /></label>
           <label className="block space-y-1.5 text-sm font-medium">Correo electrónico<Input name="email" type="email" required maxLength={160} defaultValue={person?.email} autoComplete="email" /></label>
           <div className="flex justify-end gap-2 pt-2"><Button type="button" variant="ghost" onClick={close}>Cancelar</Button><Button type="submit">Guardar colaborador</Button></div>
@@ -48,25 +48,25 @@ export default function ColaboradoresPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-7">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div><h1 className="text-3xl font-semibold">Colaboradores</h1><p className="mt-2 text-[#3E2723]/60">Administra perfiles que se muestran en la Landing Page.</p></div>
+        <div><h1 className="text-3xl font-semibold">Colaboradores</h1><p className="mt-2 text-[#e9e2d2]/55">Administra perfiles que se muestran en la Landing Page.</p></div>
         {editor()}
       </div>
       <Card>
-        <CardHeader><CardTitle>Equipo <span className="ml-2 text-sm font-normal text-[#3E2723]/50">{people.length} {people.length === 1 ? "persona" : "personas"}</span></CardTitle></CardHeader>
+        <CardHeader><CardTitle>Equipo <span className="ml-2 text-sm font-normal text-[#e9e2d2]/40">{people.length} {people.length === 1 ? "persona" : "personas"}</span></CardTitle></CardHeader>
         <CardContent>
           <Table>
             <TableHeader><TableRow><TableHead>Colaborador</TableHead><TableHead>Especialidad</TableHead><TableHead>Biografía</TableHead><TableHead>Correo</TableHead><TableHead className="text-right">Acciones</TableHead></TableRow></TableHeader>
             <TableBody>{people.map((person) => (
               <TableRow key={person.id}>
-                <TableCell><div className="flex min-w-48 items-center gap-3">{person.photoUrl ? <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-[#E8DCC0]"><Image src={person.photoUrl} alt={`Retrato de ${person.name}`} fill sizes="44px" unoptimized className="object-cover" /></div> : <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#E8DCC0] text-xs font-semibold text-[#8B6D16]">{getInitials(person.name) || <UserRound size={18} />}</span>}<span className="font-medium">{person.name}</span></div></TableCell>
+                <TableCell><div className="flex min-w-48 items-center gap-3">{person.photoUrl ? <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-[#11182b]"><Image src={person.photoUrl} alt={`Retrato de ${person.name}`} fill sizes="44px" unoptimized className="object-cover" /></div> : <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#11182b] text-xs font-semibold text-[#d8bc7f]">{getInitials(person.name) || <UserRound size={18} />}</span>}<span className="font-medium">{person.name}</span></div></TableCell>
                 <TableCell className="min-w-40">{person.specialty}</TableCell>
-                <TableCell className="min-w-64 max-w-sm text-xs leading-5 text-[#3E2723]/65">{person.bio}</TableCell>
+                <TableCell className="min-w-64 max-w-sm text-xs leading-5 text-[#e9e2d2]/55">{person.bio}</TableCell>
                 <TableCell className="whitespace-nowrap">{person.email}</TableCell>
-                <TableCell><div className="flex justify-end gap-2">{editor(person)}<Button size="sm" variant="ghost" aria-label={`Eliminar ${person.name}`} onClick={() => { if (window.confirm(`¿Eliminar a ${person.name} del equipo?`)) setPeople((current) => current.filter((entry) => entry.id !== person.id)); }}><Trash2 size={16} className="text-red-700" /></Button></div></TableCell>
+                <TableCell><div className="flex justify-end gap-2">{editor(person)}<Button size="sm" variant="ghost" aria-label={`Eliminar ${person.name}`} onClick={() => { if (window.confirm(`¿Eliminar a ${person.name} del equipo?`)) setPeople((current) => current.filter((entry) => entry.id !== person.id)); }}><Trash2 size={16} className="text-red-300" /></Button></div></TableCell>
               </TableRow>
             ))}</TableBody>
           </Table>
-          {people.length === 0 && <p className="py-8 text-center text-sm text-[#3E2723]/55">Aún no hay colaboradores.</p>}
+          {people.length === 0 && <p className="py-8 text-center text-sm text-[#e9e2d2]/45">Aún no hay colaboradores.</p>}
         </CardContent>
       </Card>
     </div>

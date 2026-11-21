@@ -242,9 +242,9 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
         title: `${apt.service} · ${apt.clientName}`,
         start: apt.date,
         end: endDate,
-        backgroundColor: isConfirmed ? "#3E2723" : "#8B6D16",
-        borderColor: "#D4AF37",
-        textColor: "#F4ECD8",
+        backgroundColor: isConfirmed ? "#c7a45a" : "#4a5678",
+        borderColor: "#e3c57c",
+        textColor: "#0b1020",
         extendedProps: { ...apt },
       };
     });
@@ -272,33 +272,33 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 bg-[#F4ECD8] text-[#3E2723]">
+    <div className="mx-auto max-w-7xl space-y-8 bg-[#11182b] text-[#e9e2d2]">
       {/* Encabezado Editorial */}
-      <header className="border-b border-[#D4AF37]/30 pb-7">
+      <header className="border-b border-[#c7a45a]/30 pb-7">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#8B6D16] before:h-px before:w-8 before:bg-[#8B6D16]/60">
+            <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#d8bc7f] before:h-px before:w-8 before:bg-[#c7a45a]/60">
               Agenda Electrónica Editorial · Dharma Kadabra
             </p>
             {/* Encabezado elegante con la fecha actual en formato largo */}
-            <h1 className="mt-2 font-display font-serif text-4xl sm:text-5xl text-[#2A1B17] tracking-tight leading-tight">
+            <h1 className="mt-2 font-display font-serif text-4xl sm:text-5xl text-[#f7f2e7] tracking-tight leading-tight">
               {formattedLongDate}
             </h1>
-            <p className="mt-2 text-sm text-[#3E2723]/70">
+            <p className="mt-2 text-sm text-[#e9e2d2]/70">
               Gestión de lecturas akáshicas, sesiones rituales y recordatorios automatizados de WhatsApp.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             {/* Selector de modo de vista */}
-            <div className="flex items-center rounded-xl border border-[#D4AF37]/30 bg-white/50 p-1 backdrop-blur-sm">
+            <div className="flex items-center rounded-xl border border-[#c7a45a]/30 bg-white/[0.03] p-1 backdrop-blur-sm">
               <button
                 type="button"
                 onClick={() => setViewMode("editorial")}
                 className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
                   viewMode === "editorial"
-                    ? "bg-[#3E2723] text-[#D4AF37] shadow-sm"
-                    : "text-[#3E2723]/70 hover:text-[#3E2723]"
+                    ? "bg-[#c7a45a] text-[#0b1020] shadow-sm"
+                    : "text-[#e9e2d2]/70 hover:text-[#e9e2d2]"
                 }`}
               >
                 <Clock size={14} /> Slots Editoriales
@@ -308,8 +308,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 onClick={() => setViewMode("calendar")}
                 className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
                   viewMode === "calendar"
-                    ? "bg-[#3E2723] text-[#D4AF37] shadow-sm"
-                    : "text-[#3E2723]/70 hover:text-[#3E2723]"
+                    ? "bg-[#c7a45a] text-[#0b1020] shadow-sm"
+                    : "text-[#e9e2d2]/70 hover:text-[#e9e2d2]"
                 }`}
               >
                 <Calendar size={14} /> Calendario
@@ -321,9 +321,9 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               onClick={runNotificationSimulation}
               disabled={isSimulating}
               variant="outline"
-              className="border-[#D4AF37]/40 bg-white/60 text-[#8B6D16] hover:bg-[#D4AF37]/15 hover:border-[#D4AF37]"
+              className="border-[#c7a45a]/40 bg-white/[0.04] text-[#d8bc7f] hover:bg-[#c7a45a]/12 hover:border-[#c7a45a]"
             >
-              <Bell size={16} className={isSimulating ? "animate-spin" : "text-[#D4AF37]"} />
+              <Bell size={16} className={isSimulating ? "animate-spin" : "text-[#e3c57c]"} />
               {isSimulating ? "Verificando..." : "Motor de Recordatorios"}
             </Button>
 
@@ -345,14 +345,14 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               type="button"
               onClick={() => changeDay(-1)}
               aria-label="Día anterior"
-              className="grid size-9 place-items-center rounded-xl border border-[#D4AF37]/30 bg-white/60 text-[#3E2723] transition hover:bg-white hover:border-[#D4AF37]"
+              className="grid size-9 place-items-center rounded-xl border border-[#c7a45a]/30 bg-white/[0.04] text-[#e9e2d2] transition hover:bg-white/[0.06] hover:border-[#c7a45a]"
             >
               <ChevronLeft size={18} />
             </button>
             <button
               type="button"
               onClick={goToToday}
-              className="rounded-xl border border-[#D4AF37]/30 bg-white/60 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#3E2723] transition hover:bg-white hover:border-[#D4AF37]"
+              className="rounded-xl border border-[#c7a45a]/30 bg-white/[0.04] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#e9e2d2] transition hover:bg-white/[0.06] hover:border-[#c7a45a]"
             >
               Hoy (18 Nov)
             </button>
@@ -360,23 +360,23 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               type="button"
               onClick={() => changeDay(1)}
               aria-label="Día siguiente"
-              className="grid size-9 place-items-center rounded-xl border border-[#D4AF37]/30 bg-white/60 text-[#3E2723] transition hover:bg-white hover:border-[#D4AF37]"
+              className="grid size-9 place-items-center rounded-xl border border-[#c7a45a]/30 bg-white/[0.04] text-[#e9e2d2] transition hover:bg-white/[0.06] hover:border-[#c7a45a]"
             >
               <ChevronRight size={18} />
             </button>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-xs">
-            <span className="flex items-center gap-2 rounded-full border border-[#D4AF37]/25 bg-white/50 px-3 py-1 text-[#3E2723]/75">
-              <span className="size-2 rounded-full bg-[#D4AF37]" />
+            <span className="flex items-center gap-2 rounded-full border border-[#c7a45a]/25 bg-white/[0.03] px-3 py-1 text-[#e9e2d2]/75">
+              <span className="size-2 rounded-full bg-[#c7a45a]" />
               <strong>{dayAppointments.length}</strong> Citas para este día
             </span>
-            <span className="flex items-center gap-2 rounded-full border border-[#D4AF37]/25 bg-white/50 px-3 py-1 text-[#3E2723]/75">
+            <span className="flex items-center gap-2 rounded-full border border-[#c7a45a]/25 bg-white/[0.03] px-3 py-1 text-[#e9e2d2]/75">
               <span className="size-2 rounded-full bg-emerald-500" />
               <strong>{TIME_SLOTS.length - dayAppointments.length}</strong> Espacios disponibles
             </span>
-            <span className="flex items-center gap-2 rounded-full border border-[#D4AF37]/25 bg-white/50 px-3 py-1 text-[#3E2723]/75">
-              <ShieldCheck size={14} className="text-[#D4AF37]" />
+            <span className="flex items-center gap-2 rounded-full border border-[#c7a45a]/25 bg-white/[0.03] px-3 py-1 text-[#e9e2d2]/75">
+              <ShieldCheck size={14} className="text-[#e3c57c]" />
               Recordatorios automatizados: 1 sem · 1 día · 1 hora
             </span>
           </div>
@@ -385,17 +385,17 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
 
       {/* Banner de Feedback de Simulación de WhatsApp */}
       {simulationLog && (
-        <div className="relative rounded-2xl border border-[#D4AF37]/40 bg-white/80 p-5 shadow-lg backdrop-blur-md">
+        <div className="relative rounded-2xl border border-[#c7a45a]/40 bg-white/[0.05] p-5 shadow-lg backdrop-blur-md">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-[#D4AF37]/15 text-[#8B6D16]">
+              <span className="grid size-10 place-items-center rounded-xl bg-[#c7a45a]/12 text-[#d8bc7f]">
                 <MessageCircle size={20} />
               </span>
               <div>
-                <h2 className="font-display font-serif text-lg font-semibold text-[#2A1B17]">
+                <h2 className="font-display font-serif text-lg font-semibold text-[#f7f2e7]">
                   Motor de Notificaciones WhatsApp (Simulado)
                 </h2>
-                <p className="text-xs text-[#3E2723]/70">
+                <p className="text-xs text-[#e9e2d2]/70">
                   Verificación de citas a 7 días, 1 día y 1 hora ejecutada con éxito.
                 </p>
               </div>
@@ -404,15 +404,15 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               type="button"
               onClick={() => setSimulationLog(null)}
               aria-label="Cerrar log"
-              className="rounded-lg p-1.5 text-[#3E2723]/50 hover:bg-[#3E2723]/10 hover:text-[#3E2723]"
+              className="rounded-lg p-1.5 text-[#e9e2d2]/40 hover:bg-white/[0.06] hover:text-[#e9e2d2]"
             >
               <X size={16} />
             </button>
           </div>
-          <div className="mt-3 space-y-2 rounded-xl bg-[#F4ECD8]/70 p-3.5 font-mono text-xs text-[#3E2723]/80 border border-[#D4AF37]/20">
+          <div className="mt-3 space-y-2 rounded-xl bg-white/[0.04] p-3.5 font-mono text-xs text-[#e9e2d2]/80 border border-[#c7a45a]/20">
             {simulationLog.map((log, index) => (
               <p key={index} className="flex items-start gap-2">
-                <span className="text-[#8B6D16] font-bold">›</span>
+                <span className="text-[#d8bc7f] font-bold">›</span>
                 <span>{log}</span>
               </p>
             ))}
@@ -423,7 +423,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
       {/* VISTA 1: SLOTS EDITORIALES (GLASSMORPHISM) */}
       {viewMode === "editorial" && (
         <section aria-label="Horario Editorial de Citas" className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-[#8B6D16]/80 px-1">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-[#d8bc7f]/80 px-1">
             <span>Hora y Espacio</span>
             <span>Detalles del Cliente y Estado</span>
           </div>
@@ -439,30 +439,30 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 return (
                   <article
                     key={slot.hour}
-                    className="relative flex flex-col md:flex-row md:items-center justify-between gap-5 p-5 sm:p-6 bg-white/60 backdrop-blur-md rounded-xl border border-[#D4AF37]/30 border-l-4 border-l-[#D4AF37] shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/80"
+                    className="relative flex flex-col md:flex-row md:items-center justify-between gap-5 p-5 sm:p-6 bg-white/[0.04] backdrop-blur-md rounded-xl border border-[#c7a45a]/30 border-l-4 border-l-[#c7a45a] shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/[0.07]"
                   >
                     {/* Sección Izquierda: Hora, Nombre (Playfair Display) y Servicio */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 min-w-0">
                       <div className="flex sm:flex-col items-center sm:items-start justify-between gap-1 shrink-0">
-                        <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold tracking-wider text-[#8B6D16] bg-[#D4AF37]/15 px-3 py-1 rounded-md border border-[#D4AF37]/30">
+                        <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold tracking-wider text-[#d8bc7f] bg-[#c7a45a]/12 px-3 py-1 rounded-md border border-[#c7a45a]/30">
                           <Clock size={13} /> {slot.label}
                         </span>
-                        <span className="text-[10px] uppercase tracking-widest text-[#3E2723]/50 sm:mt-1">
+                        <span className="text-[10px] uppercase tracking-widest text-[#e9e2d2]/40 sm:mt-1">
                           Sesión Reservada
                         </span>
                       </div>
 
                       <div className="min-w-0">
                         {/* Nombre de la persona en Playfair Display */}
-                        <h2 className="font-display font-serif text-2xl sm:text-3xl text-[#2A1B17] tracking-tight truncate">
+                        <h2 className="font-display font-serif text-2xl sm:text-3xl text-[#f7f2e7] tracking-tight truncate">
                           {appointment.clientName}
                         </h2>
                         <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs">
-                          <span className="flex items-center gap-1 font-medium text-[#8B6D16]">
+                          <span className="flex items-center gap-1 font-medium text-[#d8bc7f]">
                             <Sparkles size={13} /> {appointment.service}
                           </span>
-                          <span className="text-[#3E2723]/30">·</span>
-                          <span className="flex items-center gap-1 font-mono text-[#3E2723]/70">
+                          <span className="text-[#e9e2d2]/30">·</span>
+                          <span className="flex items-center gap-1 font-mono text-[#e9e2d2]/70">
                             <Phone size={12} /> {appointment.clientPhone}
                           </span>
                         </div>
@@ -470,13 +470,13 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                     </div>
 
                     {/* Sección Derecha: Estado de Notificaciones y Acciones */}
-                    <div className="flex flex-wrap items-center gap-3 border-t border-[#3E2723]/10 pt-3 md:border-t-0 md:pt-0 shrink-0">
+                    <div className="flex flex-wrap items-center gap-3 border-t border-[#c7a45a]/14 pt-3 md:border-t-0 md:pt-0 shrink-0">
                       {/* Estado de la cita */}
                       <span
                         className={`px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                           appointment.status === "CONFIRMED"
-                            ? "bg-[#3E2723] text-[#F4ECD8]"
-                            : "bg-[#D4AF37]/20 text-[#8B6D16] border border-[#D4AF37]/40"
+                            ? "bg-[#c7a45a] text-[#f7f2e7]"
+                            : "bg-[#c7a45a]/20 text-[#d8bc7f] border border-[#c7a45a]/40"
                         }`}
                       >
                         {appointment.status === "CONFIRMED" ? "Confirmada" : "Pendiente"}
@@ -487,8 +487,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                         <span
                           className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-md ${
                             appointment.notificationsSent.includes("7_DAYS")
-                              ? "bg-emerald-500/15 text-emerald-800 border border-emerald-500/30"
-                              : "bg-[#3E2723]/5 text-[#3E2723]/40"
+                              ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                              : "bg-white/[0.04] text-[#e9e2d2]/40"
                           }`}
                         >
                           {appointment.notificationsSent.includes("7_DAYS") && <CheckCircle2 size={10} />}
@@ -497,8 +497,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                         <span
                           className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-md ${
                             appointment.notificationsSent.includes("1_DAY")
-                              ? "bg-emerald-500/15 text-emerald-800 border border-emerald-500/30"
-                              : "bg-[#3E2723]/5 text-[#3E2723]/40"
+                              ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                              : "bg-white/[0.04] text-[#e9e2d2]/40"
                           }`}
                         >
                           {appointment.notificationsSent.includes("1_DAY") && <CheckCircle2 size={10} />}
@@ -507,8 +507,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                         <span
                           className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-md ${
                             appointment.notificationsSent.includes("1_HOUR")
-                              ? "bg-emerald-500/15 text-emerald-800 border border-emerald-500/30"
-                              : "bg-[#3E2723]/5 text-[#3E2723]/40"
+                              ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                              : "bg-white/[0.04] text-[#e9e2d2]/40"
                           }`}
                         >
                           {appointment.notificationsSent.includes("1_HOUR") && <CheckCircle2 size={10} />}
@@ -520,7 +520,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                       <button
                         type="button"
                         onClick={() => simulateDirectWhatsApp(appointment, "1_DAY")}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D4AF37]/50 bg-white/80 px-3 py-1.5 text-xs font-medium text-[#8B6D16] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A] hover:border-[#D4AF37]"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#c7a45a]/50 bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-[#d8bc7f] transition hover:bg-[#c7a45a] hover:text-[#0b1020] hover:border-[#c7a45a]"
                       >
                         <Send size={12} /> WhatsApp
                       </button>
@@ -533,17 +533,17 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               return (
                 <div
                   key={slot.hour}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white/60 backdrop-blur-md rounded-xl border border-[#D4AF37]/30 transition-all duration-300 hover:bg-white/80 hover:border-[#D4AF37]/60 group"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white/[0.04] backdrop-blur-md rounded-xl border border-[#c7a45a]/30 transition-all duration-300 hover:bg-white/[0.07] hover:border-[#c7a45a]/60 group"
                 >
                   <div className="flex items-center gap-4">
-                    <span className="font-mono text-xs font-medium text-[#3E2723]/50 bg-[#3E2723]/5 px-3 py-1 rounded-md">
+                    <span className="font-mono text-xs font-medium text-[#e9e2d2]/40 bg-white/[0.04] px-3 py-1 rounded-md">
                       {slot.label}
                     </span>
                     <div>
-                      <p className="font-display font-serif text-lg text-[#3E2723]/55 italic font-normal">
+                      <p className="font-display font-serif text-lg text-[#e9e2d2]/45 italic font-normal">
                         Espacio disponible
                       </p>
-                      <p className="text-xs text-[#3E2723]/45">
+                      <p className="text-xs text-[#e9e2d2]/35">
                         Lectura akáshica o sesión ritual
                       </p>
                     </div>
@@ -552,7 +552,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                   <button
                     type="button"
                     onClick={() => openNewAppointmentModal(slot.hour)}
-                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-[#8B6D16] transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-[#c7a45a]/40 bg-[#c7a45a]/10 px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-[#d8bc7f] transition hover:bg-[#c7a45a] hover:text-[#0b1020]"
                   >
                     <Plus size={14} /> Agendar en esta hora
                   </button>
@@ -586,17 +586,17 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 </Button>
               ))}
             </div>
-            <div className="flex items-center gap-4 text-xs text-[#3E2723]/70">
+            <div className="flex items-center gap-4 text-xs text-[#e9e2d2]/70">
               <span className="flex items-center gap-1.5">
-                <i className="size-2.5 rounded-full bg-[#3E2723]" /> Cita Confirmada
+                <i className="size-2.5 rounded-full bg-[#c7a45a]" /> Cita Confirmada
               </span>
               <span className="flex items-center gap-1.5">
-                <i className="size-2.5 rounded-full bg-[#8B6D16]" /> Cita Pendiente
+                <i className="size-2.5 rounded-full bg-[#4a5678]" /> Cita Pendiente
               </span>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[#D4AF37]/30 bg-white/60 p-5 shadow-sm backdrop-blur-md">
+          <div className="rounded-2xl border border-[#c7a45a]/30 bg-white/[0.04] p-5 shadow-sm backdrop-blur-md">
             <div className="calendar-papiro">
               <FullCalendar
                 key={calendarKey}
@@ -625,7 +625,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
       {/* MODAL DE NUEVA CITA EDITORIAL */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 grid place-items-center bg-[#211410]/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 grid place-items-center bg-[#05070d]/75 p-4 backdrop-blur-sm"
           role="presentation"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) setIsModalOpen(false);
@@ -635,21 +635,21 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
             role="dialog"
             aria-modal="true"
             aria-labelledby={modalTitleId}
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[#D4AF37]/40 bg-[#F4ECD8] p-6 text-[#3E2723] shadow-2xl"
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[#c7a45a]/40 bg-[#11182b] p-6 text-[#e9e2d2] shadow-2xl"
           >
-            <div className="flex items-center justify-between border-b border-[#3E2723]/15 pb-4">
+            <div className="flex items-center justify-between border-b border-[#c7a45a]/18 pb-4">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#8B6D16]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#d8bc7f]">
                   Dharma Kadabra
                 </p>
-                <h2 id={modalTitleId} className="font-display font-serif text-2xl text-[#2A1B17]">
+                <h2 id={modalTitleId} className="font-display font-serif text-2xl text-[#f7f2e7]">
                   Agendar Nueva Cita
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="rounded-lg p-2 text-[#3E2723]/60 transition hover:bg-[#3E2723]/10 hover:text-[#3E2723]"
+                className="rounded-lg p-2 text-[#e9e2d2]/55 transition hover:bg-white/[0.06] hover:text-[#e9e2d2]"
                 aria-label="Cerrar modal"
               >
                 <X size={18} />
@@ -658,7 +658,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
 
             <form onSubmit={handleSaveAppointment} className="mt-5 space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
                   Nombre del Cliente
                 </label>
                 <input
@@ -667,12 +667,12 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                   placeholder="Ej. Mariana Silva"
                   value={modalClientName}
                   onChange={(e) => setModalClientName(e.target.value)}
-                  className="w-full rounded-xl border border-[#3E2723]/20 bg-white/80 px-4 py-2.5 text-sm text-[#3E2723] outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/30"
+                  className="w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-4 py-2.5 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a] focus:ring-2 focus:ring-[#c7a45a]/30"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
                   Teléfono / WhatsApp (para recordatorios)
                 </label>
                 <input
@@ -680,19 +680,19 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                   placeholder="+52 55 1234 5678"
                   value={modalClientPhone}
                   onChange={(e) => setModalClientPhone(e.target.value)}
-                  className="w-full rounded-xl border border-[#3E2723]/20 bg-white/80 px-4 py-2.5 text-sm text-[#3E2723] outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/30"
+                  className="w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-4 py-2.5 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a] focus:ring-2 focus:ring-[#c7a45a]/30"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
                     Servicio
                   </label>
                   <select
                     value={modalService}
                     onChange={(e) => setModalService(e.target.value)}
-                    className="w-full rounded-xl border border-[#3E2723]/20 bg-white/80 px-3.5 py-2.5 text-sm text-[#3E2723] outline-none focus:border-[#D4AF37]"
+                    className="w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-3.5 py-2.5 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a]"
                   >
                     {SERVICES_LIST.map((srv) => (
                       <option key={srv} value={srv}>
@@ -703,13 +703,13 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
                     Hora
                   </label>
                   <select
                     value={modalHour}
                     onChange={(e) => setModalHour(e.target.value)}
-                    className="w-full rounded-xl border border-[#3E2723]/20 bg-white/80 px-3.5 py-2.5 text-sm text-[#3E2723] outline-none focus:border-[#D4AF37]"
+                    className="w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-3.5 py-2.5 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a]"
                   >
                     {TIME_SLOTS.map((slot) => (
                       <option key={slot.hour} value={String(slot.hour)}>
@@ -721,7 +721,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
                   Estado
                 </label>
                 <div className="flex gap-4">
@@ -732,7 +732,7 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                       value="CONFIRMED"
                       checked={modalStatus === "CONFIRMED"}
                       onChange={() => setModalStatus("CONFIRMED")}
-                      className="accent-[#D4AF37]"
+                      className="accent-[#c7a45a]"
                     />
                     Confirmada
                   </label>
@@ -743,14 +743,14 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                       value="PENDING"
                       checked={modalStatus === "PENDING"}
                       onChange={() => setModalStatus("PENDING")}
-                      className="accent-[#D4AF37]"
+                      className="accent-[#c7a45a]"
                     />
                     Pendiente
                   </label>
                 </div>
               </div>
 
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#3E2723]/15">
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#c7a45a]/18">
                 <Button
                   type="button"
                   variant="outline"

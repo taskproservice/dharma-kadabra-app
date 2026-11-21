@@ -20,6 +20,18 @@ export interface RoleConfig {
 export const ROLES: Role[] = ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR", "CLIENT"];
 
 /**
+ * Página de inicio del dashboard según el rol. Se usa en el middleware para
+ * devolver a cada rol a un punto de entrada que sí tenga permitido.
+ */
+export const DASHBOARD_HOME_BY_ROLE: Record<Role, string> = {
+  ADMIN: "/dashboard",
+  ENGINEER: "/dashboard",
+  SOCIAL_MEDIA: "/dashboard/redes",
+  COLLABORATOR: "/dashboard/perfil",
+  CLIENT: "/dashboard/perfil",
+};
+
+/**
  * Objeto de configuración de módulos y permisos por rol.
  * Define con precisión qué rutas y módulos del Dashboard puede visualizar y acceder cada rol.
  */
@@ -36,13 +48,12 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     role: "ENGINEER",
     label: "Ingeniero (Soporte)",
     badge: "Soporte Técnico",
-    description: "Acceso a todo el sistema excepto pasarelas de pago y runas.",
+    description: "Acceso a todo el sistema excepto Finanzas, Pasarela de Pagos y Runas.",
     allowedHrefs: [
       "/dashboard",
       "/dashboard/resumen",
       "/dashboard/perfil",
       "/dashboard/pos",
-      "/dashboard/ventas",
       "/dashboard/agenda",
       "/dashboard/eventos",
       "/dashboard/audio",
@@ -59,10 +70,12 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
       "/dashboard/info",
       "/dashboard/informacion-general",
     ],
-    // Ve todo, excepto Pasarela de Pagos y Runas
+    // Ve todo, excepto Finanzas, Pasarela de Pagos y Runas
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       const isForbidden =
+        clean === "/dashboard/ventas" ||
+        clean.startsWith("/dashboard/ventas/") ||
         clean === "/dashboard/pagos" ||
         clean.startsWith("/dashboard/pagos/") ||
         clean === "/dashboard/pasarela-pagos" ||
@@ -76,20 +89,16 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     role: "SOCIAL_MEDIA",
     label: "Social Media Manager",
     badge: "Marketing & Redes",
-    description: "Solo ve Resumen (Métricas), Audio/Video, y Redes Sociales.",
+    description: "Solo ve Redes Sociales y Contenido (audio y video).",
     // Solo ve Resumen (Métricas), Audio/Video, y un nuevo módulo "Redes Sociales" (donde pueda programar posts)
     allowedHrefs: [
-      "/dashboard",
-      "/dashboard/resumen",
       "/dashboard/audio",
       "/dashboard/video",
       "/dashboard/redes",
     ],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
-      if (clean === "/dashboard") return true;
       const allowedPrefixes = [
-        "/dashboard/resumen",
         "/dashboard/audio",
         "/dashboard/video",
         "/dashboard/redes",
@@ -104,14 +113,12 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     description: "Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio.",
     // Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio
     allowedHrefs: [
-      "/dashboard",
       "/dashboard/perfil",
       "/dashboard/agenda",
       "/dashboard/audio",
     ],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
-      if (clean === "/dashboard") return true;
       const allowedPrefixes = [
         "/dashboard/perfil",
         "/dashboard/agenda",

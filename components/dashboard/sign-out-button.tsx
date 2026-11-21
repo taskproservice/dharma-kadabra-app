@@ -19,10 +19,11 @@ export function SignOutButton() {
       type="button"
       onClick={handleSignOut}
       disabled={pending}
-      className="flex items-center gap-2 rounded-xl border border-[#3E2723]/15 px-3.5 py-2 text-sm font-medium transition hover:bg-white/70 disabled:opacity-60"
+      aria-label="Cerrar sesión"
+      className="flex items-center gap-2 rounded-full border border-[#c7a45a]/25 px-3 py-2 text-xs font-medium text-[#e9e2d2]/80 transition hover:border-[#c7a45a]/60 hover:bg-[#c7a45a]/10 hover:text-[#e3c57c] disabled:opacity-60"
     >
-      <LogOut size={16} />
-      Cerrar Sesión
+      <LogOut size={14} />
+      <span className="hidden sm:inline">Cerrar sesión</span>
     </button>
   );
 }

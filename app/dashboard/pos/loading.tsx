@@ -26,7 +26,7 @@ export default function PosLoading() {
           ))}
         </div>
       </section>
-      <aside className="w-full rounded-2xl border border-white/70 bg-[#E8DCC0]/60 p-6 xl:w-[370px] xl:shrink-0">
+      <aside className="w-full rounded-2xl border border-[#c7a45a]/20 bg-[#11182b]/60 p-6 xl:w-[370px] xl:shrink-0">
         <Skeleton className="h-7 w-32" />
         <div className="mt-6 space-y-3">
           {Array.from({ length: 3 }).map((_, index) => (
