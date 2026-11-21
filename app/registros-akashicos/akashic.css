@@ -1,0 +1,10 @@
+/* Recursos exclusivos de la página de Lectura de Registros Akáshicos.
+   Sistema «Nordic Mystic Luxury», heredado de la página de Runas. */
+
+.akashic-display {
+  font-family: var(--font-cormorant-garamond), Georgia, "Times New Roman", serif;
+}
+
+.akashic-hairline {
+  background-image: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.65), transparent);
+}

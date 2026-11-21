@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services, formatSessionPrice } from "../../lib/data/services";
-import { Dialog } from "../ui/dialog";
-import { BookingDialog } from "./booking-dialog";
 
 const eyebrow = "mb-5 flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#e3c57c] before:h-px before:w-10 before:bg-[#c7a45a]/60";
 
-/** Servicios agendables de la landing. Runas abre su propia página editorial. */
+/** Servicios agendables de la landing. Runas y Registros abren su propia página editorial. */
 export function ServicesSection() {
   return (
     <section id="servicios" className="scroll-mt-16 bg-[#0b1020] px-5 py-8 text-[#e9e2d2] sm:px-8 lg:py-10">
@@ -38,9 +36,12 @@ export function ServicesSection() {
                     Agendar Sesión <ArrowRight size={14} />
                   </Link>
                 ) : (
-                  <Dialog trigger={<button type="button" className="inline-flex items-center gap-2 border border-[#c7a45a]/60 bg-[#c7a45a]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e9e2d2] transition hover:bg-[#c7a45a] hover:text-[#0b1020]">Agendar Sesión <ArrowRight size={14} /></button>} title={`Agendar · ${service.name}`}>
-                    {(close) => <BookingDialog service={service} close={close} />}
-                  </Dialog>
+                  <Link
+                    href="/registros-akashicos"
+                    className="inline-flex items-center gap-2 border border-[#c7a45a]/60 bg-[#c7a45a]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e9e2d2] transition hover:bg-[#c7a45a] hover:text-[#0b1020]"
+                  >
+                    Agendar Sesión <ArrowRight size={14} />
+                  </Link>
                 )}
               </div>
             </article>
