@@ -171,7 +171,7 @@ function Hero() {
 function Knowledge() {
   return (
     <section id="conocimiento" className="relative scroll-mt-20 bg-[#F7F3EA] text-[#2E231D]">
-      <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12 lg:py-10">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-4 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12 lg:py-5">
         <figure>
           <div className="relative aspect-[4/5] overflow-hidden border border-[#2E231D]/15 shadow-[0_30px_70px_-40px_rgba(46,35,29,.65)]">
             <Image
