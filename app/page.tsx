@@ -136,15 +136,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Paola Hernández — tarjeta de cristal con retrato */}
+      {/* Paola Hernández — tarjeta Papiro con retrato */}
       <section id="paola" className="relative scroll-mt-24 overflow-hidden bg-[#080c16] px-5 py-16 sm:px-8 lg:py-24">
         <Image src={sabiduriaAncestral} alt="" fill sizes="100vw" className="object-cover opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#080c16] via-[#080c16]/85 to-[#080c16]" />
-        <article className="glass-panel relative mx-auto max-w-6xl overflow-hidden p-6 sm:p-10 lg:p-16">
-          <div className="pointer-events-none absolute inset-4 border border-[#c7a45a]/15" />
+        <article className="papyrus-card relative mx-auto max-w-6xl overflow-hidden rounded-[1.25rem] border border-[#C5A059]/30 bg-[#F4EFE6] p-6 shadow-[0_24px_60px_-32px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 sm:p-10 lg:p-16">
+          <div className="pointer-events-none absolute inset-4 border border-[#C5A059]/25" />
           <div className="relative grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-sm border border-[#c7a45a]/60 shadow-[0_30px_70px_-30px_rgba(0,0,0,.9)]">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-sm border border-[#C5A059]/60 shadow-[0_30px_60px_-30px_rgba(26,26,26,0.45)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -156,19 +156,19 @@ export default async function HomePage() {
                 />
                 <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080c16]/60 via-transparent to-transparent" />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#e9e2d2]/40">Fundadora · Dharma Kadabra</figcaption>
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#1A1A1A]/50">Fundadora · Dharma Kadabra</figcaption>
             </figure>
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#f7f2e7] sm:text-6xl">Paola <em className="italic text-[#e3c57c]">Hernández</em></h2>
-              <p className="mt-5 font-display text-xl italic text-[#d8bc7f] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
-              <div className="mt-8 h-px w-16 bg-gradient-to-r from-[#c7a45a] to-transparent" />
-              <div className="mt-8 font-sans text-base leading-8 text-[#e9e2d2]/70">
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#1A1A1A] sm:text-6xl">Paola <em className="italic text-[#C5A059]">Hernández</em></h2>
+              <p className="mt-5 font-display text-xl italic text-[#C5A059] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
+              <div className="mt-8 h-px w-16 bg-gradient-to-r from-[#C5A059] to-transparent" />
+              <div className="mt-8 font-sans text-base leading-8 text-stone-800">
                 <p>Cada alma guarda una sabiduría profunda que merece un espacio seguro para expresarse. A través de mis canalizaciones, camino contigo desde el amor para que reconectes con tu esencia y encuentres tus propias respuestas. Dharma Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y profundo respeto por el ritmo de cada alma.</p>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-8">
-                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#c7a45a]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#d8bc7f] transition hover:border-[#c7a45a] hover:text-[#e3c57c]">Conoce nuestra historia <ArrowRight size={14} /></a>
-                <span className="font-display text-lg italic text-[#e9e2d2]/45">Con amor, Paola</span>
+                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#C5A059]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition duration-300 hover:border-[#C5A059] hover:text-[#C5A059]">Conoce nuestra historia <ArrowRight size={14} /></a>
+                <span className="font-display text-lg italic text-[#1A1A1A]/50">Con amor, Paola</span>
               </div>
             </div>
           </div>
@@ -207,7 +207,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Pilares — imagen de altar con tarjetas de cristal */}
+      {/* Pilares — imagen de altar con tarjetas Papiro */}
       <section id="nosotros" className="relative scroll-mt-24 overflow-hidden bg-[#080c16] text-[#f7f2e7]">
         <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#080c16] via-[#080c16]/70 to-[#080c16]" />
@@ -218,11 +218,11 @@ export default async function HomePage() {
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="group relative overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-[linear-gradient(160deg,rgba(28,36,56,.6),rgba(11,16,32,.5))] p-8 backdrop-blur-xl transition hover:border-[#c7a45a]/50 lg:p-10">
-                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-[#c7a45a]/10 blur-2xl transition group-hover:bg-[#c7a45a]/20" />
-                <Icon size={22} strokeWidth={1.25} className="relative text-[#d8bc7f]" />
-                <h3 className="relative mt-10 font-display text-2xl text-[#f7f2e7]">{title}</h3>
-                <p className="relative mt-4 text-sm font-light leading-7 text-[#e9e2d2]/70">{text}</p>
+              <article key={title} className="papyrus-card group relative overflow-hidden rounded-2xl border border-[#C5A059]/30 bg-[#F4EFE6] p-8 shadow-[0_24px_50px_-24px_rgba(26,26,26,0.25),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 hover:-translate-y-1 hover:border-[#C5A059]/60 hover:shadow-[0_30px_60px_-24px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] lg:p-10">
+                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-[#C5A059]/15 blur-2xl transition duration-300 group-hover:bg-[#C5A059]/25" />
+                <Icon size={22} strokeWidth={1.25} className="relative text-[#C5A059]" />
+                <h3 className="relative mt-10 font-display text-2xl text-[#1A1A1A]">{title}</h3>
+                <p className="relative mt-4 text-sm font-light leading-7 text-[#1A1A1A]/70">{text}</p>
               </article>
             ))}
           </div>
@@ -249,18 +249,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Prueba gratis — tarjeta de cristal */}
+      {/* Prueba gratis — tarjeta Papiro */}
       <section id="prueba" className="scroll-mt-24 bg-[#080c16] px-5 py-12 sm:px-8 lg:py-16">
-        <div className="glass-panel relative mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
-          <span aria-hidden="true" className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(199,164,90,.22),transparent_70%)] blur-2xl" />
-          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#d8bc7f] shadow-[0_0_12px_rgba(216,188,127,.9)]" />
+        <div className="papyrus-card relative mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden rounded-[1.25rem] border border-[#C5A059]/30 bg-[#F4EFE6] px-6 py-10 text-center shadow-[0_24px_60px_-32px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 sm:px-16 sm:py-14">
+          <span aria-hidden="true" className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_70%)] blur-2xl" />
+          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,.9)]" />
           <div className="relative flex justify-center"><Eyebrow>Tu primer paso empieza aquí</Eyebrow></div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#f7f2e7] sm:text-6xl">Regálate un momento para <em className="italic text-[#e3c57c]">reconectar.</em></h2>
-          <p className="relative mx-auto max-w-lg text-base font-light leading-7 text-[#e9e2d2]/65">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#1A1A1A] sm:text-6xl">Regálate un momento para <em className="italic text-[#C5A059]">reconectar.</em></h2>
+          <p className="relative mx-auto max-w-lg text-base font-light leading-7 text-[#1A1A1A]/70">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
           <Link href="/dashboard/pos" className="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#d8bc7f] via-[#c7a45a] to-[#e3c57c] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#0b1020] shadow-[0_18px_50px_-20px_rgba(199,164,90,.8)] transition hover:brightness-110">
             Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-[#e9e2d2]/40">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-[#1A1A1A]/50">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
         </div>
       </section>
 
