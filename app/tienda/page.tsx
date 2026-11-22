@@ -1,25 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { Cormorant_Garamond } from "next/font/google";
 import { PublicHeader } from "../../components/landing/public-header";
 import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { getPrincipal } from "../../lib/rbac";
-import { DEFAULT_CATEGORY, STORE_PALETTE } from "../../modules/holistic-store/constants";
+import { DEFAULT_CATEGORY } from "../../modules/holistic-store/constants";
 import { getStorefrontData } from "../../modules/holistic-store/data";
 import { StoreBanner } from "../../modules/holistic-store/components/StoreBanner";
 import { StoreErrorPanel } from "../../modules/holistic-store/components/StoreErrorPanel";
 import { StoreExplorer } from "../../modules/holistic-store/components/StoreExplorer";
-
-/** Tipografía editorial de la tienda (Cormorant Garamond, servida en local). */
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-cormorant-garamond",
-});
 
 export const metadata: Metadata = {
   title: "La Tienda Holística · Dharma Kadabra",
@@ -38,11 +28,8 @@ export default async function TiendaPage() {
   const isAuthenticated = Boolean(principal);
 
   return (
-    <div className={cormorant.variable}>
-      <main
-        className="relative min-h-screen text-[#F7F3EA]"
-        style={{ backgroundColor: STORE_PALETTE.nocturno }}
-      >
+    <>
+      <main className="relative min-h-screen bg-obsidian text-papyrus">
         <PublicHeader />
 
         {/* Resplandor dorado ambiental sobre el fondo nocturno */}
@@ -55,7 +42,7 @@ export default async function TiendaPage() {
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <Link
               href="/"
-              className="group inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.28em] text-[#F7F3EA]/45 transition hover:text-[#C5A059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
+              className="group inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.28em] text-papyrus/45 transition hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
             >
               <ArrowLeft size={13} className="transition group-hover:-translate-x-1" aria-hidden="true" />
               Volver al inicio
@@ -64,23 +51,16 @@ export default async function TiendaPage() {
 
           {/* Encabezado editorial */}
           <header className="mx-auto max-w-7xl px-5 pb-10 pt-8 text-center sm:px-8 sm:pt-12">
-            <p className="flex items-center justify-center gap-4 text-[10px] font-medium uppercase tracking-[.42em] text-[#C5A059]">
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-r from-transparent to-[#C5A059]/70" />
+            <p className="flex items-center justify-center gap-4 text-[10px] font-medium uppercase tracking-[.42em] text-gold">
+              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-r from-transparent to-gold/70" />
               Holistic Store
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-l from-transparent to-[#C5A059]/70" />
+              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-l from-transparent to-gold/70" />
             </p>
-            <h1
-              className="mt-6 font-normal leading-[1.03] text-[#F7F3EA]"
-              style={{
-                fontFamily: "var(--font-cormorant-garamond), Georgia, 'Times New Roman', serif",
-                fontSize: "clamp(2.6rem, 6.4vw, 4.6rem)",
-                letterSpacing: "-.01em",
-              }}
-            >
+            <h1 className="mt-6 font-cormorant text-[clamp(2.6rem,6.4vw,4.6rem)] font-normal leading-[1.03] tracking-[-0.01em] text-papyrus">
               La Tienda{" "}
-              <em className="italic text-[#C5A059]">Holística</em>
+              <em className="italic text-gold">Holística</em>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-[#F7F3EA]/60 sm:text-base">
+            <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-papyrus/60 sm:text-base">
               Objetos con intención para acompañar tus rituales. Cada pieza se elige a mano y se
               consulta por WhatsApp: sin prisa, con presencia.
             </p>
@@ -110,6 +90,6 @@ export default async function TiendaPage() {
 
       {/* Cozy: embudo de ventas de la tienda (abre desde cada tarjeta) */}
       <CozyWidget />
-    </div>
+    </>
   );
 }

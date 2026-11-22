@@ -46,9 +46,9 @@ function BannerArt({ slide, eager }: { slide: StoreBannerSlide; eager: boolean }
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121212]/55 via-transparent to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian/55 via-transparent to-transparent"
       />
-      <span aria-hidden="true" className="pointer-events-none absolute inset-4 border border-[#F7F3EA]/20" />
+      <span aria-hidden="true" className="pointer-events-none absolute inset-4 border border-papyrus/20" />
     </div>
   );
 }
@@ -94,8 +94,7 @@ export function StoreBanner() {
 
   return (
     <div
-      className="relative overflow-hidden border-y border-[#C5A059]/15"
-      style={{ backgroundColor: STORE_PALETTE.nocturno }}
+      className="relative overflow-hidden border-y border-gold/15 bg-obsidian"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -110,32 +109,32 @@ export function StoreBanner() {
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"
       />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-16 lg:py-16">
         {/* Columna editorial — se re-monta en cada slide para animar el texto */}
         <div key={slide.src} className="store-slide-in">
-          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#C5A059]">
-            <span aria-hidden="true" className="h-px w-10 bg-[#C5A059]/70" />
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-gold">
+            <span aria-hidden="true" className="h-px w-10 bg-gold/70" />
             Holistic Store · {slide.kicker}
           </p>
-          <h2 className="mt-6 font-display text-4xl leading-[1.04] text-[#F7F3EA] sm:text-5xl lg:text-6xl">
+          <h2 className="mt-6 font-display text-4xl leading-[1.04] text-papyrus sm:text-5xl lg:text-6xl">
             {slide.title}{" "}
-            <em className="italic text-[#C5A059]">{slide.accent}</em>
+            <em className="italic text-gold">{slide.accent}</em>
           </h2>
-          <p className="mt-6 max-w-md text-base font-light leading-8 text-[#F7F3EA]/65">{slide.text}</p>
+          <p className="mt-6 max-w-md text-base font-light leading-8 text-papyrus/65">{slide.text}</p>
 
           <div className="mt-9 flex flex-wrap items-center gap-5">
             <button
               type="button"
               onClick={scrollToCollection}
-              className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#d9bd7f] via-[#C5A059] to-[#e6cd8d] px-8 py-4 text-[11px] font-bold uppercase tracking-[.28em] text-[#121212] shadow-[0_18px_50px_-20px_rgba(197,160,89,.8)] transition hover:brightness-110"
+              className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-gradient-to-r from-gold-light via-gold to-gold-bright px-8 py-4 text-[11px] font-bold uppercase tracking-[.28em] text-obsidian shadow-[0_18px_50px_-20px_rgba(197,160,89,.8)] transition hover:brightness-110"
             >
               Ver catálogo
               <ArrowDown size={15} className="transition group-hover:translate-y-0.5" />
             </button>
-            <span aria-hidden="true" className="font-display text-lg italic text-[#F7F3EA]/40">
+            <span aria-hidden="true" className="font-display text-lg italic text-papyrus/40">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
           </div>
@@ -146,7 +145,7 @@ export function StoreBanner() {
               type="button"
               onClick={() => go(index - 1)}
               aria-label="Colección anterior"
-              className="grid size-11 place-items-center rounded-full border border-[#C5A059]/35 text-[#F7F3EA]/70 transition hover:border-[#C5A059] hover:text-[#C5A059]"
+              className="grid size-11 cursor-pointer place-items-center rounded-full border border-gold/35 text-papyrus/70 transition hover:border-gold hover:text-gold"
             >
               <ChevronLeft size={18} />
             </button>
@@ -154,7 +153,7 @@ export function StoreBanner() {
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Colección siguiente"
-              className="grid size-11 place-items-center rounded-full border border-[#C5A059]/35 text-[#F7F3EA]/70 transition hover:border-[#C5A059] hover:text-[#C5A059]"
+              className="grid size-11 cursor-pointer place-items-center rounded-full border border-gold/35 text-papyrus/70 transition hover:border-gold hover:text-gold"
             >
               <ChevronRight size={18} />
             </button>
@@ -167,8 +166,8 @@ export function StoreBanner() {
                   aria-selected={i === index}
                   aria-label={`Ver ${item.kicker}`}
                   onClick={() => go(i)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    i === index ? "w-10 bg-[#C5A059]" : "w-4 bg-[#F7F3EA]/20 hover:bg-[#F7F3EA]/40"
+                  className={`h-1.5 cursor-pointer rounded-full transition-all duration-500 ${
+                    i === index ? "w-10 bg-gold" : "w-4 bg-papyrus/20 hover:bg-papyrus/40"
                   }`}
                 />
               ))}
@@ -178,8 +177,8 @@ export function StoreBanner() {
 
         {/* Columna visual — los 3 paneles siempre montados, rotación por opacidad */}
         <figure className="relative">
-          <span aria-hidden="true" className="pointer-events-none absolute -inset-4 rounded-sm border border-[#C5A059]/20" />
-          <div className="relative aspect-[8/5] overflow-hidden rounded-sm border border-[#C5A059]/40 shadow-[0_40px_90px_-30px_rgba(0,0,0,.85)] lg:aspect-[16/11]">
+          <span aria-hidden="true" className="pointer-events-none absolute -inset-4 rounded-sm border border-gold/20" />
+          <div className="relative aspect-[8/5] overflow-hidden rounded-sm border border-gold/40 shadow-[0_40px_90px_-30px_rgba(0,0,0,.85)] lg:aspect-[16/11]">
             {STORE_BANNERS.map((item, i) => {
               const isActive = i === index;
               return (
@@ -195,7 +194,7 @@ export function StoreBanner() {
               );
             })}
           </div>
-          <figcaption className="mt-4 text-center text-[10px] uppercase tracking-[.3em] text-[#F7F3EA]/40">
+          <figcaption className="mt-4 text-center text-[10px] uppercase tracking-[.3em] text-papyrus/40">
             {slide.kicker}
           </figcaption>
         </figure>
@@ -211,8 +210,8 @@ export function StoreBanner() {
             aria-selected={i === index}
             aria-label={`Ver ${item.kicker}`}
             onClick={() => go(i)}
-            className={`h-1.5 rounded-full transition-all duration-500 ${
-              i === index ? "w-10 bg-[#C5A059]" : "w-4 bg-[#F7F3EA]/20"
+            className={`h-1.5 cursor-pointer rounded-full transition-all duration-500 ${
+              i === index ? "w-10 bg-gold" : "w-4 bg-papyrus/20"
             }`}
           />
         ))}

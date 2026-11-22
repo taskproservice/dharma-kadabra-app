@@ -190,7 +190,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
           </div>
 
           {videoUrl.trim() ? (
-            <div className="overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-black">
+            <div className="overflow-hidden rounded-2xl border border-gold/20 bg-obsidian-deep">
               {source.kind === "file" ? (
                 <video key={videoUrl} src={source.src} controls preload="metadata" className="aspect-video w-full" />
               ) : (

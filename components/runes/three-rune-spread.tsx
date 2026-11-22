@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import { ArrowRight, RotateCcw } from "lucide-react";
-import { runes } from "../../../data/runes";
-import type { Rune } from "../../../types/rune";
+import { runes } from "../../data/runes";
+import type { Rune } from "../../types/rune";
 import { RuneBookingCTA } from "./booking-cta";
 
 const POSITIONS = [
@@ -51,35 +51,35 @@ export function ThreeRuneSpread() {
           const rune = revealed[index];
           return (
             <div key={position.number}>
-              <div className="mb-1 flex items-baseline justify-between border-b border-[#C5A059]/25 pb-1">
-                <p className="rune-display text-base text-[#F7F3EA]">{position.label}</p>
-                <span className="text-[10px] uppercase tracking-[.22em] text-[#C5A059]/70">{position.number}</span>
+              <div className="mb-1 flex items-baseline justify-between border-b border-gold/25 pb-1">
+                <p className="rune-display text-base text-papyrus">{position.label}</p>
+                <span className="text-[10px] uppercase tracking-[.22em] text-gold/70">{position.number}</span>
               </div>
-              <p className="mb-1 text-[10px] tracking-wide text-[#F7F3EA]/45">{position.note}</p>
+              <p className="mb-1 text-[10px] tracking-wide text-papyrus/45">{position.note}</p>
 
               <div className="[perspective:1400px]">
                 <button
                   type="button"
                   onClick={() => reveal(index)}
                   aria-label={rune ? `${position.label}: ${rune.name}, ${rune.meaning}` : `Revelar runa de ${position.label.toLowerCase()}`}
-                  className="relative block aspect-[4/5] max-h-[180px] w-full cursor-pointer rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212]"
+                  className="relative block aspect-[4/5] max-h-[180px] w-full cursor-pointer rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian"
                 >
                   <span className="rune-card-3d relative block h-full w-full" data-flipped={Boolean(rune)}>
                     {/* Dorso */}
-                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center border border-[#C5A059]/45 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.14),transparent_62%),linear-gradient(155deg,#1b1b1b,#0e0e0e)] p-2">
-                      <span aria-hidden="true" className="absolute inset-3 border border-[#C5A059]/15" />
-                      <span aria-hidden="true" className="rune-glyph mb-1 text-xl text-[#C5A059]/80">ᛟ</span>
-                      <span className="relative text-center text-[8px] uppercase leading-4 tracking-[.22em] text-[#F7F3EA]/45">
+                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center border border-gold/45 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.14),transparent_62%),linear-gradient(155deg,#161920,#0F1115)] p-2">
+                      <span aria-hidden="true" className="absolute inset-3 border border-gold/15" />
+                      <span aria-hidden="true" className="rune-glyph mb-1 text-xl text-gold/80">ᛟ</span>
+                      <span className="relative text-center text-[8px] uppercase leading-4 tracking-[.22em] text-papyrus/45">
                         {rune ? "Runa revelada" : "Toca para revelar"}
                       </span>
                     </span>
 
                     {/* Frente */}
-                    <span className="rune-face rune-face--back absolute inset-0 flex flex-col items-center justify-center border border-[#C5A059]/60 bg-[linear-gradient(160deg,#20201d,#111110)] p-2 text-center">
-                      <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059] sm:text-4xl">{rune?.symbol ?? "✧"}</span>
-                      <span className="rune-display mt-1 text-sm text-[#F7F3EA]">{rune?.name ?? ""}</span>
-                      <span className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-[#F7F3EA]/55">{rune?.meaning ?? ""}</span>
-                      <span className="mt-auto pt-1 text-[8px] uppercase tracking-[.2em] text-[#C5A059]/70">
+                    <span className="rune-face rune-face--back absolute inset-0 flex flex-col items-center justify-center border border-gold/60 bg-[linear-gradient(160deg,#1D212B,#0F1115)] p-2 text-center">
+                      <span aria-hidden="true" className="rune-glyph text-3xl text-gold sm:text-4xl">{rune?.symbol ?? "✧"}</span>
+                      <span className="rune-display mt-1 text-sm text-papyrus">{rune?.name ?? ""}</span>
+                      <span className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-papyrus/55">{rune?.meaning ?? ""}</span>
+                      <span className="mt-auto pt-1 text-[8px] uppercase tracking-[.2em] text-gold/70">
                         {rune ? `Runa ${String(rune.number).padStart(2, "0")}` : ""}
                       </span>
                     </span>
@@ -91,15 +91,15 @@ export function ThreeRuneSpread() {
         })}
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[#C5A059]/20 pt-2">
-        <p role="status" className="text-xs uppercase tracking-[.2em] text-[#F7F3EA]/50">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-gold/20 pt-2">
+        <p role="status" className="text-xs uppercase tracking-[.2em] text-papyrus/50">
           {count === 0 ? "Tres cartas boca abajo te esperan" : `${count} de 3 runas reveladas`}
         </p>
         {count > 0 && (
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.2em] text-[#C5A059] transition hover:text-[#F7F3EA]"
+            className="inline-flex cursor-pointer items-center gap-2 text-[11px] font-semibold uppercase tracking-[.2em] text-gold transition hover:text-papyrus"
           >
             <RotateCcw size={14} /> Nueva tirada
           </button>
@@ -107,10 +107,10 @@ export function ThreeRuneSpread() {
       </div>
 
       <div className="mt-3 flex flex-col items-center gap-2 text-center">
-        <RuneBookingCTA className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#C5A059] px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[.24em] text-[#121212] shadow-[0_18px_50px_-20px_rgba(197,160,89,.85)] transition hover:bg-[#d9b673]">
+        <RuneBookingCTA className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[.24em] text-obsidian shadow-[0_18px_50px_-20px_rgba(197,160,89,.85)] transition hover:bg-gold-light">
           AGENDAR MI LECTURA DE RUNAS <ArrowRight size={15} className="transition group-hover:translate-x-1" />
         </RuneBookingCTA>
-        <p className="text-[11px] leading-5 text-[#F7F3EA]/45">
+        <p className="text-[11px] leading-5 text-papyrus/45">
           La tirada es un primer acercamiento. En la sesión profundizamos juntas en tu lectura completa.
         </p>
       </div>

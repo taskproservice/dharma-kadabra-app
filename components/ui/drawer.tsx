@@ -27,7 +27,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-[#05070d]/80 backdrop-blur-sm", className)}
+    className={cn("fixed inset-0 z-50 bg-obsidian-deep/80 backdrop-blur-sm", className)}
     {...props}
   />
 ));
@@ -42,7 +42,7 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col border-l border-[#C5A059]/35 bg-[#121212] text-[#F7F3EA] shadow-[-30px_0_90px_-30px_rgba(0,0,0,.95)] outline-none sm:max-w-lg",
+        "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col border-l border-gold/35 bg-obsidian text-papyrus shadow-[-30px_0_90px_-30px_rgba(0,0,0,.95)] outline-none sm:max-w-lg",
         className,
       )}
       {...props}
@@ -50,7 +50,7 @@ const DrawerContent = React.forwardRef<
       {children}
       <DrawerPrimitive.Close
         aria-label={closeLabel}
-        className="absolute right-5 top-5 grid size-9 place-items-center rounded-full border border-[#C5A059]/35 text-[#C5A059] transition hover:bg-[#C5A059] hover:text-[#121212] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059]"
+        className="absolute right-5 top-5 grid size-9 place-items-center rounded-full border border-gold/35 text-gold transition hover:bg-gold hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
       >
         <X size={17} />
       </DrawerPrimitive.Close>
@@ -60,7 +60,7 @@ const DrawerContent = React.forwardRef<
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("border-b border-[#C5A059]/20 px-7 pb-6 pt-10 sm:px-9", className)} {...props} />
+  <div className={cn("border-b border-gold/20 px-7 pb-6 pt-10 sm:px-9", className)} {...props} />
 );
 DrawerHeader.displayName = "DrawerHeader";
 
@@ -70,7 +70,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn("rune-display text-4xl leading-none text-[#C5A059]", className)}
+    className={cn("rune-display text-4xl leading-none text-gold", className)}
     {...props}
   />
 ));
@@ -82,7 +82,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn("text-sm leading-7 text-[#F7F3EA]/65", className)}
+    className={cn("text-sm leading-7 text-papyrus/65", className)}
     {...props}
   />
 ));

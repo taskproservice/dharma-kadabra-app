@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   Calendar,
   CheckCircle2,
@@ -94,6 +95,7 @@ export default function RedesPage() {
   const [scheduleTime, setScheduleTime] = useState("18:00");
   const [selectedImage, setSelectedImage] = useState<string>("/images/hero/joyeria-sagrada.jpg");
   const [successBanner, setSuccessBanner] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
   const [previewPlatform, setPreviewPlatform] = useState<"instagram" | "facebook">("instagram");
 
   const handleAddHashtag = (tag: string) => {
@@ -109,9 +111,10 @@ export default function RedesPage() {
     if (targetFacebook) platforms.push("facebook");
 
     if (platforms.length === 0) {
-      alert("Por favor selecciona al menos una plataforma (Instagram o Facebook).");
+      setFormError("Por favor selecciona al menos una plataforma (Instagram o Facebook).");
       return;
     }
+    setFormError(null);
 
     const newPost: ScheduledPost = {
       id: `post-${Date.now()}`,
@@ -278,16 +281,24 @@ export default function RedesPage() {
 
       {/* Banner de Confirmación */}
       {successBanner && (
-        <div className="flex items-center justify-between rounded-2xl border border-emerald-500/30 bg-emerald-50/80 p-4 text-sm text-emerald-900 shadow-sm backdrop-blur-md">
+        <div role="status" className="flex items-center justify-between rounded-2xl border border-emerald-500/35 bg-emerald-500/15 p-4 text-sm text-emerald-200 shadow-sm backdrop-blur-md">
           <div className="flex items-center gap-3">
-            <CheckCircle2 size={20} className="text-emerald-600" />
+            <CheckCircle2 size={20} className="text-emerald-300" />
             <p className="font-medium">{successBanner}</p>
           </div>
           <button
             type="button"
             onClick={() => setSuccessBanner(null)}
-            className="text-emerald-300 hover:text-emerald-900"
+            className="text-emerald-300 hover:text-papyrus"
           >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+      {formError && (
+        <div role="alert" className="flex items-center justify-between rounded-2xl border border-red-400/35 bg-red-500/15 p-4 text-sm text-red-200">
+          <p>{formError}</p>
+          <button type="button" onClick={() => setFormError(null)} className="text-red-300 hover:text-papyrus">
             <X size={16} />
           </button>
         </div>
@@ -406,18 +417,20 @@ export default function RedesPage() {
                         key={img.path}
                         type="button"
                         onClick={() => setSelectedImage(img.path)}
-                        className={`group relative overflow-hidden rounded-xl border-2 transition ${
+                        className={`group relative h-16 cursor-pointer overflow-hidden rounded-xl border-2 transition ${
                           selectedImage === img.path
-                            ? "border-[#c7a45a] ring-2 ring-[#D4AF37]/40"
+                            ? "border-gold ring-2 ring-gold/40"
                             : "border-transparent opacity-75 hover:opacity-100"
                         }`}
                       >
-                        <img
+                        <Image
                           src={img.path}
                           alt={img.label}
-                          className="h-16 w-full object-cover"
+                          fill
+                          sizes="140px"
+                          className="object-cover"
                         />
-                        <span className="absolute inset-x-0 bottom-0 bg-black/60 py-0.5 text-center text-[10px] text-white">
+                        <span className="absolute inset-x-0 bottom-0 bg-obsidian/75 py-0.5 text-center text-[10px] text-papyrus">
                           {img.label}
                         </span>
                       </button>
@@ -491,11 +504,15 @@ export default function RedesPage() {
                   className="flex flex-col gap-4 rounded-2xl border border-[#c7a45a]/20 bg-white/[0.04] p-4 shadow-sm backdrop-blur-md transition hover:bg-white/[0.06] sm:flex-row sm:items-start"
                 >
                   {post.image && (
-                    <img
-                      src={post.image}
-                      alt="Miniatura"
-                      className="h-24 w-full shrink-0 rounded-xl object-cover sm:h-20 sm:w-20"
-                    />
+                    <div className="relative h-24 w-full shrink-0 overflow-hidden rounded-xl sm:h-20 sm:w-20">
+                      <Image
+                        src={post.image}
+                        alt="Miniatura"
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
                   )}
 
                   <div className="min-w-0 flex-1">
@@ -532,7 +549,7 @@ export default function RedesPage() {
                     type="button"
                     onClick={() => handleDeletePost(post.id)}
                     aria-label="Cancelar publicación programada"
-                    className="self-start rounded-lg p-1.5 text-[#e9e2d2]/40 transition hover:bg-red-500/150/10 hover:text-red-600"
+                    className="self-start rounded-lg p-1.5 text-papyrus/40 transition hover:bg-red-500/15 hover:text-red-300"
                   >
                     <X size={16} />
                   </button>
@@ -595,15 +612,17 @@ export default function RedesPage() {
             </div>
 
             {/* Imagen del Post */}
-            <div className="relative aspect-square w-full overflow-hidden bg-[#11182b]/50">
+            <div className="relative aspect-square w-full overflow-hidden bg-obsidian-soft/60">
               {selectedImage ? (
-                <img
+                <Image
                   src={selectedImage}
                   alt="Vista previa del post"
-                  className="size-full object-cover"
+                  fill
+                  sizes="380px"
+                  className="object-cover"
                 />
               ) : (
-                <div className="grid size-full place-items-center text-xs text-[#e9e2d2]/40">
+                <div className="grid size-full place-items-center text-xs text-papyrus/40">
                   Sin imagen seleccionada
                 </div>
               )}

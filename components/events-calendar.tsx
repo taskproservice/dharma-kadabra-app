@@ -31,9 +31,9 @@ export function EventsCalendar({ initialEvents, products }: { initialEvents: Cal
     id: event.id,
     title: event.title,
     start: event.start,
-    backgroundColor: "#c7a45a",
-    borderColor: "#e3c57c",
-    textColor: "#0b1020",
+    backgroundColor: "#C5A059",
+    borderColor: "#E3C57C",
+    textColor: "#0F1115",
     extendedProps: { description: event.description, productNames: event.productNames },
   })), [events]);
 
@@ -99,8 +99,8 @@ export function EventsCalendar({ initialEvents, products }: { initialEvents: Cal
         />
       </div>
       <aside className="space-y-4">
-        <button type="button" onClick={() => openForDate()} className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#0b1020] px-5 text-sm font-semibold text-[#f7f2e7] shadow-sm transition hover:bg-[#c7a45a]"><Plus size={17} /> Agregar evento</button>
-        {notice && <div role="status" className="relative rounded-xl border border-[#c7a45a]/30 bg-[#151d31] p-4 pr-9 text-xs leading-5 text-[#e9e2d2]/80"><button type="button" onClick={() => setNotice("")} className="absolute right-2 top-2 rounded p-1" aria-label="Cerrar"><X size={14} /></button>{notice}</div>}
+        <button type="button" onClick={() => openForDate()} className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gold px-5 text-sm font-semibold text-obsidian shadow-sm transition hover:bg-gold-light"><Plus size={17} /> Agregar evento</button>
+        {notice && <div role="status" className="relative rounded-xl border border-gold/30 bg-obsidian-soft p-4 pr-9 text-xs leading-5 text-papyrus/80"><button type="button" onClick={() => setNotice("")} className="absolute right-2 top-2 rounded p-1" aria-label="Cerrar"><X size={14} /></button>{notice}</div>}
         <div className="rounded-2xl border border-[#c7a45a]/14 bg-white/[0.03] p-5">
           <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.22em] text-[#d8bc7f]"><MoonStar size={15} /> Próximos rituales</p>
           <div className="mt-4 space-y-4">

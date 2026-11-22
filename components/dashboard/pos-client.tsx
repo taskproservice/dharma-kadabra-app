@@ -6,7 +6,7 @@ import { Check, Minus, Plus, RefreshCw, Search, ShoppingBag, Sparkles, Trash2, W
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { ProductCardSkeleton } from "../ui/skeleton";
-import { useCartStore, type Product } from "../../stores/cart";
+import { usePosCartStore, type Product } from "../../stores/cart";
 
 type DbProduct = {
   id: string;
@@ -119,11 +119,11 @@ export function PosClient() {
   const addTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const items = useCartStore((state) => state.items);
-  const add = useCartStore((state) => state.add);
-  const decrement = useCartStore((state) => state.decrement);
-  const remove = useCartStore((state) => state.remove);
-  const clear = useCartStore((state) => state.clear);
+  const items = usePosCartStore((state) => state.items);
+  const add = usePosCartStore((state) => state.add);
+  const decrement = usePosCartStore((state) => state.decrement);
+  const remove = usePosCartStore((state) => state.remove);
+  const clear = usePosCartStore((state) => state.clear);
 
   const loadProducts = useCallback(async () => {
     setLoading(true);
@@ -391,7 +391,7 @@ export function PosClient() {
           <Button
             disabled={!items.length || checkoutState === "sending"}
             onClick={checkout}
-            className="h-12 w-full bg-[#c7a45a] text-[#e9e2d2] hover:bg-[#c4a02e]"
+            className="h-12 w-full bg-gold text-obsidian hover:bg-gold-light"
           >
             {checkoutState === "sending" ? (
               <>
