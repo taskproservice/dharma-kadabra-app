@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Heart, Sparkles, Sun } from "lucide-react";
 import { HeroCarousel, HeroMedallion, type HeroSlide } from "../components/landing/hero-carousel";
+import { LunarBanner } from "../components/landing/lunar-banner";
 import { PublicHeader } from "../components/landing/public-header";
 import { CozyWidget } from "../components/landing/cozy-widget";
 import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
@@ -120,6 +121,8 @@ export default async function HomePage() {
           />
         ))}
       </HeroCarousel>
+
+      <LunarBanner />
 
       {/* Manifiesto */}
       <section id="manifiesto" className="relative scroll-mt-24 overflow-hidden px-5 py-20 sm:px-8 lg:py-28">
