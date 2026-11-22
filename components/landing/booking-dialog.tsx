@@ -5,7 +5,8 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, CreditCard, LoaderCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, CalendarX2, Check, CreditCard, LoaderCircle, Sparkles } from "lucide-react";
+import { getWorkTemplateSlots } from "../../lib/agenda-availability";
 import type { Service } from "../../lib/data/services";
 
 const bookingSchema = z.object({
@@ -19,7 +20,7 @@ const bookingSchema = z.object({
 });
 type BookingValues = z.infer<typeof bookingSchema>;
 
-const timeSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+const timeSlots = getWorkTemplateSlots();
 const today = new Date();
 const minDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
@@ -29,16 +30,20 @@ type BookingDialogProps = {
   initialDate?: string;
   initialTime?: string;
   appearance?: "night" | "papyrus";
+  /** Notifica cuando la reserva se registra correctamente (para refrescar la agenda). */
+  onBooked?: () => void;
 };
 
-export function BookingDialog({ service, close, initialDate = "", initialTime = "", appearance = "night" }: BookingDialogProps) {
+export function BookingDialog({ service, close, initialDate = "", initialTime = "", appearance = "night", onBooked }: BookingDialogProps) {
   const [step, setStep] = useState(1);
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState("");
   const [bookingId, setBookingId] = useState("");
   const [needsLogin, setNeedsLogin] = useState(false);
   const [bookingInfo, setBookingInfo] = useState<BookingValues | null>(null);
-  const { register, handleSubmit, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: initialDate, time: initialTime } });
+  // Estado elegante para el 409 ("ese horario acaba de reservarse").
+  const [conflict, setConflict] = useState("");
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: initialDate, time: initialTime } });
   const deposit = Math.round(service.price * 0.2);
   const papyrus = appearance === "papyrus";
   const mutedText = papyrus ? "text-ink-muted" : "text-papyrus/55";
@@ -50,11 +55,13 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
   const continueToPayment = handleSubmit((values) => {
     setBookingInfo(values);
     setError("");
+    setConflict("");
     setStep(2);
   });
 
   async function payDeposit() {
     setError("");
+    setConflict("");
     setNeedsLogin(false);
     setIsPaying(true);
     try {
@@ -67,10 +74,18 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
         serviceId: service.id,
       };
       const response = await fetch("/api/appointments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
       if (response.status === 401) setNeedsLogin(true);
+      if (response.status === 409) {
+        // El horario acaba de ocuparse: volver a elegirlo en el paso 1.
+        setConflict(result.error || "Ese horario acaba de reservarse. Elige otro horario.");
+        setStep(1);
+        setValue("time", "");
+        return;
+      }
       if (!response.ok) throw new Error(result.error || "No fue posible completar la reserva.");
       setBookingId(result.appointment.id);
+      onBooked?.();
       setStep(3);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Inténtalo de nuevo en un momento.");
@@ -95,7 +110,17 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
       })}
     </ol>
 
-    {step === 1 && <form id="booking-form" onSubmit={continueToPayment} className="space-y-4">
+    {step === 1 && <>
+      {conflict && (
+        <div role="alert" className={`flex items-start gap-3 rounded-xl border p-4 ${papyrus ? "border-gold/40 bg-gold/[.09] text-ink" : "border-gold/30 bg-gold/[.08] text-papyrus"}`}>
+          <CalendarX2 size={20} className={`mt-0.5 shrink-0 ${papyrus ? "text-bronze" : "text-gold-bright"}`} aria-hidden="true" />
+          <div>
+            <p className="text-sm font-semibold">{conflict}</p>
+            <p className={`mt-1 text-xs leading-5 ${mutedText}`}>Este horario acaba de reservarse. Elige otro horario en la lista y continúa con tu reserva.</p>
+          </div>
+        </div>
+      )}
+      <form id="booking-form" onSubmit={continueToPayment} className="space-y-4">
       <div><h3 className="font-display text-2xl">Comencemos por conocerte.</h3><p className={`mt-1 text-sm ${mutedText}`}>Tus datos nos ayudan a preparar tu encuentro.</p></div>
       <Field label="Nombre completo" error={errors.clientName?.message} papyrus={papyrus}><input {...register("clientName")} autoComplete="name" placeholder="Tu nombre" className={`${fieldClasses} px-3 text-sm`} /></Field>
       <Field label="Correo electrónico" error={errors.clientEmail?.message} papyrus={papyrus}><input {...register("clientEmail")} type="email" autoComplete="email" placeholder="tu@correo.com" className={`${fieldClasses} px-3 text-sm`} /></Field>
@@ -105,7 +130,8 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
         <Field label="Horario" error={errors.time?.message} papyrus={papyrus}><select {...register("time")} defaultValue="" className={`${fieldClasses} px-2 text-xs`}><option value="" disabled>Elige hora</option>{timeSlots.map((time) => <option key={time} value={time}>{time}</option>)}</select></Field>
       </div>
       <button type="submit" className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-center text-sm font-semibold leading-5 text-obsidian transition hover:bg-gold-bright">Continuar al anticipo <ArrowRight size={16} className="shrink-0" /></button>
-    </form>}
+      </form>
+    </>}
 
     {step === 2 && <div className="space-y-5">
       <div><p className={`text-[10px] font-semibold uppercase tracking-[.2em] ${accentText}`}>Resumen de tu sesión</p><h3 className="mt-2 font-display text-2xl">{service.name}</h3></div>

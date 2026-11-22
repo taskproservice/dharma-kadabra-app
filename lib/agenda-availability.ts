@@ -1,26 +1,21 @@
 /**
  * Lógica de negocio y utilidades de fechas/horarios para la Agenda Digital.
  *
- * Centraliza el cálculo de celdas del calendario mensual, el formato horario
- * y la disponibilidad de demostración hasta conectar disponibilidad en vivo
- * desde Prisma.
+ * Calcula la disponibilidad real de la plantilla de trabajo (09:00–18:00 en
+ * hora local del navegador) restando los horarios ya ocupados por citas
+ * registradas en Prisma. Todas las funciones de disponibilidad son puras:
+ * reciben los horarios bloqueados (instantes absolutos en ISO) y no hablan
+ * con la base de datos; la consulta vive en `lib/availability.ts`.
  */
 
 export const AGENDA_WEEKDAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"] as const;
 export const WEEKDAYS = AGENDA_WEEKDAYS;
 
-/** Horarios de demostración por día de la semana (0 = Dom … 6 = Sáb). */
-const MOCK_SLOTS_BY_WEEKDAY: Record<number, readonly string[]> = {
-  0: [],
-  1: ["10:00", "14:00"],
-  2: ["10:00", "14:00", "16:00"],
-  3: [],
-  4: ["10:00", "14:00", "16:00"],
-  5: ["10:00", "14:00"],
-  6: ["10:00", "16:00"],
-};
+/** Ritmo de la plantilla: bloques de una hora, de 09:00 a 18:00 (hora local). */
+export const WORK_TEMPLATE_START_HOUR = 9;
+export const WORK_TEMPLATE_END_HOUR = 18;
 
-function pad(value: number) {
+export function pad(value: number) {
   return String(value).padStart(2, "0");
 }
 
@@ -60,21 +55,71 @@ export function getCalendarDates(monthKey: string) {
   );
 }
 
-export function getMockAvailability(dateKey: string, todayKey: string) {
-  if (dateKey <= todayKey) return [];
+/* -------------------------------------------------------------------------- */
+/* Disponibilidad real desde la plantilla de trabajo                           */
+/* -------------------------------------------------------------------------- */
 
-  const date = dateFromKey(dateKey);
-  // Algunos días se reservan como no disponibles para que la vista sea realista.
-  if (date.getUTCDate() % 9 === 0) return [];
-
-  return [...(MOCK_SLOTS_BY_WEEKDAY[date.getUTCDay()] ?? [])];
+/** "HH:MM" locales (09:00, 10:00, … 17:00) que define la plantilla de trabajo. */
+export function getWorkTemplateSlots() {
+  const slots: string[] = [];
+  for (let hour = WORK_TEMPLATE_START_HOUR; hour < WORK_TEMPLATE_END_HOUR; hour += 1) {
+    slots.push(`${pad(hour)}:00`);
+  }
+  return slots;
 }
 
-export function findFirstAvailableDate(monthKey: string, todayKey: string) {
+/** Clave de fecha local "YYYY-MM-DD" del navegador. */
+export function toLocalDateKey(date: Date) {
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+/** Clave de hora local "HH:MM" del navegador. */
+export function toLocalTimeKey(date: Date) {
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** Para una fecha local, el conjunto de "HH:MM" ocupados por las citas bloqueadas. */
+export function getBlockedSlotKeysForDate(dateKey: string, blocked: readonly string[]) {
+  const keys = new Set<string>();
+  for (const instant of blocked) {
+    const date = new Date(instant);
+    if (Number.isNaN(date.getTime())) continue;
+    if (toLocalDateKey(date) === dateKey) keys.add(toLocalTimeKey(date));
+  }
+  return keys;
+}
+
+/**
+ * Horarios disponibles para un día dado, restando de la plantilla de trabajo
+ * los horarios ya ocupados por citas (`blocked`) y, si `dateKey` es hoy, los
+ * horarios que ya pasaron. `now` es inyectable para pruebas.
+ */
+export function getAvailableSlotsForDate(dateKey: string, blocked: readonly string[], now: Date = new Date()) {
+  const isToday = dateKey === toLocalDateKey(now);
+  const blockedKeys = getBlockedSlotKeysForDate(dateKey, blocked);
+  const [year, month, day] = dateKey.split("-").map(Number);
+
+  return getWorkTemplateSlots().filter((slot) => {
+    if (blockedKeys.has(slot)) return false;
+    if (!isToday) return true;
+    const [hour, minute] = slot.split(":").map(Number);
+    const slotDate = new Date(year, month - 1, day, hour, minute, 0, 0);
+    return slotDate.getTime() > now.getTime();
+  });
+}
+
+/** ¿El día tiene al menos un horario disponible? (ignora días pasados) */
+export function isDateAvailable(dateKey: string, blocked: readonly string[], todayKey: string, now: Date = new Date()) {
+  if (dateKey < todayKey) return false;
+  return getAvailableSlotsForDate(dateKey, blocked, now).length > 0;
+}
+
+/** Primer día disponible del mes (>= todayKey), o `null` si no hay ninguno. */
+export function findFirstAvailableDate(monthKey: string, todayKey: string, blocked: readonly string[], now: Date = new Date()) {
   const dayCount = getDaysInMonth(monthKey);
   for (let day = 1; day <= dayCount; day += 1) {
     const dateKey = `${monthKey}-${pad(day)}`;
-    if (getMockAvailability(dateKey, todayKey).length > 0) return dateKey;
+    if (isDateAvailable(dateKey, blocked, todayKey, now)) return dateKey;
   }
   return null;
 }

@@ -76,6 +76,9 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
   const [modalService, setModalService] = useState(SERVICES_LIST[0]);
   const [modalHour, setModalHour] = useState("10");
   const [modalStatus, setModalStatus] = useState<"CONFIRMED" | "PENDING">("CONFIRMED");
+  const [isSaving, setIsSaving] = useState(false);
+  const [modalError, setModalError] = useState("");
+  const [modalConflict, setModalConflict] = useState("");
 
   // Estado del banner de simulación de notificaciones
   const [simulationLog, setSimulationLog] = useState<string[] | null>(null);
@@ -114,9 +117,14 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
       .join(" ");
   }, [selectedDate]);
 
-  // Citas para la fecha seleccionada
+  // Citas para la fecha seleccionada (clave local del navegador, no UTC)
   const dayAppointments = useMemo(() => {
-    return appointments.filter((apt) => apt.date.startsWith(selectedDate));
+    return appointments.filter((apt) => {
+      const d = new Date(apt.date);
+      if (Number.isNaN(d.getTime())) return false;
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      return key === selectedDate;
+    });
   }, [appointments, selectedDate]);
 
   // Mapeo de hora a cita
@@ -153,27 +161,71 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
     setModalClientPhone("");
     setModalService(SERVICES_LIST[0]);
     setModalStatus("CONFIRMED");
+    setModalError("");
+    setModalConflict("");
     setIsModalOpen(true);
   };
 
-  // Guardar nueva cita
-  const handleSaveAppointment = (e: React.FormEvent) => {
+  // Guardar nueva cita: persiste en Prisma vía /api/appointments (RBAC).
+  const handleSaveAppointment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!modalClientName.trim()) return;
+    if (isSaving) return;
+    if (!modalClientName.trim()) {
+      setModalError("Ingresa el nombre del cliente.");
+      return;
+    }
+    if (!modalClientPhone.trim()) {
+      setModalError("Ingresá un teléfono válido para los recordatorios.");
+      return;
+    }
 
     const hourPadded = modalHour.padStart(2, "0");
-    const newApt: AppointmentItem = {
-      id: `apt-${Date.now()}`,
-      clientName: modalClientName.trim(),
-      clientPhone: modalClientPhone.trim() || "+52 55 0000 0000",
-      date: `${selectedDate}T${hourPadded}:00:00`,
-      service: modalService,
-      status: modalStatus,
-      notificationsSent: [],
-    };
+    const dateTime = new Date(`${selectedDate}T${hourPadded}:00:00`);
+    if (Number.isNaN(dateTime.getTime()) || dateTime.getTime() <= Date.now()) {
+      setModalError("Selecciona una fecha y hora futuras.");
+      return;
+    }
 
-    setAppointments((prev) => [...prev, newApt]);
-    setIsModalOpen(false);
+    setModalError("");
+    setModalConflict("");
+    setIsSaving(true);
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName: modalClientName.trim(),
+          clientPhone: modalClientPhone.trim(),
+          dateTime: dateTime.toISOString(),
+          service: modalService,
+          status: modalStatus,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.status === 409) {
+        setModalConflict(result.error || "Ese horario acaba de reservarse. Elige otro horario.");
+        return;
+      }
+      if (!response.ok) throw new Error(result.error || "No fue posible guardar la cita.");
+
+      setAppointments((prev) => [
+        ...prev,
+        {
+          id: result.appointment.id,
+          clientName: modalClientName.trim(),
+          clientPhone: modalClientPhone.trim(),
+          date: new Date(result.appointment.date).toISOString(),
+          service: modalService,
+          status: result.appointment.status,
+          notificationsSent: [],
+        },
+      ]);
+      setIsModalOpen(false);
+    } catch (err) {
+      setModalError(err instanceof Error ? err.message : "No fue posible guardar la cita.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Ejecutar motor de simulación de notificaciones
@@ -251,19 +303,20 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
   }, [appointments]);
 
   const selectFullCalendarSlot = (selection: DateSelectArg) => {
-    const name = window.prompt("Nombre del cliente para la cita:");
-    if (name?.trim()) {
-      const newApt: AppointmentItem = {
-        id: `apt-${Date.now()}`,
-        clientName: name.trim(),
-        clientPhone: "+52 55 1234 5678",
-        date: selection.startStr,
-        service: "Lectura Akáshica",
-        status: "CONFIRMED",
-        notificationsSent: [],
-      };
-      setAppointments((prev) => [...prev, newApt]);
-    }
+    const start = new Date(selection.startStr);
+    if (Number.isNaN(start.getTime())) return;
+    const y = start.getFullYear();
+    const m = String(start.getMonth() + 1).padStart(2, "0");
+    const d = String(start.getDate()).padStart(2, "0");
+    setSelectedDate(`${y}-${m}-${d}`);
+    setModalHour(String(start.getHours()));
+    setModalClientName("");
+    setModalClientPhone("");
+    setModalService(SERVICES_LIST[0]);
+    setModalStatus("CONFIRMED");
+    setModalError("");
+    setModalConflict("");
+    setIsModalOpen(true);
   };
 
   const clickFullCalendarEvent = (info: EventClickArg) => {
@@ -679,6 +732,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 </label>
                 <input
                   type="tel"
+                  required
+                  minLength={8}
                   placeholder="+52 55 1234 5678"
                   value={modalClientPhone}
                   onChange={(e) => setModalClientPhone(e.target.value)}
@@ -752,16 +807,34 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                 </div>
               </div>
 
+              {modalConflict && (
+                <div role="alert" className="rounded-xl border border-[#c7a45a]/45 bg-[#c7a45a]/10 p-4">
+                  <p className="flex items-start gap-2 text-sm font-semibold text-[#e8d19a]">
+                    <Clock size={16} className="mt-0.5 shrink-0" />
+                    {modalConflict}
+                  </p>
+                  <p className="mt-1.5 text-xs leading-5 text-[#e9e2d2]/70">
+                    Elige otra hora entre los slots disponibles para guardar la cita.
+                  </p>
+                </div>
+              )}
+              {modalError && (
+                <div role="alert" className="rounded-xl border border-red-500/35 bg-red-500/10 p-4">
+                  <p className="text-sm text-red-200">{modalError}</p>
+                </div>
+              )}
+
               <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#c7a45a]/18">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsModalOpen(false)}
+                  disabled={isSaving}
                 >
                   Cancelar
                 </Button>
-                <Button type="submit" variant="gold">
-                  Guardar Cita
+                <Button type="submit" variant="gold" disabled={isSaving}>
+                  {isSaving ? "Guardando…" : "Guardar Cita"}
                 </Button>
               </div>
             </form>
