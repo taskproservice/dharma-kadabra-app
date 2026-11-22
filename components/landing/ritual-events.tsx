@@ -36,7 +36,7 @@ export function RitualEventsSection({ events }: { events: RitualEvent[] }) {
             </h2>
           </div>
           <Link
-            href="/mi-cuenta"
+            href="/agenda"
             className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#d8bc7f] transition hover:text-[#e9e2d2]"
           >
             Ver calendario <ArrowRight size={14} />
