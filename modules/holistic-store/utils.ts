@@ -37,6 +37,22 @@ export function buildWhatsAppUrl(
 }
 
 /**
+ * Construye la URL de WhatsApp para la transferencia a humano (Paola)
+ * desde el chat de Cozy. El mensaje incluye la pieza que se estaba
+ * consultando para que la asesora tenga todo el contexto.
+ */
+export function buildHandoffWhatsAppUrl(
+  product: { name: string } | null | undefined,
+  phone?: string | null,
+): string {
+  const digits = (phone ?? "").replace(/\D/g, "");
+  const message = product
+    ? `Hola Paola, vengo de la tienda. Estaba hablando con Cozy sobre la pieza ${product.name} y me gustaría confirmar mi compra / hablar con un asesor.`
+    : `Hola Paola, vengo de la tienda. Estaba hablando con Cozy y me gustaría hablar con un asesor.`;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+}
+
+/**
  * Calcula el margen de utilidad (%) a partir de costo y precio de venta.
  * Margen = (precio − costo) / precio × 100.
  */

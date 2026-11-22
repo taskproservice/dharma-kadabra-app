@@ -1,47 +1,45 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { Flame, SendHorizontal, X } from "lucide-react";
-
-type Message = { id: number; from: "cozy" | "user"; text: string; time: string };
-
-// Datos de ejemplo: bienvenida simulada mientras se conecta el agente real.
-const WELCOME: Message[] = [
-  { id: 1, from: "cozy", text: "Hola, alma bonita. Soy Cozy, la llama que te acompaña en Dharma Kadabra. 🔥", time: "Ahora" },
-  { id: 2, from: "cozy", text: "Estoy aquí para escucharte y ayudarte a encontrar el talismán, la lectura o el ritual que tu camino necesita hoy.", time: "Ahora" },
-  { id: 3, from: "cozy", text: "¿Qué te gustaría explorar?", time: "Ahora" },
-];
+import { Flame, MessageCircle, SendHorizontal, X } from "lucide-react";
+import { useCozyStore } from "../../stores/cozy";
+import { STORE_WHATSAPP } from "../../modules/holistic-store/constants";
+import { buildHandoffWhatsAppUrl, formatPrice } from "../../modules/holistic-store/utils";
 
 const SUGGESTIONS = ["Talismanes maestros", "Registros akáshicos", "Agendar una sesión"];
 
-const SAMPLE_REPLY =
-  "Gracias por compartirlo conmigo. Respira profundo: muy pronto podré guiarte paso a paso. Mientras tanto, puedes comenzar tu prueba gratis y conocer a nuestras guías.";
-
-function now() {
-  return new Intl.DateTimeFormat("es-MX", { hour: "2-digit", minute: "2-digit" }).format(new Date());
-}
+const PRODUCT_SUGGESTIONS = ["¿Haces envíos?", "¿Cómo cuido esta pieza?", "¿Qué energía tiene?"];
 
 /**
- * Widget flotante de Cozy (la llama).
+ * Widget flotante de Cozy (la llama) — embudo de ventas de la tienda.
  * - FAB fijo en la esquina inferior derecha con resplandor dorado animado.
  * - Panel de chat Papiro Premium: pantalla completa en móvil, ventana flotante en escritorio.
+ * - Recibe el contexto del producto desde el store global (`productContext`)
+ *   cuando el visitante hace clic en "Preguntar a Cozy" de una tarjeta.
+ * - "Hablar con un asesor humano" (o la detección de frustración) muestra el
+ *   botón de WhatsApp con Paola y el mensaje pre-escrito de transferencia.
  */
 export function CozyWidget() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>(WELCOME);
+  const open = useCozyStore((state) => state.isOpen);
+  const messages = useCozyStore((state) => state.messages);
+  const isTyping = useCozyStore((state) => state.isTyping);
+  const productContext = useCozyStore((state) => state.productContext);
+  const handoffReady = useCozyStore((state) => state.handoffReady);
+  const toggle = useCozyStore((state) => state.toggle);
+  const close = useCozyStore((state) => state.close);
+  const sendMessage = useCozyStore((state) => state.sendMessage);
+  const requestHuman = useCozyStore((state) => state.requestHuman);
+  const clearProductContext = useCozyStore((state) => state.clearProductContext);
+
   const [draft, setDraft] = useState("");
-  const [typing, setTyping] = useState(false);
   const fabRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const titleId = useId();
-  const nextId = useRef(WELCOME.length + 1);
 
-  const close = () => {
-    setOpen(false);
-    fabRef.current?.focus();
-  };
+  const whatsappNumber = process.env.NEXT_PUBLIC_STORE_WHATSAPP ?? STORE_WHATSAPP;
+  const whatsappReady = whatsappNumber.replace(/\D/g, "").length >= 10;
+  const handoffUrl = buildHandoffWhatsAppUrl(productContext, whatsappNumber);
 
   // Escape para cerrar, foco en el input al abrir y bloqueo de scroll en móvil (pantalla completa).
   useEffect(() => {
@@ -57,27 +55,19 @@ export function CozyWidget() {
       clearTimeout(focusTimer);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open]);
+  }, [open, close]);
 
   // Desplaza al último mensaje.
   useEffect(() => {
     const list = listRef.current;
     if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
-  }, [messages, typing, open]);
-
-  useEffect(() => () => { if (replyTimer.current) clearTimeout(replyTimer.current); }, []);
+  }, [messages, isTyping, open]);
 
   const send = (text: string) => {
     const clean = text.trim();
     if (!clean) return;
-    setMessages((current) => [...current, { id: nextId.current++, from: "user", text: clean, time: now() }]);
     setDraft("");
-    setTyping(true);
-    if (replyTimer.current) clearTimeout(replyTimer.current);
-    replyTimer.current = setTimeout(() => {
-      setTyping(false);
-      setMessages((current) => [...current, { id: nextId.current++, from: "cozy", text: SAMPLE_REPLY, time: now() }]);
-    }, 1200);
+    void sendMessage(clean);
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -86,6 +76,7 @@ export function CozyWidget() {
   };
 
   const showSuggestions = !messages.some((message) => message.from === "user");
+  const suggestions = productContext ? PRODUCT_SUGGESTIONS : SUGGESTIONS;
 
   return (
     <>
@@ -119,6 +110,32 @@ export function CozyWidget() {
             </button>
           </header>
 
+          {/* Contexto del producto consultado */}
+          {productContext && (
+            <div className="flex items-center gap-2 border-b border-[#c7a45a]/15 bg-[#c7a45a]/[0.07] px-4 py-2.5">
+              <span className="min-w-0 flex-1 truncate text-xs text-[#e9e2d2]/80">
+                <span className="font-semibold text-[#f7f2e7]">{productContext.name}</span>
+                {" · "}
+                {productContext.category}
+                {" · "}
+                {formatPrice(productContext.price, productContext.currency)}
+                {productContext.availability === "out_of_stock" && (
+                  <span className="ml-2 rounded-full bg-[#D96538]/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[.15em] text-[#f0a37e]">
+                    Agotado
+                  </span>
+                )}
+              </span>
+              <button
+                type="button"
+                onClick={clearProductContext}
+                aria-label="Quitar contexto del producto"
+                className="grid size-6 shrink-0 place-items-center rounded-full text-[#e9e2d2]/50 transition hover:bg-white/[0.08] hover:text-[#e3c57c]"
+              >
+                <X size={13} />
+              </button>
+            </div>
+          )}
+
           {/* Mensajes */}
           <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-5" aria-live="polite">
             <p className="text-center text-[10px] uppercase tracking-[.25em] text-[#e9e2d2]/35">Hoy</p>
@@ -143,7 +160,7 @@ export function CozyWidget() {
               </div>
             ))}
 
-            {typing && (
+            {isTyping && (
               <div className="flex items-end gap-2" aria-label="Cozy está escribiendo">
                 <span className="grid size-7 shrink-0 place-items-center bg-transparent" aria-hidden="true">
                   <Flame size={15} className="text-[#ff7a1a] cozy-flame-live" />
@@ -156,9 +173,9 @@ export function CozyWidget() {
               </div>
             )}
 
-            {showSuggestions && !typing && (
+            {showSuggestions && !isTyping && (
               <div className="flex flex-wrap gap-2 pl-9">
-                {SUGGESTIONS.map((suggestion) => (
+                {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
                     type="button"
@@ -171,6 +188,51 @@ export function CozyWidget() {
               </div>
             )}
           </div>
+
+          {/* Transferencia a humano: botón de WhatsApp con Paola */}
+          {handoffReady && (
+            <div className="border-t border-[#c7a45a]/20 bg-[#080c16]/90 px-4 py-3">
+              <p className="text-center text-xs text-[#e9e2d2]/70">
+                ¿Prefieres hablar con Paola, nuestra asesora?
+              </p>
+              {whatsappReady ? (
+                <a
+                  href={handoffUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Abrir WhatsApp con Paola para confirmar tu compra"
+                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 py-2.5 text-[11px] font-bold uppercase tracking-[.18em] text-[#062b16] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+                >
+                  <MessageCircle size={15} className="shrink-0" aria-hidden="true" />
+                  <span>Abrir WhatsApp con Paola</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  title="Próximamente"
+                  className="mt-2 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-[#c7a45a]/40 px-3 py-2.5 text-[11px] font-bold uppercase tracking-[.18em] text-[#e9e2d2]/50 opacity-75"
+                >
+                  <MessageCircle size={15} className="shrink-0" aria-hidden="true" />
+                  <span>WhatsApp próximamente</span>
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Hablar con un asesor humano (siempre visible hasta transferir) */}
+          {!handoffReady && (
+            <div className="bg-[#080c16]/90 px-4 pb-1 pt-2">
+              <button
+                type="button"
+                onClick={requestHuman}
+                className="w-full text-center text-[11px] font-medium text-[#d8bc7f]/80 underline-offset-4 transition hover:text-[#e3c57c] hover:underline"
+              >
+                Hablar con un asesor humano
+              </button>
+            </div>
+          )}
 
           {/* Input */}
           <form onSubmit={onSubmit} className="flex items-center gap-2 border-t border-[#c7a45a]/20 bg-[#080c16]/90 px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-3">
@@ -200,7 +262,7 @@ export function CozyWidget() {
       <button
         ref={fabRef}
         type="button"
-        onClick={() => (open ? close() : setOpen(true))}
+        onClick={toggle}
         aria-label={open ? "Cerrar chat con Cozy" : "Abrir chat con Cozy, tu guía interior"}
         aria-expanded={open}
         className={`fixed bottom-6 right-6 z-50 flex items-center justify-center bg-transparent border-0 shadow-none p-0 text-[#ff7a1a] transition-transform duration-300 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c7a45a] ${open ? "max-sm:hidden" : ""}`}
