@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -19,8 +19,10 @@ import {
   findFirstAvailableDate,
   formatTime,
   getCalendarDates,
-  getMockAvailability,
+  getAvailableSlotsForDate,
+  isDateAvailable,
   shiftMonth,
+  toLocalDateKey,
 } from "../../lib/agenda-availability";
 import { formatSessionPrice, services, type Service } from "../../lib/data/services";
 import { BookingDialog } from "./booking-dialog";
@@ -57,36 +59,86 @@ function LunarEventIcon({ phase }: { phase: MonthlyLunarEvent["phase"] }) {
   return <Moon size={16} strokeWidth={1.5} className={phase === "Cuarto menguante" ? "rotate-180" : ""} aria-hidden="true" />;
 }
 
-export function DigitalAgenda({ todayKey }: { todayKey: string }) {
+export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }) {
+  // SSR muestra la fecha del servidor; en el cliente se usa la fecha local
+  // para marcar pasadas/futuras y filtrar sólo horarios vigentes.
+  const [todayKey, setTodayKey] = useState(serverTodayKey);
+  useEffect(() => {
+    const local = toLocalDateKey(new Date());
+    setTodayKey((current) => (current === local ? current : local));
+    setActiveMonth((current) => {
+      const localMonth = local.slice(0, 7);
+      return current === localMonth ? current : localMonth;
+    });
+  }, []);
+
   const currentMonth = todayKey.slice(0, 7);
-  const initialSelection = findFirstAvailableDate(currentMonth, todayKey) ?? todayKey;
-  const [activeMonth, setActiveMonth] = useState(currentMonth);
-  const [selectedDate, setSelectedDate] = useState(initialSelection);
+  const [activeMonth, setActiveMonth] = useState(serverTodayKey.slice(0, 7));
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  // Horarios bloqueados por citas reales (null = cargando). Lista de instantes ISO.
+  const [blockedTimes, setBlockedTimes] = useState<string[] | null>(null);
+  const [availabilityError, setAvailabilityError] = useState<string | null>(null);
+  // Incrementar para forzar un refresco de disponibilidad (p. ej. tras reservar).
+  const [loadTick, setLoadTick] = useState(0);
 
   const calendarDates = useMemo(() => getCalendarDates(activeMonth), [activeMonth]);
   const lunarEvents = useMemo(() => getMonthlyLunarEvents(activeMonth), [activeMonth]);
+
+  // Carga la disponibilidad REAL por mes: citas PENDING/CONFIRMED de la BD.
+  useEffect(() => {
+    let cancelled = false;
+    setBlockedTimes(null);
+    setAvailabilityError(null);
+    fetch(`/api/availability?month=${activeMonth}`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        return Array.isArray(data?.blocked) ? data.blocked : [];
+      })
+      .then((blocked) => {
+        if (cancelled) return;
+        setBlockedTimes(blocked);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setBlockedTimes([]);
+        setAvailabilityError("No pudimos cargar la disponibilidad en este momento.");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [activeMonth, loadTick]);
+
+  // En cada cambio de mes (y al cargar/refrescar), selecciona el primer día
+  // disponible. La elección del usuario se mantiene si el día aún tiene horarios.
+  useEffect(() => {
+    if (blockedTimes === null || availabilityError) return;
+    setSelectedDate((current) => {
+      if (current && current.slice(0, 7) === activeMonth && isDateAvailable(current, blockedTimes, todayKey)) return current;
+      return findFirstAvailableDate(activeMonth, todayKey, blockedTimes) ?? null;
+    });
+  }, [blockedTimes, availabilityError, activeMonth, todayKey]);
+
+  const refreshAvailability = useCallback(() => setLoadTick((tick) => tick + 1), []);
+
   const selectedSlots = useMemo(
-    () => getMockAvailability(selectedDate, todayKey),
-    [selectedDate, todayKey],
+    () => (selectedDate && blockedTimes ? getAvailableSlotsForDate(selectedDate, blockedTimes) : []),
+    [selectedDate, blockedTimes],
   );
   const selectedPhase = useMemo(
-    () => getLunarInfo(dateFromKey(selectedDate)).phase,
+    () => (selectedDate ? getLunarInfo(dateFromKey(selectedDate)).phase : ""),
     [selectedDate],
   );
   const monthLabel = capitalize(
     formatDate(`${activeMonth}-01`, { month: "long", year: "numeric" }),
   );
   const selectedDateLabel = capitalize(
-    formatDate(selectedDate, { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
+    formatDate(selectedDate ?? `${activeMonth}-01`, { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
   );
   const previousMonthDisabled = activeMonth <= currentMonth;
 
   function changeMonth(amount: number) {
-    const nextMonth = shiftMonth(activeMonth, amount);
-    setActiveMonth(nextMonth);
-    setSelectedDate(
-      findFirstAvailableDate(nextMonth, todayKey) ?? `${nextMonth}-01`,
-    );
+    setActiveMonth(shiftMonth(activeMonth, amount));
   }
 
   return (
@@ -158,17 +210,18 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
             {calendarDates.map((dateKey) => {
               const inActiveMonth = dateKey.slice(0, 7) === activeMonth;
               const isPast = dateKey < todayKey;
-              const unavailable = getMockAvailability(dateKey, todayKey).length === 0;
+              const isLoading = blockedTimes === null;
+              const unavailable = !isLoading && !isDateAvailable(dateKey, blockedTimes ?? [], todayKey);
               const isSelected = dateKey === selectedDate;
               const phase = getLunarInfo(dateFromKey(dateKey)).phase;
               const isLunarMarker = phase === "Luna llena" || phase === "Luna nueva";
-              const unavailableLabel = unavailable ? "Sin horarios disponibles" : "Horarios disponibles";
+              const unavailableLabel = isLoading ? "Disponibilidad cargando" : unavailable ? "Sin horarios disponibles" : "Horarios disponibles";
 
               return (
                 <button
                   key={dateKey}
                   type="button"
-                  disabled={!inActiveMonth || isPast}
+                  disabled={!inActiveMonth || isPast || blockedTimes === null}
                   aria-pressed={isSelected}
                   aria-label={`${formatDate(dateKey, { day: "numeric", month: "long" })}, ${phase}, ${unavailableLabel}`}
                   onClick={() => setSelectedDate(dateKey)}
@@ -177,7 +230,9 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                       ? "border-transparent text-papyrus/12"
                       : isPast
                         ? "cursor-not-allowed border-papyrus/[0.025] bg-papyrus/[0.01] text-papyrus/20"
-                        : isSelected && !unavailable
+                        : isLoading
+                          ? "border-papyrus/[0.06] bg-papyrus/[0.015] text-papyrus/40"
+                          : isSelected && !unavailable
                           ? "border-gold bg-gold/[.13] text-papyrus shadow-[0_0_22px_-12px_rgba(197,160,89,.75)]"
                           : isSelected
                             ? "border-gold/30 bg-gold/[.025] text-papyrus/50"
@@ -197,7 +252,7 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                     )}
                   </span>
                   <span className="mt-1 flex h-2 items-center justify-center" aria-hidden="true">
-                    {inActiveMonth && !isPast && !unavailable && (
+                    {inActiveMonth && !isPast && !unavailable && blockedTimes !== null && (
                       <span className={`size-1 rounded-full ${isSelected ? "bg-gold-bright" : "bg-gold/75"}`} />
                     )}
                   </span>
@@ -221,22 +276,24 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
               Tu momento
             </p>
             <h2 className="mt-2 font-cormorant text-3xl leading-tight text-ink sm:text-[2.1rem]">
-              {selectedDateLabel}
+              {selectedDate ? selectedDateLabel : "Elige un día"}
             </h2>
 
-            <div className="mt-5 flex items-center gap-3 rounded-2xl border border-gold/25 bg-papyrus-soft p-4">
-              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/30 bg-gold/[.09] text-bronze">
-                <LunarMarker phase={selectedPhase} />
-                {selectedPhase !== "Luna llena" && selectedPhase !== "Luna nueva" && <Sparkles size={18} aria-hidden="true" />}
-              </span>
-              <div className="min-w-0">
-                <p className="font-[family-name:var(--font-montserrat)] text-[8px] font-semibold uppercase tracking-[.2em] text-ink-muted">
-                  Fase lunar estimada
-                </p>
-                <p className="mt-1 font-cormorant text-xl leading-none text-bronze">{selectedPhase}</p>
+            {selectedDate && (
+              <div className="mt-5 flex items-center gap-3 rounded-2xl border border-gold/25 bg-papyrus-soft p-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/30 bg-gold/[.09] text-bronze">
+                  <LunarMarker phase={selectedPhase} />
+                  {selectedPhase !== "Luna llena" && selectedPhase !== "Luna nueva" && <Sparkles size={18} aria-hidden="true" />}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-[family-name:var(--font-montserrat)] text-[8px] font-semibold uppercase tracking-[.2em] text-ink-muted">
+                    Fase lunar estimada
+                  </p>
+                  <p className="mt-1 font-cormorant text-xl leading-none text-bronze">{selectedPhase}</p>
+                </div>
               </div>
-            </div>
-            <p className="mt-3 text-xs leading-5 text-ink-muted">{phaseGuidance(selectedPhase)}</p>
+            )}
+            {selectedDate && <p className="mt-3 text-xs leading-5 text-ink-muted">{phaseGuidance(selectedPhase)}</p>}
 
             <div className="mt-6 border-t border-gold/15 pt-5">
               <div className="flex items-center justify-between gap-3">
@@ -248,7 +305,26 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                 </span>
               </div>
 
-              {selectedSlots.length > 0 ? (
+              {availabilityError ? (
+                <div role="alert" className="mt-4 rounded-xl border border-red-900/30 bg-red-900/[.08] p-4 text-center">
+                  <p className="text-xs font-semibold text-ink">{availabilityError}</p>
+                  <p className="mt-1 text-[11px] leading-5 text-ink-muted">Los horarios de este mes no están disponibles en este momento.</p>
+                  <button
+                    type="button"
+                    onClick={refreshAvailability}
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-gold/35 bg-papyrus-soft px-4 py-2 text-[11px] font-semibold uppercase tracking-[.12em] text-bronze transition hover:border-gold/70 hover:bg-papyrus-warm"
+                  >
+                    Reintentar
+                  </button>
+                </div>
+              ) : blockedTimes === null ? (
+                <div aria-busy="true" className="mt-4 space-y-2.5">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="h-14 animate-pulse rounded-xl border border-gold/20 bg-papyrus-soft" />
+                  ))}
+                  <p className="pt-1 text-center text-[10px] text-ink-muted">Cargando disponibilidad…</p>
+                </div>
+              ) : selectedSlots.length > 0 && selectedDate ? (
                 <div className="mt-4 space-y-2.5">
                   {selectedSlots.map((time) => (
                     <Dialog
@@ -270,14 +346,16 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                       }
                       title="Reserva tu encuentro"
                     >
-                      {(close) => <SlotBookingContent date={selectedDate} time={time} close={close} />}
+                      {(close) => <SlotBookingContent date={selectedDate} time={time} close={close} onBooked={refreshAvailability} />}
                     </Dialog>
                   ))}
                 </div>
               ) : (
                 <div className="mt-4 rounded-xl border border-gold/25 bg-papyrus-soft p-4">
                   <p className="font-[family-name:var(--font-montserrat)] text-xs font-medium text-ink">
-                    No hay horarios disponibles para esta fecha.
+                    {!selectedDate
+                      ? "No quedan horarios disponibles en este mes."
+                      : "No hay horarios disponibles para esta fecha."}
                   </p>
                   <p className="mt-1.5 text-[11px] leading-5 text-ink-muted">
                     Elige otro día marcado con borde dorado para consultar opciones.
@@ -286,7 +364,7 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
               )}
             </div>
             <p className="mt-5 text-[9px] leading-4 text-ink-muted">
-              Horarios de demostración para esta primera versión. La reserva requiere iniciar sesión y queda pendiente de confirmación.
+              Horarios reales de la plantilla de trabajo (09:00–18:00) restando las citas registradas. La reserva requiere iniciar sesión y queda pendiente de confirmación.
             </p>
           </div>
         </aside>
@@ -295,7 +373,7 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
   );
 }
 
-function SlotBookingContent({ date, time, close }: { date: string; time: string; close: () => void }) {
+function SlotBookingContent({ date, time, close, onBooked }: { date: string; time: string; close: () => void; onBooked?: () => void }) {
   const [serviceId, setServiceId] = useState("");
   const service = services.find((item) => item.id === serviceId);
 
@@ -313,6 +391,7 @@ function SlotBookingContent({ date, time, close }: { date: string; time: string;
           initialDate={date}
           initialTime={time}
           appearance="papyrus"
+          onBooked={onBooked}
         />
       </div>
     );
