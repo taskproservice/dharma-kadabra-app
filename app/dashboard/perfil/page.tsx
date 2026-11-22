@@ -5,11 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Input } from "../../../components/ui/input";
 
 export default function PerfilPage() {
-  return <div className="mx-auto max-w-4xl space-y-7"><div><h1 className="text-3xl font-semibold">Mi perfil</h1><p className="mt-2 text-[#2C2C2C]/70">Administra tu información pública y de contacto.</p></div>
+  return <div className="mx-auto max-w-4xl space-y-7"><div><h1 className="text-3xl font-semibold">Mi perfil</h1><p className="mt-2 text-[#e9e2d2]/55">Administra tu información pública y de contacto.</p></div>
     <Card><CardHeader><CardTitle>Información personal</CardTitle><CardDescription>Los datos que compartes con tu comunidad.</CardDescription></CardHeader><CardContent><form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert("Perfil guardado"); }}>
-      <div className="flex items-center gap-4"><div className="grid size-20 place-items-center rounded-full bg-[#FCFAF5] text-2xl font-semibold text-[#8B6914]">PH</div><Button type="button" variant="outline"><Camera size={16}/>Cambiar foto</Button></div>
+      <div className="flex items-center gap-4"><div className="grid size-20 place-items-center rounded-full bg-[#11182b] text-2xl font-semibold text-[#d8bc7f]">PH</div><Button type="button" variant="outline"><Camera size={16}/>Cambiar foto</Button></div>
       <div className="grid gap-5 sm:grid-cols-2"><label className="space-y-2 text-sm font-medium">Nombre completo<Input defaultValue="Paola Hernández" /></label><label className="space-y-2 text-sm font-medium">Correo electrónico<Input type="email" defaultValue="paola@dharmakadabra.mx" /></label></div>
-      <label className="block space-y-2 text-sm font-medium">Biografía<textarea className="min-h-28 w-full rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] p-3 text-sm outline-none focus:border-[#C5A059]" defaultValue="Acompaño procesos de bienestar y crecimiento personal a través de prácticas ancestrales." /></label>
+      <label className="block space-y-2 text-sm font-medium">Biografía<textarea className="min-h-28 w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 p-3 text-sm outline-none focus:border-[#c7a45a]" defaultValue="Acompaño procesos de bienestar y crecimiento personal a través de prácticas ancestrales." /></label>
       <div className="grid gap-5 sm:grid-cols-2"><label className="space-y-2 text-sm font-medium"><span className="flex items-center gap-2"><Instagram size={15}/>Instagram</span><Input defaultValue="@paola.consciente" /></label><label className="space-y-2 text-sm font-medium">Sitio web<Input placeholder="https://" /></label></div>
       <div className="flex justify-end"><Button type="submit"><Save size={16}/>Guardar cambios</Button></div>
     </form></CardContent></Card>

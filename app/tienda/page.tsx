@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     "Pulseras, cadenas, runas y piedras elegidas con intención. Consulta cada pieza por WhatsApp y recíbela en tu altar.",
 };
 
+// El catálogo cambia con el inventario: siempre se consulta en vivo.
 export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
@@ -39,14 +40,14 @@ export default async function TiendaPage() {
   return (
     <div className={cormorant.variable}>
       <main
-        className="relative min-h-screen text-[#1A1A1A]"
-        style={{ backgroundColor: STORE_PALETTE.papiro }}
+        className="relative min-h-screen text-[#F7F3EA]"
+        style={{ backgroundColor: STORE_PALETTE.nocturno }}
       >
         <PublicHeader />
 
-        {/* Resplandor dorado ambiental sobre el fondo papiro */}
+        {/* Resplandor dorado ambiental sobre el fondo nocturno */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] overflow-hidden">
-          <span className="absolute left-1/2 top-[-14rem] size-[42rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.2),transparent_68%)] blur-3xl" />
+          <span className="absolute left-1/2 top-[-14rem] size-[42rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_68%)] blur-3xl" />
         </div>
 
         <div className="relative pt-24">
@@ -54,7 +55,7 @@ export default async function TiendaPage() {
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <Link
               href="/"
-              className="group inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C2C2C]/70 transition hover:text-[#8B6914] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9E7B2F]"
+              className="group inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.28em] text-[#F7F3EA]/45 transition hover:text-[#C5A059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
             >
               <ArrowLeft size={13} className="transition group-hover:-translate-x-1" aria-hidden="true" />
               Volver al inicio
@@ -63,13 +64,13 @@ export default async function TiendaPage() {
 
           {/* Encabezado editorial */}
           <header className="mx-auto max-w-7xl px-5 pb-10 pt-8 text-center sm:px-8 sm:pt-12">
-            <p className="flex items-center justify-center gap-4 text-[10px] font-semibold uppercase tracking-[.42em] text-[#9E7B2F]">
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-r from-transparent to-[#C5A059]" />
+            <p className="flex items-center justify-center gap-4 text-[10px] font-medium uppercase tracking-[.42em] text-[#C5A059]">
+              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-r from-transparent to-[#C5A059]/70" />
               Holistic Store
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-l from-transparent to-[#C5A059]" />
+              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-l from-transparent to-[#C5A059]/70" />
             </p>
             <h1
-              className="mt-6 font-normal leading-[1.03] text-[#1A1A1A]"
+              className="mt-6 font-normal leading-[1.03] text-[#F7F3EA]"
               style={{
                 fontFamily: "var(--font-cormorant-garamond), Georgia, 'Times New Roman', serif",
                 fontSize: "clamp(2.6rem, 6.4vw, 4.6rem)",
@@ -77,9 +78,9 @@ export default async function TiendaPage() {
               }}
             >
               La Tienda{" "}
-              <em className="italic text-[#9E7B2F]">Holística</em>
+              <em className="italic text-[#C5A059]">Holística</em>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-[#2C2C2C]/80 sm:text-base">
+            <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-[#F7F3EA]/60 sm:text-base">
               Objetos con intención para acompañar tus rituales. Cada pieza se elige a mano y se
               consulta por WhatsApp: sin prisa, con presencia.
             </p>
@@ -107,7 +108,7 @@ export default async function TiendaPage() {
         <PremiumFooter />
       </main>
 
-      {/* Cozy: embudo de ventas de la tienda */}
+      {/* Cozy: embudo de ventas de la tienda (abre desde cada tarjeta) */}
       <CozyWidget />
     </div>
   );

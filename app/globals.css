@@ -6,59 +6,39 @@
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-cormorant: var(--font-cormorant-garamond), Georgia, "Times New Roman", serif;
 
-  /* Dharma Kadabra · Paleta Papiro de lujo (Light Mode) */
-  --color-papyrus: #F4EFE6;
-  --color-papyrus-card: #FCFAF5;
-  --color-papyrus-soft: #EDE5D7;
-  --color-charcoal: #1A1A1A;
-  --color-charcoal-soft: #2C2C2C;
-  --color-gold-700: #8B6914;
-  --color-gold-600: #9E7B2F;
-  --color-gold-500: #C5A059;
-  --color-gold-400: #B38E42;
-  --color-gold-300: #D8BC7F;
-
-  /* Compatibilidad con tokens previos migrados a Papiro */
-  --color-night-950: #EDE5D7;
-  --color-night-900: #F4EFE6;
-  --color-night-800: #FCFAF5;
-  --color-night-700: #F8F4EC;
-  --color-night-600: #E8DFCF;
-  --color-cream-100: #1A1A1A;
-  --color-cream-200: #2C2C2C;
-  --color-cream-300: #2C2C2C;
+  /* Dharma Kadabra · Paleta nocturna de lujo */
+  --color-night-950: #080c16;
+  --color-night-900: #0b1020;
+  --color-night-800: #11182b;
+  --color-night-700: #171717;
+  --color-night-600: #1c2438;
+  --color-gold-500: #c7a45a;
+  --color-gold-400: #d8bc7f;
+  --color-gold-300: #e3c57c;
+  --color-cream-100: #f7f2e7;
+  --color-cream-200: #efe9dc;
+  --color-cream-300: #e9e2d2;
 }
 
 /* ------------------------------------------------------------------------- */
-/*  Tokens Globales · Tema Papyrus                                            */
+/*  Tokens                                                                    */
 /* ------------------------------------------------------------------------- */
 :root {
-  color-scheme: light;
-  --papyrus: #F4EFE6;
-  --papyrus-card: #FCFAF5;
-  --papyrus-soft: #EDE5D7;
-  --charcoal: #1A1A1A;
-  --charcoal-soft: #2C2C2C;
-  --gold-700: #8B6914;
-  --gold-600: #9E7B2F;
-  --gold-500: #C5A059;
-  --gold-400: #A88438;
-  --gold-300: #C5A059;
-  --warm-shadow: rgba(92, 72, 48, 0.08);
-  --warm-shadow-md: rgba(92, 72, 48, 0.14);
-
-  /* Aliases semánticos */
-  --night-950: #EDE5D7;
-  --night-900: #F4EFE6;
-  --night-800: #FCFAF5;
-  --night-700: #F8F4EC;
-  --night-600: #E8DFCF;
-  --cream-100: #1A1A1A;
-  --cream-300: #2C2C2C;
-  --ink-muted: rgba(44, 44, 44, 0.68);
-  --hairline: rgba(197, 160, 89, 0.32);
-  --glass-fill: linear-gradient(155deg, rgba(252, 250, 245, 0.88) 0%, rgba(244, 239, 230, 0.78) 55%, rgba(197, 160, 89, 0.06) 100%);
-  --glass-fill-strong: linear-gradient(160deg, rgba(252, 250, 245, 0.97) 0%, rgba(244, 239, 230, 0.94) 100%);
+  color-scheme: dark;
+  --night-950: #080c16;
+  --night-900: #0b1020;
+  --night-800: #11182b;
+  --night-700: #171717;
+  --night-600: #1c2438;
+  --gold-500: #c7a45a;
+  --gold-400: #d8bc7f;
+  --gold-300: #e3c57c;
+  --cream-100: #f7f2e7;
+  --cream-300: #e9e2d2;
+  --ink-muted: rgba(233, 226, 210, 0.62);
+  --hairline: rgba(199, 164, 90, 0.18);
+  --glass-fill: linear-gradient(155deg, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.018) 55%, rgba(199, 164, 90, 0.035) 100%);
+  --glass-fill-strong: linear-gradient(160deg, rgba(28, 36, 56, 0.92) 0%, rgba(11, 16, 32, 0.86) 100%);
 }
 
 html,
@@ -68,8 +48,8 @@ body {
 
 body {
   margin: 0;
-  background-color: var(--papyrus);
-  color: var(--charcoal);
+  background-color: var(--night-900);
+  color: var(--cream-300);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -86,14 +66,14 @@ textarea {
 }
 
 ::selection {
-  background: rgba(197, 160, 89, 0.28);
-  color: #1A1A1A;
+  background: rgba(199, 164, 90, 0.32);
+  color: #fffdf7;
 }
 
-/* Scrollbar papiro */
+/* Scrollbar nocturno */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(197, 160, 89, 0.5) transparent;
+  scrollbar-color: rgba(199, 164, 90, 0.35) transparent;
 }
 *::-webkit-scrollbar {
   width: 9px;
@@ -103,14 +83,14 @@ textarea {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(197, 160, 89, 0.6), rgba(158, 123, 47, 0.35));
+  background: linear-gradient(180deg, rgba(199, 164, 90, 0.45), rgba(199, 164, 90, 0.2));
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 /* ------------------------------------------------------------------------- */
-/*  Superficies Papiro / Cristal Cálido                                       */
+/*  Superficies de cristal                                                    */
 /* ------------------------------------------------------------------------- */
 .glass {
   background: var(--glass-fill);
@@ -121,8 +101,7 @@ textarea {
 
 .glass-strong {
   background: var(--glass-fill-strong);
-  border: 1px solid rgba(197, 160, 89, 0.38);
-  box-shadow: 0 28px 70px -28px rgba(92, 72, 48, 0.22);
+  border: 1px solid rgba(199, 164, 90, 0.24);
   -webkit-backdrop-filter: blur(24px) saturate(130%);
   backdrop-filter: blur(24px) saturate(130%);
 }
@@ -130,9 +109,9 @@ textarea {
 .glass-panel {
   position: relative;
   border-radius: 1.25rem;
-  background: linear-gradient(160deg, rgba(252, 250, 245, 0.95) 0%, rgba(248, 244, 236, 0.9) 100%);
-  border: 1px solid rgba(197, 160, 89, 0.32);
-  box-shadow: 0 20px 50px -28px rgba(92, 72, 48, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  background: linear-gradient(160deg, rgba(23, 31, 51, 0.72) 0%, rgba(11, 16, 32, 0.62) 100%);
+  border: 1px solid rgba(199, 164, 90, 0.18);
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
@@ -141,9 +120,9 @@ textarea {
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 .glass-panel-hover:hover {
-  border-color: rgba(197, 160, 89, 0.65);
+  border-color: rgba(199, 164, 90, 0.42);
   transform: translateY(-2px);
-  box-shadow: 0 26px 60px -30px rgba(92, 72, 48, 0.22), 0 0 0 1px rgba(197, 160, 89, 0.14);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(199, 164, 90, 0.08);
 }
 
 /* Halo dorado reutilizable */
@@ -151,12 +130,12 @@ textarea {
   position: absolute;
   border-radius: 9999px;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(197, 160, 89, 0.2) 0%, rgba(197, 160, 89, 0) 70%);
+  background: radial-gradient(circle, rgba(199, 164, 90, 0.22) 0%, rgba(199, 164, 90, 0) 70%);
   filter: blur(12px);
 }
 
 .gold-text {
-  background: linear-gradient(100deg, #9E7B2F 0%, #C5A059 45%, #8B6914 82%, #C5A059 100%);
+  background: linear-gradient(100deg, #e9d3a1 0%, #c7a45a 45%, #f0dfb4 78%, #c7a45a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -165,7 +144,7 @@ textarea {
 .gold-rule {
   height: 1px;
   border: 0;
-  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.65), transparent);
+  background: linear-gradient(90deg, transparent, rgba(199, 164, 90, 0.55), transparent);
 }
 
 .eyebrow-gold {
@@ -173,67 +152,67 @@ textarea {
   align-items: center;
   gap: 1rem;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--gold-600);
+  color: var(--gold-400);
 }
 .eyebrow-gold::before {
   content: "";
   height: 1px;
   width: 2.5rem;
-  background: linear-gradient(90deg, rgba(158, 123, 47, 0.85), rgba(197, 160, 89, 0.2));
+  background: linear-gradient(90deg, rgba(199, 164, 90, 0.75), rgba(199, 164, 90, 0.1));
 }
 
-/* Formularios sobre Papiro */
+/* Formularios */
 .field-dark {
   width: 100%;
   border-radius: 0.8rem;
-  border: 1px solid rgba(197, 160, 89, 0.35);
-  background: #FCFAF5;
-  color: var(--charcoal);
+  border: 1px solid rgba(199, 164, 90, 0.2);
+  background: rgba(8, 12, 22, 0.6);
+  color: var(--cream-100);
   padding: 0.55rem 0.85rem;
   font-size: 0.875rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .field-dark::placeholder {
-  color: rgba(44, 44, 44, 0.42);
+  color: rgba(233, 226, 210, 0.35);
 }
 .field-dark:focus {
-  border-color: var(--gold-500);
-  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
-  background: #FFFFFF;
+  border-color: rgba(199, 164, 90, 0.7);
+  box-shadow: 0 0 0 3px rgba(199, 164, 90, 0.16);
+  background: rgba(8, 12, 22, 0.85);
 }
 select.field-dark option {
-  background: #FCFAF5;
-  color: var(--charcoal);
+  background: var(--night-900);
+  color: var(--cream-100);
 }
 
 /* ------------------------------------------------------------------------- */
-/*  FullCalendar · tema Papiro                                                */
+/*  FullCalendar · tema nocturno                                              */
 /* ------------------------------------------------------------------------- */
 .calendar-papiro .fc {
-  color: var(--charcoal-soft);
+  color: var(--cream-300);
   font-size: 13px;
-  --fc-border-color: rgba(197, 160, 89, 0.24);
+  --fc-border-color: rgba(199, 164, 90, 0.14);
   --fc-page-bg-color: transparent;
-  --fc-today-bg-color: rgba(197, 160, 89, 0.12);
-  --fc-neutral-bg-color: rgba(44, 44, 44, 0.03);
-  --fc-list-event-hover-bg-color: rgba(197, 160, 89, 0.12);
+  --fc-today-bg-color: rgba(199, 164, 90, 0.09);
+  --fc-neutral-bg-color: rgba(255, 255, 255, 0.03);
+  --fc-list-event-hover-bg-color: rgba(199, 164, 90, 0.1);
 }
 .calendar-papiro .fc .fc-toolbar-title {
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--charcoal);
+  color: var(--cream-100);
   font-family: var(--font-playfair), Georgia, serif;
   text-transform: capitalize;
 }
 .calendar-papiro .fc .fc-button {
-  border: 1px solid rgba(197, 160, 89, 0.45);
+  border: 1px solid rgba(199, 164, 90, 0.32);
   border-radius: 9px;
-  background: #FCFAF5;
-  color: var(--gold-700);
+  background: rgba(199, 164, 90, 0.08);
+  color: var(--gold-300);
   box-shadow: none;
   text-transform: capitalize;
 }
@@ -241,37 +220,37 @@ select.field-dark option {
 .calendar-papiro .fc .fc-button-primary:not(:disabled).fc-button-active {
   border-color: var(--gold-500);
   background: var(--gold-500);
-  color: #1A1A1A;
+  color: #11182b;
 }
 .calendar-papiro .fc .fc-button:focus {
-  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.32);
+  box-shadow: 0 0 0 2px rgba(199, 164, 90, 0.28);
 }
 .calendar-papiro .fc .fc-scrollgrid,
 .calendar-papiro .fc td,
 .calendar-papiro .fc th {
-  border-color: rgba(197, 160, 89, 0.22);
+  border-color: rgba(199, 164, 90, 0.14);
 }
 .calendar-papiro .fc .fc-col-header-cell-cushion,
 .calendar-papiro .fc .fc-daygrid-day-number {
   padding: 8px;
-  color: var(--charcoal-soft);
+  color: var(--cream-300);
   text-decoration: none;
 }
 .calendar-papiro .fc .fc-daygrid-day-number {
-  color: rgba(26, 26, 26, 0.78);
+  color: rgba(233, 226, 210, 0.72);
 }
 .calendar-papiro .fc .fc-col-header-cell-cushion {
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold-700);
+  color: rgba(199, 164, 90, 0.85);
 }
 .calendar-papiro .fc .fc-timegrid-slot {
   height: 2.8rem;
 }
 .calendar-papiro .fc .fc-timegrid-slot-label-cushion,
 .calendar-papiro .fc .fc-timegrid-axis-cushion {
-  color: rgba(44, 44, 44, 0.58);
+  color: rgba(233, 226, 210, 0.5);
   font-size: 11px;
 }
 .calendar-papiro .fc .fc-event {
@@ -280,26 +259,26 @@ select.field-dark option {
   cursor: pointer;
 }
 .calendar-papiro .fc .fc-day-today {
-  background: rgba(197, 160, 89, 0.1) !important;
+  background: rgba(199, 164, 90, 0.08) !important;
 }
 .calendar-papiro .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-  color: var(--gold-700);
+  color: var(--gold-300);
   font-weight: 700;
 }
 .calendar-papiro .fc .fc-popover {
-  background: #FCFAF5;
-  border: 1px solid rgba(197, 160, 89, 0.4);
-  color: var(--charcoal-soft);
+  background: var(--night-800);
+  border: 1px solid rgba(199, 164, 90, 0.3);
+  color: var(--cream-300);
 }
 .calendar-papiro .fc .fc-popover-header {
-  background: rgba(197, 160, 89, 0.16);
-  color: var(--charcoal);
+  background: rgba(199, 164, 90, 0.12);
+  color: var(--cream-100);
 }
 .calendar-papiro .fc .fc-list {
-  border-color: rgba(197, 160, 89, 0.22);
+  border-color: rgba(199, 164, 90, 0.14);
 }
 .calendar-papiro .fc .fc-list-day-cushion {
-  background: rgba(197, 160, 89, 0.1);
+  background: rgba(199, 164, 90, 0.08);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -380,7 +359,7 @@ select.field-dark option {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg, transparent 20%, rgba(197, 160, 89, 0.22) 50%, transparent 80%);
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.18) 50%, transparent 80%);
   animation: shimmer-line 4.5s ease-in-out infinite;
 }
 html {
@@ -390,22 +369,22 @@ html {
 @keyframes flicker {
   0%,
   100% {
-    filter: drop-shadow(0px 0px 12px rgba(217, 101, 56, 0.65)) drop-shadow(0px 0px 24px rgba(197, 160, 89, 0.5));
+    filter: drop-shadow(0px 0px 15px rgba(255, 115, 0, 0.8)) drop-shadow(0px 0px 30px rgba(199, 164, 90, 0.6));
     opacity: 1;
     transform: scale(1);
   }
   25% {
-    filter: drop-shadow(0px 0px 10px rgba(217, 101, 56, 0.58)) drop-shadow(0px 0px 20px rgba(197, 160, 89, 0.42));
+    filter: drop-shadow(0px 0px 12px rgba(255, 115, 0, 0.72)) drop-shadow(0px 0px 24px rgba(199, 164, 90, 0.52));
     opacity: 0.93;
     transform: scale(0.98) rotate(-0.5deg);
   }
   50% {
-    filter: drop-shadow(0px 0px 16px rgba(217, 101, 56, 0.8)) drop-shadow(0px 0px 28px rgba(197, 160, 89, 0.65));
+    filter: drop-shadow(0px 0px 20px rgba(255, 115, 0, 0.95)) drop-shadow(0px 0px 36px rgba(199, 164, 90, 0.75));
     opacity: 1;
     transform: scale(1.04) rotate(0.5deg);
   }
   75% {
-    filter: drop-shadow(0px 0px 11px rgba(217, 101, 56, 0.62)) drop-shadow(0px 0px 22px rgba(197, 160, 89, 0.48));
+    filter: drop-shadow(0px 0px 14px rgba(255, 115, 0, 0.76)) drop-shadow(0px 0px 27px rgba(199, 164, 90, 0.58));
     opacity: 0.95;
     transform: scale(0.99) rotate(-0.25deg);
   }
@@ -413,8 +392,8 @@ html {
 
 .cozy-flame-live,
 .fire-live {
-  color: #e2641b;
-  filter: drop-shadow(0px 0px 12px rgba(217, 101, 56, 0.65)) drop-shadow(0px 0px 24px rgba(197, 160, 89, 0.5));
+  color: #ff7a1a;
+  filter: drop-shadow(0px 0px 15px rgba(255, 115, 0, 0.8)) drop-shadow(0px 0px 30px rgba(199, 164, 90, 0.6));
   animation: flicker 1.8s ease-in-out infinite;
   transform-origin: 50% 90%;
 }
@@ -422,12 +401,12 @@ html {
 @keyframes flame-glow {
   0%,
   100% {
-    box-shadow: 0 0 16px 3px rgba(197, 160, 89, 0.35), 0 0 32px 8px rgba(197, 160, 89, 0.2);
-    filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.65)) drop-shadow(0 0 18px rgba(217, 101, 56, 0.35));
+    box-shadow: 0 0 16px 3px rgba(199, 164, 90, 0.45), 0 0 32px 8px rgba(199, 164, 90, 0.25);
+    filter: drop-shadow(0 0 8px rgba(199, 164, 90, 0.8)) drop-shadow(0 0 18px rgba(255, 140, 0, 0.45));
   }
   50% {
-    box-shadow: 0 0 28px 8px rgba(217, 101, 56, 0.45), 0 0 48px 16px rgba(217, 101, 56, 0.22);
-    filter: drop-shadow(0 0 14px rgba(217, 101, 56, 0.8)) drop-shadow(0 0 30px rgba(217, 101, 56, 0.45));
+    box-shadow: 0 0 28px 8px rgba(255, 115, 0, 0.6), 0 0 48px 16px rgba(255, 69, 0, 0.32);
+    filter: drop-shadow(0 0 14px rgba(255, 120, 0, 0.95)) drop-shadow(0 0 30px rgba(255, 60, 0, 0.6));
   }
 }
 @keyframes cozy-flicker {
@@ -477,7 +456,7 @@ html {
   }
 }
 .skeleton-shimmer {
-  background-image: linear-gradient(90deg, rgba(197, 160, 89, 0.08) 25%, rgba(197, 160, 89, 0.22) 37%, rgba(197, 160, 89, 0.08) 63%);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(199, 164, 90, 0.12) 37%, rgba(255, 255, 255, 0.04) 63%);
   background-size: 800px 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
@@ -580,10 +559,10 @@ html {
   align-items: center;
   gap: 1rem;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--gold-600);
+  color: var(--gold-400);
 }
 
 @media (prefers-reduced-motion: reduce) {

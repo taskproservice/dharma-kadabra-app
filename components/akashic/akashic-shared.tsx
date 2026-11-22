@@ -4,10 +4,12 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 /**
- * Piezas compartidas por las secciones de Registros Akáshicos · Tema Papyrus.
- * Papiro #F4EFE6 · Superficie cálida #FCFAF5 · Carbón #1A1A1A · Oro #C5A059 / #8B6914.
+ * Piezas compartidas por las secciones de Registros Akáshicos.
+ * Sistema «Nordic Mystic Luxury»: Papiro #F7F3EA · Nocturno #121212 ·
+ * Oro #C5A059 · Tinta #2E231D · Fuego #D96538.
  */
 
+/** Placeholder de carga: fondo nocturno (las fotos viven en public/images/akashic/). */
 const BLUR_PLACEHOLDER =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
 
@@ -15,7 +17,7 @@ export function Eyebrow({ children, light = false }: { children: ReactNode; ligh
   return (
     <p
       className={`flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.34em] before:h-px before:w-9 before:bg-[#C5A059] ${
-        light ? "text-[#2C2C2C]/70" : "text-[#8B6914]"
+        light ? "text-[#2E231D]/65" : "text-[#C5A059]"
       }`}
     >
       {children}
@@ -23,7 +25,7 @@ export function Eyebrow({ children, light = false }: { children: ReactNode; ligh
   );
 }
 
-/** Imagen editorial con fondo cálido temporal mientras carga. */
+/** Imagen editorial con fondo nocturno temporal mientras carga. */
 export function AkashicImage({
   src,
   alt,
@@ -38,7 +40,7 @@ export function AkashicImage({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden bg-[#EDE5D7] ${className}`}>
+    <div className={`relative overflow-hidden bg-[#121212] ${className}`}>
       <Image
         src={src}
         alt={alt}

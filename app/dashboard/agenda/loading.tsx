@@ -4,7 +4,7 @@ import { AgendaSlotSkeleton, Skeleton } from "../../../components/ui/skeleton";
 export default function AgendaLoading() {
   return (
     <div className="mx-auto max-w-7xl space-y-8" aria-busy="true" aria-label="Cargando agenda">
-      <header className="border-b border-[#C5A059]/50 pb-7">
+      <header className="border-b border-[#c7a45a]/30 pb-7">
         <Skeleton className="h-3 w-64" />
         <Skeleton className="mt-3 h-10 w-72 max-w-full" />
         <Skeleton className="mt-3 h-4 w-96 max-w-full" />
