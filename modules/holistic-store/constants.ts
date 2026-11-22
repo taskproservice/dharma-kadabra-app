@@ -1,17 +1,18 @@
 /**
  * Holistic Store · Constantes del módulo.
  *
- * Paleta oficial — Papiro #F7F3EA · Nocturno #121212 · Oro #C5A059 ·
- * Tinta #2E231D · Fuego #D96538.
+ * Paleta oficial Papyrus (Light Mode) — Papiro #F4EFE6 · Superficie #FCFAF5 ·
+ * Oro #C5A059 · Carbón #1A1A1A · Fuego #D96538.
  */
 
 import type { StoreCategory, StoreTemplateId } from "./types";
 
 export const STORE_PALETTE = {
-  papiro: "#F7F3EA",
-  nocturno: "#121212",
+  papiro: "#F4EFE6",
+  superficie: "#FCFAF5",
+  nocturno: "#F4EFE6",
   oro: "#C5A059",
-  tinta: "#2E231D",
+  tinta: "#1A1A1A",
   fuego: "#D96538",
 } as const;
 
@@ -34,13 +35,6 @@ export type StoreBannerSlide = {
   text: string;
 };
 
-/**
- * Banner comercial editorial. Las imágenes viven en
- * `public/images/store-banner/` (las sube el equipo). El repositorio ya trae
- * tres piezas por defecto para que el carrusel rote desde el primer deploy;
- * si alguna falta, el carrusel muestra un panel ornamental dorado como
- * respaldo (nunca una imagen rota).
- */
 export const STORE_BANNERS: StoreBannerSlide[] = [
   {
     src: "/images/store-banner/banner-pulseras.jpg",
@@ -85,24 +79,24 @@ export type TemplateMeta = {
   swatches: [string, string, string];
 };
 
-/** Las 3 plantillas visuales que el Admin asigna por categoría. */
+/** Las 3 plantillas visuales sobre superficie cálida Papiro (#FCFAF5) que el Admin asigna por categoría. */
 export const STORE_TEMPLATE_META: TemplateMeta[] = [
   {
     id: "oro",
     name: "Oro Clásico",
-    description: "Tarjeta nocturna con filetes dorados y precio en oro.",
-    swatches: ["#121212", "#C5A059", "#F7F3EA"],
+    description: "Tarjeta cálida papiro con filetes dorados y tipografía oscura.",
+    swatches: ["#FCFAF5", "#C5A059", "#1A1A1A"],
   },
   {
     id: "papiro",
     name: "Papiro Editorial",
-    description: "Tarjeta clara sobre papiro con tinta cálida y sello dorado.",
-    swatches: ["#F7F3EA", "#2E231D", "#C5A059"],
+    description: "Tarjeta orgánica con tinta carbón profunda y sello dorado.",
+    swatches: ["#FCFAF5", "#2C2C2C", "#9E7B2F"],
   },
   {
     id: "fuego",
     name: "Fuego Ritual",
-    description: "Tarjeta nocturna con acentos fuego para piezas de poder.",
-    swatches: ["#1A0F0B", "#D96538", "#F7F3EA"],
+    description: "Tarjeta cálida papiro con acentos terracota para piezas de poder.",
+    swatches: ["#FCFAF5", "#D96538", "#1A1A1A"],
   },
 ];

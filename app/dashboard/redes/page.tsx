@@ -143,34 +143,34 @@ export default function RedesPage() {
       {/* Encabezado editorial */}
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#d8bc7f]">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8B6914]">
             <Share2 size={15} />
             <span>Difusión & Comunidad Sagrada</span>
           </div>
-          <h1 className="mt-1 font-serif text-3xl font-semibold tracking-tight text-[#e9e2d2] md:text-4xl">
+          <h1 className="mt-1 font-serif text-3xl font-semibold tracking-tight text-[#1A1A1A] md:text-4xl">
             Redes Sociales
           </h1>
-          <p className="mt-1.5 text-sm text-[#e9e2d2]/55">
+          <p className="mt-1.5 text-sm text-[#2C2C2C]/70">
             Métricas de audiencia y estudio de programación unificada para Instagram y Facebook.
           </p>
         </div>
 
         {/* Estado de conexión simulada */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-2 rounded-2xl border border-[#c7a45a]/20 bg-white/[0.04] px-3.5 py-2 shadow-sm backdrop-blur-md">
+          <div className="flex items-center gap-2 rounded-2xl border border-[#C5A059]/35 bg-[#FCFAF5] px-3.5 py-2 shadow-sm backdrop-blur-md">
             <span className="flex size-2 rounded-full bg-emerald-500" />
             <Instagram size={16} className="text-[#E1306C]" />
-            <span className="text-xs font-medium text-[#e9e2d2]">@dharmakadabra</span>
-            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+            <span className="text-xs font-medium text-[#1A1A1A]">@dharmakadabra</span>
+            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
               Conectado
             </span>
           </div>
 
-          <div className="flex items-center gap-2 rounded-2xl border border-[#c7a45a]/20 bg-white/[0.04] px-3.5 py-2 shadow-sm backdrop-blur-md">
+          <div className="flex items-center gap-2 rounded-2xl border border-[#C5A059]/35 bg-[#FCFAF5] px-3.5 py-2 shadow-sm backdrop-blur-md">
             <span className="flex size-2 rounded-full bg-emerald-500" />
             <Facebook size={16} className="text-[#1877F2]" />
-            <span className="text-xs font-medium text-[#e9e2d2]">Dharma Kadabra</span>
-            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+            <span className="text-xs font-medium text-[#1A1A1A]">Dharma Kadabra</span>
+            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
               Conectado
             </span>
           </div>
@@ -182,26 +182,26 @@ export default function RedesPage() {
         {/* Métrica 1: Seguidores Totales */}
         <Card className="glass-panel glass-panel-hover">
           <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/55">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#2C2C2C]/70">
               Seguidores Totales
             </CardDescription>
-            <span className="grid size-9 place-items-center rounded-xl bg-[#c7a45a]/12 text-[#d8bc7f]">
+            <span className="grid size-9 place-items-center rounded-xl bg-[#C5A059]/12 text-[#8B6914]">
               <Users size={18} />
             </span>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
-              <span className="font-serif text-3xl font-semibold text-[#e9e2d2]">48,620</span>
-              <span className="inline-flex items-center text-xs font-semibold text-emerald-300">
+              <span className="font-serif text-3xl font-semibold text-[#1A1A1A]">48,620</span>
+              <span className="inline-flex items-center text-xs font-semibold text-emerald-800">
                 +14.2%
               </span>
             </div>
-            <div className="mt-3 flex items-center justify-between border-t border-[#c7a45a]/14 pt-2 text-[11px] text-[#e9e2d2]/55">
+            <div className="mt-3 flex items-center justify-between border-t border-[#C5A059]/30 pt-2 text-[11px] text-[#2C2C2C]/70">
               <span>IG: 34.2K</span>
               <span>•</span>
               <span>FB: 14.4K</span>
               <span>•</span>
-              <span className="text-emerald-300">+1.2k este mes</span>
+              <span className="text-emerald-800">+1.2k este mes</span>
             </div>
           </CardContent>
         </Card>
@@ -209,21 +209,21 @@ export default function RedesPage() {
         {/* Métrica 2: Alcance Mensual */}
         <Card className="glass-panel glass-panel-hover">
           <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/55">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#2C2C2C]/70">
               Alcance Mensual
             </CardDescription>
-            <span className="grid size-9 place-items-center rounded-xl bg-[#c7a45a]/12 text-[#d8bc7f]">
+            <span className="grid size-9 place-items-center rounded-xl bg-[#C5A059]/12 text-[#8B6914]">
               <TrendingUp size={18} />
             </span>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
-              <span className="font-serif text-3xl font-semibold text-[#e9e2d2]">182.4K</span>
-              <span className="inline-flex items-center text-xs font-semibold text-emerald-300">
+              <span className="font-serif text-3xl font-semibold text-[#1A1A1A]">182.4K</span>
+              <span className="inline-flex items-center text-xs font-semibold text-emerald-800">
                 +28.5%
               </span>
             </div>
-            <p className="mt-3 border-t border-[#c7a45a]/14 pt-2 text-[11px] text-[#e9e2d2]/55">
+            <p className="mt-3 border-t border-[#C5A059]/30 pt-2 text-[11px] text-[#2C2C2C]/70">
               Cuentas alcanzadas en últimos 30 días
             </p>
           </CardContent>
@@ -232,21 +232,21 @@ export default function RedesPage() {
         {/* Métrica 3: Impresiones & Visualizaciones */}
         <Card className="glass-panel glass-panel-hover">
           <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/55">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#2C2C2C]/70">
               Impresiones
             </CardDescription>
-            <span className="grid size-9 place-items-center rounded-xl bg-[#c7a45a]/12 text-[#d8bc7f]">
+            <span className="grid size-9 place-items-center rounded-xl bg-[#C5A059]/12 text-[#8B6914]">
               <Eye size={18} />
             </span>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
-              <span className="font-serif text-3xl font-semibold text-[#e9e2d2]">495.2K</span>
-              <span className="inline-flex items-center text-xs font-semibold text-emerald-300">
+              <span className="font-serif text-3xl font-semibold text-[#1A1A1A]">495.2K</span>
+              <span className="inline-flex items-center text-xs font-semibold text-emerald-800">
                 +32.1%
               </span>
             </div>
-            <p className="mt-3 border-t border-[#c7a45a]/14 pt-2 text-[11px] text-[#e9e2d2]/55">
+            <p className="mt-3 border-t border-[#C5A059]/30 pt-2 text-[11px] text-[#2C2C2C]/70">
               Reels, publicaciones y rituales en vivo
             </p>
           </CardContent>
@@ -255,21 +255,21 @@ export default function RedesPage() {
         {/* Métrica 4: Tasa de Interacción (Engagement) */}
         <Card className="glass-panel glass-panel-hover">
           <CardHeader className="flex-row items-center justify-between pb-2">
-            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/55">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider text-[#2C2C2C]/70">
               Engagement
             </CardDescription>
-            <span className="grid size-9 place-items-center rounded-xl bg-[#c7a45a]/12 text-[#d8bc7f]">
+            <span className="grid size-9 place-items-center rounded-xl bg-[#C5A059]/12 text-[#8B6914]">
               <Heart size={18} />
             </span>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
-              <span className="font-serif text-3xl font-semibold text-[#e9e2d2]">6.8%</span>
-              <span className="inline-flex items-center text-xs font-semibold text-emerald-300">
+              <span className="font-serif text-3xl font-semibold text-[#1A1A1A]">6.8%</span>
+              <span className="inline-flex items-center text-xs font-semibold text-emerald-800">
                 +2.4 pts
               </span>
             </div>
-            <p className="mt-3 border-t border-[#c7a45a]/14 pt-2 text-[11px] text-[#e9e2d2]/55">
+            <p className="mt-3 border-t border-[#C5A059]/30 pt-2 text-[11px] text-[#2C2C2C]/70">
               Promedio de interacciones y comentarios
             </p>
           </CardContent>
@@ -286,7 +286,7 @@ export default function RedesPage() {
           <button
             type="button"
             onClick={() => setSuccessBanner(null)}
-            className="text-emerald-300 hover:text-emerald-900"
+            className="text-emerald-800 hover:text-emerald-900"
           >
             <X size={16} />
           </button>
@@ -302,14 +302,14 @@ export default function RedesPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-xl">
-                    <Sparkles size={20} className="text-[#d8bc7f]" />
+                    <Sparkles size={20} className="text-[#8B6914]" />
                     Programar Publicación
                   </CardTitle>
                   <CardDescription className="mt-1">
                     Redacta el mensaje, selecciona plataformas conectadas y asigna fecha/hora de difusión.
                   </CardDescription>
                 </div>
-                <span className="rounded-full bg-[#c7a45a]/20 px-3 py-1 text-xs font-medium text-[#d8bc7f]">
+                <span className="rounded-full bg-[#C5A059]/20 px-3 py-1 text-xs font-medium text-[#8B6914]">
                   Studio Social Media
                 </span>
               </div>
@@ -319,7 +319,7 @@ export default function RedesPage() {
               <form onSubmit={handleSchedulePost} className="space-y-5">
                 {/* Selector de Canales */}
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#e9e2d2]/70">
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/80">
                     Plataformas de destino
                   </label>
                   <div className="flex flex-wrap gap-3">
@@ -329,7 +329,7 @@ export default function RedesPage() {
                       className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
                         targetInstagram
                           ? "border-[#E1306C] bg-[#E1306C]/10 text-[#E1306C]"
-                          : "border-[#c7a45a]/18 bg-white/[0.03] text-[#e9e2d2]/55 hover:bg-white/[0.06]"
+                          : "border-[#C5A059]/35 bg-[#FCFAF5] text-[#2C2C2C]/70 hover:bg-[#EDE5D7]/80"
                       }`}
                     >
                       <Instagram size={17} />
@@ -343,7 +343,7 @@ export default function RedesPage() {
                       className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
                         targetFacebook
                           ? "border-[#1877F2] bg-[#1877F2]/10 text-[#1877F2]"
-                          : "border-[#c7a45a]/18 bg-white/[0.03] text-[#e9e2d2]/55 hover:bg-white/[0.06]"
+                          : "border-[#C5A059]/35 bg-[#FCFAF5] text-[#2C2C2C]/70 hover:bg-[#EDE5D7]/80"
                       }`}
                     >
                       <Facebook size={17} />
@@ -358,11 +358,11 @@ export default function RedesPage() {
                   <div className="mb-2 flex items-center justify-between">
                     <label
                       htmlFor="post-content"
-                      className="text-xs font-bold uppercase tracking-wider text-[#e9e2d2]/70"
+                      className="text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/80"
                     >
                       Texto de la publicación (Copy)
                     </label>
-                    <span className="text-xs text-[#e9e2d2]/40">
+                    <span className="text-xs text-[#2C2C2C]/60">
                       {content.length} caracteres
                     </span>
                   </div>
@@ -372,13 +372,13 @@ export default function RedesPage() {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Escribe tu reflexión, anuncio de ritual, lanzamiento de talismanes o sabiduría del día... (ej: 'El despertar de la luna nos recuerda sembrar intenciones claras...')"
-                    className="w-full rounded-2xl border border-[#c7a45a]/20 bg-white/[0.05] p-4 text-sm leading-relaxed text-[#e9e2d2] outline-none placeholder:text-[#e9e2d2]/40 focus:border-[#c7a45a] focus:ring-2 focus:ring-[#D4AF37]/25"
+                    className="w-full rounded-2xl border border-[#C5A059]/35 bg-[#FCFAF5] p-4 text-sm leading-relaxed text-[#1A1A1A] outline-none placeholder:text-[#2C2C2C]/60 focus:border-[#C5A059] focus:ring-2 focus:ring-[#D4AF37]/25"
                   />
                 </div>
 
                 {/* Sugerencias Rápidas de Hashtags Sagrados */}
                 <div>
-                  <label className="mb-2 block text-xs font-semibold text-[#e9e2d2]/70">
+                  <label className="mb-2 block text-xs font-semibold text-[#2C2C2C]/80">
                     Etiquetas sugeridas (Hashtags):
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -387,7 +387,7 @@ export default function RedesPage() {
                         key={tag}
                         type="button"
                         onClick={() => handleAddHashtag(tag)}
-                        className="rounded-full border border-[#c7a45a]/30 bg-[#c7a45a]/10 px-3 py-1 text-xs text-[#d8bc7f] transition hover:bg-[#c7a45a]/20"
+                        className="rounded-full border border-[#C5A059]/50 bg-[#C5A059]/10 px-3 py-1 text-xs text-[#8B6914] transition hover:bg-[#C5A059]/20"
                       >
                         {tag}
                       </button>
@@ -397,7 +397,7 @@ export default function RedesPage() {
 
                 {/* Selector de Imagen / Multimedia */}
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#e9e2d2]/70">
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/80">
                     Imagen para la publicación
                   </label>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
@@ -408,7 +408,7 @@ export default function RedesPage() {
                         onClick={() => setSelectedImage(img.path)}
                         className={`group relative overflow-hidden rounded-xl border-2 transition ${
                           selectedImage === img.path
-                            ? "border-[#c7a45a] ring-2 ring-[#D4AF37]/40"
+                            ? "border-[#C5A059] ring-2 ring-[#D4AF37]/40"
                             : "border-transparent opacity-75 hover:opacity-100"
                         }`}
                       >
@@ -430,7 +430,7 @@ export default function RedesPage() {
                   <div>
                     <label
                       htmlFor="schedule-date"
-                      className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#e9e2d2]/70"
+                      className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/80"
                     >
                       <Calendar size={14} /> Fecha de publicación
                     </label>
@@ -439,14 +439,14 @@ export default function RedesPage() {
                       type="date"
                       value={scheduleDate}
                       onChange={(e) => setScheduleDate(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-3 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a] focus:ring-2 focus:ring-[#D4AF37]/25"
+                      className="h-11 w-full rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#D4AF37]/25"
                     />
                   </div>
 
                   <div>
                     <label
                       htmlFor="schedule-time"
-                      className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#e9e2d2]/70"
+                      className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/80"
                     >
                       <Clock size={14} /> Hora programada
                     </label>
@@ -455,7 +455,7 @@ export default function RedesPage() {
                       type="time"
                       value={scheduleTime}
                       onChange={(e) => setScheduleTime(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-3 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a] focus:ring-2 focus:ring-[#D4AF37]/25"
+                      className="h-11 w-full rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#D4AF37]/25"
                     />
                   </div>
                 </div>
@@ -478,17 +478,17 @@ export default function RedesPage() {
           {/* Cola de Publicaciones Programadas */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-[#e9e2d2]">
+              <h2 className="text-lg font-semibold text-[#1A1A1A]">
                 Cola de Publicaciones Programadas ({posts.length})
               </h2>
-              <span className="text-xs text-[#e9e2d2]/55">Sincronización automática activa</span>
+              <span className="text-xs text-[#2C2C2C]/70">Sincronización automática activa</span>
             </div>
 
             <div className="space-y-3">
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="flex flex-col gap-4 rounded-2xl border border-[#c7a45a]/20 bg-white/[0.04] p-4 shadow-sm backdrop-blur-md transition hover:bg-white/[0.06] sm:flex-row sm:items-start"
+                  className="flex flex-col gap-4 rounded-2xl border border-[#C5A059]/35 bg-[#FCFAF5] p-4 shadow-sm backdrop-blur-md transition hover:bg-[#EDE5D7]/80 sm:flex-row sm:items-start"
                 >
                   {post.image && (
                     <img
@@ -514,16 +514,16 @@ export default function RedesPage() {
                         </span>
                       ))}
 
-                      <span className="inline-flex items-center gap-1 text-[11px] text-[#e9e2d2]/55">
+                      <span className="inline-flex items-center gap-1 text-[11px] text-[#2C2C2C]/70">
                         <Calendar size={12} /> {post.date} a las {post.time} hrs
                       </span>
 
-                      <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                      <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-800">
                         En cola
                       </span>
                     </div>
 
-                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#e9e2d2]">
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#1A1A1A]">
                       {post.content}
                     </p>
                   </div>
@@ -532,7 +532,7 @@ export default function RedesPage() {
                     type="button"
                     onClick={() => handleDeletePost(post.id)}
                     aria-label="Cancelar publicación programada"
-                    className="self-start rounded-lg p-1.5 text-[#e9e2d2]/40 transition hover:bg-red-500/150/10 hover:text-red-600"
+                    className="self-start rounded-lg p-1.5 text-[#2C2C2C]/60 transition hover:bg-red-500/150/10 hover:text-red-600"
                   >
                     <X size={16} />
                   </button>
@@ -545,17 +545,17 @@ export default function RedesPage() {
         {/* Vista previa en Vivo estilo feed (Instagram / Facebook Mockup) */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#e9e2d2]/70">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#2C2C2C]/80">
               Vista Previa en Vivo
             </h2>
-            <div className="flex rounded-xl border border-[#c7a45a]/18 bg-white/[0.04] p-0.5 text-xs">
+            <div className="flex rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] p-0.5 text-xs">
               <button
                 type="button"
                 onClick={() => setPreviewPlatform("instagram")}
                 className={`rounded-lg px-2.5 py-1 font-medium transition ${
                   previewPlatform === "instagram"
-                    ? "border border-[#c7a45a]/40 bg-[#c7a45a]/15 text-[#f7f2e7]"
-                    : "text-[#e9e2d2]/55 hover:text-[#e9e2d2]"
+                    ? "border border-[#C5A059]/40 bg-[#C5A059]/15 text-[#1A1A1A]"
+                    : "text-[#2C2C2C]/70 hover:text-[#1A1A1A]"
                 }`}
               >
                 Instagram
@@ -565,8 +565,8 @@ export default function RedesPage() {
                 onClick={() => setPreviewPlatform("facebook")}
                 className={`rounded-lg px-2.5 py-1 font-medium transition ${
                   previewPlatform === "facebook"
-                    ? "border border-[#c7a45a]/40 bg-[#c7a45a]/15 text-[#f7f2e7]"
-                    : "text-[#e9e2d2]/55 hover:text-[#e9e2d2]"
+                    ? "border border-[#C5A059]/40 bg-[#C5A059]/15 text-[#1A1A1A]"
+                    : "text-[#2C2C2C]/70 hover:text-[#1A1A1A]"
                 }`}
               >
                 Facebook
@@ -577,25 +577,25 @@ export default function RedesPage() {
           {/* Tarjeta Glassmorphism de Smartphone / Feed */}
           <div className="overflow-hidden glass-panel rounded-3xl">
             {/* Cabecera del Post */}
-            <div className="flex items-center gap-3 border-b border-[#c7a45a]/14 p-3.5">
+            <div className="flex items-center gap-3 border-b border-[#C5A059]/30 p-3.5">
               <span className="grid size-9 place-items-center rounded-full bg-gradient-to-tr from-[#ff7a1a] to-[#c7a45a] p-0.5">
-                <span className="grid size-full place-items-center rounded-full bg-[#0b1020]">
+                <span className="grid size-full place-items-center rounded-full bg-[#F4EFE6]">
                   <Flame size={16} className="text-[#FF7300]" />
                 </span>
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-[#e9e2d2]">
+                <p className="truncate text-xs font-semibold text-[#1A1A1A]">
                   {previewPlatform === "instagram" ? "dharmakadabra" : "Dharma Kadabra Oficial"}
                 </p>
-                <p className="text-[10px] text-[#e9e2d2]/40">
+                <p className="text-[10px] text-[#2C2C2C]/60">
                   {previewPlatform === "instagram" ? "Audio original · Templo Sagrado" : "Página espiritual · 1 min"}
                 </p>
               </div>
-              <span className="text-xs text-[#e9e2d2]/40">•••</span>
+              <span className="text-xs text-[#2C2C2C]/60">•••</span>
             </div>
 
             {/* Imagen del Post */}
-            <div className="relative aspect-square w-full overflow-hidden bg-[#11182b]/50">
+            <div className="relative aspect-square w-full overflow-hidden bg-[#EDE5D7]/70">
               {selectedImage ? (
                 <img
                   src={selectedImage}
@@ -603,7 +603,7 @@ export default function RedesPage() {
                   className="size-full object-cover"
                 />
               ) : (
-                <div className="grid size-full place-items-center text-xs text-[#e9e2d2]/40">
+                <div className="grid size-full place-items-center text-xs text-[#2C2C2C]/60">
                   Sin imagen seleccionada
                 </div>
               )}
@@ -611,23 +611,23 @@ export default function RedesPage() {
 
             {/* Acciones sociales */}
             <div className="flex items-center justify-between p-3">
-              <div className="flex items-center gap-3 text-[#e9e2d2]">
+              <div className="flex items-center gap-3 text-[#1A1A1A]">
                 <Heart size={18} className="cursor-pointer hover:text-red-500" />
-                <MessageCircle size={18} className="cursor-pointer hover:text-[#e3c57c]" />
-                <Send size={18} className="cursor-pointer hover:text-[#e3c57c]" />
+                <MessageCircle size={18} className="cursor-pointer hover:text-[#8B6914]" />
+                <Send size={18} className="cursor-pointer hover:text-[#8B6914]" />
               </div>
-              <span className="text-[10px] font-semibold text-[#e9e2d2]/40">
+              <span className="text-[10px] font-semibold text-[#2C2C2C]/60">
                 Programado: {scheduleDate}
               </span>
             </div>
 
             {/* Copy y Comentarios */}
             <div className="p-3 pt-0">
-              <p className="text-xs font-semibold text-[#e9e2d2]">
+              <p className="text-xs font-semibold text-[#1A1A1A]">
                 {previewPlatform === "instagram" ? "1,248 me gusta" : "892 reacciones"}
               </p>
-              <div className="mt-1.5 text-xs leading-relaxed text-[#e9e2d2]/80">
-                <span className="font-semibold text-[#e9e2d2] mr-1.5">
+              <div className="mt-1.5 text-xs leading-relaxed text-[#2C2C2C]/90">
+                <span className="font-semibold text-[#1A1A1A] mr-1.5">
                   {previewPlatform === "instagram" ? "dharmakadabra" : "Dharma Kadabra"}
                 </span>
                 <span className="whitespace-pre-wrap">

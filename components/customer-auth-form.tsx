@@ -31,26 +31,32 @@ export function CustomerAuthForm() {
     }
   }
 
-  return <main className="min-h-screen bg-[#0b1020] px-5 py-16 text-[#e9e2d2]">
+  const inputBase =
+    "h-11 w-full rounded-xl border border-[#C5A059]/45 bg-[#FCFAF5] text-sm text-[#1A1A1A] outline-none placeholder:text-[#2C2C2C]/45 focus:border-[#9E7B2F] focus:ring-2 focus:ring-[#C5A059]/25";
+
+  return <main className="min-h-screen bg-[#F4EFE6] px-5 py-16 text-[#1A1A1A]">
     <div className="mx-auto max-w-md">
-      <Link href="/" className="inline-flex items-center gap-2 text-xs font-medium text-[#d8bc7f] hover:text-[#e9e2d2]"><ArrowLeft size={15} /> Volver a Dharma Kadabra</Link>
-      <section className="mt-8 glass-panel overflow-hidden p-7 sm:p-9 sm:p-9">
-        <div className="mb-7 grid size-12 place-items-center rounded-full bg-[#151d31] text-[#d8bc7f]"><Sparkles size={22} /></div>
-        <p className="text-[10px] font-semibold uppercase tracking-[.24em] text-[#d8bc7f]">Tu espacio personal</p>
-        <h1 className="mt-2 font-display text-4xl">{mode === "login" ? "Qué gusto verte." : "Un espacio para ti."}</h1>
-        <p className="mt-3 text-sm leading-6 text-[#e9e2d2]/55">Consulta tus citas, productos y audios desde un solo lugar.</p>
-        <div className="mt-6 grid grid-cols-2 rounded-xl bg-[#151d31] p-1 text-xs font-semibold"><button type="button" onClick={() => { setMode("login"); setError(""); }} className={`rounded-lg py-2.5 ${mode === "login" ? "bg-[#11182b] shadow-sm" : "text-[#e9e2d2]/55"}`}>Iniciar sesión</button><button type="button" onClick={() => { setMode("register"); setError(""); }} className={`rounded-lg py-2.5 ${mode === "register" ? "bg-[#11182b] shadow-sm" : "text-[#e9e2d2]/55"}`}>Crear cuenta</button></div>
+      <Link href="/" className="inline-flex items-center gap-2 text-xs font-semibold text-[#8B6914] transition hover:text-[#1A1A1A]"><ArrowLeft size={15} /> Volver a Dharma Kadabra</Link>
+      <section className="mt-8 glass-panel overflow-hidden p-7 sm:p-9">
+        <div className="mb-7 grid size-12 place-items-center rounded-full border border-[#C5A059]/50 bg-[#C5A059]/15 text-[#9E7B2F]"><Sparkles size={22} /></div>
+        <p className="text-[10px] font-semibold uppercase tracking-[.24em] text-[#8B6914]">Tu espacio personal</p>
+        <h1 className="mt-2 font-display text-4xl text-[#1A1A1A]">{mode === "login" ? "Qué gusto verte." : "Un espacio para ti."}</h1>
+        <p className="mt-3 text-sm leading-6 text-[#2C2C2C]/75">Consulta tus citas, productos y audios desde un solo lugar.</p>
+        <div className="mt-6 grid grid-cols-2 rounded-xl border border-[#C5A059]/35 bg-[#EDE5D7] p-1 text-xs font-semibold">
+          <button type="button" onClick={() => { setMode("login"); setError(""); }} className={`rounded-lg py-2.5 transition ${mode === "login" ? "bg-[#FCFAF5] text-[#1A1A1A] shadow-sm" : "text-[#2C2C2C]/65 hover:text-[#1A1A1A]"}`}>Iniciar sesión</button>
+          <button type="button" onClick={() => { setMode("register"); setError(""); }} className={`rounded-lg py-2.5 transition ${mode === "register" ? "bg-[#FCFAF5] text-[#1A1A1A] shadow-sm" : "text-[#2C2C2C]/65 hover:text-[#1A1A1A]"}`}>Crear cuenta</button>
+        </div>
         <form onSubmit={submit} className="mt-6 space-y-4">
           {mode === "register" && <>
-            <label className="block text-xs font-semibold">Nombre completo<span className="relative mt-1.5 block"><UserRound size={15} className="absolute left-3 top-3 text-[#d8bc7f]" /><input required minLength={2} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Tu nombre" className="h-11 w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 pl-9 pr-3 text-sm outline-none focus:border-[#c7a45a]" /></span></label>
-            <label className="block text-xs font-semibold">Teléfono <span className="font-normal text-[#e9e2d2]/40">(opcional)</span><input value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+52 664 123 4567" className="mt-1.5 h-11 w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 px-3 text-sm outline-none focus:border-[#c7a45a]" /></label>
+            <label className="block text-xs font-semibold text-[#1A1A1A]">Nombre completo<span className="relative mt-1.5 block"><UserRound size={15} className="absolute left-3 top-3 text-[#9E7B2F]" /><input required minLength={2} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Tu nombre" className={`${inputBase} pl-9 pr-3`} /></span></label>
+            <label className="block text-xs font-semibold text-[#1A1A1A]">Teléfono <span className="font-normal text-[#2C2C2C]/55">(opcional)</span><input value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+52 664 123 4567" className={`mt-1.5 px-3 ${inputBase}`} /></label>
           </>}
-          <label className="block text-xs font-semibold">Correo electrónico<input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.com" className="mt-1.5 h-11 w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 px-3 text-sm outline-none focus:border-[#c7a45a]" /></label>
-          <label className="block text-xs font-semibold">Contraseña<span className="relative mt-1.5 block"><KeyRound size={15} className="absolute left-3 top-3 text-[#d8bc7f]" /><input required type="password" minLength={10} maxLength={128} autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 10 caracteres" className="h-11 w-full rounded-xl border border-[#c7a45a]/18 bg-[#11182b]/80 pl-9 pr-3 text-sm outline-none focus:border-[#c7a45a]" /></span></label>
-          {error && <p role="alert" className="rounded-lg bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
-          <button disabled={pending} className="h-12 w-full rounded-xl bg-gradient-to-r from-[#d8bc7f] via-[#c7a45a] to-[#e3c57c] text-sm font-semibold text-[#0b1020] transition hover:brightness-110 disabled:opacity-60">{pending ? "Un momento…" : mode === "login" ? "Iniciar sesión" : "Crear mi cuenta"}</button>
+          <label className="block text-xs font-semibold text-[#1A1A1A]">Correo electrónico<input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.com" className={`mt-1.5 px-3 ${inputBase}`} /></label>
+          <label className="block text-xs font-semibold text-[#1A1A1A]">Contraseña<span className="relative mt-1.5 block"><KeyRound size={15} className="absolute left-3 top-3 text-[#9E7B2F]" /><input required type="password" minLength={10} maxLength={128} autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 10 caracteres" className={`${inputBase} pl-9 pr-3`} /></span></label>
+          {error && <p role="alert" className="rounded-lg border border-red-600/30 bg-red-500/10 p-3 text-sm text-red-800">{error}</p>}
+          <button disabled={pending} className="h-12 w-full rounded-xl bg-[#C5A059] text-sm font-semibold text-[#1A1A1A] shadow-[0_14px_34px_-16px_rgba(92,72,48,.35)] transition hover:bg-[#b58e45] disabled:opacity-60">{pending ? "Un momento…" : mode === "login" ? "Iniciar sesión" : "Crear mi cuenta"}</button>
         </form>
-        <p className="mt-5 text-center text-[11px] leading-5 text-[#e9e2d2]/45">Tus datos se guardan de forma segura. La contraseña se almacena protegida y tu sesión se mantiene privada.</p>
+        <p className="mt-5 text-center text-[11px] leading-5 text-[#2C2C2C]/65">Tus datos se guardan de forma segura. La contraseña se almacena protegida y tu sesión se mantiene privada.</p>
       </section>
     </div>
   </main>;

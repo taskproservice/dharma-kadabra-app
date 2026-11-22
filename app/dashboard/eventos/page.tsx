@@ -17,11 +17,11 @@ export default async function EventsPage() {
   return <div className="mx-auto max-w-7xl space-y-7">
     <header className="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.28em] text-[#d8bc7f]">Ciclos · Encuentros · Comunidad</p>
-        <h1 className="font-display text-4xl text-[#f7f2e7]">Eventos especiales</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#e9e2d2]/55">Organiza el calendario lunar y vincula los objetos que acompañan cada ritual.</p>
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.28em] text-[#8B6914]">Ciclos · Encuentros · Comunidad</p>
+        <h1 className="font-display text-4xl text-[#1A1A1A]">Eventos especiales</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#2C2C2C]/70">Organiza el calendario lunar y vincula los objetos que acompañan cada ritual.</p>
       </div>
-      <span className="rounded-full border border-[#c7a45a]/30 bg-white/[0.03] px-4 py-2 text-xs text-[#e9e2d2]/55">{initialEvents.length} eventos en calendario</span>
+      <span className="rounded-full border border-[#C5A059]/50 bg-[#FCFAF5] px-4 py-2 text-xs text-[#2C2C2C]/70">{initialEvents.length} eventos en calendario</span>
     </header>
     <EventsCalendar initialEvents={initialEvents} products={products.map(({ id, name }) => ({ id, name }))} />
   </div>;
