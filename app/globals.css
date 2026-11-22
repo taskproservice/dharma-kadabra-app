@@ -4,6 +4,7 @@
   --font-sans: var(--font-inter), system-ui, "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-cormorant: var(--font-cormorant-garamond), Georgia, "Times New Roman", serif;
 
   /* Dharma Kadabra · Paleta nocturna de lujo */
   --color-night-950: #080c16;
@@ -524,7 +525,20 @@ html {
   animation: total-tick 0.3s ease-out both;
 }
 
-/* Tour de marca · entrada de los capítulos superpuestos */
+/* Tour de marca · entrada cinematográfica del modal y capítulos superpuestos */
+@keyframes tour-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.tour-modal-in {
+  animation: tour-modal-in 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
 @keyframes tour-chapter-in {
   from {
     opacity: 0;
@@ -558,6 +572,7 @@ html {
   .store-slide-in,
   .glow-pulse,
   .spin-slow,
+  .tour-modal-in,
   .tour-chapter-in,
   .shimmer-line::after {
     animation: none;

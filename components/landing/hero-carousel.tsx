@@ -106,22 +106,24 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8 lg:pt-28">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px] xl:gap-16">
           {/* Titular editorial */}
-          <div key={active} className="max-w-2xl">
-            <div className="hero-rise flex items-center gap-4">
-              <span className="h-px w-12 bg-gradient-to-r from-transparent via-[#d8bc7f]/80 to-[#d8bc7f]/30" aria-hidden="true" />
-              <p className="text-[10px] font-medium uppercase tracking-[.42em] text-[#e3c57c] sm:text-[11px]">
-                {current.eyebrow}
+          <div className="max-w-2xl">
+            <div key={active}>
+              <div className="hero-rise flex items-center gap-4">
+                <span className="h-px w-12 bg-gradient-to-r from-transparent via-[#d8bc7f]/80 to-[#d8bc7f]/30" aria-hidden="true" />
+                <p className="text-[10px] font-medium uppercase tracking-[.42em] text-[#e3c57c] sm:text-[11px]">
+                  {current.eyebrow}
+                </p>
+              </div>
+              <h1 className="hero-rise mt-7 font-display text-[clamp(2.7rem,7vw,5.2rem)] font-normal leading-[1.02] tracking-[-.015em] text-[#f7f2e7] [animation-delay:120ms] [text-shadow:0_2px_40px_rgba(0,0,0,.55)]">
+                {current.title}{" "}
+                <em className="relative font-display italic text-[#e3c57c] [text-shadow:0_0_38px_rgba(199,164,90,.35)]">
+                  {current.accent}
+                </em>
+              </h1>
+              <p className="hero-rise mt-7 max-w-xl text-[15px] font-light leading-7 text-[#e9e2d2]/80 [animation-delay:240ms] sm:text-lg sm:leading-8">
+                {current.text}
               </p>
             </div>
-            <h1 className="hero-rise mt-7 font-display text-[clamp(2.7rem,7vw,5.2rem)] font-normal leading-[1.02] tracking-[-.015em] text-[#f7f2e7] [animation-delay:120ms] [text-shadow:0_2px_40px_rgba(0,0,0,.55)]">
-              {current.title}{" "}
-              <em className="relative font-display italic text-[#e3c57c] [text-shadow:0_0_38px_rgba(199,164,90,.35)]">
-                {current.accent}
-              </em>
-            </h1>
-            <p className="hero-rise mt-7 max-w-xl text-[15px] font-light leading-7 text-[#e9e2d2]/80 [animation-delay:240ms] sm:text-lg sm:leading-8">
-              {current.text}
-            </p>
             {cta ? (
               <div className="hero-rise mt-10 flex flex-wrap items-center gap-4 [animation-delay:360ms] sm:gap-5">{cta}</div>
             ) : null}
