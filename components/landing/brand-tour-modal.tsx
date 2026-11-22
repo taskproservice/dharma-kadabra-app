@@ -347,7 +347,7 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
 
   /* ---------- CTA final: cerrar el modal y desplazarse a la colección ---------- */
   const handleCta = useCallback(() => {
-    const link = (config.ctaLink || "#coleccion").trim();
+    const link = (config.ctaLink || "/tienda").trim();
     onClose();
     if (link.startsWith("#")) {
       window.setTimeout(() => {

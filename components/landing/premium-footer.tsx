@@ -45,7 +45,7 @@ export function PremiumFooter() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
           {/* Columna 1 — Marca */}
           <div>
-            <Link href="#inicio" aria-label="Dharma Kadabra · Inicio" className="inline-flex">
+            <Link href="/" aria-label="Dharma Kadabra · Inicio" className="inline-flex">
               <BrandLogo size={56} />
             </Link>
             <p className="mt-5 max-w-xs font-display text-lg italic leading-relaxed text-[#e9e2d2]/80">
@@ -177,7 +177,7 @@ export function PremiumFooter() {
           <p className="text-[11px] uppercase tracking-[.2em] text-[#e9e2d2]/50">
             © 2026 Dharma Kadabra · Un camino hacia ti
           </p>
-          <a href="#inicio" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[.2em] text-[#e9e2d2]/70 transition hover:text-[#c7a45a]">
+          <a href="/#inicio" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[.2em] text-[#e9e2d2]/70 transition hover:text-[#c7a45a]">
             Volver arriba <ArrowUp size={13} />
           </a>
         </div>

@@ -6,6 +6,7 @@ import { CATEGORY_META, STORE_WHATSAPP } from "../constants";
 import type { CategoryTemplateMap, StoreCategory, StoreProduct } from "../types";
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCard } from "./ProductCard";
+import { StoreErrorPanel } from "./StoreErrorPanel";
 import { ProductCardSkeleton } from "../../../components/ui/skeleton";
 
 type Props = {
@@ -13,6 +14,8 @@ type Props = {
   initialProducts: StoreProduct[];
   initialCounts: Record<string, number>;
   templates: CategoryTemplateMap;
+  /** Error de la carga inicial (render del servidor); si existe, la tienda abre en estado de error. */
+  initialError?: { message: string; detail?: string | null } | null;
 };
 
 /**
@@ -20,38 +23,69 @@ type Props = {
  *
  * CERO CARGA INNECESARIA: la primera categoría llega renderizada desde el
  * servidor y cada categoría adicional se pide a la API solo al seleccionarla
- * (solo piezas publicadas, máximo 35). Los resultados se cachean en memoria.
+ * (solo piezas publicadas, máximo 35). Los resultados se cachean en memoria;
+ * los errores se muestran con una pantalla elegante y opción de reintentar.
  */
-export function StoreExplorer({ initialCategory, initialProducts, initialCounts, templates }: Props) {
+export function StoreExplorer({
+  initialCategory,
+  initialProducts,
+  initialCounts,
+  templates,
+  initialError = null,
+}: Props) {
   const [active, setActive] = useState<StoreCategory>(initialCategory);
   const [cache, setCache] = useState<Record<string, StoreProduct[]>>({ [initialCategory]: initialProducts });
   const [counts, setCounts] = useState<Record<string, number>>(initialCounts);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ message: string; detail?: string | null } | null>(initialError);
+
+  const loadCategory = useCallback(async (category: StoreCategory, force = false) => {
+    if (!force && cache[category]) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/store/products?category=${encodeURIComponent(category)}`, {
+        cache: "no-store",
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError({
+          message:
+            typeof data?.error === "string" && data.error
+              ? data.error
+              : "No fue posible cargar esta categoría.",
+          detail: typeof data?.detail === "string" ? data.detail : null,
+        });
+        return;
+      }
+      const products: StoreProduct[] = Array.isArray(data.products) ? data.products : [];
+      setCache((prev) => ({ ...prev, [category]: products }));
+      setCounts((prev) => ({
+        ...prev,
+        [category]: typeof data.total === "number" ? data.total : products.length,
+      }));
+    } catch {
+      setError({
+        message:
+          "No pudimos conectar con el catálogo. Revisa tu conexión y vuelve a intentarlo.",
+        detail: null,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [cache]);
 
   const selectCategory = useCallback(
-    async (category: StoreCategory) => {
+    (category: StoreCategory) => {
       setActive(category);
-      setError(null);
-      if (cache[category]) return;
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/store/products?category=${encodeURIComponent(category)}`, {
-          cache: "no-store",
-        });
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(data?.error || "No fue posible cargar esta categoría.");
-        const products: StoreProduct[] = Array.isArray(data.products) ? data.products : [];
-        setCache((prev) => ({ ...prev, [category]: products }));
-        setCounts((prev) => ({ ...prev, [category]: typeof data.total === "number" ? data.total : products.length }));
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "No fue posible cargar esta categoría.");
-      } finally {
-        setLoading(false);
-      }
+      void loadCategory(category);
     },
-    [cache],
+    [loadCategory],
   );
+
+  const retry = useCallback(() => {
+    void loadCategory(active, true);
+  }, [active, loadCategory]);
 
   const products = cache[active] ?? [];
   const template = templates[active] ?? "oro";
@@ -66,7 +100,7 @@ export function StoreExplorer({ initialCategory, initialProducts, initialCounts,
             Holistic Store
           </p>
           <h2 className="mt-5 font-display text-4xl leading-none text-[#F7F3EA] sm:text-5xl">
-            La <em className="italic text-[#C5A059]">Tienda Holística.</em>
+            Explora la <em className="italic text-[#C5A059]">colección.</em>
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[#F7F3EA]/55">
             {meta.symbol} {active} · {meta.tagline}. Piezas publicadas, listas para consultar por WhatsApp.
@@ -76,24 +110,22 @@ export function StoreExplorer({ initialCategory, initialProducts, initialCounts,
       </div>
 
       {loading ? (
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" aria-label={`Cargando ${active}`}>
+        <div
+          className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+          aria-label={`Cargando ${active}`}
+        >
           {Array.from({ length: 10 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
         </div>
       ) : error ? (
-        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-[#C5A059]/25 bg-[#F7F3EA]/[0.02] px-6 py-16 text-center">
-          <div>
-            <p className="font-display text-2xl text-[#F7F3EA]">No pudimos cargar {active}</p>
-            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#F7F3EA]/55">{error}</p>
-            <button
-              type="button"
-              onClick={() => selectCategory(active)}
-              className="mt-6 rounded-full border border-[#C5A059]/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-[#e8cf92] transition hover:bg-[#C5A059] hover:text-[#121212]"
-            >
-              Reintentar
-            </button>
-          </div>
+        <div className="mt-10">
+          <StoreErrorPanel
+            title={`No pudimos cargar ${active}`}
+            message={error.message}
+            detail={error.detail}
+            onRetry={retry}
+          />
         </div>
       ) : products.length === 0 ? (
         <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-[#C5A059]/25 bg-[#F7F3EA]/[0.02] px-6 py-16 text-center">

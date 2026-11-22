@@ -23,11 +23,11 @@ import {
   Palette,
   Settings,
   Share2,
-  ShoppingBag,
   ShoppingCart,
   UserRound,
   Users,
   Video,
+  Wallet,
   WandSparkles,
   type LucideIcon,
 } from "lucide-react";
@@ -58,6 +58,11 @@ export interface NavGroup {
 /**
  * Menú maestro. El orden de los grupos y de las entradas define la jerarquía
  * visual de la barra lateral.
+ *
+ * IMPORTANTE · Separación tienda / dashboard: el menú interno NO expone la
+ * tienda pública. El staff opera únicamente con el «Punto de Venta» (POS) y
+ * el «Inventario»; la tienda pública vive en `/tienda` y se enlaza desde la
+ * web, no desde aquí.
  */
 export const DASHBOARD_NAVIGATION: NavGroup[] = [
   {
@@ -150,7 +155,7 @@ export const DASHBOARD_NAVIGATION: NavGroup[] = [
       {
         label: "Finanzas",
         href: "/dashboard/ventas",
-        icon: ShoppingBag,
+        icon: Wallet,
         description: "Transacciones, importes y conciliación.",
         roles: ["ADMIN"],
       },
