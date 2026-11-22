@@ -142,10 +142,10 @@ export default async function DashboardPage() {
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div>
         <p className="eyebrow-gold">{new Intl.DateTimeFormat("es-MX", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date())}</p>
-        <h1 className="mt-3 font-display text-4xl text-[#f7f2e7]">Centro de comando</h1>
-        <p className="mt-2 max-w-xl text-sm leading-6 text-[#e9e2d2]/55">{isAdmin ? "Una mirada serena a la actividad de tu negocio." : "Tus espacios de trabajo, reunidos en un solo lugar."}</p>
+        <h1 className="mt-3 font-display text-4xl text-[#1A1A1A]">Centro de comando</h1>
+        <p className="mt-2 max-w-xl text-sm leading-6 text-[#2C2C2C]/70">{isAdmin ? "Una mirada serena a la actividad de tu negocio." : "Tus espacios de trabajo, reunidos en un solo lugar."}</p>
       </div>
-      <span className="rounded-full border border-[#c7a45a]/30 bg-[#c7a45a]/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]">
+      <span className="rounded-full border border-[#C5A059]/50 bg-[#C5A059]/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[.2em] text-[#8B6914]">
         {roleConfig.label}
       </span>
     </div>
@@ -153,23 +153,23 @@ export default async function DashboardPage() {
     {quickAccess.length > 0 && (
       <section aria-label="Acceso rápido" className="grid gap-5 md:grid-cols-2">
         {quickAccess.map(({ title, description, href, icon: Icon, label, meta }) => (
-          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#c7a45a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1020]">
-            <article className="relative h-full overflow-hidden rounded-2xl border border-[#c7a45a]/25 bg-[linear-gradient(150deg,rgba(199,164,90,.16)_0%,rgba(17,24,43,.85)_45%,rgba(11,16,32,.9)_100%)] p-6 text-[#f7f2e7] shadow-[0_30px_70px_-34px_rgba(0,0,0,.9)] transition duration-300 group-hover:-translate-y-1 group-hover:border-[#c7a45a]/55 sm:p-8">
-              <span className="pointer-events-none absolute -right-10 -top-10 size-44 rounded-full bg-[#c7a45a]/20 blur-3xl transition group-hover:bg-[#c7a45a]/30" aria-hidden="true" />
-              <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e3c57c]/70 to-transparent" />
+          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EFE6]">
+            <article className="relative h-full overflow-hidden rounded-2xl border border-[#C5A059]/50 bg-[#FCFAF5] p-6 text-[#1A1A1A] shadow-[0_18px_45px_-22px_rgba(92,72,48,.22)] transition duration-300 group-hover:-translate-y-1 group-hover:border-[#C5A059] sm:p-8">
+              <span className="pointer-events-none absolute -right-10 -top-10 size-44 rounded-full bg-[#C5A059]/18 blur-3xl transition group-hover:bg-[#C5A059]/28" aria-hidden="true" />
+              <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
               <div className="relative flex items-start justify-between gap-4">
-                <span className="grid size-14 shrink-0 place-items-center rounded-2xl border border-[#c7a45a]/40 bg-[#c7a45a]/15 text-[#e3c57c] transition group-hover:scale-105">
+                <span className="grid size-14 shrink-0 place-items-center rounded-2xl border border-[#C5A059]/45 bg-[#C5A059]/15 text-[#8B6914] transition group-hover:scale-105">
                   <Icon size={26} strokeWidth={1.5} />
                 </span>
-                <ArrowUpRight size={22} className="text-[#d8bc7f] transition group-hover:-translate-y-1 group-hover:translate-x-1" />
+                <ArrowUpRight size={22} className="text-[#8B6914] transition group-hover:-translate-y-1 group-hover:translate-x-1" />
               </div>
-              <h2 className="relative mt-6 font-display text-3xl leading-tight">{title}</h2>
-              <p className="relative mt-2 max-w-md text-sm font-light leading-6 text-[#e9e2d2]/65">{description}</p>
+              <h2 className="relative mt-6 font-display text-3xl leading-tight text-[#1A1A1A]">{title}</h2>
+              <p className="relative mt-2 max-w-md text-sm font-light leading-6 text-[#2C2C2C]/80">{description}</p>
               <div className="relative mt-6 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#c7a45a] px-4 py-2 text-[10px] font-semibold uppercase tracking-[.2em] text-[#0b1020] transition group-hover:bg-[#e3c57c]">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#C5A059] px-4 py-2 text-[10px] font-semibold uppercase tracking-[.2em] text-[#1A1A1A] transition group-hover:bg-[#b58e45]">
                   {label} <ArrowUpRight size={13} />
                 </span>
-                <span className="text-xs text-[#e9e2d2]/50">{meta}</span>
+                <span className="text-xs text-[#2C2C2C]/70">{meta}</span>
               </div>
             </article>
           </Link>
@@ -180,16 +180,16 @@ export default async function DashboardPage() {
     {cards.length > 0 && (
       <section aria-label="Accesos rápidos" className={`grid gap-5 ${cards.length > 2 ? "md:grid-cols-2 xl:grid-cols-3" : "md:grid-cols-2"}`}>
         {cards.map(({ title, description, href, icon: Icon, label }) => (
-          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#c7a45a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1020]">
+          <Link key={href} href={href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EFE6]">
             <Card className="glass-panel-hover h-full">
               <CardHeader className="flex-row items-start justify-between gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f] transition group-hover:border-[#c7a45a]/60 group-hover:bg-[#c7a45a]/18"><Icon size={22} strokeWidth={1.6} /></span>
-                <ArrowUpRight size={18} className="text-[#e9e2d2]/25 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#d8bc7f]" />
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl border border-[#C5A059]/50 bg-[#C5A059]/10 text-[#8B6914] transition group-hover:border-[#C5A059]/60 group-hover:bg-[#C5A059]/18"><Icon size={22} strokeWidth={1.6} /></span>
+                <ArrowUpRight size={18} className="text-[#1A1A1A]/25 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#8B6914]" />
               </CardHeader>
               <CardContent>
                 <CardTitle className="text-xl">{title}</CardTitle>
                 <CardDescription className="mt-2 min-h-10 leading-6">{description}</CardDescription>
-                <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#d8bc7f]">{label}<ArrowUpRight size={13} /></span>
+                <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#8B6914]">{label}<ArrowUpRight size={13} /></span>
               </CardContent>
             </Card>
           </Link>
@@ -199,29 +199,29 @@ export default async function DashboardPage() {
 
     {showKpis && <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ventas del día</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.salesToday)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><TrendingUp size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">{kpis.salesCount} {kpis.salesCount === 1 ? "transacción completada" : "transacciones completadas"}</p></CardContent></Card>
-        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ticket promedio</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.averageTicket, 2)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><CreditCard size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">En las ventas de hoy</p></CardContent></Card>
-        <Card className="sm:col-span-2 lg:col-span-1"><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Citas agendadas</CardDescription><CardTitle className="mt-2 font-display text-3xl">{kpis.appointmentsToday} <span className="text-sm font-sans font-medium text-[#e9e2d2]/45">para hoy</span></CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]"><CalendarDays size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#e9e2d2]/45">{kpis.nextAppointmentLabel}</p></CardContent></Card>
+        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ventas del día</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.salesToday)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#C5A059]/50 bg-[#C5A059]/10 text-[#8B6914]"><TrendingUp size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#2C2C2C]/65">{kpis.salesCount} {kpis.salesCount === 1 ? "transacción completada" : "transacciones completadas"}</p></CardContent></Card>
+        <Card><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Ticket promedio</CardDescription><CardTitle className="mt-2 font-display text-3xl">{money(kpis.averageTicket, 2)}</CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#C5A059]/50 bg-[#C5A059]/10 text-[#8B6914]"><CreditCard size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#2C2C2C]/65">En las ventas de hoy</p></CardContent></Card>
+        <Card className="sm:col-span-2 lg:col-span-1"><CardHeader className="flex-row items-center justify-between"><div><CardDescription>Citas agendadas</CardDescription><CardTitle className="mt-2 font-display text-3xl">{kpis.appointmentsToday} <span className="text-sm font-sans font-medium text-[#2C2C2C]/65">para hoy</span></CardTitle></div><span className="grid size-11 place-items-center rounded-xl border border-[#C5A059]/50 bg-[#C5A059]/10 text-[#8B6914]"><CalendarDays size={20}/></span></CardHeader><CardContent><p className="text-xs text-[#2C2C2C]/65">{kpis.nextAppointmentLabel}</p></CardContent></Card>
       </div>
       <Card><CardHeader><CardTitle className="font-display text-2xl">Ventas semanales</CardTitle><CardDescription>Ingresos de los últimos siete días · Total {money(kpis.weekTotal)}</CardDescription></CardHeader><CardContent>
-        <div className="flex items-center gap-2 text-sm font-medium text-[#e9e2d2]/80"><span className="size-2.5 rounded-full bg-[#e3c57c] shadow-[0_0_10px_rgba(227,197,124,.8)]"/>Ingresos</div>
+        <div className="flex items-center gap-2 text-sm font-medium text-[#2C2C2C]/90"><span className="size-2.5 rounded-full bg-[#C5A059]"/>Ingresos</div>
         <div className="mt-5 overflow-hidden">
           {kpis.weekTotal === 0 ? (
-            <p className="grid h-64 place-items-center rounded-xl border border-dashed border-[#c7a45a]/20 text-center text-sm text-[#e9e2d2]/40">
+            <p className="grid h-64 place-items-center rounded-xl border border-dashed border-[#C5A059]/35 text-center text-sm text-[#2C2C2C]/60">
               Aún no hay ventas en los últimos 7 días.
             </p>
           ) : (
             <svg viewBox="0 0 650 230" className="h-64 w-full" role="img" aria-label="Gráfica de ventas semanales">
               <defs>
                 <linearGradient id="salesArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#c7a45a" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#c7a45a" stopOpacity="0" />
+                  <stop offset="0%" stopColor="#C5A059" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#C5A059" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              {[40, 90, 140, 190].map((y) => <g key={y}><line x1="40" y1={y} x2="604" y2={y} stroke="#c7a45a" strokeOpacity=".14" strokeDasharray="4 5"/><text x="6" y={y + 4} fontSize="11" fill="#e9e2d2" opacity=".35">${Math.round((190-y)*80)}k</text></g>)}
+              {[40, 90, 140, 190].map((y) => <g key={y}><line x1="40" y1={y} x2="604" y2={y} stroke="#C5A059" strokeOpacity=".28" strokeDasharray="4 5"/><text x="6" y={y + 4} fontSize="11" fill="#2C2C2C" opacity=".65">${Math.round((190-y)*80)}k</text></g>)}
               <polyline points={`40,190 ${points} 604,190`} fill="url(#salesArea)" stroke="none" />
-              <polyline points={points} fill="none" stroke="#d8bc7f" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-              {kpis.week.map((item, i) => <g key={`${item.day}-${i}`}><circle cx={40 + i * 94} cy={190 - (item.amount / weekMax) * 140} r="5" fill="#0b1020" stroke="#e3c57c" strokeWidth="2.5"/><text x={40 + i * 94} y="218" textAnchor="middle" fontSize="12" fill="#e9e2d2" opacity=".5">{item.day}</text></g>)}
+              <polyline points={points} fill="none" stroke="#9E7B2F" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+              {kpis.week.map((item, i) => <g key={`${item.day}-${i}`}><circle cx={40 + i * 94} cy={190 - (item.amount / weekMax) * 140} r="5" fill="#FCFAF5" stroke="#9E7B2F" strokeWidth="2.5"/><text x={40 + i * 94} y="218" textAnchor="middle" fontSize="12" fill="#2C2C2C" opacity=".75">{item.day}</text></g>)}
             </svg>
           )}
         </div>

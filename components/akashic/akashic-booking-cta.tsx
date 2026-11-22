@@ -6,15 +6,6 @@ import { Dialog } from "../ui/dialog";
 import { services } from "../../lib/data/services";
 import { akashicServiceId } from "../../data/akashic-content";
 
-/**
- * Botón de reserva de Registros Akáshicos.
- *
- * Abre el `BookingDialog` real (React Hook Form + Prisma vía
- * `/api/appointments`), el mismo que usa la landing y la página de Runas,
- * con el servicio `registros-akashicos`: la API valida ese `serviceId`
- * contra `lib/data/services.ts` y crea la cita PENDIENTE con su anticipo
- * del 20 %. No hay reserva simulada.
- */
 const akashicReading = services.find((service) => service.id === akashicServiceId);
 
 export function AkashicBookingCTA({
@@ -39,7 +30,7 @@ export function AkashicBookingCTA({
         akashicReading ? (
           <BookingDialog service={akashicReading} close={close} />
         ) : (
-          <p className="text-sm text-[#e9e2d2]/70">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-[#2C2C2C]/75">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>

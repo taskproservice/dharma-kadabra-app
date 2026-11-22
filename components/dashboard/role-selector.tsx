@@ -13,11 +13,6 @@ const ROLE_OPTIONS: { role: Role; label: string; description: string }[] = [
   { role: "CLIENT", label: "Cliente", description: "Perfil personal" },
 ];
 
-/**
- * Vista previa por rol para administradoras. Solo se renderiza cuando la sesión
- * es ADMIN (lo decide el layout en el servidor) y únicamente cambia la
- * navegación visible: la API siempre autoriza con el rol real de la sesión.
- */
 export function RoleSelector({ currentRole }: { currentRole: Role }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -32,9 +27,9 @@ export function RoleSelector({ currentRole }: { currentRole: Role }) {
   };
 
   return (
-    <div className="flex items-center gap-1.5 rounded-full border border-[#c7a45a]/25 bg-white/[0.04] px-2.5 py-1 text-xs backdrop-blur-md">
-      <span className="hidden items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[.18em] text-[#e9e2d2]/45 sm:flex">
-        <Eye size={11} className="text-[#c7a45a]/80" />
+    <div className="flex items-center gap-1.5 rounded-full border border-[#C5A059]/45 bg-[#FCFAF5] px-2.5 py-1 text-xs">
+      <span className="hidden items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[.18em] text-[#2C2C2C]/65 sm:flex">
+        <Eye size={11} className="text-[#8B6914]" />
         Ver como
       </span>
       <select
@@ -42,18 +37,18 @@ export function RoleSelector({ currentRole }: { currentRole: Role }) {
         onChange={(e) => handleRoleChange(e.target.value as Role)}
         disabled={isPending}
         aria-label="Previsualizar el dashboard como otro rol"
-        className="cursor-pointer appearance-none bg-transparent py-1 text-[11px] font-semibold text-[#d8bc7f] outline-none focus:ring-0"
+        className="cursor-pointer appearance-none bg-transparent py-1 text-[11px] font-semibold text-[#6B4E24] outline-none focus:ring-0"
       >
         {ROLE_OPTIONS.map((opt) => (
-          <option key={opt.role} value={opt.role} className="bg-[#11182b] text-[#e9e2d2]">
+          <option key={opt.role} value={opt.role} className="bg-[#FCFAF5] text-[#1A1A1A]">
             {opt.label}
           </option>
         ))}
       </select>
       {isPending ? (
-        <Sparkles size={12} className="animate-spin text-[#c7a45a]" />
+        <Sparkles size={12} className="animate-spin text-[#9E7B2F]" />
       ) : (
-        <Shield size={12} className="text-[#c7a45a]/70" />
+        <Shield size={12} className="text-[#9E7B2F]" />
       )}
     </div>
   );

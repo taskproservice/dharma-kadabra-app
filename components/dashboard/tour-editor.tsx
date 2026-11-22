@@ -145,7 +145,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Film size={19} className="text-[#d8bc7f]" />
+            <Film size={19} className="text-[#8B6914]" />
             Video del tour
           </CardTitle>
           <CardDescription>
@@ -183,14 +183,14 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
                   if (file) void handleUpload(file);
                 }}
               />
-              <span className="rounded-full border border-[#c7a45a]/30 bg-white/[0.03] px-3 py-1 text-[11px] text-[#e9e2d2]/60">
+              <span className="rounded-full border border-[#C5A059]/50 bg-[#FCFAF5] px-3 py-1 text-[11px] text-[#2C2C2C]/75">
                 Detectado: {describeVideoSource(source)}
               </span>
             </div>
           </div>
 
           {videoUrl.trim() ? (
-            <div className="overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-black">
+            <div className="overflow-hidden rounded-2xl border border-[#C5A059]/35 bg-black">
               {source.kind === "file" ? (
                 <video key={videoUrl} src={source.src} controls preload="metadata" className="aspect-video w-full" />
               ) : (
@@ -219,16 +219,16 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
         </CardHeader>
         <CardContent className="space-y-4">
           {rows.length === 0 && (
-            <p className="rounded-xl border border-dashed border-[#c7a45a]/25 px-4 py-6 text-center text-sm text-[#e9e2d2]/50">
+            <p className="rounded-xl border border-dashed border-[#C5A059]/45 px-4 py-6 text-center text-sm text-[#2C2C2C]/70">
               Sin capítulos todavía: el video se reproducirá sin textos superpuestos.
             </p>
           )}
           {rows.map((row, index) => (
             <div
               key={row.key}
-              className="grid gap-3 rounded-2xl border border-[#c7a45a]/15 bg-white/[0.02] p-4 sm:grid-cols-[7rem_1fr_1fr_auto] sm:items-end"
+              className="grid gap-3 rounded-2xl border border-[#C5A059]/30 bg-[#F4EFE6]/60 p-4 sm:grid-cols-[7rem_1fr_1fr_auto] sm:items-end"
             >
-              <label className="block space-y-1.5 text-xs font-medium text-[#e9e2d2]/70">
+              <label className="block space-y-1.5 text-xs font-medium text-[#2C2C2C]/80">
                 Tiempo
                 <Input
                   value={row.time}
@@ -237,7 +237,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
                   aria-label={`Tiempo del capítulo ${index + 1}`}
                 />
               </label>
-              <label className="block space-y-1.5 text-xs font-medium text-[#e9e2d2]/70">
+              <label className="block space-y-1.5 text-xs font-medium text-[#2C2C2C]/80">
                 Texto del capítulo
                 <Input
                   value={row.label}
@@ -246,7 +246,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
                   aria-label={`Texto del capítulo ${index + 1}`}
                 />
               </label>
-              <label className="block space-y-1.5 text-xs font-medium text-[#e9e2d2]/70">
+              <label className="block space-y-1.5 text-xs font-medium text-[#2C2C2C]/80">
                 Descripción (opcional)
                 <Input
                   value={row.text}
@@ -260,7 +260,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
                 variant="ghost"
                 onClick={() => removeRow(row.key)}
                 aria-label={`Eliminar capítulo ${index + 1}`}
-                className="text-[#e9e2d2]/50 hover:text-[#D96538]"
+                className="text-[#2C2C2C]/70 hover:text-[#D96538]"
               >
                 <Trash2 size={16} />
               </Button>

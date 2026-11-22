@@ -20,7 +20,7 @@ export function SignOutButton() {
       onClick={handleSignOut}
       disabled={pending}
       aria-label="Cerrar sesión"
-      className="flex items-center gap-2 rounded-full border border-[#c7a45a]/25 px-3 py-2 text-xs font-medium text-[#e9e2d2]/80 transition hover:border-[#c7a45a]/60 hover:bg-[#c7a45a]/10 hover:text-[#e3c57c] disabled:opacity-60"
+      className="flex items-center gap-2 rounded-full border border-[#2C2C2C]/25 bg-[#FCFAF5] px-3 py-2 text-xs font-medium text-[#1A1A1A] transition hover:border-[#C5A059] hover:bg-[#C5A059]/15 disabled:opacity-60"
     >
       <LogOut size={14} />
       <span className="hidden sm:inline">Cerrar sesión</span>
