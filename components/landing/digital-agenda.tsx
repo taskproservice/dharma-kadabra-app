@@ -8,10 +8,11 @@ import {
   ChevronRight,
   Circle,
   Clock3,
+  Moon,
   MoonStar,
   Sparkles,
 } from "lucide-react";
-import { getLunarInfo } from "../../lib/lunar-utils";
+import { getLunarInfo, getMonthlyLunarEvents, type MonthlyLunarEvent } from "../../lib/lunar-utils";
 import { formatSessionPrice, services, type Service } from "../../lib/data/services";
 import { BookingDialog } from "./booking-dialog";
 import { Dialog } from "../ui/dialog";
@@ -118,6 +119,13 @@ function LunarMarker({ phase }: { phase: string }) {
   return null;
 }
 
+function LunarEventIcon({ phase }: { phase: MonthlyLunarEvent["phase"] }) {
+  if (phase === "Luna nueva" || phase === "Luna llena") {
+    return <LunarMarker phase={phase} />;
+  }
+  return <Moon size={16} strokeWidth={1.5} className={phase === "Cuarto menguante" ? "rotate-180" : ""} aria-hidden="true" />;
+}
+
 export function DigitalAgenda({ todayKey }: { todayKey: string }) {
   const currentMonth = todayKey.slice(0, 7);
   const initialSelection = findFirstAvailableDate(currentMonth, todayKey) ?? todayKey;
@@ -125,6 +133,7 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
   const [selectedDate, setSelectedDate] = useState(initialSelection);
 
   const calendarDates = useMemo(() => getCalendarDates(activeMonth), [activeMonth]);
+  const lunarEvents = useMemo(() => getMonthlyLunarEvents(activeMonth), [activeMonth]);
   const selectedSlots = useMemo(
     () => getMockAvailability(selectedDate, todayKey),
     [selectedDate, todayKey],
@@ -152,7 +161,7 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
   return (
     <section aria-label="Calendario interactivo de disponibilidad" className="px-5 pb-16 sm:px-8 lg:pb-24">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,.85fr)] lg:items-start">
-        <div className="relative overflow-hidden rounded-[1.75rem] border border-[#C5A059]/20 bg-[linear-gradient(145deg,rgba(22,29,47,.88),rgba(8,12,22,.92))] p-5 shadow-[0_28px_90px_-42px_rgba(0,0,0,.95)] sm:p-7">
+        <div className="relative min-w-0 overflow-hidden rounded-[1.75rem] border border-[#C5A059]/20 bg-[linear-gradient(145deg,rgba(22,29,47,.88),rgba(8,12,22,.92))] p-5 shadow-[0_28px_90px_-42px_rgba(0,0,0,.95)] sm:p-7">
           <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-28 size-72 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.10),transparent_70%)] blur-2xl" />
           <div className="relative flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/15 pb-5 sm:pb-6">
             <div>
@@ -183,6 +192,27 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                 <ChevronRight size={18} aria-hidden="true" />
               </button>
             </div>
+          </div>
+
+          <div className="relative mt-5 min-w-0">
+            <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]">
+              Fases del mes <span className="ml-1 font-normal normal-case tracking-normal text-[#e9e2d2]/50">· fechas estimadas (UTC)</span>
+            </p>
+            <ul aria-label={`Fases lunares de ${monthLabel}`} className="-mx-5 mt-3 flex gap-2.5 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:mx-0 sm:px-0">
+              {lunarEvents.map((event) => (
+                <li key={`${event.date}-${event.phase}`} className="flex min-w-[150px] flex-1 items-center gap-2.5 rounded-xl border border-[#C5A059]/30 bg-[#C5A059]/[.055] px-3 py-2.5">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#C5A059]/25 bg-[#C5A059]/10 text-[#e3c57c]" aria-hidden="true">
+                    <LunarEventIcon phase={event.phase} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-cormorant text-base leading-4 text-[#f7f2e7]">{event.title}</span>
+                    <time dateTime={event.date} className="mt-1 block text-[10px] capitalize text-[#e9e2d2]/60">
+                      {formatDate(event.date, { day: "numeric", month: "short" })}
+                    </time>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="relative mt-5 grid grid-cols-7 gap-1.5 sm:gap-2">
@@ -253,36 +283,36 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
           </div>
         </div>
 
-        <aside aria-live="polite" className="relative overflow-hidden rounded-[1.75rem] border border-[#C5A059]/22 bg-[linear-gradient(155deg,rgba(29,37,57,.72),rgba(8,12,22,.78))] p-5 shadow-[0_28px_90px_-42px_rgba(0,0,0,.95)] backdrop-blur-xl sm:p-7">
+        <aside aria-live="polite" className="sticky top-24 min-w-0 max-h-[85vh] overflow-y-auto custom-scrollbar rounded-[1.75rem] border border-[#C5A059]/30 bg-[#F4EFE6] p-5 text-[#1A1A1A] shadow-[0_28px_90px_-42px_rgba(0,0,0,.75)] max-lg:relative sm:p-7 lg:max-h-[min(85vh,calc(100dvh-7rem))]">
           <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 size-56 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.11),transparent_70%)] blur-2xl" />
           <div className="relative">
-            <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.24em] text-[#C5A059]">
+            <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.24em] text-[#805F2B]">
               Tu momento
             </p>
-            <h2 className="mt-2 font-cormorant text-3xl leading-tight text-[#f7f2e7] sm:text-[2.1rem]">
+            <h2 className="mt-2 font-cormorant text-3xl leading-tight text-[#1A1A1A] sm:text-[2.1rem]">
               {selectedDateLabel}
             </h2>
 
-            <div className="mt-5 flex items-center gap-3 rounded-2xl border border-[#C5A059]/18 bg-[#080c16]/55 p-4">
-              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-[#C5A059]/25 bg-[#C5A059]/[.08] text-[#e3c57c]">
+            <div className="mt-5 flex items-center gap-3 rounded-2xl border border-[#C5A059]/25 bg-[#FCFAF5] p-4">
+              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-[#C5A059]/30 bg-[#C5A059]/[.09] text-[#805F2B]">
                 <LunarMarker phase={selectedPhase} />
                 {selectedPhase !== "Luna llena" && selectedPhase !== "Luna nueva" && <Sparkles size={18} aria-hidden="true" />}
               </span>
               <div className="min-w-0">
-                <p className="font-[family-name:var(--font-montserrat)] text-[8px] font-semibold uppercase tracking-[.2em] text-[#e9e2d2]/45">
+                <p className="font-[family-name:var(--font-montserrat)] text-[8px] font-semibold uppercase tracking-[.2em] text-[#5B5143]">
                   Fase lunar estimada
                 </p>
-                <p className="mt-1 font-cormorant text-xl leading-none text-[#e3c57c]">{selectedPhase}</p>
+                <p className="mt-1 font-cormorant text-xl leading-none text-[#805F2B]">{selectedPhase}</p>
               </div>
             </div>
-            <p className="mt-3 text-xs leading-5 text-[#e9e2d2]/55">{phaseGuidance(selectedPhase)}</p>
+            <p className="mt-3 text-xs leading-5 text-[#5B5143]">{phaseGuidance(selectedPhase)}</p>
 
             <div className="mt-6 border-t border-[#C5A059]/15 pt-5">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="font-[family-name:var(--font-montserrat)] text-[10px] font-semibold uppercase tracking-[.18em] text-[#f7f2e7]/85">
+                <h3 className="font-[family-name:var(--font-montserrat)] text-[10px] font-semibold uppercase tracking-[.18em] text-[#1A1A1A]">
                   Horarios disponibles
                 </h3>
-                <span className="inline-flex items-center gap-1.5 text-[10px] text-[#e9e2d2]/40">
+                <span className="inline-flex items-center gap-1.5 text-[10px] text-[#5B5143]">
                   <Clock3 size={13} aria-hidden="true" /> Hora local
                 </span>
               </div>
@@ -292,14 +322,16 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                   {selectedSlots.map((time) => (
                     <Dialog
                       key={`${selectedDate}-${time}`}
+                      appearance="papyrus"
+                      triggerClassName="w-full"
                       trigger={
                         <button
                           type="button"
                           aria-label={`Reservar el ${selectedDateLabel} a las ${formatTime(time)}`}
-                          className="group flex w-full items-center justify-between gap-3 rounded-xl border border-[#C5A059]/28 bg-[#C5A059]/[.045] px-4 py-3 text-left transition hover:border-[#C5A059]/70 hover:bg-[#C5A059]/[.1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059]"
+                          className="group flex w-full items-center justify-between gap-3 rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] px-4 py-3 text-left transition hover:border-[#C5A059]/70 hover:bg-[#EDE4D4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#805F2B]"
                         >
-                          <span className="font-cormorant text-2xl leading-none text-[#f7f2e7]">{formatTime(time)}</span>
-                          <span className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[8px] font-bold uppercase tracking-[.15em] text-[#d8bc7f] sm:text-[9px]">
+                          <span className="font-cormorant text-2xl leading-none text-[#1A1A1A]">{formatTime(time)}</span>
+                          <span className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[8px] font-bold uppercase tracking-[.15em] text-[#805F2B] sm:text-[9px]">
                             Reservar ahora
                             <ArrowRight size={13} className="transition group-hover:translate-x-1" aria-hidden="true" />
                           </span>
@@ -312,17 +344,17 @@ export function DigitalAgenda({ todayKey }: { todayKey: string }) {
                   ))}
                 </div>
               ) : (
-                <div className="mt-4 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4">
-                  <p className="font-[family-name:var(--font-montserrat)] text-xs font-medium text-[#e9e2d2]/75">
+                <div className="mt-4 rounded-xl border border-[#C5A059]/25 bg-[#FCFAF5] p-4">
+                  <p className="font-[family-name:var(--font-montserrat)] text-xs font-medium text-[#1A1A1A]">
                     No hay horarios disponibles para esta fecha.
                   </p>
-                  <p className="mt-1.5 text-[11px] leading-5 text-[#e9e2d2]/45">
+                  <p className="mt-1.5 text-[11px] leading-5 text-[#5B5143]">
                     Elige otro día marcado con borde dorado para consultar opciones.
                   </p>
                 </div>
               )}
             </div>
-            <p className="mt-5 text-[9px] leading-4 text-[#e9e2d2]/35">
+            <p className="mt-5 text-[9px] leading-4 text-[#5B5143]">
               Horarios de demostración para esta primera versión. La reserva requiere iniciar sesión y queda pendiente de confirmación.
             </p>
           </div>
@@ -339,9 +371,9 @@ function SlotBookingContent({ date, time, close }: { date: string; time: string;
   if (service) {
     return (
       <div className="space-y-4">
-        <div className="rounded-xl border border-[#C5A059]/18 bg-white/[.035] p-3">
-          <p className="text-[9px] font-semibold uppercase tracking-[.17em] text-[#d8bc7f]">Horario elegido</p>
-          <p className="mt-1 text-xs text-[#f7f2e7]">{capitalize(formatDate(date, { day: "numeric", month: "long", year: "numeric" }))} · {formatTime(time)}</p>
+        <div className="rounded-xl border border-[#C5A059]/25 bg-[#FCFAF5] p-3">
+          <p className="text-[9px] font-semibold uppercase tracking-[.17em] text-[#805F2B]">Horario elegido</p>
+          <p className="mt-1 text-xs text-[#1A1A1A]">{capitalize(formatDate(date, { day: "numeric", month: "long", year: "numeric" }))} · {formatTime(time)}</p>
         </div>
         <BookingDialog
           key={service.id}
@@ -349,6 +381,7 @@ function SlotBookingContent({ date, time, close }: { date: string; time: string;
           close={close}
           initialDate={date}
           initialTime={time}
+          appearance="papyrus"
         />
       </div>
     );
@@ -357,8 +390,8 @@ function SlotBookingContent({ date, time, close }: { date: string; time: string;
   return (
     <div className="space-y-4">
       <div>
-        <p className="font-cormorant text-2xl text-[#f7f2e7]">Elige tu encuentro</p>
-        <p className="mt-1 text-xs leading-5 text-[#e9e2d2]/55">
+        <p className="font-cormorant text-2xl text-[#1A1A1A]">Elige tu encuentro</p>
+        <p className="mt-1 text-xs leading-5 text-[#5B5143]">
           Selecciona una lectura para continuar con la reserva de este horario.
         </p>
       </div>
@@ -368,19 +401,19 @@ function SlotBookingContent({ date, time, close }: { date: string; time: string;
             key={item.id}
             type="button"
             onClick={() => setServiceId(item.id)}
-            className="group flex w-full items-center justify-between gap-4 rounded-xl border border-[#C5A059]/20 bg-white/[.025] p-4 text-left transition hover:border-[#C5A059]/55 hover:bg-[#C5A059]/[.07]"
+            className="group flex w-full items-center justify-between gap-4 rounded-xl border border-[#C5A059]/30 bg-[#FCFAF5] p-4 text-left transition hover:border-[#C5A059]/70 hover:bg-[#EDE4D4]"
           >
-            <span>
-              <span className="block font-cormorant text-xl text-[#f7f2e7]">{item.name}</span>
-              <span className="mt-1 block font-[family-name:var(--font-montserrat)] text-[9px] uppercase tracking-[.13em] text-[#d8bc7f]/75">
+            <span className="min-w-0">
+              <span className="block font-cormorant text-xl text-[#1A1A1A]">{item.name}</span>
+              <span className="mt-1 block font-[family-name:var(--font-montserrat)] text-[9px] uppercase tracking-[.13em] text-[#805F2B]">
                 {item.duration} · {formatSessionPrice(item.price)}
               </span>
             </span>
-            <ArrowRight size={16} className="shrink-0 text-[#d8bc7f] transition group-hover:translate-x-1" aria-hidden="true" />
+            <ArrowRight size={16} className="shrink-0 text-[#805F2B] transition group-hover:translate-x-1" aria-hidden="true" />
           </button>
         ))}
       </div>
-      <p className="border-t border-[#C5A059]/15 pt-3 text-[10px] leading-5 text-[#e9e2d2]/42">
+      <p className="border-t border-[#C5A059]/15 pt-3 text-[10px] leading-5 text-[#5B5143]">
         Las limpiezas y rituales especiales se anuncian en los próximos encuentros de la agenda.
       </p>
     </div>
