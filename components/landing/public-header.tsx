@@ -30,7 +30,7 @@ const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Inicio", href: "/", icon: Home },
   { label: "Tienda", href: "/tienda", icon: ShoppingBag },
   { label: "Servicios", href: "#servicios", icon: Sparkles },
-  { label: "Agenda Digital", href: "#servicios", icon: CalendarDays },
+  { label: "Agenda Digital", href: "/agenda", icon: CalendarDays },
   { label: "Colaboradores", href: "#equipo", icon: UsersRound },
   { label: "Pilares", href: "#nosotros", icon: Flower2 },
   { label: "Beneficios", href: "#beneficios", icon: Gift },

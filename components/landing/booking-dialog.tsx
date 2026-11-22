@@ -23,14 +23,14 @@ const timeSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"
 const today = new Date();
 const minDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
-export function BookingDialog({ service, close }: { service: Service; close: () => void }) {
+export function BookingDialog({ service, close, initialDate = "", initialTime = "" }: { service: Service; close: () => void; initialDate?: string; initialTime?: string }) {
   const [step, setStep] = useState(1);
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState("");
   const [bookingId, setBookingId] = useState("");
   const [needsLogin, setNeedsLogin] = useState(false);
   const [bookingInfo, setBookingInfo] = useState<BookingValues | null>(null);
-  const { register, handleSubmit, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: "", time: "" } });
+  const { register, handleSubmit, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: initialDate, time: initialTime } });
   const deposit = Math.round(service.price * 0.2);
 
   const continueToPayment = handleSubmit((values) => {
