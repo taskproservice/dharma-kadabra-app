@@ -18,31 +18,22 @@ export function ServicesSection() {
         </div>
         <div className="mt-12 grid gap-5 md:grid-cols-2">
           {services.map((service, index) => (
-            <article key={service.id} className="flex h-full flex-col border border-[#c7a45a]/20 bg-white/[0.025] p-7 sm:p-10">
+            <article key={service.id} className="flex h-full flex-col border border-[#C5A059]/30 bg-[#F4EFE6] p-7 text-[#1A1A1A] sm:p-10">
               <div className="flex items-start justify-between gap-6">
-                <span className="font-display text-4xl text-[#e3c57c]">{service.symbol}</span>
-                <span className="text-[10px] uppercase tracking-[.2em] text-[#e9e2d2]/80">0{index + 1} · {service.duration}</span>
+                <span aria-hidden="true" className="font-display text-4xl text-[#C5A059]">{service.symbol}</span>
+                <span className="text-[10px] uppercase tracking-[.2em] text-stone-800">0{index + 1} · {service.duration}</span>
               </div>
-              <p className="mt-8 text-[10px] uppercase tracking-[.25em] text-[#e3c57c]">{service.essence}</p>
-              <h3 className="mt-3 font-display text-3xl leading-snug text-[#e9e2d2]">{service.name}{service.id === "registros-akashicos" ? ":" : ""}</h3>
-              <p className="mt-5 flex-1 text-sm leading-7 text-[#e9e2d2]/90">{service.description}</p>
-              <div className="mt-auto pt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#e9e2d2]/15">
-                <span className="font-display text-xl text-[#e3c57c]">{formatSessionPrice(service.price)}</span>
-                {service.id === "lectura-de-runas" ? (
-                  <Link
-                    href="/servicios/runas"
-                    className="inline-flex items-center gap-2 border border-[#c7a45a]/60 bg-[#c7a45a]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e9e2d2] transition hover:bg-[#c7a45a] hover:text-[#0b1020]"
-                  >
-                    Agendar Sesión <ArrowRight size={14} />
-                  </Link>
-                ) : (
-                  <Link
-                    href="/registros-akashicos"
-                    className="inline-flex items-center gap-2 border border-[#c7a45a]/60 bg-[#c7a45a]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e9e2d2] transition hover:bg-[#c7a45a] hover:text-[#0b1020]"
-                  >
-                    Agendar Sesión <ArrowRight size={14} />
-                  </Link>
-                )}
+              <p className="mt-8 text-[10px] uppercase tracking-[.25em]">{service.essence}</p>
+              <h3 className="mt-3 font-display text-3xl leading-snug">{service.name}{service.id === "registros-akashicos" ? ":" : ""}</h3>
+              <p className="mt-5 flex-1 text-sm leading-7 text-stone-800">{service.description}</p>
+              <div className="mt-auto pt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#C5A059]/30">
+                <span className="bg-[#0b1020] px-2 font-display text-xl text-[#C5A059]">{formatSessionPrice(service.price)}</span>
+                <Link
+                  href={service.id === "lectura-de-runas" ? "/servicios/runas" : "/registros-akashicos"}
+                  className="inline-flex items-center gap-2 border border-[#c7a45a]/60 bg-[#c7a45a]/10 px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] transition hover:bg-[#c7a45a] hover:text-[#0b1020]"
+                >
+                  Agendar Sesión <ArrowRight size={14} />
+                </Link>
               </div>
             </article>
           ))}

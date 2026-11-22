@@ -140,7 +140,7 @@ export default async function HomePage() {
       <section id="paola" className="relative scroll-mt-24 overflow-hidden bg-[#080c16] px-5 py-16 sm:px-8 lg:py-24">
         <Image src={sabiduriaAncestral} alt="" fill sizes="100vw" className="object-cover opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#080c16] via-[#080c16]/85 to-[#080c16]" />
-        <article className="papyrus-card relative mx-auto max-w-6xl overflow-hidden rounded-[1.25rem] border border-[#C5A059]/30 bg-[#F4EFE6] p-6 shadow-[0_24px_60px_-32px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 sm:p-10 lg:p-16">
+        <article className="papyrus-card relative mx-auto max-w-6xl overflow-hidden rounded-[1.25rem] border border-[#C5A059]/30 bg-[#F4EFE6] [--papyrus-accent-ink:#805F2B] p-6 shadow-[0_24px_60px_-32px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 sm:p-10 lg:p-16">
           <div className="pointer-events-none absolute inset-4 border border-[#C5A059]/25" />
           <div className="relative grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
@@ -156,19 +156,19 @@ export default async function HomePage() {
                 />
                 <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#080c16]/60 via-transparent to-transparent" />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#1A1A1A]/50">Fundadora · Dharma Kadabra</figcaption>
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-[#1A1A1A]/70">Fundadora · Dharma Kadabra</figcaption>
             </figure>
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#1A1A1A] sm:text-6xl">Paola <em className="italic text-[#C5A059]">Hernández</em></h2>
-              <p className="mt-5 font-display text-xl italic text-[#C5A059] sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#1A1A1A] sm:text-6xl">Paola <em className="italic text-(color:--papyrus-accent-ink)">Hernández</em></h2>
+              <p className="mt-5 font-display text-xl italic text-(color:--papyrus-accent-ink) sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
               <div className="mt-8 h-px w-16 bg-gradient-to-r from-[#C5A059] to-transparent" />
               <div className="mt-8 font-sans text-base leading-8 text-stone-800">
                 <p>Cada alma guarda una sabiduría profunda que merece un espacio seguro para expresarse. A través de mis canalizaciones, camino contigo desde el amor para que reconectes con tu esencia y encuentres tus propias respuestas. Dharma Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y profundo respeto por el ritmo de cada alma.</p>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-8">
-                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#C5A059]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition duration-300 hover:border-[#C5A059] hover:text-[#C5A059]">Conoce nuestra historia <ArrowRight size={14} /></a>
-                <span className="font-display text-lg italic text-[#1A1A1A]/50">Con amor, Paola</span>
+                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-[#C5A059]/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-[#1A1A1A] transition duration-300 hover:border-[#C5A059] hover:text-(color:--papyrus-accent-ink)">Conoce nuestra historia <ArrowRight size={14} /></a>
+                <span className="font-display text-lg italic text-[#1A1A1A]/70">Con amor, Paola</span>
               </div>
             </div>
           </div>
