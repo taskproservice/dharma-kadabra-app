@@ -32,6 +32,13 @@ const inter = localFont({
   fallback: ["system-ui", "Helvetica Neue", "Arial", "sans-serif"],
 });
 
+const montserrat = localFont({
+  src: [{ path: "./fonts/Montserrat-Variable.woff2", weight: "100 900", style: "normal" }],
+  variable: "--font-montserrat",
+  display: "swap",
+  fallback: ["system-ui", "Arial", "sans-serif"],
+});
+
 export const metadata: Metadata = {
   title: "Dharma Kadabra · La sabiduría antigua, viva en tu presente",
   description: "Plataforma digital para acercar la sabiduría espiritual ancestral al mundo moderno.",
@@ -39,7 +46,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}>
+    <html lang="es" className={`${playfair.variable} ${cormorant.variable} ${inter.variable} ${montserrat.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
