@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   Megaphone,
   MoonStar,
+  Package,
   Palette,
   Settings,
   Share2,
@@ -78,6 +79,13 @@ export const DASHBOARD_NAVIGATION: NavGroup[] = [
         href: "/dashboard/pos",
         icon: ShoppingCart,
         description: "Terminal de cobro y catálogo de piezas.",
+      },
+      {
+        label: "Inventario",
+        href: "/dashboard/inventario",
+        icon: Package,
+        description: "Stock, plantillas, venta rápida y video IA.",
+        roles: ["ADMIN"],
       },
       {
         label: "Agenda",

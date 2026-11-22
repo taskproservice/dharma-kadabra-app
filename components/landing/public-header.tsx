@@ -8,6 +8,7 @@ import {
   Flower2,
   Gift,
   Home,
+  ShoppingBag,
   Sparkles,
   Store,
   UsersRound,
@@ -20,6 +21,7 @@ import { BrandLockup } from "./brand-logo";
 const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Inicio", href: "#inicio", icon: Home },
   { label: "Punto de Venta", href: "#coleccion", icon: Store },
+  { label: "Tienda", href: "#tienda-holistica", icon: ShoppingBag },
   { label: "Agenda Digital", href: "#servicios", icon: CalendarDays },
   { label: "Servicios", href: "#servicios", icon: Sparkles },
   { label: "Colaboradores", href: "#equipo", icon: UsersRound },

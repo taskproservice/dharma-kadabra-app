@@ -46,6 +46,13 @@ export type ProductRecord = {
   name: string;
   description: string;
   price: number;
+  /** Holistic Store · campos de administración comercial. */
+  cost: number;
+  profitMargin: number;
+  currency: string;
+  availability: string;
+  published: boolean;
+  stock: number;
   imageUrl: string;
   category: string;
   createdAt: Date;

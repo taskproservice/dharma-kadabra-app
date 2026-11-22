@@ -73,16 +73,25 @@ model Customer {
 }
 
 model Product {
-  id          String         @id
-  name        String
-  description String
-  price       Float
-  imageUrl    String
-  category    String
-  events      SpecialEvent[] @relation("EventProducts")
-  purchases   Purchase[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id           String         @id
+  name         String
+  description  String
+  price        Float
+  // Holistic Store · administración comercial
+  cost         Float          @default(0)
+  profitMargin Float          @default(0)
+  currency     String         @default("MXN")
+  availability String         @default("available")
+  published    Boolean        @default(false)
+  stock        Int            @default(0)
+  imageUrl     String
+  category     String
+  events       SpecialEvent[] @relation("EventProducts")
+  purchases    Purchase[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([category, published])
 }
 
 model SpecialEvent {
@@ -118,4 +127,12 @@ model AudioPurchase {
   customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([customerId, purchasedAt])
+}
+
+// Holistic Store · plantilla visual asignada a cada categoría de la tienda.
+// Valores de `template`: "oro" | "papiro" | "fuego" (ver modules/holistic-store).
+model StoreCategoryStyle {
+  category  String   @id
+  template  String   @default("oro")
+  updatedAt DateTime @updatedAt
 }

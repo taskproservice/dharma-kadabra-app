@@ -52,12 +52,12 @@ export async function checkUpcomingAppointments(referenceDate = new Date()): Pro
     
     if (Array.isArray(row.notificationsSent)) {
       // Type guard: filtra y garantiza que solo queden strings
-      sentList = row.notificationsSent.filter((v): v is string => typeof v === "string");
+      sentList = row.notificationsSent.filter((v: unknown): v is string => typeof v === "string");
     } else if (typeof row.notificationsSent === "string") {
       try {
         const parsed = JSON.parse(row.notificationsSent);
         if (Array.isArray(parsed)) {
-          sentList = parsed.filter((v): v is string => typeof v === "string");
+          sentList = parsed.filter((v: unknown): v is string => typeof v === "string");
         }
       } catch {
         sentList = [];
@@ -181,12 +181,12 @@ export async function getAllAppointments(): Promise<Appointment[]> {
   return rawAppointments.map((row) => {
     let sentList: string[] = [];
     if (Array.isArray(row.notificationsSent)) {
-      sentList = row.notificationsSent.filter((v): v is string => typeof v === "string");
+      sentList = row.notificationsSent.filter((v: unknown): v is string => typeof v === "string");
     } else if (typeof row.notificationsSent === "string") {
       try {
         const parsed = JSON.parse(row.notificationsSent);
         if (Array.isArray(parsed)) {
-          sentList = parsed.filter((v): v is string => typeof v === "string");
+          sentList = parsed.filter((v: unknown): v is string => typeof v === "string");
         }
       } catch {
         sentList = [];

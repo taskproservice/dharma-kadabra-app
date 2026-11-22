@@ -164,7 +164,7 @@ export function isRouteAllowedForRole(role: Role, path: string): boolean {
 /* -------------------------------------------------------------------------- */
 
 export type ApiAction = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos";
+export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos" | "store";
 
 /**
  * Matriz de autorización de la API: recurso → método HTTP → roles permitidos.
@@ -198,10 +198,20 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
   products: {
     // Catálogo del Punto de Venta: solo el equipo que opera la terminal.
     GET: ["ADMIN", "ENGINEER"],
+    // Holistic Store · altas, ediciones y bajas del inventario: solo ADMIN.
+    POST: ["ADMIN"],
+    PUT: ["ADMIN"],
+    PATCH: ["ADMIN"],
+    DELETE: ["ADMIN"],
   },
   pos: {
     // Cobro en terminal: registra la venta en la base de datos.
     POST: ["ADMIN", "ENGINEER"],
+  },
+  store: {
+    // Holistic Store · plantillas visuales por categoría: solo ADMIN.
+    PUT: ["ADMIN"],
+    PATCH: ["ADMIN"],
   },
 };
 
