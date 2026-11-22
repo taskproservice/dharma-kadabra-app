@@ -36,8 +36,10 @@ export type StoreBannerSlide = {
 
 /**
  * Banner comercial editorial. Las imágenes viven en
- * `public/images/store-banner/` (las sube el equipo); si alguna falta,
- * el carrusel muestra un panel ornamental dorado como respaldo.
+ * `public/images/store-banner/` (las sube el equipo). El repositorio ya trae
+ * tres piezas por defecto para que el carrusel rote desde el primer deploy;
+ * si alguna falta, el carrusel muestra un panel ornamental dorado como
+ * respaldo (nunca una imagen rota).
  */
 export const STORE_BANNERS: StoreBannerSlide[] = [
   {

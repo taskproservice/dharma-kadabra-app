@@ -1,6 +1,7 @@
 # Banner comercial · Holistic Store
 
-Sube aquí las 3 imágenes del carrusel editorial (fondo Nocturno `#121212`):
+El carrusel editorial de `/tienda` rota estas tres imágenes sobre fondo
+Nocturno (`#121212`):
 
 | Archivo                | Colección | Símbolo |
 | ---------------------- | --------- | ------- |
@@ -12,3 +13,4 @@ Sube aquí las 3 imágenes del carrusel editorial (fondo Nocturno `#121212`):
 - **Nombres exactos:** el componente `StoreBanner` los referencia tal cual.
 - **Respaldo:** si alguna imagen falta, el carrusel muestra automáticamente un
   panel ornamental dorado (nunca una imagen rota).
+- **Reemplazo:** sube tu versión con el mismo nombre; no hace falta tocar código.

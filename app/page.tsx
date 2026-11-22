@@ -9,8 +9,8 @@ import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import { collaborators } from "../lib/data/collaborators";
-import { Storefront } from "../components/landing/storefront";
-import { HolisticStoreSection } from "../modules/holistic-store";
+import { RitualEventsSection } from "../components/landing/ritual-events";
+import { ServicesSection } from "../components/landing/services";
 import { PremiumFooter } from "../components/landing/premium-footer";
 import { BrandTourTrigger } from "../components/landing/brand-tour-modal";
 import { prisma } from "../lib/prisma";
@@ -86,7 +86,26 @@ export default async function HomePage() {
       <PublicHeader />
 
       {/* Hero cinematográfico con tarjeta de cristal */}
-      <HeroCarousel slides={slides} medallion={<HeroMedallion />} cta={<BrandTourTrigger config={tourConfig} />}>
+      <HeroCarousel
+        slides={slides}
+        medallion={<HeroMedallion />}
+        cta={
+          <>
+            <Link
+              href="/tienda"
+              className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#d8bc7f] via-[#c7a45a] to-[#e3c57c] px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#0b1020] shadow-[0_18px_50px_-20px_rgba(199,164,90,.8)] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e3c57c]"
+            >
+              Explorar Colección
+              <ArrowRight
+                size={14}
+                className="transition group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </Link>
+            <BrandTourTrigger config={tourConfig} />
+          </>
+        }
+      >
         {heroImages.map((image, index) => (
           <Image
             key={image.alt}
@@ -153,11 +172,11 @@ export default async function HomePage() {
         </article>
       </section>
 
-      {/* Tienda y servicios */}
-      <Storefront events={ritualEvents} />
+      {/* Próximos rituales — la tienda pública vive ahora en /tienda */}
+      <RitualEventsSection events={ritualEvents} />
 
-      {/* Holistic Store — tienda pública por categorías con consulta por WhatsApp */}
-      <HolisticStoreSection />
+      {/* Servicios agendables (runas, registros akáshicos) */}
+      <ServicesSection />
 
       {/* Equipo — retratos editoriales */}
       <section id="equipo" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">

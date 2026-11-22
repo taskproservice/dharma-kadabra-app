@@ -2,4 +2,7 @@
 export * from "./types";
 export * from "./constants";
 export * from "./utils";
-export { HolisticStoreSection } from "./components/HolisticStoreSection";
+export * from "./data";
+export { StoreBanner } from "./components/StoreBanner";
+export { StoreExplorer } from "./components/StoreExplorer";
+export { StoreErrorPanel } from "./components/StoreErrorPanel";

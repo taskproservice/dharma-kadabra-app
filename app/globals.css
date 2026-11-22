@@ -344,6 +344,10 @@ select.field-dark option {
 .medallion-in {
   animation: medallion-in 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
+/* Holistic Store · entrada del texto del banner en cada rotación */
+.store-slide-in {
+  animation: hero-rise 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
 .glow-pulse {
   animation: glow-pulse 7s ease-in-out infinite;
 }
@@ -551,6 +555,7 @@ html {
   .hero-zoom,
   .hero-rise,
   .medallion-in,
+  .store-slide-in,
   .glow-pulse,
   .spin-slow,
   .tour-chapter-in,

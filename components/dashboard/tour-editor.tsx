@@ -123,7 +123,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
           videoUrl: videoUrl.trim(),
           chapters,
           ctaText: ctaText.trim() || "Explorar la Colección",
-          ctaLink: ctaLink.trim() || "#coleccion",
+          ctaLink: ctaLink.trim() || "/tienda",
         }),
       });
       const data = (await response.json().catch(() => ({}))) as { error?: string };
@@ -289,7 +289,7 @@ export function TourEditor({ initial }: { initial: TourVideoConfig }) {
           </label>
           <label className="block space-y-2 text-sm font-medium">
             Destino
-            <Input value={ctaLink} onChange={(event) => setCtaLink(event.target.value)} placeholder="#coleccion" />
+            <Input value={ctaLink} onChange={(event) => setCtaLink(event.target.value)} placeholder="/tienda" />
           </label>
         </CardContent>
       </Card>

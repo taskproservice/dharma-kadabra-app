@@ -1,16 +1,29 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
 import { MAX_PRODUCTS_PER_CATEGORY } from "../../../../modules/holistic-store/constants";
-import { STORE_CATEGORIES } from "../../../../modules/holistic-store/types";
+import { getPublishedProducts, normalizeStoreError } from "../../../../modules/holistic-store/data";
+import { STORE_CATEGORIES, type StoreCategory } from "../../../../modules/holistic-store/types";
 
 export const dynamic = "force-dynamic";
+
+/** Códigos de error de Prisma con una respuesta HTTP más precisa. */
+const STATUS_BY_CODE: Record<string, number> = {
+  DB_UNCONFIGURED: 503,
+  DB_UNREACHABLE: 503,
+  DB_TIMEOUT: 503,
+  DB_SCHEMA_MISSING: 503,
+  DB_SCHEMA_MISMATCH: 500,
+};
 
 /**
  * Tienda pública — GET /api/store/products?category=Pulseras
  *
  * Devuelve SOLO piezas publicadas de la categoría pedida (máximo 35),
  * con los campos públicos (sin costo, margen ni datos internos).
- * No requiere sesión: es el catálogo de la landing.
+ * No requiere sesión: es el catálogo de la tienda.
+ *
+ * Nunca responde con una excepción sin manejar: cualquier fallo de base de
+ * datos se traduce en `{ error, code }` para que el frontend muestre una
+ * pantalla de error elegante.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,36 +31,31 @@ export async function GET(request: Request) {
 
   if (!(STORE_CATEGORIES as readonly string[]).includes(category)) {
     return NextResponse.json(
-      { error: `Categoría inválida. Usa una de: ${STORE_CATEGORIES.join(", ")}.` },
+      {
+        error: `Categoría inválida. Usa una de: ${STORE_CATEGORIES.join(", ")}.`,
+        code: "INVALID_CATEGORY",
+      },
       { status: 400 },
     );
   }
 
+  const limitParam = Number(searchParams.get("limit"));
+  const limit =
+    Number.isFinite(limitParam) && limitParam > 0
+      ? Math.min(Math.floor(limitParam), MAX_PRODUCTS_PER_CATEGORY)
+      : MAX_PRODUCTS_PER_CATEGORY;
+
   try {
-    const [products, total] = await Promise.all([
-      prisma.product.findMany({
-        where: { published: true, category },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          price: true,
-          currency: true,
-          imageUrl: true,
-          category: true,
-          availability: true,
-        },
-        orderBy: [{ availability: "asc" }, { name: "asc" }],
-        take: MAX_PRODUCTS_PER_CATEGORY,
-      }),
-      prisma.product.count({ where: { published: true, category } }),
-    ]);
-    return NextResponse.json({ products, total });
-  } catch (error) {
-    console.error("Error al consultar la tienda pública:", error);
+    const { products, total } = await getPublishedProducts(category as StoreCategory, limit);
     return NextResponse.json(
-      { error: "No fue posible cargar la tienda. Inténtalo de nuevo." },
-      { status: 500 },
+      { products, total },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  } catch (error) {
+    const failure = normalizeStoreError(error, `GET /api/store/products?category=${category}`);
+    return NextResponse.json(
+      { error: failure.message, code: failure.code, detail: failure.detail ?? null },
+      { status: STATUS_BY_CODE[failure.code] ?? 500 },
     );
   }
 }

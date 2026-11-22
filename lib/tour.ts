@@ -64,7 +64,7 @@ export const DEFAULT_TOUR: TourVideoConfig = {
     },
   ],
   ctaText: "Explorar la Colección",
-  ctaLink: "#coleccion",
+  ctaLink: "/tienda",
 };
 
 /** Normaliza el Json de `chapters` a una lista ordenada y válida. */
