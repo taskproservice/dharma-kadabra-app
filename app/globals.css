@@ -89,6 +89,16 @@ textarea {
   background-clip: padding-box;
 }
 
+/* Scrollbar cálido solo para el panel de reserva de la Agenda. */
+.custom-scrollbar {
+  scrollbar-color: rgba(128, 95, 43, 0.55) #F4EFE6;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(128, 95, 43, 0.55);
+  border: 2px solid #F4EFE6;
+  background-clip: padding-box;
+}
+
 /* ------------------------------------------------------------------------- */
 /*  Superficies de cristal                                                    */
 /* ------------------------------------------------------------------------- */

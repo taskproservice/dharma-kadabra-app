@@ -30,8 +30,9 @@ export default async function AgendaPage() {
     products: event.products.map((product: { name: string }) => product.name),
   }));
 
+  // A diferencia de overflow-hidden, clip no impide que el panel de reserva sea sticky.
   return (
-    <main className="min-h-screen overflow-hidden bg-[#080c16] text-[#e9e2d2]">
+    <main className="min-h-screen overflow-x-clip bg-[#080c16] text-[#e9e2d2]">
       <PublicHeader />
 
       <section className="relative isolate overflow-hidden px-5 pb-10 pt-32 sm:px-8 sm:pb-14 sm:pt-36">
