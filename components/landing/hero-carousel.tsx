@@ -2,7 +2,7 @@
 
 import { Children, useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, MoveUpRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 
 export type HeroSlide = {
   eyebrow: string;
@@ -17,12 +17,14 @@ type HeroCarouselProps = {
   children: ReactNode;
   /** Emblema de marca flotante que acompaña al hero (opcional). */
   medallion?: ReactNode;
+  /** Acción principal del hero (p. ej. el botón que abre el Tour de marca). */
+  cta?: ReactNode;
   interval?: number;
 };
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
-export function HeroCarousel({ slides, children, medallion, interval = 8000 }: HeroCarouselProps) {
+export function HeroCarousel({ slides, children, medallion, cta, interval = 8000 }: HeroCarouselProps) {
   const images = Children.toArray(children);
   const total = slides.length;
   const [active, setActive] = useState(0);
@@ -120,22 +122,9 @@ export function HeroCarousel({ slides, children, medallion, interval = 8000 }: H
             <p className="hero-rise mt-7 max-w-xl text-[15px] font-light leading-7 text-[#e9e2d2]/80 [animation-delay:240ms] sm:text-lg sm:leading-8">
               {current.text}
             </p>
-            <div className="hero-rise mt-10 flex flex-wrap items-center gap-4 [animation-delay:360ms] sm:gap-5">
-              <a
-                href="#coleccion"
-                className="group inline-flex items-center gap-3 rounded-full border border-[#c7a45a] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#f7f2e7] transition duration-300 hover:bg-[#c7a45a] hover:text-[#0b1020] hover:shadow-[0_0_40px_-6px_rgba(199,164,90,.7)]"
-              >
-                Explorar colección
-                <ArrowRight size={14} className="transition group-hover:translate-x-1" />
-              </a>
-              <a
-                href="#manifiesto"
-                className="group inline-flex items-center gap-3 rounded-full border border-[#c7a45a]/50 bg-transparent px-7 py-3.5 text-[10px] font-medium uppercase tracking-[.28em] text-[#e9e2d2]/85 transition duration-300 hover:border-[#c7a45a] hover:text-[#e3c57c] hover:shadow-[0_0_30px_-8px_rgba(199,164,90,.5)]"
-              >
-                Descubrir
-                <MoveUpRight size={13} className="text-[#d8bc7f]/70 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
-            </div>
+            {cta ? (
+              <div className="hero-rise mt-10 flex flex-wrap items-center gap-4 [animation-delay:360ms] sm:gap-5">{cta}</div>
+            ) : null}
           </div>
 
           {/* Tarjeta de cristal con el logo oficial */}
@@ -194,7 +183,7 @@ export function HeroCarousel({ slides, children, medallion, interval = 8000 }: H
   );
 }
 
-/** Marca editorial flotante del hero: logo, tagline y CTA "Conoce más". */
+/** Marca editorial flotante del hero: logo y tagline. */
 export function HeroMedallion() {
   return (
     <div className="relative mx-auto w-full max-w-[360px] text-center sm:max-w-[400px]">
@@ -224,15 +213,7 @@ export function HeroMedallion() {
           Conecta · Transforma · Armoniza
         </p>
 
-        <a
-          href="#manifiesto"
-          className="group relative mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#c7a45a]/70 bg-[#080c16]/35 px-6 py-3 text-[10px] font-semibold uppercase tracking-[.24em] text-[#f7f2e7] transition hover:border-[#e3c57c] hover:bg-[#c7a45a] hover:text-[#0b1020] hover:shadow-[0_0_28px_-6px_rgba(199,164,90,.65)]"
-        >
-          Conoce más
-          <ArrowRight size={13} className="transition group-hover:translate-x-1" />
-        </a>
-
-        <span aria-hidden="true" className="relative mt-4 flex items-center justify-center gap-2 text-[#c7a45a]/40">
+        <span aria-hidden="true" className="relative mt-6 flex items-center justify-center gap-2 text-[#c7a45a]/40">
           <Sparkles size={11} />
           <span className="h-px w-10 bg-[#c7a45a]/25" />
           <Sparkles size={11} />

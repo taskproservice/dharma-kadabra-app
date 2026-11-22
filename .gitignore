@@ -158,3 +158,6 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# Subidas del gestor de video del Tour de marca (runtime)
+public/uploads/

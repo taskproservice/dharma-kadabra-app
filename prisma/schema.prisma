@@ -136,3 +136,19 @@ model StoreCategoryStyle {
   template  String   @default("oro")
   updatedAt DateTime @updatedAt
 }
+
+// Tour de marca · video inmersivo de la landing ("Quiénes somos") con capítulos
+// sincronizados por tiempo. Se administra desde /dashboard/tour y se consume en
+// components/landing/brand-tour-modal.tsx.
+// Formato de `chapters`: [{ "time": 5, "label": "Nuestra Historia", "text": "…" }]
+// (tiempo en segundos desde el inicio del video).
+model TourVideo {
+  id        String   @id @default(cuid())
+  title     String
+  videoUrl  String
+  chapters  Json     @default("[]")
+  ctaText   String   @default("Explorar la Colección")
+  ctaLink   String   @default("#coleccion")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
