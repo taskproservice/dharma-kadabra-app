@@ -8,8 +8,21 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import { ArrowRight, Film, Pause, Play, RotateCcw, Volume2, VolumeX, X } from "lucide-react";
+import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import {
+  ArrowRight,
+  Film,
+  Pause,
+  Play,
+  RotateCcw,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
+import {
+  DEFAULT_TOUR,
   formatChapterTime,
   resolveVideoSource,
   type TourChapter,
@@ -27,6 +40,8 @@ declare global {
     onYouTubeIframeAPIReady?: () => void;
   }
 }
+
+const DARK_POSTER_SRC = "/images/hero/altar-ritual.jpg";
 
 let youtubeApiPromise: Promise<any> | null = null;
 function loadYouTubeApi(): Promise<any> {
@@ -77,19 +92,23 @@ function loadVimeoApi(): Promise<any> {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Modal del Tour                                                             */
+/*  Modal Cinematográfico del Tour de Marca                                    */
 /* -------------------------------------------------------------------------- */
 
 type BrandTourModalProps = {
-  config: TourVideoConfig;
+  config?: TourVideoConfig;
   onClose: () => void;
 };
 
-export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
-  const source = useMemo(() => resolveVideoSource(config.videoUrl), [config.videoUrl]);
+export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModalProps) {
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const [liveConfig, setLiveConfig] = useState<TourVideoConfig>(config);
+
+  const source = useMemo(() => resolveVideoSource(liveConfig.videoUrl), [liveConfig.videoUrl]);
   const chapters = useMemo<TourChapter[]>(
-    () => config.chapters.slice().sort((a, b) => a.time - b.time),
-    [config.chapters],
+    () => (liveConfig.chapters ?? []).slice().sort((a, b) => a.time - b.time),
+    [liveConfig.chapters],
   );
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -98,9 +117,8 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
   const [muted, setMuted] = useState(false);
   const [ended, setEnded] = useState(false);
   const [booted, setBooted] = useState(false);
-  /** Los capítulos se sincronizan por tiempo solo cuando el reproductor lo permite. */
+  const [videoError, setVideoError] = useState(false);
   const [synced, setSynced] = useState(true);
-  /** YouTube sin SDK: se degrada a un iframe con controles nativos. */
   const [ytNative, setYtNative] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -109,19 +127,59 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
   const vimeoRef = useRef<HTMLIFrameElement | null>(null);
   const vimeoPlayerRef = useRef<any>(null);
 
-  /* ---------- Reproductor HTML5 (MP4/WebM/…) ---------- */
+  const hasVideo = Boolean(liveConfig.videoUrl?.trim()) && !videoError;
+
+  /* ---------- Portal seguro en cliente ---------- */
   useEffect(() => {
-    if (source.kind !== "file") return;
+    setMounted(true);
+  }, []);
+
+  /* ---------- Sincronización viva con la API de Prisma (/api/tour) ---------- */
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/tour", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { config?: TourVideoConfig | null } | null) => {
+        if (cancelled || !data?.config) return;
+        setLiveConfig((prev) => {
+          const next = data.config!;
+          if (
+            prev.videoUrl === next.videoUrl &&
+            prev.title === next.title &&
+            prev.ctaText === next.ctaText &&
+            prev.ctaLink === next.ctaLink &&
+            JSON.stringify(prev.chapters) === JSON.stringify(next.chapters)
+          ) {
+            return prev;
+          }
+          setVideoError(false);
+          setEnded(false);
+          setCurrentTime(0);
+          setDuration(0);
+          setYtNative(false);
+          return next;
+        });
+      })
+      .catch(() => {
+        /* Se conserva la configuración inicial (SSR o respaldo) sin interrumpir. */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* ---------- Reproductor HTML5 (MP4 / WebM / OGG / MOV) ---------- */
+  useEffect(() => {
+    if (!mounted || !hasVideo || source.kind !== "file" || !source.src) return;
     const element = videoRef.current;
     if (!element) return;
-    // El gesto de clic del usuario en "Quiénes somos" acompaña a este play;
-    // si el navegador lo bloquea, queda el botón dorado central.
+    setBooted(true);
     element.play().catch(() => setPlaying(false));
-  }, [source.kind, source.src]);
+  }, [mounted, hasVideo, source.kind, source.src]);
 
-  /* ---------- YouTube (iframe limpio + API oficial para sincronizar) ---------- */
+  /* ---------- YouTube (IFrame API + degradación nativa) ---------- */
   useEffect(() => {
-    if (source.kind !== "youtube" || !source.id || ytNative) return;
+    if (!mounted || !hasVideo || source.kind !== "youtube" || !source.id || ytNative) return;
     let disposed = false;
     let poll = 0;
     setSynced(true);
@@ -154,7 +212,7 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
               try {
                 event.target.playVideo();
               } catch {
-                /* autoplay bloqueado: botón central */
+                /* Autoplay bloqueado: queda el botón dorado central */
               }
               poll = window.setInterval(() => {
                 const current = ytPlayerRef.current;
@@ -183,7 +241,6 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       })
       .catch(() => {
         if (disposed) return;
-        // Sin SDK el iframe sigue siendo reproducible con controles nativos.
         setYtNative(true);
         setSynced(false);
         setBooted(true);
@@ -198,11 +255,11 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       }
       ytPlayerRef.current = null;
     };
-  }, [source.kind, source.id, ytNative]);
+  }, [mounted, hasVideo, source.kind, source.id, ytNative]);
 
-  /* ---------- Vimeo (iframe estilizado + Player SDK para sincronizar) ---------- */
+  /* ---------- Vimeo (iframe dorado + Player SDK) ---------- */
   useEffect(() => {
-    if (source.kind !== "vimeo" || !source.embedUrl) return;
+    if (!mounted || !hasVideo || source.kind !== "vimeo" || !source.embedUrl) return;
     let disposed = false;
     setSynced(true);
     loadVimeoApi()
@@ -242,8 +299,6 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       })
       .catch(() => {
         if (disposed) return;
-        // Degradado: el iframe con controles nativos de Vimeo (oro de marca) funciona;
-        // los capítulos se muestran como ruta y el CTA queda siempre disponible.
         setSynced(false);
         setBooted(true);
       });
@@ -256,10 +311,11 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       }
       vimeoPlayerRef.current = null;
     };
-  }, [source.kind, source.embedUrl]);
+  }, [mounted, hasVideo, source.kind, source.embedUrl]);
 
   /* ---------- Controles compartidos ---------- */
   const togglePlay = useCallback(() => {
+    if (!hasVideo) return;
     setEnded(false);
     if (source.kind === "file") {
       const element = videoRef.current;
@@ -279,10 +335,11 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
     if (!player) return;
     if (playing) player.pause?.();
     else player.play?.();
-  }, [source.kind, playing]);
+  }, [hasVideo, source.kind, playing]);
 
   const seek = useCallback(
     (time: number) => {
+      if (!hasVideo) return;
       const clamped = Math.max(0, duration > 0 ? Math.min(time, duration) : time);
       setCurrentTime(clamped);
       setEnded(false);
@@ -297,10 +354,11 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       }
       vimeoPlayerRef.current?.setCurrentTime?.(clamped);
     },
-    [source.kind, duration],
+    [hasVideo, source.kind, duration],
   );
 
   const toggleMute = useCallback(() => {
+    if (!hasVideo) return;
     if (source.kind === "file") {
       const element = videoRef.current;
       if (!element) return;
@@ -321,9 +379,10 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
     if (muted) player.setVolume?.(1);
     else player.setVolume?.(0);
     setMuted(!muted);
-  }, [source.kind, muted]);
+  }, [hasVideo, source.kind, muted]);
 
   const replay = useCallback(() => {
+    if (!hasVideo) return;
     setEnded(false);
     setCurrentTime(0);
     if (source.kind === "file") {
@@ -343,30 +402,54 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
     const player = vimeoPlayerRef.current;
     player?.setCurrentTime?.(0);
     player?.play?.();
-  }, [source.kind]);
+  }, [hasVideo, source.kind]);
 
-  /* ---------- CTA final: cerrar el modal y desplazarse a la colección ---------- */
-  const handleCta = useCallback(() => {
-    const link = (config.ctaLink || "/tienda").trim();
+  /* ---------- CTA: cerrar el modal y llevar hacia la tienda ---------- */
+  const handleExploreCollection = useCallback(() => {
+    const rawLink = (liveConfig.ctaLink || "/tienda").trim();
     onClose();
-    if (link.startsWith("#")) {
-      window.setTimeout(() => {
-        document.querySelector(link)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 160);
-    } else if (link) {
-      window.location.href = link;
-    }
-  }, [config.ctaLink, onClose]);
 
-  /* ---------- Cerrar con Escape · bloquear scroll del fondo ---------- */
+    if (rawLink.startsWith("#")) {
+      window.setTimeout(() => {
+        const target = document.querySelector(rawLink);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          router.push("/tienda");
+        }
+      }, 120);
+      return;
+    }
+
+    if (rawLink.startsWith("/")) {
+      router.push(rawLink);
+      return;
+    }
+
+    if (/^https?:\/\//i.test(rawLink)) {
+      window.location.href = rawLink;
+      return;
+    }
+
+    router.push("/tienda");
+  }, [liveConfig.ctaLink, onClose, router]);
+
+  /* ---------- Bloquear scroll del documento + atajos de teclado ---------- */
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         onClose();
-      } else if (event.key === " ") {
+        return;
+      }
+      if (!hasVideo) return;
+      const tag = (event.target as HTMLElement | null)?.tagName;
+      if (event.key === " " && tag !== "BUTTON" && tag !== "A") {
         event.preventDefault();
         togglePlay();
       } else if (event.key === "ArrowRight") {
@@ -375,16 +458,21 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
       } else if (event.key === "ArrowLeft") {
         event.preventDefault();
         seek(currentTime - 5);
+      } else if (event.key.toLowerCase() === "m") {
+        event.preventDefault();
+        toggleMute();
       }
     };
+
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, [onClose, togglePlay, seek, currentTime]);
+  }, [onClose, hasVideo, togglePlay, seek, toggleMute, currentTime]);
 
-  /* ---------- Capítulo activo (por tiempo) ---------- */
+  /* ---------- Capítulo activo por tiempo ---------- */
   const activeChapter = useMemo(() => {
     let current: TourChapter | null = null;
     for (const chapter of chapters) {
@@ -402,11 +490,14 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
   }, [chapters, activeChapter]);
 
   const chapterVisible =
-    synced && !ended && activeChapter !== null &&
+    hasVideo &&
+    synced &&
+    !ended &&
+    activeChapter !== null &&
     (activeChapterEnd === null || currentTime < activeChapterEnd);
 
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
-  const showStartButton = !playing && !ended && currentTime < 0.25 && booted;
+  const showStartButton = hasVideo && !playing && !ended && currentTime < 0.25 && booted;
 
   const onSeekClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (!duration) return;
@@ -414,285 +505,350 @@ export function BrandTourModal({ config, onClose }: BrandTourModalProps) {
     seek(((event.clientX - rect.left) / rect.width) * duration);
   };
 
-  return (
+  if (!mounted) return null;
+
+  const tourTitle = liveConfig.title?.trim() || "Quiénes Somos";
+  const ctaLabel = liveConfig.ctaText?.trim() || "Explorar la Colección";
+
+  const modal = (
     <div
-      className="fixed inset-0 z-[100] overflow-y-auto bg-[#121212]"
-      role="dialog"
-      aria-modal="true"
-      aria-label={config.title}
+      className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden bg-black/95 p-3 backdrop-blur-xl sm:p-5 md:p-6"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
-      {/* Atmósfera Nordic Mystic: oro tenue y brasa de fuego */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="absolute -top-32 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_65%)] blur-3xl" />
-        <span className="absolute bottom-[-12rem] right-[-10rem] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(217,101,56,.10),transparent_70%)] blur-3xl" />
-      </div>
-
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Cerrar el tour"
-        className="absolute right-4 top-4 z-40 grid size-11 place-items-center rounded-full border border-[#C5A059]/35 bg-[#121212]/70 text-[#F7F3EA]/80 transition hover:border-[#C5A059] hover:text-[#C5A059] hover:shadow-[0_0_24px_rgba(197,160,89,.35)] sm:right-6 sm:top-6"
+      {/* Marco cinematográfico Nocturno (#121212) al 90% de pantalla, sin scrollbars */}
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="brand-tour-title"
+        className="tour-modal-in relative flex h-[90dvh] max-h-[860px] w-full max-w-[1160px] flex-col justify-between overflow-hidden rounded-3xl border border-[#C5A059]/30 bg-[#121212]/95 px-5 py-4 text-[#F7F3EA] shadow-[0_40px_140px_-20px_rgba(0,0,0,0.95),0_0_80px_-30px_rgba(197,160,89,0.22)] backdrop-blur-2xl sm:px-8 sm:py-5 md:px-10 md:py-6"
       >
-        <X size={18} />
-      </button>
+        {/* Atmósfera ambiental dorada sobre Nocturno */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="absolute -top-36 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.14),transparent_68%)] blur-3xl" />
+          <span className="absolute -bottom-32 -right-24 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.08),transparent_70%)] blur-3xl" />
+          <span className="absolute inset-2.5 rounded-[1.25rem] border border-[#C5A059]/10" />
+        </div>
 
-      <div className="relative mx-auto flex min-h-full w-full max-w-6xl flex-col px-5 py-6 sm:px-8 sm:py-8">
-        <header className="flex flex-wrap items-center gap-x-4 gap-y-2 pr-14">
-          <p className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[.32em] text-[#C5A059]">
-            <Film size={13} />
-            Tour de marca
-          </p>
-          <span aria-hidden="true" className="hidden h-px w-12 bg-gradient-to-r from-[#C5A059]/70 to-transparent sm:block" />
-          <h2 className="font-display text-2xl leading-tight text-[#F7F3EA] sm:text-3xl">{config.title}</h2>
+        {/* Barra superior: distintivo editorial + botón de cierre dorado */}
+        <header className="relative z-20 flex shrink-0 items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="hidden h-px w-8 bg-gradient-to-r from-[#C5A059] to-transparent sm:block"
+            />
+            <p className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.34em] text-[#C5A059]">
+              <Sparkles size={12} aria-hidden="true" />
+              Dharma Kadabra · Tour de Marca
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar el tour"
+            className="grid size-10 shrink-0 place-items-center rounded-full border border-[#C5A059]/50 bg-[#121212]/80 text-[#C5A059] transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#121212] hover:shadow-[0_0_28px_rgba(197,160,89,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:size-11"
+          >
+            <X size={18} strokeWidth={1.75} />
+          </button>
         </header>
 
-        <div className="flex flex-1 items-center justify-center py-6 sm:py-8">
-          <div className="w-full max-w-4xl">
-            {/* Reproductor */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-[#C5A059]/25 bg-black shadow-[0_40px_120px_-40px_rgba(0,0,0,.9)]">
-              {source.kind === "file" && (
-                <video
-                  ref={videoRef}
-                  src={source.src}
-                  playsInline
-                  preload="metadata"
-                  className="absolute inset-0 h-full w-full object-contain"
-                  onClick={togglePlay}
-                  onLoadedMetadata={(event) => {
-                    setDuration(event.currentTarget.duration || 0);
-                    setBooted(true);
-                  }}
-                  onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
-                  onPlay={() => {
-                    setPlaying(true);
-                    setEnded(false);
-                  }}
-                  onPause={() => setPlaying(false)}
-                  onEnded={() => {
-                    setPlaying(false);
-                    setEnded(true);
-                  }}
-                />
-              )}
+        {/* Escenario central: reproductor 16:9 contenido con exactitud dentro del viewport */}
+        <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-3 sm:py-4">
+          <div
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-[#C5A059]/30 bg-[#0A0A0A] shadow-[0_32px_90px_-28px_rgba(0,0,0,0.95),0_0_0_1px_rgba(197,160,89,0.08)]"
+            style={{
+              maxWidth: "min(920px, max(240px, calc((min(90dvh, 860px) - 14.5rem) * 16 / 9)))",
+            }}
+          >
+            {/* Poster oscuro de fondo mientras carga el reproductor */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-25"
+              style={{ backgroundImage: `url(${DARK_POSTER_SRC})` }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/65 to-[#121212]/40"
+            />
 
-              {source.kind === "youtube" && (
-                ytNative ? (
-                  <iframe
-                    key="yt-native"
-                    src={`${source.embedUrl}&controls=1&autoplay=1`}
-                    title={config.title}
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 h-full w-full border-0"
+            {/* Estado elegante cuando aún no hay video configurado */}
+            {!hasVideo ? (
+              <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 text-center">
+                <div className="grid size-14 place-items-center rounded-full border border-[#C5A059]/45 bg-[#121212]/80 text-[#C5A059] shadow-[0_0_40px_rgba(197,160,89,0.2)]">
+                  <Film size={24} strokeWidth={1.4} />
+                </div>
+                <p
+                  className="mt-5 text-2xl font-normal tracking-[0.01em] text-[#F7F3EA] sm:text-3xl"
+                  style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
+                >
+                  El tour estará disponible pronto
+                </p>
+                <p className="mt-2.5 max-w-md text-xs leading-6 text-[#F7F3EA]/60 sm:text-sm">
+                  Estamos preparando una experiencia audiovisual inmersiva para compartir nuestra
+                  historia contigo.
+                </p>
+              </div>
+            ) : (
+              <>
+                {source.kind === "file" && (
+                  <video
+                    key={source.src}
+                    ref={videoRef}
+                    src={source.src}
+                    poster={DARK_POSTER_SRC}
+                    playsInline
+                    preload="metadata"
+                    className="relative z-10 h-full w-full bg-black object-contain"
+                    onClick={togglePlay}
+                    onLoadedMetadata={(event) => {
+                      setDuration(event.currentTarget.duration || 0);
+                      setBooted(true);
+                    }}
+                    onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+                    onPlay={() => {
+                      setPlaying(true);
+                      setEnded(false);
+                    }}
+                    onPause={() => setPlaying(false)}
+                    onEnded={() => {
+                      setPlaying(false);
+                      setEnded(true);
+                    }}
+                    onError={() => {
+                      setVideoError(true);
+                      setPlaying(false);
+                    }}
                   />
-                ) : (
-                  <div ref={ytWrapperRef} className="absolute inset-0 [&_iframe]:absolute [&_iframe]:inset-0 [&_iframe]:h-full [&_iframe]:w-full [&_iframe]:border-0" />
-                )
-              )}
+                )}
 
-              {source.kind === "vimeo" && (
-                <iframe
-                  ref={vimeoRef}
-                  src={`${source.embedUrl}&autoplay=1`}
-                  title={config.title}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full border-0"
-                />
-              )}
+                {source.kind === "youtube" &&
+                  (ytNative ? (
+                    <iframe
+                      key="yt-native"
+                      src={`${source.embedUrl}&controls=1&autoplay=1`}
+                      title={tourTitle}
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 z-10 h-full w-full border-0"
+                    />
+                  ) : (
+                    <div
+                      ref={ytWrapperRef}
+                      className="absolute inset-0 z-10 [&_iframe]:absolute [&_iframe]:inset-0 [&_iframe]:h-full [&_iframe]:w-full [&_iframe]:border-0"
+                    />
+                  ))}
 
-              {!source.src && source.kind === "file" && (
-                <div className="absolute inset-0 grid place-items-center px-8 text-center">
-                  <p className="max-w-sm text-sm leading-6 text-[#F7F3EA]/60">
-                    Aún no hay un video configurado para el tour. Súbelo o pega su URL desde el
-                    panel <span className="text-[#C5A059]">Tour de marca</span> del Dashboard.
-                  </p>
-                </div>
-              )}
+                {source.kind === "vimeo" && (
+                  <iframe
+                    ref={vimeoRef}
+                    src={`${source.embedUrl}&autoplay=1`}
+                    title={tourTitle}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 z-10 h-full w-full border-0"
+                  />
+                )}
 
-              {/* Capítulos superpuestos por tiempo */}
-              {chapterVisible && activeChapter && (
-                <div
-                  key={`${activeChapter.time}-${activeChapter.label}`}
-                  className="tour-chapter-in pointer-events-none absolute bottom-20 left-4 z-10 max-w-md sm:bottom-24 sm:left-8"
-                >
-                  <div className="flex items-center gap-3">
-                    <span aria-hidden="true" className="h-px w-8 bg-gradient-to-r from-[#C5A059] to-transparent" />
-                    <p className="text-[10px] font-medium uppercase tracking-[.32em] text-[#C5A059]">
-                      {formatChapterTime(activeChapter.time)} · Capítulo
-                    </p>
-                  </div>
-                  <p
-                    className="mt-2 font-display text-2xl leading-tight text-[#F7F3EA] sm:text-3xl"
-                    style={{ textShadow: "0 2px 28px rgba(0,0,0,.75)" }}
-                  >
-                    {activeChapter.label}
-                  </p>
-                  {activeChapter.text && (
-                    <p
-                      className="mt-2 max-w-md text-sm leading-6 text-[#F7F3EA]/75"
-                      style={{ textShadow: "0 1px 14px rgba(0,0,0,.75)" }}
-                    >
-                      {activeChapter.text}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Botón dorado central al iniciar */}
-              {showStartButton && (
-                <button
-                  type="button"
-                  onClick={togglePlay}
-                  aria-label="Reproducir el tour"
-                  className="absolute inset-0 z-20 grid place-items-center bg-[#121212]/30 transition hover:bg-[#121212]/15"
-                >
-                  <span className="grid size-16 place-items-center rounded-full bg-[#C5A059] text-[#2E231D] shadow-[0_18px_50px_-14px_rgba(197,160,89,.9)] transition hover:scale-105 hover:brightness-110">
-                    <Play size={22} fill="currentColor" />
-                  </span>
-                </button>
-              )}
-
-              {/* Barra de controles limpia (HTML5 / YouTube) */}
-              {source.kind !== "vimeo" && !ytNative && (
-                <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-4 pb-3 pt-12 sm:px-6">
+                {/* Capítulos superpuestos por tiempo */}
+                {chapterVisible && activeChapter && (
                   <div
-                    className="group relative h-1.5 cursor-pointer rounded-full bg-[#F7F3EA]/15"
-                    onClick={onSeekClick}
-                    role="presentation"
+                    key={`${activeChapter.time}-${activeChapter.label}`}
+                    className="tour-chapter-in pointer-events-none absolute bottom-16 left-4 z-20 max-w-md sm:bottom-20 sm:left-7"
                   >
-                    <div className="absolute inset-y-0 left-0 rounded-full bg-[#C5A059]" style={{ width: `${progress}%` }} />
-                    {chapters.map((chapter) => (
+                    <div className="flex items-center gap-2.5">
                       <span
-                        key={chapter.time}
-                        title={chapter.label}
-                        className="absolute top-1/2 h-2.5 w-0.5 -translate-y-1/2 rounded-full bg-[#F7F3EA]/60"
-                        style={{ left: `${duration > 0 ? Math.min(100, (chapter.time / duration) * 100) : 0}%` }}
+                        aria-hidden="true"
+                        className="h-px w-7 bg-gradient-to-r from-[#C5A059] to-transparent"
                       />
-                    ))}
-                  </div>
-                  <div className="mt-2.5 flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={togglePlay}
-                      aria-label={playing ? "Pausar" : "Reproducir"}
-                      className="grid size-9 place-items-center rounded-full border border-[#C5A059]/45 text-[#F7F3EA] transition hover:border-[#C5A059] hover:text-[#C5A059]"
+                      <p className="text-[10px] font-medium uppercase tracking-[.3em] text-[#C5A059]">
+                        {formatChapterTime(activeChapter.time)} · Capítulo
+                      </p>
+                    </div>
+                    <p
+                      className="mt-1.5 text-xl leading-tight text-[#F7F3EA] sm:text-2xl"
+                      style={{
+                        fontFamily: "var(--font-cormorant-garamond), Georgia, serif",
+                        textShadow: "0 2px 24px rgba(0,0,0,0.85)",
+                      }}
                     >
-                      {playing ? <Pause size={14} /> : <Play size={14} fill="currentColor" />}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={toggleMute}
-                      aria-label={muted ? "Activar sonido" : "Silenciar"}
-                      className="grid size-9 place-items-center rounded-full text-[#F7F3EA]/75 transition hover:text-[#C5A059]"
-                    >
-                      {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                    </button>
-                    <p className="font-display text-xs tabular-nums text-[#F7F3EA]/80">
-                      {formatChapterTime(currentTime)}
-                      <span className="mx-1.5 text-[#F7F3EA]/35">/</span>
-                      {formatChapterTime(duration)}
+                      {activeChapter.label}
                     </p>
-                    {activeChapter && (
-                      <p className="ml-auto hidden max-w-[45%] truncate text-[10px] uppercase tracking-[.24em] text-[#C5A059]/90 sm:block">
-                        {activeChapter.label}
+                    {activeChapter.text && (
+                      <p
+                        className="mt-1 hidden max-w-sm text-xs leading-5 text-[#F7F3EA]/80 sm:block"
+                        style={{ textShadow: "0 1px 14px rgba(0,0,0,0.85)" }}
+                      >
+                        {activeChapter.text}
                       </p>
                     )}
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Final del video: CTA dorado */}
-              {ended && (
-                <div className="absolute inset-0 z-30 grid place-items-center bg-[#121212]/85 px-6 text-center backdrop-blur-sm">
-                  <div>
-                    <p className="text-[10px] font-medium uppercase tracking-[.32em] text-[#C5A059]">El viaje continúa</p>
-                    <button
-                      type="button"
-                      onClick={handleCta}
-                      className="group mt-6 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#C5A059] via-[#D9BE86] to-[#C5A059] px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#2E231D] shadow-[0_18px_50px_-16px_rgba(197,160,89,.85)] transition hover:brightness-110"
+                {/* Botón dorado central para iniciar la reproducción */}
+                {showStartButton && (
+                  <button
+                    type="button"
+                    onClick={togglePlay}
+                    aria-label="Reproducir el tour"
+                    className="absolute inset-0 z-20 grid place-items-center bg-[#121212]/35 transition hover:bg-[#121212]/15"
+                  >
+                    <span className="grid size-16 place-items-center rounded-full border border-[#F7F3EA]/30 bg-[#C5A059] text-[#121212] shadow-[0_18px_50px_-12px_rgba(197,160,89,0.9)] transition duration-300 hover:scale-105 hover:brightness-110">
+                      <Play size={22} fill="currentColor" className="translate-x-0.5" />
+                    </span>
+                  </button>
+                )}
+
+                {/* Barra de controles personalizada (HTML5 / YouTube) */}
+                {source.kind !== "vimeo" && !ytNative && (
+                  <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/90 via-black/45 to-transparent px-4 pb-3 pt-10 sm:px-5">
+                    <div
+                      className="group relative h-1.5 cursor-pointer rounded-full bg-[#F7F3EA]/20"
+                      onClick={onSeekClick}
+                      role="presentation"
                     >
-                      {config.ctaText}
-                      <ArrowRight size={15} className="transition group-hover:translate-x-1" />
-                    </button>
-                    <div>
+                      <div
+                        className="absolute inset-y-0 left-0 rounded-full bg-[#C5A059] shadow-[0_0_10px_rgba(197,160,89,0.6)]"
+                        style={{ width: `${progress}%` }}
+                      />
+                      {chapters.map((chapter) => (
+                        <span
+                          key={chapter.time}
+                          title={chapter.label}
+                          className="absolute top-1/2 h-2.5 w-0.5 -translate-y-1/2 rounded-full bg-[#F7F3EA]/70"
+                          style={{
+                            left: `${duration > 0 ? Math.min(100, (chapter.time / duration) * 100) : 0}%`,
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="mt-2.5 flex items-center gap-2.5">
+                      <button
+                        type="button"
+                        onClick={togglePlay}
+                        aria-label={playing ? "Pausar" : "Reproducir"}
+                        className="grid size-8 place-items-center rounded-full border border-[#C5A059]/45 bg-[#121212]/60 text-[#F7F3EA] transition hover:border-[#C5A059] hover:text-[#C5A059]"
+                      >
+                        {playing ? <Pause size={13} /> : <Play size={13} fill="currentColor" />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={toggleMute}
+                        aria-label={muted ? "Activar sonido" : "Silenciar"}
+                        className="grid size-8 place-items-center rounded-full text-[#F7F3EA]/75 transition hover:text-[#C5A059]"
+                      >
+                        {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                      </button>
+                      <p className="text-xs tabular-nums tracking-wider text-[#F7F3EA]/75">
+                        {formatChapterTime(currentTime)}
+                        <span className="mx-1.5 text-[#C5A059]/50">/</span>
+                        {formatChapterTime(duration)}
+                      </p>
+                      {activeChapter && (
+                        <p className="ml-auto hidden max-w-[45%] truncate text-[10px] uppercase tracking-[.24em] text-[#C5A059] sm:block">
+                          {activeChapter.label}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Cierre cinematográfico al concluir el video */}
+                {ended && (
+                  <div className="absolute inset-0 z-30 grid place-items-center bg-[#121212]/85 px-6 text-center backdrop-blur-sm">
+                    <div className="flex flex-col items-center">
+                      <p className="text-[10px] font-medium uppercase tracking-[.34em] text-[#C5A059]">
+                        El viaje continúa
+                      </p>
+                      <p
+                        className="mt-2 text-2xl text-[#F7F3EA] sm:text-3xl"
+                        style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
+                      >
+                        {tourTitle}
+                      </p>
                       <button
                         type="button"
                         onClick={replay}
-                        className="mt-5 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.24em] text-[#F7F3EA]/55 transition hover:text-[#C5A059]"
+                        className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/50 bg-[#121212]/80 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[.26em] text-[#C5A059] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#121212]"
                       >
-                        <RotateCcw size={12} />
+                        <RotateCcw size={13} />
                         Volver a ver
                       </button>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* Modo degradado: ruta de capítulos + CTA siempre disponible */}
-            {!synced && chapters.length > 0 && (
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                {chapters.map((chapter) => (
-                  <span
-                    key={chapter.time}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#C5A059]/25 px-3.5 py-1.5 text-[10px] uppercase tracking-[.18em] text-[#F7F3EA]/70"
-                  >
-                    <span className="text-[#C5A059]">{formatChapterTime(chapter.time)}</span>
-                    {chapter.label}
-                  </span>
-                ))}
-              </div>
-            )}
-            {!synced && (
-              <div className="mt-5 flex justify-center">
-                <button
-                  type="button"
-                  onClick={handleCta}
-                  className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#C5A059] via-[#D9BE86] to-[#C5A059] px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[.28em] text-[#2E231D] shadow-[0_18px_50px_-16px_rgba(197,160,89,.85)] transition hover:brightness-110"
-                >
-                  {config.ctaText}
-                  <ArrowRight size={15} className="transition group-hover:translate-x-1" />
-                </button>
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>
 
-        <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#C5A059]/12 pt-4">
-          <p className="text-[10px] uppercase tracking-[.22em] text-[#F7F3EA]/35">
-            Conecta · Transforma · Armoniza
-          </p>
-          <p className="text-[10px] uppercase tracking-[.22em] text-[#F7F3EA]/35">
-            Esc para cerrar · ← → para avanzar
-          </p>
+        {/* Pie editorial bajo el video: Título en Cormorant Garamond Oro + CTA */}
+        <footer className="relative z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-t border-[#C5A059]/18 pt-3.5 text-center sm:flex-row sm:gap-6 sm:pt-4 sm:text-left">
+          <div className="min-w-0">
+            <h2
+              id="brand-tour-title"
+              className="truncate text-2xl font-medium leading-tight tracking-[0.015em] text-[#C5A059] sm:text-3xl md:text-[2.15rem]"
+              style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
+            >
+              {tourTitle}
+            </h2>
+            <p className="mt-0.5 truncate text-[10px] uppercase tracking-[.28em] text-[#F7F3EA]/55">
+              {activeChapter ? activeChapter.label : "Conecta · Transforma · Armoniza"}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleExploreCollection}
+            className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#C5A059] via-[#E2C88E] to-[#C5A059] px-7 py-3 text-[10px] font-semibold uppercase tracking-[.28em] text-[#121212] shadow-[0_14px_40px_-14px_rgba(197,160,89,0.85)] transition duration-300 hover:brightness-110 hover:shadow-[0_18px_48px_-12px_rgba(197,160,89,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059] sm:px-8 sm:py-3.5 sm:text-[11px]"
+          >
+            {ctaLabel}
+            <ArrowRight
+              size={14}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden="true"
+            />
+          </button>
         </footer>
-      </div>
+      </section>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Disparador en el Hero                                                      */
+/*  Disparador en el Hero ("QUIÉNES SOMOS")                                    */
 /* -------------------------------------------------------------------------- */
 
 /**
- * Botón principal del Hero ("Quiénes somos"). Al pulsarlo abre el Tour de
- * marca en una ventana a pantalla completa con fondo Nocturno.
+ * Botón del Hero ("QUIÉNES SOMOS"). Al pulsarlo abre el Tour de marca en un
+ * modal inmersivo montado en portal sobre `document.body`.
  */
 export function BrandTourTrigger({ config }: { config: TourVideoConfig }) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    window.setTimeout(() => triggerRef.current?.focus(), 0);
+  }, []);
+
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="group inline-flex items-center gap-3 rounded-full border border-[#C5A059] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#F7F3EA] transition duration-300 hover:bg-[#C5A059] hover:text-[#2E231D] hover:shadow-[0_0_40px_-6px_rgba(197,160,89,.7)]"
+        className="group inline-flex items-center gap-3 rounded-full border border-[#C5A059] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#F7F3EA] transition duration-300 hover:bg-[#C5A059] hover:text-[#121212] hover:shadow-[0_0_40px_-6px_rgba(197,160,89,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
       >
         Quiénes somos
-        <Film size={14} className="transition group-hover:scale-110" />
+        <Film size={14} className="transition duration-300 group-hover:scale-110" aria-hidden="true" />
       </button>
-      {open ? <BrandTourModal config={config} onClose={() => setOpen(false)} /> : null}
+      {open ? <BrandTourModal config={config} onClose={handleClose} /> : null}
     </>
   );
 }

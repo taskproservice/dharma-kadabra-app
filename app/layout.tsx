@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
 // Fuentes autoalojadas vía next/font: se sirven desde el propio dominio,
 // se precargan, usan `font-display: swap` y generan un fallback métrico
 // ajustado (sin bloqueo de render ni saltos de layout).
-// Archivos: Inter y Playfair Display (variables, subset latin, OFL 1.1).
+// Archivos: Inter, Playfair Display y Cormorant Garamond (subset latin, OFL 1.1).
 const playfair = localFont({
   src: [
     { path: "./fonts/PlayfairDisplay-Variable.woff2", weight: "400 900", style: "normal" },
@@ -14,6 +15,14 @@ const playfair = localFont({
   variable: "--font-playfair",
   display: "swap",
   fallback: ["Georgia", "Times New Roman", "serif"],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-cormorant-garamond",
 });
 
 const inter = localFont({
@@ -29,5 +38,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es" className={`${playfair.variable} ${inter.variable}`}><body className="font-sans antialiased">{children}</body></html>;
+  return (
+    <html lang="es" className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
+    </html>
+  );
 }
