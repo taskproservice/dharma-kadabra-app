@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
-    "build": "prisma generate && next build",
+    "build": "npm run db:sync && next build",
+    "db:sync": "prisma generate && prisma db push",
     "start": "next start --hostname 0.0.0.0",
     "lint": "next lint",
     "seed": "node scripts/seed-products.mjs",
