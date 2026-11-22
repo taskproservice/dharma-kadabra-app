@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="bg-[#F4EFE6] text-[#1A1A1A] font-sans antialiased">{children}</body>
     </html>
   );
 }

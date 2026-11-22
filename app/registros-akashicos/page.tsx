@@ -29,7 +29,7 @@ export default function RegistrosAkashicosPage() {
   return (
     <div className={cormorant.variable}>
       <AkashicHeader />
-      <main className="bg-[#121212] text-[#F7F3EA]">
+      <main className="bg-[#F4EFE6] text-[#1A1A1A]">
         <AkashicHero />
         <AkashicIntroduction />
         <AkashicMethod />
