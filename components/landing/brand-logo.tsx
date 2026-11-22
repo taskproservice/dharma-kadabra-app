@@ -15,10 +15,10 @@ export function BrandLogo({ size = 48 }: { size?: number }) {
 
   if (failed) {
     return (
-      <span className="flex items-center gap-2.5 drop-shadow-[0_0_15px_rgba(199,164,90,0.35)]">
-        <Flame size={22} className="text-[#c7a45a]" aria-hidden="true" />
-        <span className="font-display text-xl tracking-wide text-[#f7f2e7]">
-          Dharma <em className="italic text-[#c7a45a]">Kadabra</em>
+      <span className="flex items-center gap-2.5 drop-shadow-[0_0_15px_rgba(197,160,89,0.35)]">
+        <Flame size={22} className="text-gold" aria-hidden="true" />
+        <span className="font-display text-xl tracking-wide text-papyrus">
+          Dharma <em className="italic text-gold">Kadabra</em>
         </span>
       </span>
     );
@@ -28,15 +28,16 @@ export function BrandLogo({ size = 48 }: { size?: number }) {
     <span className="relative grid shrink-0 place-items-center">
       <span
         aria-hidden="true"
-        className="absolute inset-[-35%] rounded-full bg-[radial-gradient(circle,rgba(199,164,90,.38),transparent_66%)] blur-md"
+        className="absolute inset-[-35%] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.38),transparent_66%)] blur-md"
       />
       <Image
         src={LOGO_SRC}
         alt="Dharma Kadabra"
         width={size}
         height={size}
+        sizes={`${size}px`}
         priority
-        className="relative border-none bg-transparent object-contain drop-shadow-[0_0_12px_rgba(199,164,90,0.55)]"
+        className="relative border-none bg-transparent object-contain drop-shadow-[0_0_12px_rgba(197,160,89,0.55)]"
         onError={() => setFailed(true)}
       />
     </span>
@@ -49,13 +50,13 @@ export function BrandLockup({ size = 52, glow = false }: { size?: number; glow?:
     <span className="flex items-center gap-3">
       <BrandLogo size={size} />
       <span className="flex flex-col leading-none">
-        <span className={`font-display text-[15px] font-medium tracking-[.2em] text-[#f7f2e7] sm:text-[17px] ${glow ? "drop-shadow-[0_0_14px_rgba(247,242,231,.18)]" : ""}`}>
+        <span className={`font-display text-[15px] font-medium tracking-[.2em] text-papyrus sm:text-[17px] ${glow ? "drop-shadow-[0_0_14px_rgba(244,239,230,.18)]" : ""}`}>
           DHARMA
         </span>
-        <span className="font-display text-[15px] font-medium tracking-[.2em] text-[#d8bc7f] sm:text-[17px]">
+        <span className="font-display text-[15px] font-medium tracking-[.2em] text-gold-light sm:text-[17px]">
           KADABRA
         </span>
-        <span className="mt-1.5 hidden text-[6.5px] font-medium uppercase leading-relaxed tracking-[.22em] text-[#e9e2d2]/45 sm:block">
+        <span className="mt-1.5 hidden text-[6.5px] font-medium uppercase leading-relaxed tracking-[.22em] text-papyrus/45 sm:block">
           Talismanes maestros
           <br />
           Registros akáshicos

@@ -1,9 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { BookingDialog } from "../booking-dialog";
-import { Dialog } from "../../ui/dialog";
-import { services } from "../../../lib/data/services";
+import { BookingDialog } from "../landing/booking-dialog";
+import { Dialog } from "../ui/dialog";
+import { services } from "../../lib/data/services";
 
 /** Servicio real de la casa; el modal de reserva es el mismo que usa la landing. */
 const runeReading = services.find((service) => service.id === "lectura-de-runas");
@@ -30,7 +30,7 @@ export function RuneBookingCTA({
         runeReading ? (
           <BookingDialog service={runeReading} close={close} />
         ) : (
-          <p className="text-sm text-[#e9e2d2]/70">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-papyrus/70">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>

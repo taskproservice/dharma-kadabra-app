@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ShoppingBag } from "lucide-react";
 import { useCartStore } from "../../../stores/cart";
 import { CATEGORY_META } from "../constants";
@@ -23,30 +22,30 @@ const TEMPLATE_STYLES: Record<
   }
 > = {
   oro: {
-    card: "border-[#C5A059]/35 bg-gradient-to-b from-[#1b1b1b] to-[#141414] hover:border-[#C5A059]/70",
-    id: "text-[#C5A059]/80",
-    name: "text-[#F7F3EA]",
-    description: "text-[#F7F3EA]/55",
-    price: "text-[#C5A059]",
-    currencyChip: "border-[#C5A059]/40 text-[#C5A059]",
-    categoryChip: "bg-[#121212]/85 text-[#e8cf92]",
+    card: "border-gold/35 bg-gradient-to-b from-obsidian-soft to-obsidian hover:border-gold/70",
+    id: "text-gold/80",
+    name: "text-papyrus",
+    description: "text-papyrus/55",
+    price: "text-gold",
+    currencyChip: "border-gold/40 text-gold",
+    categoryChip: "bg-obsidian/85 text-gold-bright",
   },
   papiro: {
-    card: "border-[#C5A059]/50 bg-[#F7F3EA] hover:border-[#C5A059] hover:shadow-[0_24px_50px_-24px_rgba(46,35,29,.45)]",
-    id: "text-[#2E231D]/50",
-    name: "text-[#2E231D]",
-    description: "text-[#2E231D]/65",
-    price: "text-[#2E231D]",
-    currencyChip: "border-[#2E231D]/30 text-[#2E231D]/80",
-    categoryChip: "bg-[#F7F3EA]/90 text-[#2E231D]",
+    card: "border-gold/50 bg-papyrus hover:border-gold hover:shadow-[0_24px_50px_-24px_rgba(26,26,26,.45)]",
+    id: "text-ink/50",
+    name: "text-ink",
+    description: "text-ink/65",
+    price: "text-ink",
+    currencyChip: "border-ink/30 text-ink/80",
+    categoryChip: "bg-papyrus/90 text-ink",
   },
   fuego: {
-    card: "border-[#D96538]/45 bg-gradient-to-b from-[#221310] to-[#140d0b] hover:border-[#D96538]/80 hover:shadow-[0_24px_50px_-24px_rgba(217,101,56,.35)]",
-    id: "text-[#D96538]/90",
-    name: "text-[#F7F3EA]",
-    description: "text-[#F7F3EA]/55",
+    card: "border-ember/45 bg-gradient-to-b from-[#221310] to-[#140d0b] hover:border-ember/80 hover:shadow-[0_24px_50px_-24px_rgba(217,101,56,.35)]",
+    id: "text-ember/90",
+    name: "text-papyrus",
+    description: "text-papyrus/55",
     price: "text-[#e88a5f]",
-    currencyChip: "border-[#D96538]/50 text-[#e88a5f]",
+    currencyChip: "border-ember/50 text-[#e88a5f]",
     categoryChip: "bg-[#140d0b]/85 text-[#f0a37e]",
   },
 };
@@ -56,11 +55,11 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
   const out = product.availability === "out_of_stock";
   const fallbackBg =
     template === "papiro"
-      ? "linear-gradient(150deg, #efe7d6, #e2d5bd)"
-      : "linear-gradient(150deg, #232323, #121212)";
+      ? "linear-gradient(150deg, #F4EFE6, #EDE4D4)"
+      : "linear-gradient(150deg, #161920, #0F1115)";
 
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#1c1c1c]">
+    <div className="relative aspect-[4/5] w-full overflow-hidden bg-obsidian-soft">
       {!failed && product.imageUrl ? (
         <Image
           src={product.imageUrl}
@@ -78,7 +77,7 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
           style={{ background: fallbackBg }}
         >
           <span
-            className={`font-display text-6xl ${template === "papiro" ? "text-[#C5A059]/60" : "text-[#C5A059]/50"}`}
+            className={`font-display text-6xl ${template === "papiro" ? "text-gold/60" : "text-gold/50"}`}
           >
             ✧
           </span>
@@ -90,7 +89,7 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
         {product.category}
       </span>
       {out && (
-        <span className="absolute right-3 top-3 rounded-full bg-[#D96538] px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-white shadow-md">
+        <span className="absolute right-3 top-3 rounded-full bg-ember px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-papyrus shadow-md">
           Agotado
         </span>
       )}
@@ -110,8 +109,7 @@ type Props = {
  * transfiere a WhatsApp con un humano si hace falta).
  * El estilo visual lo define la plantilla asignada a su categoría.
  */
-export function ProductCard({ product, template, isAuthenticated = false }: Props) {
-  const router = useRouter();
+export function ProductCard({ product, template }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
   const openCart = useCartStore((state) => state.openCart);
 
@@ -120,10 +118,6 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
 
   const handleBuy = () => {
     if (outOfStock) return;
-    if (!isAuthenticated) {
-      router.push("/login?callbackUrl=/tienda");
-      return;
-    }
 
     addToCart({
       id: product.id,
@@ -140,7 +134,7 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
 
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-lg shadow-black/40 transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-lg shadow-obsidian-deep/45 transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
     >
       <div className="overflow-hidden rounded-xl">
         <CardImage product={product} template={template} />
@@ -171,10 +165,10 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
             aria-disabled={outOfStock}
             onClick={handleBuy}
             aria-label={outOfStock ? `${product.name} agotado` : `Comprar ${product.name}`}
-            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#C5A059] px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] text-[#121212] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] ${
+            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] text-obsidian transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
               outOfStock
                 ? "cursor-not-allowed opacity-50"
-                : "hover:bg-[#d4b26a] hover:shadow-[0_0_16px_rgba(197,160,89,0.4)] active:scale-[0.99]"
+                : "cursor-pointer hover:bg-gold-light hover:shadow-[0_0_16px_rgba(197,160,89,0.4)] active:scale-[0.99]"
             }`}
           >
             {!outOfStock && <ShoppingBag size={14} className="shrink-0" aria-hidden="true" />}

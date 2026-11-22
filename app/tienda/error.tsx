@@ -20,7 +20,7 @@ export default function TiendaError({
   }, [error]);
 
   return (
-    <main className="grid min-h-screen place-items-center bg-[#121212] px-5 py-24 text-[#F7F3EA]">
+    <main className="grid min-h-screen place-items-center bg-obsidian px-5 py-24 text-papyrus">
       <StoreErrorPanel
         title="No pudimos abrir la tienda"
         message="Algo interrumpió la carga del catálogo. Puedes intentarlo de nuevo o regresar al inicio."

@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond } from "next/font/google";
-import { RuneExperience } from "../../../components/landing/runes/rune-experience";
+import { RuneExperience } from "../../../components/runes/rune-experience";
 import "./runes.css";
-
-/** Tipografía editorial de esta página; el cuerpo usa el Inter global del layout. */
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-cormorant-garamond",
-});
 
 export const metadata: Metadata = {
   title: "Lectura de Runas · El lenguaje del destino | Dharma Kadabra",
@@ -17,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RunasPage() {
-  return (
-    <div className={cormorant.variable}>
-      <RuneExperience fontClassName={cormorant.variable} />
-    </div>
-  );
+  return <RuneExperience />;
 }

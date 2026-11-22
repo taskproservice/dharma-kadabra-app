@@ -8,10 +8,10 @@
 import type { StoreCategory, StoreTemplateId } from "./types";
 
 export const STORE_PALETTE = {
-  papiro: "#F7F3EA",
-  nocturno: "#121212",
+  papiro: "#F4EFE6",
+  nocturno: "#0F1115",
   oro: "#C5A059",
-  tinta: "#2E231D",
+  tinta: "#1A1A1A",
   fuego: "#D96538",
 } as const;
 

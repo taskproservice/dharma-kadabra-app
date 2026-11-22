@@ -5,9 +5,22 @@ import { prisma } from "../../lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function CustomerAccountPage() {
+function safeCallback(raw: string | string[] | undefined) {
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\")
+    ? value
+    : "";
+}
+
+export default async function CustomerAccountPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = searchParams ? await searchParams : {};
+  const callbackUrl = safeCallback(params.callbackUrl);
   const session = await getCustomerSession();
-  if (!session) return <CustomerAuthForm />;
+  if (!session) return <CustomerAuthForm callbackUrl={callbackUrl} />;
 
   const [allAppointments, purchases, audios] = await Promise.all([
     prisma.appointment.findMany({ where: { date: { gte: new Date() } }, orderBy: { date: "asc" } }),

@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export type Product = {
   id: string;
@@ -13,7 +14,7 @@ export type Product = {
 
 export type CartItem = Product & { quantity: number };
 
-type CartState = {
+export type CartState = {
   items: CartItem[];
   isOpen: boolean;
   add: (product: Product) => void;
@@ -33,7 +34,7 @@ const addItemToList = (items: CartItem[], product: Product): CartItem[] =>
       )
     : [...items, { ...product, quantity: 1 }];
 
-export const useCartStore = create<CartState>((set) => ({
+const createCartSlice: StateCreator<CartState> = (set) => ({
   items: [],
   isOpen: false,
   add: (product) => set((state) => ({ items: addItemToList(state.items, product) })),
@@ -53,4 +54,24 @@ export const useCartStore = create<CartState>((set) => ({
   openCart: () => set({ isOpen: true }),
   closeCart: () => set({ isOpen: false }),
   setOpen: (open) => set({ isOpen: open }),
-}));
+});
+
+/**
+ * Carrito público de Holistic Store (`/tienda` y `PublicHeader`).
+ * Persiste únicamente `items` en `localStorage` para conservar la selección
+ * del visitante entre recargas y navegación, sin abrir el drawer al hidratar.
+ */
+export const useCartStore = create<CartState>()(
+  persist(createCartSlice, {
+    name: "dk-holistic-cart-v1",
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state) => ({ items: state.items }),
+  }),
+);
+
+/**
+ * Carrito interno exclusivo del Punto de Venta (`/dashboard/pos` e Inventario).
+ * Aislado del carrito público para que las operaciones de caja del equipo
+ * jamás contaminen la bolsa de compras de la tienda web.
+ */
+export const usePosCartStore = create<CartState>()(createCartSlice);

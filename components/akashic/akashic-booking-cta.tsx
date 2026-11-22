@@ -39,7 +39,7 @@ export function AkashicBookingCTA({
         akashicReading ? (
           <BookingDialog service={akashicReading} close={close} />
         ) : (
-          <p className="text-sm text-[#e9e2d2]/70">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-papyrus/70">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>

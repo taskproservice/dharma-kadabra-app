@@ -5,19 +5,36 @@
   --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-cormorant: var(--font-cormorant-garamond), Georgia, "Times New Roman", serif;
+  --font-montserrat: var(--font-montserrat), system-ui, Arial, sans-serif;
 
-  /* Dharma Kadabra · Paleta nocturna de lujo */
-  --color-night-950: #080c16;
-  --color-night-900: #0b1020;
-  --color-night-800: #11182b;
-  --color-night-700: #171717;
-  --color-night-600: #1c2438;
-  --color-gold-500: #c7a45a;
-  --color-gold-400: #d8bc7f;
-  --color-gold-300: #e3c57c;
-  --color-cream-100: #f7f2e7;
-  --color-cream-200: #efe9dc;
-  --color-cream-300: #e9e2d2;
+  /* Dharma Kadabra · Sistema de Diseño Institucional */
+  --color-obsidian: #0F1115;
+  --color-obsidian-deep: #0A0C0F;
+  --color-obsidian-soft: #161920;
+  --color-obsidian-elevated: #1E222B;
+  --color-papyrus: #F4EFE6;
+  --color-papyrus-light: #FCFAF5;
+  --color-papyrus-warm: #EDE4D4;
+  --color-gold: #C5A059;
+  --color-gold-light: #D8BC7F;
+  --color-gold-bright: #E3C57C;
+  --color-bronze: #805F2B;
+  --color-ink: #1A1A1A;
+  --color-ink-muted: #5B5143;
+  --color-ember: #D96538;
+
+  /* Escala semántica sincronizada con los colores institucionales */
+  --color-night-950: #0A0C0F;
+  --color-night-900: #0F1115;
+  --color-night-800: #161920;
+  --color-night-700: #1A1A1A;
+  --color-night-600: #1E222B;
+  --color-gold-500: #C5A059;
+  --color-gold-400: #D8BC7F;
+  --color-gold-300: #E3C57C;
+  --color-cream-100: #F4EFE6;
+  --color-cream-200: #EDE4D4;
+  --color-cream-300: #E8E1D5;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -25,20 +42,23 @@
 /* ------------------------------------------------------------------------- */
 :root {
   color-scheme: dark;
-  --night-950: #080c16;
-  --night-900: #0b1020;
-  --night-800: #11182b;
-  --night-700: #171717;
-  --night-600: #1c2438;
-  --gold-500: #c7a45a;
-  --gold-400: #d8bc7f;
-  --gold-300: #e3c57c;
-  --cream-100: #f7f2e7;
-  --cream-300: #e9e2d2;
-  --ink-muted: rgba(233, 226, 210, 0.62);
-  --hairline: rgba(199, 164, 90, 0.18);
-  --glass-fill: linear-gradient(155deg, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.018) 55%, rgba(199, 164, 90, 0.035) 100%);
-  --glass-fill-strong: linear-gradient(160deg, rgba(28, 36, 56, 0.92) 0%, rgba(11, 16, 32, 0.86) 100%);
+  --night-950: #0A0C0F;
+  --night-900: #0F1115;
+  --night-800: #161920;
+  --night-700: #1A1A1A;
+  --night-600: #1E222B;
+  --gold-500: #C5A059;
+  --gold-400: #D8BC7F;
+  --gold-300: #E3C57C;
+  --cream-100: #F4EFE6;
+  --cream-300: #E8E1D5;
+  --papyrus-surface: #F4EFE6;
+  --papyrus-ink: #1A1A1A;
+  --papyrus-accent-ink: #805F2B;
+  --ink-muted: rgba(244, 239, 230, 0.62);
+  --hairline: rgba(197, 160, 89, 0.2);
+  --glass-fill: linear-gradient(155deg, rgba(244, 239, 230, 0.06) 0%, rgba(244, 239, 230, 0.018) 55%, rgba(197, 160, 89, 0.035) 100%);
+  --glass-fill-strong: linear-gradient(160deg, rgba(26, 30, 39, 0.95) 0%, rgba(15, 17, 21, 0.92) 100%);
 }
 
 html,
@@ -49,7 +69,7 @@ body {
 body {
   margin: 0;
   background-color: var(--night-900);
-  color: var(--cream-300);
+  color: var(--cream-100);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -119,8 +139,8 @@ textarea {
 .glass-panel {
   position: relative;
   border-radius: 1.25rem;
-  background: linear-gradient(160deg, rgba(23, 31, 51, 0.72) 0%, rgba(11, 16, 32, 0.62) 100%);
-  border: 1px solid rgba(199, 164, 90, 0.18);
+  background: linear-gradient(160deg, rgba(26, 30, 39, 0.82) 0%, rgba(15, 17, 21, 0.78) 100%);
+  border: 1px solid rgba(197, 160, 89, 0.2);
   box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -189,8 +209,8 @@ textarea {
 .field-dark {
   width: 100%;
   border-radius: 0.8rem;
-  border: 1px solid rgba(199, 164, 90, 0.2);
-  background: rgba(8, 12, 22, 0.6);
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  background: rgba(15, 17, 21, 0.75);
   color: var(--cream-100);
   padding: 0.55rem 0.85rem;
   font-size: 0.875rem;
@@ -198,12 +218,12 @@ textarea {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .field-dark::placeholder {
-  color: rgba(233, 226, 210, 0.35);
+  color: rgba(244, 239, 230, 0.35);
 }
 .field-dark:focus {
-  border-color: rgba(199, 164, 90, 0.7);
-  box-shadow: 0 0 0 3px rgba(199, 164, 90, 0.16);
-  background: rgba(8, 12, 22, 0.85);
+  border-color: rgba(197, 160, 89, 0.75);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.16);
+  background: rgba(15, 17, 21, 0.92);
 }
 select.field-dark option {
   background: var(--night-900);
@@ -241,7 +261,7 @@ select.field-dark option {
 .calendar-papiro .fc .fc-button-primary:not(:disabled).fc-button-active {
   border-color: var(--gold-500);
   background: var(--gold-500);
-  color: #11182b;
+  color: var(--night-900);
 }
 .calendar-papiro .fc .fc-button:focus {
   box-shadow: 0 0 0 2px rgba(199, 164, 90, 0.28);

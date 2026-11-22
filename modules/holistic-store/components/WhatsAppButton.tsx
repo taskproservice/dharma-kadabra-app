@@ -48,11 +48,11 @@ export function WhatsAppButton({
         })
       }
       aria-label={`Consultar ${product.name} con Cozy`}
-      className={`${baseClasses} border-[#C5A059] ${
+      className={`${baseClasses} border-gold ${
         isLightCard
-          ? "text-[#2E231D] hover:bg-[#C5A059]/15"
-          : "text-[#C5A059] hover:bg-[#C5A059]/15 hover:text-[#e8cf92]"
-      } focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] ${className}`}
+          ? "text-ink hover:bg-gold/15"
+          : "text-gold hover:bg-gold/15 hover:text-gold-bright"
+      } cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${className}`}
     >
       <MessageCircle size={14} className="shrink-0" aria-hidden="true" />
       <span>PREGUNTAR A COZY</span>

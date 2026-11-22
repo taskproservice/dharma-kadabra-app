@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { CozyWidget } from "../../components/landing/cozy-widget";
 import { DigitalAgenda } from "../../components/landing/digital-agenda";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { PublicHeader } from "../../components/landing/public-header";
@@ -32,39 +33,40 @@ export default async function AgendaPage() {
 
   // A diferencia de overflow-hidden, clip no impide que el panel de reserva sea sticky.
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#080c16] text-[#e9e2d2]">
+    <main className="min-h-screen overflow-x-clip bg-obsidian text-papyrus">
       <PublicHeader />
 
       <section className="relative isolate overflow-hidden px-5 pb-10 pt-32 sm:px-8 sm:pb-14 sm:pt-36">
         <span aria-hidden="true" className="pointer-events-none absolute -right-36 -top-48 size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.12),transparent_68%)] blur-3xl" />
-        <span aria-hidden="true" className="pointer-events-none absolute -left-48 top-28 size-[30rem] rounded-full bg-[radial-gradient(circle,rgba(35,47,76,.35),transparent_68%)] blur-3xl" />
+        <span aria-hidden="true" className="pointer-events-none absolute -left-48 top-28 size-[30rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.07),transparent_68%)] blur-3xl" />
         <div className="relative mx-auto max-w-7xl">
-          <Link href="/" className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]/75 transition hover:text-[#f7f2e7]">
+          <Link href="/" className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.2em] text-gold-light/80 transition hover:text-papyrus">
             <ArrowLeft size={13} aria-hidden="true" /> Volver al inicio
           </Link>
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div className="max-w-3xl">
-              <p className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.27em] text-[#C5A059]">
+              <p className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.27em] text-gold">
                 <Sparkles size={14} aria-hidden="true" /> Un espacio para tu intención
               </p>
-              <h1 className="mt-4 font-cormorant text-6xl font-light leading-[.95] text-[#f7f2e7] sm:text-7xl lg:text-[5.5rem]">
-                Agenda <em className="italic text-[#C5A059]">Digital</em>
+              <h1 className="mt-4 font-cormorant text-6xl font-light leading-[.95] text-papyrus sm:text-7xl lg:text-[5.5rem]">
+                Agenda <em className="italic text-gold">Digital</em>
               </h1>
-              <p className="mt-5 max-w-2xl font-[family-name:var(--font-montserrat)] text-sm leading-7 text-[#e9e2d2]/65 sm:text-base sm:leading-8">
+              <p className="mt-5 max-w-2xl font-[family-name:var(--font-montserrat)] text-sm leading-7 text-papyrus/65 sm:text-base sm:leading-8">
                 Elige un momento para tus rituales, lecturas y limpiezas energéticas. Encuentra una fecha en sintonía con la luna y reserva tu espacio con calma.
               </p>
             </div>
-            <div className="flex items-center gap-3 border-l border-[#C5A059]/25 pl-4 text-[9px] font-medium uppercase tracking-[.18em] text-[#e9e2d2]/50 sm:pl-5 lg:mb-2">
-              <span className="grid size-10 place-items-center rounded-full border border-[#C5A059]/25 bg-[#C5A059]/[.06] text-[#d8bc7f]"><Sparkles size={16} aria-hidden="true" /></span>
-              <span>Rituales <i className="px-1 text-[#C5A059]">·</i> Lecturas <i className="px-1 text-[#C5A059]">·</i> Limpiezas</span>
+            <div className="flex items-center gap-3 border-l border-gold/25 pl-4 text-[9px] font-medium uppercase tracking-[.18em] text-papyrus/50 sm:pl-5 lg:mb-2">
+              <span className="grid size-10 place-items-center rounded-full border border-gold/25 bg-gold/[.06] text-gold-light"><Sparkles size={16} aria-hidden="true" /></span>
+              <span>Rituales <i className="px-1 text-gold">·</i> Lecturas <i className="px-1 text-gold">·</i> Limpiezas</span>
             </div>
           </div>
         </div>
       </section>
 
       <DigitalAgenda todayKey={todayKey} />
-      <RitualEventsSection events={ritualEvents} />
+      <RitualEventsSection events={ritualEvents} showAgendaLink={false} />
       <PremiumFooter />
+      <CozyWidget />
     </main>
   );
 }

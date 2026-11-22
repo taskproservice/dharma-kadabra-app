@@ -512,24 +512,24 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
 
   const modal = (
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden bg-black/95 p-3 backdrop-blur-xl sm:p-5 md:p-6"
+      className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden bg-obsidian-deep/95 p-3 backdrop-blur-xl sm:p-5 md:p-6"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      {/* Marco cinematográfico Nocturno (#121212) al 90% de pantalla, sin scrollbars */}
+      {/* Marco cinematográfico Carbón Profundo (#0F1115) al 90% de pantalla, sin scrollbars */}
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="brand-tour-title"
-        className="tour-modal-in relative flex h-[90dvh] max-h-[860px] w-full max-w-[1160px] flex-col justify-between overflow-hidden rounded-3xl border border-[#C5A059]/30 bg-[#121212]/95 px-5 py-4 text-[#F7F3EA] shadow-[0_40px_140px_-20px_rgba(0,0,0,0.95),0_0_80px_-30px_rgba(197,160,89,0.22)] backdrop-blur-2xl sm:px-8 sm:py-5 md:px-10 md:py-6"
+        className="tour-modal-in relative flex h-[90dvh] max-h-[860px] w-full max-w-[1160px] flex-col justify-between overflow-hidden rounded-3xl border border-gold/30 bg-obsidian/95 px-5 py-4 text-papyrus shadow-[0_40px_140px_-20px_rgba(0,0,0,0.95),0_0_80px_-30px_rgba(197,160,89,0.22)] backdrop-blur-2xl sm:px-8 sm:py-5 md:px-10 md:py-6"
       >
-        {/* Atmósfera ambiental dorada sobre Nocturno */}
+        {/* Atmósfera ambiental dorada sobre carbón profundo */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <span className="absolute -top-36 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.14),transparent_68%)] blur-3xl" />
           <span className="absolute -bottom-32 -right-24 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.08),transparent_70%)] blur-3xl" />
-          <span className="absolute inset-2.5 rounded-[1.25rem] border border-[#C5A059]/10" />
+          <span className="absolute inset-2.5 rounded-[1.25rem] border border-gold/10" />
         </div>
 
         {/* Barra superior: distintivo editorial + botón de cierre dorado */}
@@ -537,9 +537,9 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
           <div className="flex items-center gap-3">
             <span
               aria-hidden="true"
-              className="hidden h-px w-8 bg-gradient-to-r from-[#C5A059] to-transparent sm:block"
+              className="hidden h-px w-8 bg-gradient-to-r from-gold to-transparent sm:block"
             />
-            <p className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.34em] text-[#C5A059]">
+            <p className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.34em] text-gold">
               <Sparkles size={12} aria-hidden="true" />
               Dharma Kadabra · Tour de Marca
             </p>
@@ -549,7 +549,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
             type="button"
             onClick={onClose}
             aria-label="Cerrar el tour"
-            className="grid size-10 shrink-0 place-items-center rounded-full border border-[#C5A059]/50 bg-[#121212]/80 text-[#C5A059] transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#121212] hover:shadow-[0_0_28px_rgba(197,160,89,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:size-11"
+            className="grid size-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-obsidian/80 text-gold transition duration-300 hover:border-gold hover:bg-gold hover:text-obsidian hover:shadow-[0_0_28px_rgba(197,160,89,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:size-11"
           >
             <X size={18} strokeWidth={1.75} />
           </button>
@@ -558,7 +558,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
         {/* Escenario central: reproductor 16:9 contenido con exactitud dentro del viewport */}
         <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-3 sm:py-4">
           <div
-            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-[#C5A059]/30 bg-[#0A0A0A] shadow-[0_32px_90px_-28px_rgba(0,0,0,0.95),0_0_0_1px_rgba(197,160,89,0.08)]"
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gold/30 bg-obsidian-deep shadow-[0_32px_90px_-28px_rgba(0,0,0,0.95),0_0_0_1px_rgba(197,160,89,0.08)]"
             style={{
               maxWidth: "min(920px, max(240px, calc((min(90dvh, 860px) - 14.5rem) * 16 / 9)))",
             }}
@@ -571,22 +571,19 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/65 to-[#121212]/40"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/65 to-obsidian/40"
             />
 
             {/* Estado elegante cuando aún no hay video configurado */}
             {!hasVideo ? (
               <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 text-center">
-                <div className="grid size-14 place-items-center rounded-full border border-[#C5A059]/45 bg-[#121212]/80 text-[#C5A059] shadow-[0_0_40px_rgba(197,160,89,0.2)]">
+                <div className="grid size-14 place-items-center rounded-full border border-gold/45 bg-obsidian/80 text-gold shadow-[0_0_40px_rgba(197,160,89,0.2)]">
                   <Film size={24} strokeWidth={1.4} />
                 </div>
-                <p
-                  className="mt-5 text-2xl font-normal tracking-[0.01em] text-[#F7F3EA] sm:text-3xl"
-                  style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
-                >
+                <p className="mt-5 font-cormorant text-2xl font-normal tracking-[0.01em] text-papyrus sm:text-3xl">
                   El tour estará disponible pronto
                 </p>
-                <p className="mt-2.5 max-w-md text-xs leading-6 text-[#F7F3EA]/60 sm:text-sm">
+                <p className="mt-2.5 max-w-md text-xs leading-6 text-papyrus/60 sm:text-sm">
                   Estamos preparando una experiencia audiovisual inmersiva para compartir nuestra
                   historia contigo.
                 </p>
@@ -601,7 +598,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
                     poster={DARK_POSTER_SRC}
                     playsInline
                     preload="metadata"
-                    className="relative z-10 h-full w-full bg-black object-contain"
+                    className="relative z-10 h-full w-full bg-obsidian-deep object-contain"
                     onClick={togglePlay}
                     onLoadedMetadata={(event) => {
                       setDuration(event.currentTarget.duration || 0);
@@ -661,24 +658,21 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
                     <div className="flex items-center gap-2.5">
                       <span
                         aria-hidden="true"
-                        className="h-px w-7 bg-gradient-to-r from-[#C5A059] to-transparent"
+                        className="h-px w-7 bg-gradient-to-r from-gold to-transparent"
                       />
-                      <p className="text-[10px] font-medium uppercase tracking-[.3em] text-[#C5A059]">
+                      <p className="text-[10px] font-medium uppercase tracking-[.3em] text-gold">
                         {formatChapterTime(activeChapter.time)} · Capítulo
                       </p>
                     </div>
                     <p
-                      className="mt-1.5 text-xl leading-tight text-[#F7F3EA] sm:text-2xl"
-                      style={{
-                        fontFamily: "var(--font-cormorant-garamond), Georgia, serif",
-                        textShadow: "0 2px 24px rgba(0,0,0,0.85)",
-                      }}
+                      className="mt-1.5 font-cormorant text-xl leading-tight text-papyrus sm:text-2xl"
+                      style={{ textShadow: "0 2px 24px rgba(0,0,0,0.85)" }}
                     >
                       {activeChapter.label}
                     </p>
                     {activeChapter.text && (
                       <p
-                        className="mt-1 hidden max-w-sm text-xs leading-5 text-[#F7F3EA]/80 sm:block"
+                        className="mt-1 hidden max-w-sm text-xs leading-5 text-papyrus/80 sm:block"
                         style={{ textShadow: "0 1px 14px rgba(0,0,0,0.85)" }}
                       >
                         {activeChapter.text}
@@ -693,9 +687,9 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
                     type="button"
                     onClick={togglePlay}
                     aria-label="Reproducir el tour"
-                    className="absolute inset-0 z-20 grid place-items-center bg-[#121212]/35 transition hover:bg-[#121212]/15"
+                    className="absolute inset-0 z-20 grid place-items-center bg-obsidian/35 transition hover:bg-obsidian/15"
                   >
-                    <span className="grid size-16 place-items-center rounded-full border border-[#F7F3EA]/30 bg-[#C5A059] text-[#121212] shadow-[0_18px_50px_-12px_rgba(197,160,89,0.9)] transition duration-300 hover:scale-105 hover:brightness-110">
+                    <span className="grid size-16 place-items-center rounded-full border border-papyrus/30 bg-gold text-obsidian shadow-[0_18px_50px_-12px_rgba(197,160,89,0.9)] transition duration-300 hover:scale-105 hover:brightness-110">
                       <Play size={22} fill="currentColor" className="translate-x-0.5" />
                     </span>
                   </button>
@@ -703,21 +697,21 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
 
                 {/* Barra de controles personalizada (HTML5 / YouTube) */}
                 {source.kind !== "vimeo" && !ytNative && (
-                  <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/90 via-black/45 to-transparent px-4 pb-3 pt-10 sm:px-5">
+                  <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-obsidian-deep/90 via-obsidian-deep/45 to-transparent px-4 pb-3 pt-10 sm:px-5">
                     <div
-                      className="group relative h-1.5 cursor-pointer rounded-full bg-[#F7F3EA]/20"
+                      className="group relative h-1.5 cursor-pointer rounded-full bg-papyrus/20"
                       onClick={onSeekClick}
                       role="presentation"
                     >
                       <div
-                        className="absolute inset-y-0 left-0 rounded-full bg-[#C5A059] shadow-[0_0_10px_rgba(197,160,89,0.6)]"
+                        className="absolute inset-y-0 left-0 rounded-full bg-gold shadow-[0_0_10px_rgba(197,160,89,0.6)]"
                         style={{ width: `${progress}%` }}
                       />
                       {chapters.map((chapter) => (
                         <span
                           key={chapter.time}
                           title={chapter.label}
-                          className="absolute top-1/2 h-2.5 w-0.5 -translate-y-1/2 rounded-full bg-[#F7F3EA]/70"
+                          className="absolute top-1/2 h-2.5 w-0.5 -translate-y-1/2 rounded-full bg-papyrus/70"
                           style={{
                             left: `${duration > 0 ? Math.min(100, (chapter.time / duration) * 100) : 0}%`,
                           }}
@@ -730,7 +724,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
                         type="button"
                         onClick={togglePlay}
                         aria-label={playing ? "Pausar" : "Reproducir"}
-                        className="grid size-8 place-items-center rounded-full border border-[#C5A059]/45 bg-[#121212]/60 text-[#F7F3EA] transition hover:border-[#C5A059] hover:text-[#C5A059]"
+                        className="grid size-8 place-items-center rounded-full border border-gold/45 bg-obsidian/60 text-papyrus transition hover:border-gold hover:text-gold"
                       >
                         {playing ? <Pause size={13} /> : <Play size={13} fill="currentColor" />}
                       </button>
@@ -738,17 +732,17 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
                         type="button"
                         onClick={toggleMute}
                         aria-label={muted ? "Activar sonido" : "Silenciar"}
-                        className="grid size-8 place-items-center rounded-full text-[#F7F3EA]/75 transition hover:text-[#C5A059]"
+                        className="grid size-8 place-items-center rounded-full text-papyrus/75 transition hover:text-gold"
                       >
                         {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
                       </button>
-                      <p className="text-xs tabular-nums tracking-wider text-[#F7F3EA]/75">
+                      <p className="text-xs tabular-nums tracking-wider text-papyrus/75">
                         {formatChapterTime(currentTime)}
-                        <span className="mx-1.5 text-[#C5A059]/50">/</span>
+                        <span className="mx-1.5 text-gold/50">/</span>
                         {formatChapterTime(duration)}
                       </p>
                       {activeChapter && (
-                        <p className="ml-auto hidden max-w-[45%] truncate text-[10px] uppercase tracking-[.24em] text-[#C5A059] sm:block">
+                        <p className="ml-auto hidden max-w-[45%] truncate text-[10px] uppercase tracking-[.24em] text-gold sm:block">
                           {activeChapter.label}
                         </p>
                       )}
@@ -758,21 +752,18 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
 
                 {/* Cierre cinematográfico al concluir el video */}
                 {ended && (
-                  <div className="absolute inset-0 z-30 grid place-items-center bg-[#121212]/85 px-6 text-center backdrop-blur-sm">
+                  <div className="absolute inset-0 z-30 grid place-items-center bg-obsidian/85 px-6 text-center backdrop-blur-sm">
                     <div className="flex flex-col items-center">
-                      <p className="text-[10px] font-medium uppercase tracking-[.34em] text-[#C5A059]">
+                      <p className="text-[10px] font-medium uppercase tracking-[.34em] text-gold">
                         El viaje continúa
                       </p>
-                      <p
-                        className="mt-2 text-2xl text-[#F7F3EA] sm:text-3xl"
-                        style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
-                      >
+                      <p className="mt-2 font-cormorant text-2xl text-papyrus sm:text-3xl">
                         {tourTitle}
                       </p>
                       <button
                         type="button"
                         onClick={replay}
-                        className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/50 bg-[#121212]/80 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[.26em] text-[#C5A059] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#121212]"
+                        className="mt-5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-obsidian/80 px-5 py-2.5 text-[10px] font-medium uppercase tracking-[.26em] text-gold transition hover:border-gold hover:bg-gold hover:text-obsidian"
                       >
                         <RotateCcw size={13} />
                         Volver a ver
@@ -786,16 +777,15 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
         </div>
 
         {/* Pie editorial bajo el video: Título en Cormorant Garamond Oro + CTA */}
-        <footer className="relative z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-t border-[#C5A059]/18 pt-3.5 text-center sm:flex-row sm:gap-6 sm:pt-4 sm:text-left">
+        <footer className="relative z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-t border-gold/18 pt-3.5 text-center sm:flex-row sm:gap-6 sm:pt-4 sm:text-left">
           <div className="min-w-0">
             <h2
               id="brand-tour-title"
-              className="truncate text-2xl font-medium leading-tight tracking-[0.015em] text-[#C5A059] sm:text-3xl md:text-[2.15rem]"
-              style={{ fontFamily: "var(--font-cormorant-garamond), Georgia, serif" }}
+              className="truncate font-cormorant text-2xl font-medium leading-tight tracking-[0.015em] text-gold sm:text-3xl md:text-[2.15rem]"
             >
               {tourTitle}
             </h2>
-            <p className="mt-0.5 truncate text-[10px] uppercase tracking-[.28em] text-[#F7F3EA]/55">
+            <p className="mt-0.5 truncate text-[10px] uppercase tracking-[.28em] text-papyrus/55">
               {activeChapter ? activeChapter.label : "Conecta · Transforma · Armoniza"}
             </p>
           </div>
@@ -803,7 +793,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
           <button
             type="button"
             onClick={handleExploreCollection}
-            className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#C5A059] via-[#E2C88E] to-[#C5A059] px-7 py-3 text-[10px] font-semibold uppercase tracking-[.28em] text-[#121212] shadow-[0_14px_40px_-14px_rgba(197,160,89,0.85)] transition duration-300 hover:brightness-110 hover:shadow-[0_18px_48px_-12px_rgba(197,160,89,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059] sm:px-8 sm:py-3.5 sm:text-[11px]"
+            className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-gold via-gold-bright to-gold px-7 py-3 text-[10px] font-semibold uppercase tracking-[.28em] text-obsidian shadow-[0_14px_40px_-14px_rgba(197,160,89,0.85)] transition duration-300 hover:brightness-110 hover:shadow-[0_18px_48px_-12px_rgba(197,160,89,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold sm:px-8 sm:py-3.5 sm:text-[11px]"
           >
             {ctaLabel}
             <ArrowRight
@@ -843,7 +833,7 @@ export function BrandTourTrigger({ config }: { config: TourVideoConfig }) {
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="group inline-flex items-center gap-3 rounded-full border border-[#C5A059] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#F7F3EA] transition duration-300 hover:bg-[#C5A059] hover:text-[#121212] hover:shadow-[0_0_40px_-6px_rgba(197,160,89,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
+        className="group inline-flex items-center gap-3 rounded-full border border-gold bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-papyrus transition duration-300 hover:bg-gold hover:text-obsidian hover:shadow-[0_0_40px_-6px_rgba(197,160,89,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
       >
         Quiénes somos
         <Film size={14} className="transition duration-300 group-hover:scale-110" aria-hidden="true" />

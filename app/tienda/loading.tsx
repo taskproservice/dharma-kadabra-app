@@ -3,7 +3,7 @@ import { Skeleton } from "../../components/ui/skeleton";
 /** Esqueleto de la tienda: mantiene el fondo nocturno mientras llega el catálogo. */
 export default function TiendaLoading() {
   return (
-    <main className="min-h-screen bg-[#121212] text-[#F7F3EA]" aria-busy="true" aria-label="Cargando la tienda">
+    <main className="min-h-screen bg-obsidian text-papyrus" aria-busy="true" aria-label="Cargando la tienda">
       <div className="mx-auto max-w-7xl px-5 pb-16 pt-28 sm:px-8">
         <Skeleton className="h-4 w-40 rounded-full" />
         <div className="mx-auto mt-12 max-w-xl text-center">

@@ -94,18 +94,24 @@ export function StoreExplorer({
   const template = templates[active] ?? "oro";
   const meta = CATEGORY_META[active];
 
+  const whatsappDigits = STORE_WHATSAPP.replace(/\D/g, "");
+  const whatsappValid =
+    whatsappDigits.length >= 10 &&
+    !whatsappDigits.endsWith("1234567") &&
+    !whatsappDigits.endsWith("12345678");
+
   return (
     <div id="tienda-holistica-catalogo" className="scroll-mt-24">
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-[#C5A059]/20 pb-8">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-gold/20 pb-8">
         <div>
-          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#C5A059]">
-            <span aria-hidden="true" className="h-px w-10 bg-[#C5A059]/60" />
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-gold">
+            <span aria-hidden="true" className="h-px w-10 bg-gold/60" />
             Holistic Store
           </p>
-          <h2 className="mt-5 font-display text-4xl leading-none text-[#F7F3EA] sm:text-5xl">
-            Explora la <em className="italic text-[#C5A059]">colección.</em>
+          <h2 className="mt-5 font-display text-4xl leading-none text-papyrus sm:text-5xl">
+            Explora la <em className="italic text-gold">colección.</em>
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-[#F7F3EA]/55">
+          <p className="mt-4 max-w-xl text-sm leading-7 text-papyrus/55">
             {meta.symbol} {active} · {meta.tagline}. Piezas publicadas, listas para consultar por WhatsApp.
           </p>
         </div>
@@ -131,19 +137,19 @@ export function StoreExplorer({
           />
         </div>
       ) : products.length === 0 ? (
-        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-[#C5A059]/25 bg-[#F7F3EA]/[0.02] px-6 py-16 text-center">
+        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-gold/25 bg-papyrus/[0.02] px-6 py-16 text-center">
           <div>
-            <Sparkles size={26} className="mx-auto text-[#C5A059]" />
-            <p className="mt-4 font-display text-2xl text-[#F7F3EA]">Próximamente en {active}</p>
-            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#F7F3EA]/55">
+            <Sparkles size={26} className="mx-auto text-gold" />
+            <p className="mt-4 font-display text-2xl text-papyrus">Próximamente en {active}</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-papyrus/55">
               Estamos preparando nuevas piezas para esta colección. Escríbenos y te avisamos primero.
             </p>
-            {STORE_WHATSAPP && (
+            {whatsappValid && (
               <a
-                href={`https://wa.me/${STORE_WHATSAPP.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola, quiero que me avisen cuando haya novedades en ${active} de Holistic Store.`)}`}
+                href={`https://wa.me/${whatsappDigits}?text=${encodeURIComponent(`Hola, quiero que me avisen cuando haya novedades en ${active} de Holistic Store.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-[#e8cf92] transition hover:bg-[#C5A059] hover:text-[#121212]"
+                className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold-bright transition hover:bg-gold hover:text-obsidian"
               >
                 <MessageCircle size={14} /> Avisarme por WhatsApp
               </a>
@@ -162,7 +168,7 @@ export function StoreExplorer({
               />
             ))}
           </div>
-          <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-[#F7F3EA]/35">
+          <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-papyrus/35">
             Mostrando {products.length} {products.length === 1 ? "pieza" : "piezas"} de {active}
           </p>
         </>

@@ -29,7 +29,7 @@ import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
-import { useCartStore } from "../../stores/cart";
+import { usePosCartStore } from "../../stores/cart";
 import { CATEGORY_META, STORE_TEMPLATE_META } from "../../modules/holistic-store/constants";
 import type {
   AdminProduct,
@@ -368,9 +368,9 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
               role="switch"
               aria-checked={form.published}
               onClick={() => set("published", !form.published)}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition ${form.published ? "bg-[#c7a45a]" : "bg-white/10"}`}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition ${form.published ? "bg-gold" : "bg-papyrus/10"}`}
             >
-              <span className={`absolute top-0.5 size-5 rounded-full bg-white shadow transition-all ${form.published ? "left-[22px]" : "left-0.5"}`} />
+              <span className={`absolute top-0.5 size-5 rounded-full bg-papyrus shadow transition-all ${form.published ? "left-[22px]" : "left-0.5"}`} />
             </button>
           </label>
 
@@ -797,11 +797,11 @@ function QuickSaleTab({ products, notify, reload }: { products: AdminProduct[]; 
   const [query, setQuery] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [saleError, setSaleError] = useState<string | null>(null);
-  const items = useCartStore((s) => s.items);
-  const add = useCartStore((s) => s.add);
-  const decrement = useCartStore((s) => s.decrement);
-  const remove = useCartStore((s) => s.remove);
-  const clear = useCartStore((s) => s.clear);
+  const items = usePosCartStore((s) => s.items);
+  const add = usePosCartStore((s) => s.add);
+  const decrement = usePosCartStore((s) => s.decrement);
+  const remove = usePosCartStore((s) => s.remove);
+  const clear = usePosCartStore((s) => s.clear);
 
   const sellable = useMemo(() => {
     const q = query.trim().toLowerCase();

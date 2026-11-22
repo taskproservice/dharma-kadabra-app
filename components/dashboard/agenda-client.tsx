@@ -268,11 +268,13 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
 
   const clickFullCalendarEvent = (info: EventClickArg) => {
     const apt = info.event.extendedProps as AppointmentItem;
-    window.alert(`Cita: ${apt.service}\nCliente: ${apt.clientName}\nTeléfono: ${apt.clientPhone}\nEstado: ${apt.status}`);
+    setSimulationLog([
+      `Cita seleccionada · ${apt.service} — Cliente: ${apt.clientName} (${apt.clientPhone}) · Estado: ${apt.status}`,
+    ]);
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 bg-[#11182b] text-[#e9e2d2]">
+    <div className="mx-auto max-w-7xl space-y-8 text-papyrus">
       {/* Encabezado Editorial */}
       <header className="border-b border-[#c7a45a]/30 pb-7">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -352,9 +354,9 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
             <button
               type="button"
               onClick={goToToday}
-              className="rounded-xl border border-[#c7a45a]/30 bg-white/[0.04] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#e9e2d2] transition hover:bg-white/[0.06] hover:border-[#c7a45a]"
+              className="rounded-xl border border-gold/30 bg-papyrus/[0.04] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-papyrus transition hover:border-gold hover:bg-papyrus/[0.06]"
             >
-              Hoy (18 Nov)
+              Hoy
             </button>
             <button
               type="button"
