@@ -10,6 +10,7 @@ import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { Storefront } from "../components/landing/storefront";
+import { HolisticStoreSection } from "../modules/holistic-store";
 import { PremiumFooter } from "../components/landing/premium-footer";
 import { prisma } from "../lib/prisma";
 
@@ -58,7 +59,7 @@ export default async function HomePage() {
     title: event.title,
     description: event.description,
     date: event.date.toISOString(),
-    products: event.products.map((product) => product.name),
+    products: event.products.map((product: { name: string }) => product.name),
   }));
 
   return (
@@ -136,6 +137,9 @@ export default async function HomePage() {
 
       {/* Tienda y servicios */}
       <Storefront events={ritualEvents} />
+
+      {/* Holistic Store — tienda pública por categorías con consulta por WhatsApp */}
+      <HolisticStoreSection />
 
       {/* Equipo — retratos editoriales */}
       <section id="equipo" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">

@@ -1,0 +1,132 @@
+"use client";
+
+import { useCallback, useState } from "react";
+import { MessageCircle, Sparkles } from "lucide-react";
+import { CATEGORY_META, STORE_WHATSAPP } from "../constants";
+import type { CategoryTemplateMap, StoreCategory, StoreProduct } from "../types";
+import { CategoryTabs } from "./CategoryTabs";
+import { ProductCard } from "./ProductCard";
+import { ProductCardSkeleton } from "../../../components/ui/skeleton";
+
+type Props = {
+  initialCategory: StoreCategory;
+  initialProducts: StoreProduct[];
+  initialCounts: Record<string, number>;
+  templates: CategoryTemplateMap;
+};
+
+/**
+ * Explorador de la tienda: pestañas por categoría + grid de productos.
+ *
+ * CERO CARGA INNECESARIA: la primera categoría llega renderizada desde el
+ * servidor y cada categoría adicional se pide a la API solo al seleccionarla
+ * (solo piezas publicadas, máximo 35). Los resultados se cachean en memoria.
+ */
+export function StoreExplorer({ initialCategory, initialProducts, initialCounts, templates }: Props) {
+  const [active, setActive] = useState<StoreCategory>(initialCategory);
+  const [cache, setCache] = useState<Record<string, StoreProduct[]>>({ [initialCategory]: initialProducts });
+  const [counts, setCounts] = useState<Record<string, number>>(initialCounts);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const selectCategory = useCallback(
+    async (category: StoreCategory) => {
+      setActive(category);
+      setError(null);
+      if (cache[category]) return;
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/store/products?category=${encodeURIComponent(category)}`, {
+          cache: "no-store",
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data?.error || "No fue posible cargar esta categoría.");
+        const products: StoreProduct[] = Array.isArray(data.products) ? data.products : [];
+        setCache((prev) => ({ ...prev, [category]: products }));
+        setCounts((prev) => ({ ...prev, [category]: typeof data.total === "number" ? data.total : products.length }));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "No fue posible cargar esta categoría.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cache],
+  );
+
+  const products = cache[active] ?? [];
+  const template = templates[active] ?? "oro";
+  const meta = CATEGORY_META[active];
+
+  return (
+    <div id="tienda-holistica-catalogo" className="scroll-mt-24">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-[#C5A059]/20 pb-8">
+        <div>
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-[#C5A059]">
+            <span aria-hidden="true" className="h-px w-10 bg-[#C5A059]/60" />
+            Holistic Store
+          </p>
+          <h2 className="mt-5 font-display text-4xl leading-none text-[#F7F3EA] sm:text-5xl">
+            La <em className="italic text-[#C5A059]">Tienda Holística.</em>
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[#F7F3EA]/55">
+            {meta.symbol} {active} · {meta.tagline}. Piezas publicadas, listas para consultar por WhatsApp.
+          </p>
+        </div>
+        <CategoryTabs active={active} counts={counts} onChange={selectCategory} />
+      </div>
+
+      {loading ? (
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" aria-label={`Cargando ${active}`}>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : error ? (
+        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-[#C5A059]/25 bg-[#F7F3EA]/[0.02] px-6 py-16 text-center">
+          <div>
+            <p className="font-display text-2xl text-[#F7F3EA]">No pudimos cargar {active}</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#F7F3EA]/55">{error}</p>
+            <button
+              type="button"
+              onClick={() => selectCategory(active)}
+              className="mt-6 rounded-full border border-[#C5A059]/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-[#e8cf92] transition hover:bg-[#C5A059] hover:text-[#121212]"
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+      ) : products.length === 0 ? (
+        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-[#C5A059]/25 bg-[#F7F3EA]/[0.02] px-6 py-16 text-center">
+          <div>
+            <Sparkles size={26} className="mx-auto text-[#C5A059]" />
+            <p className="mt-4 font-display text-2xl text-[#F7F3EA]">Próximamente en {active}</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#F7F3EA]/55">
+              Estamos preparando nuevas piezas para esta colección. Escríbenos y te avisamos primero.
+            </p>
+            {STORE_WHATSAPP && (
+              <a
+                href={`https://wa.me/${STORE_WHATSAPP.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola, quiero que me avisen cuando haya novedades en ${active} de Holistic Store.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-[#e8cf92] transition hover:bg-[#C5A059] hover:text-[#121212]"
+              >
+                <MessageCircle size={14} /> Avisarme por WhatsApp
+              </a>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} template={template} />
+            ))}
+          </div>
+          <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-[#F7F3EA]/35">
+            Mostrando {products.length} {products.length === 1 ? "pieza" : "piezas"} de {active}
+          </p>
+        </>
+      )}
+    </div>
+  );
+}

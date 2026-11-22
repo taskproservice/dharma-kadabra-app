@@ -20,6 +20,8 @@ const nextConfig = {
     qualities: [75, 90],
     // Cachea las variantes optimizadas 30 días en el CDN/servidor.
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Holistic Store · el Admin puede pegar URLs de imagen externas.
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 };
 

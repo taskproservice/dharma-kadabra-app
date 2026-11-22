@@ -56,8 +56,15 @@ export async function POST(request: Request) {
       },
     });
 
-    const purchases = await prisma.$transaction(
-      parsed.data.items.flatMap((item) =>
+    // Unidades vendidas por producto, para descontar del inventario.
+    const quantities = new Map<string, number>();
+    for (const item of parsed.data.items) {
+      quantities.set(item.productId, (quantities.get(item.productId) ?? 0) + item.quantity);
+    }
+    const soldIds = [...quantities.keys()];
+
+    const results = await prisma.$transaction([
+      ...parsed.data.items.flatMap((item) =>
         Array.from({ length: item.quantity }, () =>
           prisma.purchase.create({
             data: {
@@ -68,9 +75,22 @@ export async function POST(request: Request) {
           }),
         ),
       ),
-    );
+      // Holistic Store · descuenta el stock vendido (sin dejarlo en negativo)…
+      ...soldIds.map((productId) =>
+        prisma.product.updateMany({
+          where: { id: productId, stock: { gte: quantities.get(productId) ?? 1 } },
+          data: { stock: { decrement: quantities.get(productId) ?? 1 } },
+        }),
+      ),
+      // …y marca como agotadas las piezas que llegaron a cero.
+      prisma.product.updateMany({
+        where: { id: { in: soldIds }, stock: { lte: 0 } },
+        data: { availability: "out_of_stock" },
+      }),
+    ]);
 
-    const totalUnits = purchases.length;
+    const totalUnits = parsed.data.items.reduce((sum, item) => sum + item.quantity, 0);
+    const purchases = results.slice(0, totalUnits) as { id: string }[];
     return NextResponse.json(
       { ok: true, purchases: totalUnits, saleId: purchases[0]?.id ?? null },
       { status: 201 },
