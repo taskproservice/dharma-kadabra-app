@@ -14,6 +14,8 @@ type Props = {
   initialProducts: StoreProduct[];
   initialCounts: Record<string, number>;
   templates: CategoryTemplateMap;
+  /** Si el usuario cuenta con sesión activa para abrir el carrito directo al comprar. */
+  isAuthenticated?: boolean;
   /** Error de la carga inicial (render del servidor); si existe, la tienda abre en estado de error. */
   initialError?: { message: string; detail?: string | null } | null;
 };
@@ -31,6 +33,7 @@ export function StoreExplorer({
   initialProducts,
   initialCounts,
   templates,
+  isAuthenticated = false,
   initialError = null,
 }: Props) {
   const [active, setActive] = useState<StoreCategory>(initialCategory);
@@ -151,7 +154,12 @@ export function StoreExplorer({
         <>
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} template={template} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                template={template}
+                isAuthenticated={isAuthenticated}
+              />
             ))}
           </div>
           <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-[#F7F3EA]/35">
