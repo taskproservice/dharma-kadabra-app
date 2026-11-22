@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Cormorant_Garamond } from "next/font/google";
 import { PublicHeader } from "../../components/landing/public-header";
 import { PremiumFooter } from "../../components/landing/premium-footer";
+import { getPrincipal } from "../../lib/rbac";
 import { DEFAULT_CATEGORY, STORE_PALETTE } from "../../modules/holistic-store/constants";
 import { getStorefrontData } from "../../modules/holistic-store/data";
 import { StoreBanner } from "../../modules/holistic-store/components/StoreBanner";
@@ -29,7 +30,11 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
-  const { products, counts, templates, error } = await getStorefrontData(DEFAULT_CATEGORY);
+  const [{ products, counts, templates, error }, principal] = await Promise.all([
+    getStorefrontData(DEFAULT_CATEGORY),
+    getPrincipal().catch(() => null),
+  ]);
+  const isAuthenticated = Boolean(principal);
 
   return (
     <div className={cormorant.variable}>
@@ -93,6 +98,7 @@ export default async function TiendaPage() {
                 initialProducts={products}
                 initialCounts={counts}
                 templates={templates}
+                isAuthenticated={isAuthenticated}
               />
             )}
           </section>
