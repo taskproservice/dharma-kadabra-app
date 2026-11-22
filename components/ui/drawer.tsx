@@ -35,8 +35,8 @@ DrawerOverlay.displayName = "DrawerOverlay";
 
 const DrawerContent = React.forwardRef<
   React.ComponentRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & { closeLabel?: string }
+>(({ className, children, closeLabel = "Cerrar panel", ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
@@ -49,7 +49,7 @@ const DrawerContent = React.forwardRef<
     >
       {children}
       <DrawerPrimitive.Close
-        aria-label="Cerrar detalle de la runa"
+        aria-label={closeLabel}
         className="absolute right-5 top-5 grid size-9 place-items-center rounded-full border border-[#C5A059]/35 text-[#C5A059] transition hover:bg-[#C5A059] hover:text-[#121212] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059]"
       >
         <X size={17} />
