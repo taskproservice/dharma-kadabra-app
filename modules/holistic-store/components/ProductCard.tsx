@@ -106,7 +106,8 @@ type Props = {
 
 /**
  * Tarjeta de producto de la tienda pública: ID, imagen, nombre, descripción
- * corta, precio con moneda y acciones de compra (carrito + WhatsApp).
+ * corta, precio con moneda y acciones de compra (carrito + Cozy, que
+ * transfiere a WhatsApp con un humano si hace falta).
  * El estilo visual lo define la plantilla asignada a su categoría.
  */
 export function ProductCard({ product, template, isAuthenticated = false }: Props) {
@@ -180,7 +181,9 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
             <span>{outOfStock ? "AGOTADO" : "COMPRAR"}</span>
           </button>
 
-          <WhatsAppButton product={product} template={template} disabled={outOfStock} />
+          {/* Embudo de Cozy: abre el widget con el contexto del producto.
+              Incluso agotado, para que Cozy se disculpe y ofrezca similares. */}
+          <WhatsAppButton product={product} template={template} />
         </div>
       </div>
     </article>

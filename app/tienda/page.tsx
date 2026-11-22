@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Cormorant_Garamond } from "next/font/google";
 import { PublicHeader } from "../../components/landing/public-header";
+import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { getPrincipal } from "../../lib/rbac";
 import { DEFAULT_CATEGORY, STORE_PALETTE } from "../../modules/holistic-store/constants";
@@ -106,6 +107,9 @@ export default async function TiendaPage() {
 
         <PremiumFooter />
       </main>
+
+      {/* Cozy: embudo de ventas de la tienda (abre desde cada tarjeta) */}
+      <CozyWidget />
     </div>
   );
 }
