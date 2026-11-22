@@ -58,6 +58,7 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
       "/dashboard/eventos",
       "/dashboard/audio",
       "/dashboard/video",
+      "/dashboard/tour",
       "/dashboard/diseno",
       "/dashboard/diseno-base",
       "/dashboard/redes",
@@ -164,7 +165,7 @@ export function isRouteAllowedForRole(role: Role, path: string): boolean {
 /* -------------------------------------------------------------------------- */
 
 export type ApiAction = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos" | "store";
+export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos" | "store" | "tour";
 
 /**
  * Matriz de autorización de la API: recurso → método HTTP → roles permitidos.
@@ -212,6 +213,15 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
     // Holistic Store · plantillas visuales por categoría: solo ADMIN.
     PUT: ["ADMIN"],
     PATCH: ["ADMIN"],
+  },
+  tour: {
+    // Tour de marca (video inmersivo del Hero). El GET es público (la landing
+    // lo sirve a todos); la gestión del video y los capítulos es del equipo.
+    GET: ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR", "CLIENT"],
+    POST: ["ADMIN", "ENGINEER"],
+    PUT: ["ADMIN", "ENGINEER"],
+    PATCH: ["ADMIN", "ENGINEER"],
+    DELETE: ["ADMIN"],
   },
 };
 

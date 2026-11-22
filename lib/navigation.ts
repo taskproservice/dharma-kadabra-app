@@ -13,6 +13,7 @@ import {
   BookOpen,
   CalendarDays,
   CreditCard,
+  Film,
   Flame,
   Headphones,
   LayoutDashboard,
@@ -127,6 +128,13 @@ export const DASHBOARD_NAVIGATION: NavGroup[] = [
         href: "/dashboard/video",
         icon: Video,
         description: "Recursos visuales y clases grabadas.",
+      },
+      {
+        label: "Tour de marca",
+        href: "/dashboard/tour",
+        icon: Film,
+        description: "Video inmersivo y capítulos del Hero.",
+        roles: ["ADMIN", "ENGINEER"],
       },
       {
         label: "Diseño base",

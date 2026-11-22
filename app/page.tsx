@@ -12,7 +12,9 @@ import { collaborators } from "../lib/data/collaborators";
 import { Storefront } from "../components/landing/storefront";
 import { HolisticStoreSection } from "../modules/holistic-store";
 import { PremiumFooter } from "../components/landing/premium-footer";
+import { BrandTourTrigger } from "../components/landing/brand-tour-modal";
 import { prisma } from "../lib/prisma";
+import { DEFAULT_TOUR, parseTourChapters, type TourVideoConfig } from "../lib/tour";
 
 const heroImages = [
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
@@ -62,13 +64,29 @@ export default async function HomePage() {
     products: event.products.map((product: { name: string }) => product.name),
   }));
 
+  // Tour de marca: el contenido real (video, capítulos y CTA) vive en Prisma.
+  // Si la base de datos no responde o aún no hay registro, se usa una
+  // configuración de respaldo para que el Hero nunca pierda su CTA.
+  const tourRecord = await prisma.tourVideo
+    .findFirst({ orderBy: { updatedAt: "desc" } })
+    .catch(() => null);
+  const tourConfig: TourVideoConfig = tourRecord
+    ? {
+        title: tourRecord.title,
+        videoUrl: tourRecord.videoUrl,
+        chapters: parseTourChapters(tourRecord.chapters),
+        ctaText: tourRecord.ctaText,
+        ctaLink: tourRecord.ctaLink,
+      }
+    : DEFAULT_TOUR;
+
   return (
     <>
     <main className="relative bg-[#0b1020] text-[#e9e2d2]">
       <PublicHeader />
 
       {/* Hero cinematográfico con tarjeta de cristal */}
-      <HeroCarousel slides={slides} medallion={<HeroMedallion />}>
+      <HeroCarousel slides={slides} medallion={<HeroMedallion />} cta={<BrandTourTrigger config={tourConfig} />}>
         {heroImages.map((image, index) => (
           <Image
             key={image.alt}
