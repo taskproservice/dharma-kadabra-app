@@ -1,41 +1,14 @@
 import type { ButtonHTMLAttributes } from "react";
 
-type Variant = "default" | "primary" | "outline" | "ghost" | "danger" | "gold";
-type Size = "default" | "sm";
-
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: Variant;
-  size?: Size;
-};
-
-export function Button({
-  className = "",
-  variant = "default",
-  size = "default",
-  ...props
-}: Props) {
-  const styles: Record<Variant, string> = {
-    default:
-      "border border-[#C5A059] bg-[#C5A059] text-[#1A1A1A] font-semibold hover:bg-[#b58e45] shadow-[0_8px_22px_-10px_rgba(92,72,48,.3)]",
-    primary:
-      "bg-[#C5A059] text-[#1A1A1A] font-semibold hover:bg-[#b58e45] shadow-[0_8px_22px_-10px_rgba(92,72,48,.3)]",
-    outline:
-      "border border-[#2C2C2C]/25 bg-[#FCFAF5] text-[#1A1A1A] hover:border-[#C5A059] hover:bg-[#C5A059]/12",
-    ghost:
-      "text-[#2C2C2C]/80 hover:bg-[#2C2C2C]/[0.06] hover:text-[#1A1A1A]",
-    danger:
-      "border border-red-600/35 bg-red-600/10 text-red-800 hover:bg-red-600/18",
-    gold:
-      "bg-[#C5A059] text-[#1A1A1A] font-semibold shadow-[0_10px_28px_-14px_rgba(92,72,48,.38)] hover:bg-[#b58e45]",
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "default" | "outline" | "ghost" | "danger" | "gold"; size?: "default" | "sm" };
+export function Button({ className = "", variant = "default", size = "default", ...props }: Props) {
+  const styles = {
+    default: "border border-[#c7a45a]/45 bg-[#c7a45a]/10 text-[#e9e2d2] hover:border-[#c7a45a]/80 hover:bg-[#c7a45a]/20",
+    outline: "border border-[#c7a45a]/30 bg-transparent text-[#e9e2d2] hover:border-[#c7a45a]/70 hover:bg-[#c7a45a]/10",
+    ghost: "text-[#e9e2d2]/80 hover:bg-white/[0.06] hover:text-[#f7f2e7]",
+    danger: "border border-red-400/40 bg-red-500/15 text-red-200 hover:bg-red-500/25",
+    gold: "bg-gradient-to-r from-[#d8bc7f] via-[#c7a45a] to-[#e3c57c] text-[#11182b] shadow-[0_10px_30px_-14px_rgba(199,164,90,.7)] hover:brightness-110 font-semibold",
   };
-  const sizes: Record<Size, string> = {
-    default: "h-10 px-4 text-sm",
-    sm: "h-9 px-3 text-sm",
-  };
-  return (
-    <button
-      className={`inline-flex items-center justify-center gap-2 rounded-xl font-medium transition focus-visible:outline-2 focus-visible:outline-[#9E7B2F] disabled:pointer-events-none disabled:opacity-50 ${sizes[size]} ${styles[variant]} ${className}`}
-      {...props}
-    />
-  );
+  const sizes = { default: "h-10 px-4 text-sm", sm: "h-9 px-3 text-sm" };
+  return <button className={`inline-flex items-center justify-center gap-2 rounded-xl font-medium transition disabled:pointer-events-none disabled:opacity-50 ${sizes[size]} ${styles[variant]} ${className}`} {...props} />;
 }

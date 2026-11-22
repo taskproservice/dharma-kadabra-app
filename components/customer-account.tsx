@@ -49,57 +49,38 @@ export function CustomerAccount({ customer, appointments: initialAppointments, p
     }
   }
 
-  return <main className="min-h-screen bg-[#F4EFE6] px-5 py-12 text-[#1A1A1A] sm:px-8">
+  return <main className="min-h-screen bg-[#11182b] px-5 py-12 text-[#e9e2d2] sm:px-8">
     <div className="mx-auto max-w-6xl">
-      <header className="flex flex-wrap items-center justify-between gap-5 border-b border-[#C5A059]/30 pb-8">
-        <div>
-          <Link href="/" className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#8B6914] hover:text-[#1A1A1A]">Dharma Kadabra</Link>
-          <p className="mt-4 text-[10px] uppercase tracking-[.22em] text-[#8B6914]">Mi cuenta</p>
-          <h1 className="mt-1 font-display text-4xl text-[#1A1A1A] sm:text-5xl">Hola, {customer.name.split(" ")[0]}.</h1>
-          <p className="mt-2 text-sm text-[#2C2C2C]/70">{customer.email}</p>
-        </div>
-        <button type="button" disabled={signingOut} onClick={signOut} className="inline-flex items-center gap-2 rounded-xl border border-[#2C2C2C]/25 bg-[#FCFAF5] px-4 py-2.5 text-xs font-semibold text-[#1A1A1A] transition hover:border-[#C5A059] hover:bg-[#C5A059]/15"><LogOut size={15} />{signingOut ? "Saliendo…" : "Cerrar sesión"}</button>
+      <header className="flex flex-wrap items-center justify-between gap-5 border-b border-[#c7a45a]/14 pb-8">
+        <div><Link href="/" className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]">Dharma Kadabra</Link><p className="mt-4 text-[10px] uppercase tracking-[.22em] text-[#d8bc7f]">Mi cuenta</p><h1 className="mt-1 font-display text-4xl sm:text-5xl">Hola, {customer.name.split(" ")[0]}.</h1><p className="mt-2 text-sm text-[#e9e2d2]/55">{customer.email}</p></div>
+        <button type="button" disabled={signingOut} onClick={signOut} className="inline-flex items-center gap-2 rounded-xl border border-[#c7a45a]/18 px-4 py-2.5 text-xs font-semibold transition hover:bg-white/[0.05]"><LogOut size={15} />{signingOut ? "Saliendo…" : "Cerrar sesión"}</button>
       </header>
 
       <section className="mt-9">
-        <div className="mb-5 flex items-end justify-between gap-4">
-          <div>
-            <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.2em] text-[#8B6914]"><CalendarDays size={14} /> Tu camino</p>
-            <h2 className="mt-2 font-display text-3xl text-[#1A1A1A]">Próximas citas</h2>
-          </div>
-          <Link href="/#servicios" className="inline-flex items-center gap-1 text-xs font-semibold text-[#8B6914] hover:text-[#1A1A1A]">Agendar sesión <ArrowRight size={14} /></Link>
-        </div>
+        <div className="mb-5 flex items-end justify-between gap-4"><div><p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.2em] text-[#d8bc7f]"><CalendarDays size={14} /> Tu camino</p><h2 className="mt-2 font-display text-3xl">Próximas citas</h2></div><Link href="/#servicios" className="inline-flex items-center gap-1 text-xs font-semibold text-[#d8bc7f] hover:text-[#e9e2d2]">Agendar sesión <ArrowRight size={14} /></Link></div>
         {appointments.length ? <div className="grid gap-4 md:grid-cols-2">
-          {appointments.map((appointment) => <article key={appointment.id} className="rounded-2xl border border-[#C5A059]/40 bg-[#FCFAF5] p-5 shadow-[0_10px_28px_-14px_rgba(92,72,48,0.14)] sm:p-6">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[.16em] text-[#8B6914]">{appointment.service}</p>
-                <h3 className="mt-2 font-display text-2xl text-[#1A1A1A]">{dateFormat.format(new Date(appointment.date))}</h3>
-              </div>
-              <span className="rounded-full border border-[#C5A059]/45 bg-[#C5A059]/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[.12em] text-[#6B4E24]">
-                {appointment.status === "PENDING" ? "Pendiente" : appointment.status === "CONFIRMED" ? "Confirmada" : "Completada"}
-              </span>
-            </div>
-            <p className="mt-4 inline-flex items-center gap-2 text-xs text-[#2C2C2C]/75">{appointment.depositPaid ? <><Check size={14} className="text-emerald-700" /> Anticipo recibido</> : "Anticipo pendiente"}</p>
-            {appointment.status !== "COMPLETED" && <div className="mt-4 border-t border-[#C5A059]/25 pt-4">
+          {appointments.map((appointment) => <article key={appointment.id} className="border border-[#c7a45a]/25 bg-white/[0.03] p-5 sm:p-6">
+            <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] uppercase tracking-[.16em] text-[#d8bc7f]">{appointment.service}</p><h3 className="mt-2 font-display text-2xl">{dateFormat.format(new Date(appointment.date))}</h3></div><span className="rounded-full bg-[#151d31] px-3 py-1 text-[10px] font-semibold uppercase tracking-[.12em]">{appointment.status === "PENDING" ? "Pendiente" : appointment.status === "CONFIRMED" ? "Confirmada" : "Completada"}</span></div>
+            <p className="mt-4 inline-flex items-center gap-2 text-xs text-[#e9e2d2]/55">{appointment.depositPaid ? <><Check size={14} className="text-[#a9c08a]" /> Anticipo recibido</> : "Anticipo pendiente"}</p>
+            {appointment.status !== "COMPLETED" && <div className="mt-4 border-t border-[#c7a45a]/14 pt-4">
               {rescheduleId === appointment.id ? <form onSubmit={(event) => reschedule(event, appointment.id)} className="space-y-3">
-                <label className="block text-xs font-semibold text-[#1A1A1A]">Nuevo horario<input required type="datetime-local" min={`${todayLocal()}T00:00`} value={newDate} onChange={(event) => setNewDate(event.target.value)} className="mt-1.5 h-10 w-full rounded-xl border border-[#C5A059]/45 bg-[#F4EFE6] px-3 text-xs text-[#1A1A1A]" /></label>
-                {error && <p role="alert" className="text-xs text-red-700">{error}</p>}
-                <div className="flex gap-2"><button disabled={savingId === appointment.id} className="rounded-lg bg-[#C5A059] px-4 py-2 text-xs font-semibold text-[#1A1A1A] disabled:opacity-60">{savingId === appointment.id ? "Guardando…" : "Confirmar cambio"}</button><button type="button" onClick={() => { setRescheduleId(""); setError(""); }} className="rounded-lg border border-[#2C2C2C]/25 px-4 py-2 text-xs text-[#2C2C2C]">Cancelar</button></div>
-              </form> : <button type="button" onClick={() => { setRescheduleId(appointment.id); setNewDate(""); setError(""); }} className="inline-flex items-center gap-2 text-xs font-semibold text-[#8B6914] hover:text-[#1A1A1A]"><CalendarClock size={15} /> Reagendar cita</button>}
+                <label className="block text-xs font-semibold">Nuevo horario<input required type="datetime-local" min={`${todayLocal()}T00:00`} value={newDate} onChange={(event) => setNewDate(event.target.value)} className="mt-1.5 h-10 w-full rounded-xl border border-[#c7a45a]/18 bg-white px-3 text-xs" /></label>
+                {error && <p role="alert" className="text-xs text-red-300">{error}</p>}
+                <div className="flex gap-2"><button disabled={savingId === appointment.id} className="rounded-lg bg-[#0b1020] px-4 py-2 text-xs font-semibold text-white disabled:opacity-60">{savingId === appointment.id ? "Guardando…" : "Confirmar cambio"}</button><button type="button" onClick={() => { setRescheduleId(""); setError(""); }} className="rounded-lg border border-[#c7a45a]/18 px-4 py-2 text-xs">Cancelar</button></div>
+              </form> : <button type="button" onClick={() => { setRescheduleId(appointment.id); setNewDate(""); setError(""); }} className="inline-flex items-center gap-2 text-xs font-semibold text-[#d8bc7f] hover:text-[#e9e2d2]"><CalendarClock size={15} /> Reagendar cita</button>}
             </div>}
           </article>)}
-        </div> : <EmptyState icon={<CalendarDays size={19} />} title="Todavía no tienes citas" text="Cuando reserves una sesión, aparecerá aquí con su fecha y estado." action={<Link href="/#servicios" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#8B6914] hover:text-[#1A1A1A]">Explorar sesiones <ArrowRight size={13} /></Link>} />}
+        </div> : <EmptyState icon={<CalendarDays size={19} />} title="Todavía no tienes citas" text="Cuando reserves una sesión, aparecerá aquí con su fecha y estado." action={<Link href="/#servicios" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#d8bc7f]">Explorar sesiones <ArrowRight size={13} /></Link>} />}
       </section>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-2">
-        <section><SectionTitle icon={<Headphones size={16} />} title="Mis audios" /><div className="mt-4 space-y-3">{audios.length ? audios.map((audio) => <article key={audio.id} className="flex items-center justify-between gap-4 rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] p-4"><div><h3 className="font-display text-lg text-[#1A1A1A]">{audio.title}</h3><p className="mt-1 text-[10px] text-[#2C2C2C]/60">Adquirido el {new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(audio.purchasedAt))}</p></div>{audio.audioUrl && <a href={audio.audioUrl} className="text-xs font-semibold text-[#8B6914] hover:text-[#1A1A1A]">Escuchar</a>}</article>) : <EmptyState icon={<Headphones size={18} />} title="Tu biblioteca está lista para crecer" text="Los audios que adquieras aparecerán en este espacio." />}</div></section>
-        <section><SectionTitle icon={<Package size={16} />} title="Mis productos" /><div className="mt-4 space-y-3">{purchases.length ? purchases.map((purchase) => <article key={purchase.id} className="flex items-center gap-4 rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] p-4">{purchase.product?.imageUrl ? <img src={purchase.product.imageUrl} alt="" className="size-14 rounded-lg object-cover" /> : <span className="grid size-14 place-items-center rounded-lg border border-[#C5A059]/35 bg-[#EDE5D7] text-[#8B6914]"><Package size={20} /></span>}<div><h3 className="font-display text-lg text-[#1A1A1A]">{purchase.title}</h3><p className="mt-1 text-[10px] text-[#2C2C2C]/60">Adquirido el {new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(purchase.purchasedAt))}</p></div></article>) : <EmptyState icon={<Package size={18} />} title="Aún no hay productos comprados" text="Tus piezas y objetos rituales aparecerán aquí después de tu compra." />}</div></section>
+        <section><SectionTitle icon={<Headphones size={16} />} title="Mis audios" /><div className="mt-4 space-y-3">{audios.length ? audios.map((audio) => <article key={audio.id} className="flex items-center justify-between gap-4 border border-[#c7a45a]/14 bg-white/[0.03] p-4"><div><h3 className="font-display text-lg">{audio.title}</h3><p className="mt-1 text-[10px] text-[#e9e2d2]/40">Adquirido el {new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(audio.purchasedAt))}</p></div>{audio.audioUrl && <a href={audio.audioUrl} className="text-xs font-semibold text-[#d8bc7f]">Escuchar</a>}</article>) : <EmptyState icon={<Headphones size={18} />} title="Tu biblioteca está lista para crecer" text="Los audios que adquieras aparecerán en este espacio." />}</div></section>
+        <section><SectionTitle icon={<Package size={16} />} title="Mis productos" /><div className="mt-4 space-y-3">{purchases.length ? purchases.map((purchase) => <article key={purchase.id} className="flex items-center gap-4 border border-[#c7a45a]/14 bg-white/[0.03] p-4">{purchase.product?.imageUrl ? <img src={purchase.product.imageUrl} alt="" className="size-14 rounded-lg object-cover" /> : <span className="grid size-14 place-items-center rounded-lg bg-[#151d31] text-[#d8bc7f]"><Package size={20} /></span>}<div><h3 className="font-display text-lg">{purchase.title}</h3><p className="mt-1 text-[10px] text-[#e9e2d2]/40">Adquirido el {new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(purchase.purchasedAt))}</p></div></article>) : <EmptyState icon={<Package size={18} />} title="Aún no hay productos comprados" text="Tus piezas y objetos rituales aparecerán aquí después de tu compra." />}</div></section>
       </div>
-      <div className="mt-12 rounded-2xl border border-[#C5A059]/40 bg-[#FCFAF5] p-6 text-center shadow-[0_10px_28px_-14px_rgba(92,72,48,0.12)]"><Sparkles size={17} className="mx-auto text-[#9E7B2F]" /><p className="mt-2 font-display text-xl text-[#1A1A1A]">Un espacio para volver a ti.</p><p className="mt-1 text-xs text-[#2C2C2C]/70">Gracias por caminar con Dharma Kadabra.</p></div>
+      <div className="mt-12 border border-[#c7a45a]/20 bg-[#151d31]/65 p-5 text-center"><Sparkles size={17} className="mx-auto text-[#d8bc7f]" /><p className="mt-2 font-display text-xl">Un espacio para volver a ti.</p><p className="mt-1 text-xs text-[#e9e2d2]/55">Gracias por caminar con Dharma Kadabra.</p></div>
     </div>
   </main>;
 }
 
-function SectionTitle({ icon, title }: { icon: React.ReactNode; title: string }) { return <h2 className="flex items-center gap-2 font-display text-2xl text-[#1A1A1A]"><span className="text-[#8B6914]">{icon}</span><span>{title}</span></h2>; }
-function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; title: string; text: string; action?: React.ReactNode }) { return <div className="flex min-h-28 flex-col justify-center rounded-xl border border-dashed border-[#C5A059]/45 bg-[#FCFAF5] px-5 py-4"><p className="flex items-center gap-2 text-xs font-semibold text-[#8B6914]">{icon}{title}</p><p className="mt-2 text-xs leading-5 text-[#2C2C2C]/75">{text}</p>{action}</div>; }
+function SectionTitle({ icon, title }: { icon: React.ReactNode; title: string }) { return <h2 className="flex items-center gap-2 font-display text-2xl">{icon}<span>{title}</span></h2>; }
+function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; title: string; text: string; action?: React.ReactNode }) { return <div className="flex min-h-28 flex-col justify-center border border-dashed border-[#c7a45a]/18 bg-white/[0.02] px-5 py-4"><p className="flex items-center gap-2 text-xs font-semibold text-[#d8bc7f]">{icon}{title}</p><p className="mt-2 text-xs leading-5 text-[#e9e2d2]/55">{text}</p>{action}</div>; }

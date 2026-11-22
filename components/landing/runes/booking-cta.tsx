@@ -5,6 +5,7 @@ import { BookingDialog } from "../booking-dialog";
 import { Dialog } from "../../ui/dialog";
 import { services } from "../../../lib/data/services";
 
+/** Servicio real de la casa; el modal de reserva es el mismo que usa la landing. */
 const runeReading = services.find((service) => service.id === "lectura-de-runas");
 
 export function RuneBookingCTA({
@@ -29,7 +30,7 @@ export function RuneBookingCTA({
         runeReading ? (
           <BookingDialog service={runeReading} close={close} />
         ) : (
-          <p className="text-sm text-[#2C2C2C]/75">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-[#e9e2d2]/70">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>

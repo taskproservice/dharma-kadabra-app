@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "react";
 export function Card({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`glass-panel text-[#1A1A1A] ${className}`}
+      className={`glass-panel text-[#efe9dc] ${className}`}
       {...props}
     />
   );
@@ -14,11 +14,11 @@ export function CardHeader({ className = "", ...props }: HTMLAttributes<HTMLDivE
 }
 
 export function CardTitle({ className = "", ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  return <h2 className={`text-lg font-semibold tracking-tight text-[#1A1A1A] ${className}`} {...props} />;
+  return <h2 className={`text-lg font-semibold tracking-tight text-[#f7f2e7] ${className}`} {...props} />;
 }
 
 export function CardDescription({ className = "", ...props }: HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={`text-sm text-[#2C2C2C]/70 ${className}`} {...props} />;
+  return <p className={`text-sm text-[#efe9dc]/55 ${className}`} {...props} />;
 }
 
 export function CardContent({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {

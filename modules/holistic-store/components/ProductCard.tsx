@@ -10,10 +10,6 @@ import type { StoreProduct, StoreTemplateId } from "../types";
 import { formatPrice } from "../utils";
 import { WhatsAppButton } from "./WhatsAppButton";
 
-/**
- * Estilos de tarjeta unificados bajo la estética Papyrus (#FCFAF5),
- * con sombras cálidas en marrón claro (nunca negro) y tipografía oscura de alto contraste.
- */
 const TEMPLATE_STYLES: Record<
   StoreTemplateId,
   {
@@ -27,40 +23,44 @@ const TEMPLATE_STYLES: Record<
   }
 > = {
   oro: {
-    card: "border-[#C5A059]/45 bg-[#FCFAF5] hover:border-[#C5A059]",
-    id: "text-[#8B6914]/85",
-    name: "text-[#1A1A1A]",
-    description: "text-[#2C2C2C]/75",
-    price: "text-[#1A1A1A]",
-    currencyChip: "border-[#C5A059]/60 text-[#8B6914]",
-    categoryChip: "bg-[#FCFAF5]/95 text-[#1A1A1A] border border-[#C5A059]/40",
+    card: "border-[#C5A059]/35 bg-gradient-to-b from-[#1b1b1b] to-[#141414] hover:border-[#C5A059]/70",
+    id: "text-[#C5A059]/80",
+    name: "text-[#F7F3EA]",
+    description: "text-[#F7F3EA]/55",
+    price: "text-[#C5A059]",
+    currencyChip: "border-[#C5A059]/40 text-[#C5A059]",
+    categoryChip: "bg-[#121212]/85 text-[#e8cf92]",
   },
   papiro: {
-    card: "border-[#C5A059]/45 bg-[#FCFAF5] hover:border-[#C5A059]",
-    id: "text-[#2C2C2C]/60",
-    name: "text-[#1A1A1A]",
-    description: "text-[#2C2C2C]/75",
-    price: "text-[#1A1A1A]",
-    currencyChip: "border-[#2C2C2C]/25 text-[#2C2C2C]",
-    categoryChip: "bg-[#FCFAF5]/95 text-[#1A1A1A] border border-[#2C2C2C]/15",
+    card: "border-[#C5A059]/50 bg-[#F7F3EA] hover:border-[#C5A059] hover:shadow-[0_24px_50px_-24px_rgba(46,35,29,.45)]",
+    id: "text-[#2E231D]/50",
+    name: "text-[#2E231D]",
+    description: "text-[#2E231D]/65",
+    price: "text-[#2E231D]",
+    currencyChip: "border-[#2E231D]/30 text-[#2E231D]/80",
+    categoryChip: "bg-[#F7F3EA]/90 text-[#2E231D]",
   },
   fuego: {
-    card: "border-[#D96538]/40 bg-[#FCFAF5] hover:border-[#D96538]",
-    id: "text-[#B54B22]",
-    name: "text-[#1A1A1A]",
-    description: "text-[#2C2C2C]/75",
-    price: "text-[#1A1A1A]",
-    currencyChip: "border-[#D96538]/50 text-[#B54B22]",
-    categoryChip: "bg-[#FCFAF5]/95 text-[#B54B22] border border-[#D96538]/35",
+    card: "border-[#D96538]/45 bg-gradient-to-b from-[#221310] to-[#140d0b] hover:border-[#D96538]/80 hover:shadow-[0_24px_50px_-24px_rgba(217,101,56,.35)]",
+    id: "text-[#D96538]/90",
+    name: "text-[#F7F3EA]",
+    description: "text-[#F7F3EA]/55",
+    price: "text-[#e88a5f]",
+    currencyChip: "border-[#D96538]/50 text-[#e88a5f]",
+    categoryChip: "bg-[#140d0b]/85 text-[#f0a37e]",
   },
 };
 
 function CardImage({ product, template }: { product: StoreProduct; template: StoreTemplateId }) {
   const [failed, setFailed] = useState(false);
   const out = product.availability === "out_of_stock";
+  const fallbackBg =
+    template === "papiro"
+      ? "linear-gradient(150deg, #efe7d6, #e2d5bd)"
+      : "linear-gradient(150deg, #232323, #121212)";
 
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#EDE5D7]">
+    <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#1c1c1c]">
       {!failed && product.imageUrl ? (
         <Image
           src={product.imageUrl}
@@ -75,20 +75,22 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
         <div
           aria-hidden="true"
           className="grid h-full w-full place-items-center"
-          style={{ background: "linear-gradient(150deg, #F4EFE6, #E5DBC9)" }}
+          style={{ background: fallbackBg }}
         >
-          <span className="font-display text-6xl text-[#9E7B2F]/70">
+          <span
+            className={`font-display text-6xl ${template === "papiro" ? "text-[#C5A059]/60" : "text-[#C5A059]/50"}`}
+          >
             ✧
           </span>
         </div>
       )}
       <span
-        className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[.2em] shadow-[0_2px_8px_rgba(92,72,48,0.12)] backdrop-blur-sm ${TEMPLATE_STYLES[template].categoryChip}`}
+        className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[.2em] shadow-sm backdrop-blur-sm ${TEMPLATE_STYLES[template].categoryChip}`}
       >
         {product.category}
       </span>
       {out && (
-        <span className="absolute right-3 top-3 rounded-full bg-[#D96538] px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-white shadow-sm">
+        <span className="absolute right-3 top-3 rounded-full bg-[#D96538] px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-white shadow-md">
           Agotado
         </span>
       )}
@@ -103,8 +105,10 @@ type Props = {
 };
 
 /**
- * Tarjeta de producto de la tienda pública sobre blanco cálido (#FCFAF5)
- * con sombra marrón clara muy sutil, títulos/precios oscuros y botón COMPRAR dorado con texto oscuro.
+ * Tarjeta de producto de la tienda pública: ID, imagen, nombre, descripción
+ * corta, precio con moneda y acciones de compra (carrito + Cozy, que
+ * transfiere a WhatsApp con un humano si hace falta).
+ * El estilo visual lo define la plantilla asignada a su categoría.
  */
 export function ProductCard({ product, template, isAuthenticated = false }: Props) {
   const router = useRouter();
@@ -136,7 +140,7 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
 
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-[0_10px_28px_-10px_rgba(120,95,65,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_38px_-12px_rgba(120,95,65,0.2)] ${styles.card}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-lg shadow-black/40 transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
     >
       <div className="overflow-hidden rounded-xl">
         <CardImage product={product} template={template} />
@@ -148,7 +152,7 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
         >
           #{product.id}
         </p>
-        <h3 className={`mt-1.5 line-clamp-1 font-display text-lg font-medium leading-snug ${styles.name}`}>
+        <h3 className={`mt-1.5 line-clamp-1 font-display text-lg leading-snug ${styles.name}`}>
           {product.name}
         </h3>
         <p className={`mt-1 line-clamp-2 text-xs leading-5 ${styles.description}`}>
@@ -167,16 +171,18 @@ export function ProductCard({ product, template, isAuthenticated = false }: Prop
             aria-disabled={outOfStock}
             onClick={handleBuy}
             aria-label={outOfStock ? `${product.name} agotado` : `Comprar ${product.name}`}
-            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#C5A059] px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] text-[#1A1A1A] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9E7B2F] ${
+            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#C5A059] px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] text-[#121212] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] ${
               outOfStock
                 ? "cursor-not-allowed opacity-50"
-                : "hover:bg-[#b58e45] hover:shadow-[0_8px_20px_-6px_rgba(120,95,65,0.3)] active:scale-[0.99]"
+                : "hover:bg-[#d4b26a] hover:shadow-[0_0_16px_rgba(197,160,89,0.4)] active:scale-[0.99]"
             }`}
           >
             {!outOfStock && <ShoppingBag size={14} className="shrink-0" aria-hidden="true" />}
             <span>{outOfStock ? "AGOTADO" : "COMPRAR"}</span>
           </button>
 
+          {/* Embudo de Cozy: abre el widget con el contexto del producto.
+              Incluso agotado, para que Cozy se disculpe y ofrezca similares. */}
           <WhatsAppButton product={product} template={template} />
         </div>
       </div>

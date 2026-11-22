@@ -4,7 +4,7 @@ import * as React from "react";
 import { X } from "lucide-react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
-/** Drawer lateral siguiendo la API de shadcn/ui, construido sobre Vaul · Tema Papyrus. */
+/** Drawer lateral siguiendo la API de shadcn/ui, construido sobre Vaul. */
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
@@ -27,7 +27,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-[#2E231D]/45 backdrop-blur-sm", className)}
+    className={cn("fixed inset-0 z-50 bg-[#05070d]/80 backdrop-blur-sm", className)}
     {...props}
   />
 ));
@@ -42,7 +42,7 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col border-l border-[#C5A059]/45 bg-[#F4EFE6] text-[#1A1A1A] shadow-[-24px_0_70px_-24px_rgba(92,72,48,.32)] outline-none sm:max-w-lg",
+        "fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col border-l border-[#C5A059]/35 bg-[#121212] text-[#F7F3EA] shadow-[-30px_0_90px_-30px_rgba(0,0,0,.95)] outline-none sm:max-w-lg",
         className,
       )}
       {...props}
@@ -50,7 +50,7 @@ const DrawerContent = React.forwardRef<
       {children}
       <DrawerPrimitive.Close
         aria-label={closeLabel}
-        className="absolute right-5 top-5 grid size-9 place-items-center rounded-full border border-[#2C2C2C]/25 bg-[#FCFAF5] text-[#1A1A1A] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1A1A1A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9E7B2F]"
+        className="absolute right-5 top-5 grid size-9 place-items-center rounded-full border border-[#C5A059]/35 text-[#C5A059] transition hover:bg-[#C5A059] hover:text-[#121212] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059]"
       >
         <X size={17} />
       </DrawerPrimitive.Close>
@@ -60,7 +60,7 @@ const DrawerContent = React.forwardRef<
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("border-b border-[#C5A059]/30 bg-[#FCFAF5]/70 px-7 pb-6 pt-10 sm:px-9", className)} {...props} />
+  <div className={cn("border-b border-[#C5A059]/20 px-7 pb-6 pt-10 sm:px-9", className)} {...props} />
 );
 DrawerHeader.displayName = "DrawerHeader";
 
@@ -70,7 +70,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn("rune-display text-4xl leading-none text-[#1A1A1A]", className)}
+    className={cn("rune-display text-4xl leading-none text-[#C5A059]", className)}
     {...props}
   />
 ));
@@ -82,7 +82,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn("text-sm leading-7 text-[#2C2C2C]/75", className)}
+    className={cn("text-sm leading-7 text-[#F7F3EA]/65", className)}
     {...props}
   />
 ));

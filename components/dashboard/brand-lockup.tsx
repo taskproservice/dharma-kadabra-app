@@ -1,7 +1,9 @@
 import Image from "next/image";
 
 /**
- * Logotipo editorial de Dharma Kadabra sobre superficies Papyrus.
+ * Logotipo editorial de Dharma Kadabra para superficies oscuras.
+ * El PNG original ya es transparente; el resplandor dorado se logra con
+ * capas de drop-shadow para que "brille" sin duplicar assets.
  */
 export function BrandLockup({
   size = 44,
@@ -17,7 +19,7 @@ export function BrandLockup({
       <span className="relative grid shrink-0 place-items-center">
         <span
           aria-hidden="true"
-          className="absolute inset-[-30%] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_68%)] blur-md"
+          className="absolute inset-[-30%] rounded-full bg-[radial-gradient(circle,rgba(199,164,90,.35),transparent_68%)] blur-md"
         />
         <Image
           src="/images/logo.png"
@@ -25,18 +27,18 @@ export function BrandLockup({
           width={size}
           height={size}
           priority
-          className="relative object-contain drop-shadow-[0_2px_8px_rgba(92,72,48,.22)]"
+          className="relative object-contain drop-shadow-[0_0_10px_rgba(199,164,90,.45)]"
         />
       </span>
       {!compact && (
         <span className="flex flex-col leading-none">
-          <span className="font-display text-[17px] font-medium tracking-[.18em] text-[#1A1A1A]">
+          <span className="font-display text-[17px] font-medium tracking-[.18em] text-[#f7f2e7]">
             DHARMA
           </span>
-          <span className="font-display text-[17px] font-medium tracking-[.18em] text-[#9E7B2F]">
+          <span className="font-display text-[17px] font-medium tracking-[.18em] text-[#c7a45a]">
             KADABRA
           </span>
-          <span className="mt-1.5 text-[7.5px] font-medium uppercase tracking-[.26em] text-[#2C2C2C]/65">
+          <span className="mt-1.5 text-[7.5px] font-medium uppercase tracking-[.26em] text-[#e9e2d2]/45">
             Talismanes maestros · Registros akáshicos
           </span>
         </span>

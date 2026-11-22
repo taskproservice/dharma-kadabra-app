@@ -19,6 +19,13 @@ import { CartDrawer } from "../../modules/holistic-store/components/CartDrawer";
 import { useCartStore } from "../../stores/cart";
 import { BrandLockup } from "./brand-logo";
 
+/**
+ * Enlaces principales del header flotante.
+ *
+ * `href` puede ser una ruta real (`/tienda`) o una ancla de la landing
+ * (`#equipo`). Las anclas se prefijan con "/" al navegar desde otra página,
+ * para que funcionen tanto en la landing como en la tienda.
+ */
 const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Inicio", href: "/", icon: Home },
   { label: "Tienda", href: "/tienda", icon: ShoppingBag },
@@ -30,15 +37,22 @@ const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
 ];
 
 const ACTIVE_LINK_GLOW =
-  "relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#C5A059] after:shadow-[0_0_10px_rgba(197,160,89,0.5)]";
+  "relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#C5A059] after:shadow-[0_0_12px_rgba(197,160,89,0.8)]";
 
+/** `/tienda` es ruta propia; el resto son anclas de la landing. */
 const isRouteHref = (href: string) => href.startsWith("/");
 
+/**
+ * Resuelve el destino de un enlace: en la landing las anclas navegan en la
+ * misma página; desde cualquier otra ruta (p. ej. /tienda) se vuelve a la
+ * landing con el ancla.
+ */
 function resolveHref(href: string, onLanding: boolean): string {
   if (isRouteHref(href)) return href;
   return onLanding ? href : `/${href}`;
 }
 
+/** Determina si un enlace del header corresponde a la ruta actual. */
 function isNavLinkActive(label: string, href: string, pathname: string | null): boolean {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";
@@ -59,6 +73,7 @@ export function PublicHeader() {
   const openCart = useCartStore((state) => state.openCart);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // En la landing (`/`) las anclas se resuelven en la misma página.
   const onLanding = pathname === "/";
   const onStore = Boolean(pathname && (pathname === "/tienda" || pathname.startsWith("/tienda/")));
   const showCartTrigger = onStore || cartCount > 0;
@@ -82,10 +97,10 @@ export function PublicHeader() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b text-[#1A1A1A] transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-40 border-b text-[#f7f2e7] transition-all duration-500 ${
           scrolled
-            ? "border-[#C5A059]/40 bg-[#FCFAF5]/95 shadow-[0_14px_40px_-20px_rgba(92,72,48,0.18)] backdrop-blur-2xl"
-            : "border-[#C5A059]/28 bg-[#F4EFE6]/85 backdrop-blur-md"
+            ? "border-[#c7a45a]/25 bg-[#080c16]/92 shadow-[0_18px_50px_-24px_rgba(0,0,0,.9)] backdrop-blur-2xl"
+            : "border-[#c7a45a]/15 bg-[#080c16]/55 backdrop-blur-md"
         }`}
       >
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-2.5 sm:px-8">
@@ -95,7 +110,7 @@ export function PublicHeader() {
 
           {/* Navegación de escritorio */}
           <nav
-            className="hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] text-[#2C2C2C]/80 lg:flex xl:gap-1 xl:text-[11px]"
+            className="hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] text-[#e9e2d2]/75 lg:flex xl:gap-1 xl:text-[11px]"
             aria-label="Navegación principal"
           >
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
@@ -107,16 +122,16 @@ export function PublicHeader() {
                   href={target}
                   aria-current={active ? "page" : undefined}
                   className={`group flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
-                    active ? `font-semibold text-[#1A1A1A] ${ACTIVE_LINK_GLOW}` : "relative hover:text-[#8B6914]"
+                    active ? `text-[#f7f2e7] ${ACTIVE_LINK_GLOW}` : "relative hover:text-[#e3c57c]"
                   }`}
                 >
                   <Icon
                     size={17}
-                    strokeWidth={1.45}
+                    strokeWidth={1.35}
                     className={
                       active
-                        ? "text-[#9E7B2F] transition"
-                        : "text-[#9E7B2F]/85 transition group-hover:text-[#8B6914]"
+                        ? "text-[#C5A059] transition"
+                        : "text-[#d8bc7f]/85 transition group-hover:text-[#e3c57c]"
                     }
                   />
                   <span className="whitespace-nowrap">{label}</span>
@@ -131,11 +146,11 @@ export function PublicHeader() {
                 type="button"
                 onClick={openCart}
                 aria-label={`Abrir carrito (${cartCount} ${cartCount === 1 ? "pieza" : "piezas"})`}
-                className="relative grid size-9 place-items-center rounded-full border border-[#2C2C2C]/25 bg-[#FCFAF5] text-[#1A1A1A] transition hover:border-[#C5A059] hover:bg-[#C5A059]/15"
+                className="relative grid size-9 place-items-center rounded-full border border-[#C5A059]/40 bg-white/[0.03] text-[#C5A059] transition hover:border-[#C5A059] hover:bg-[#C5A059]/15"
               >
                 <ShoppingBag size={15} strokeWidth={1.6} />
                 {cartCount > 0 && (
-                  <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-[#C5A059] px-1 text-[10px] font-bold leading-[18px] text-[#1A1A1A] shadow-[0_2px_8px_rgba(92,72,48,0.3)]">
+                  <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-[#C5A059] px-1 text-[10px] font-bold leading-[18px] text-[#121212] shadow-[0_0_10px_rgba(197,160,89,0.7)]">
                     {cartCount}
                   </span>
                 )}
@@ -146,17 +161,17 @@ export function PublicHeader() {
             <Link
               href="/mi-cuenta"
               aria-current={pathname?.startsWith("/mi-cuenta") ? "page" : undefined}
-              className={`group flex items-center gap-2 rounded-full border border-[#2C2C2C]/25 bg-[#FCFAF5] py-1.5 pl-2 pr-2 text-[11px] font-medium text-[#1A1A1A] transition hover:border-[#C5A059] hover:bg-[#C5A059]/12 sm:pl-2.5 sm:pr-3.5 ${
+              className={`group flex items-center gap-2 rounded-full border border-[#c7a45a]/35 bg-white/[0.03] py-1.5 pl-2 pr-2 text-[11px] font-medium text-[#f7f2e7] transition hover:border-[#c7a45a]/70 hover:bg-[#c7a45a]/10 sm:pl-2.5 sm:pr-3.5 ${
                 pathname?.startsWith("/mi-cuenta")
-                  ? "border-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,0.35)]"
+                  ? "border-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,0.45)]"
                   : ""
               }`}
             >
-              <span className="grid size-7 place-items-center rounded-full border border-[#C5A059]/45 bg-[#C5A059]/15 text-[#8B6914]">
+              <span className="grid size-7 place-items-center rounded-full border border-[#c7a45a]/30 bg-[#c7a45a]/10 text-[#d8bc7f]">
                 <UserRound size={14} strokeWidth={1.6} />
               </span>
               <span className="hidden sm:inline">Mi Cuenta</span>
-              <ChevronDown size={12} className="hidden text-[#8B6914]/80 transition group-hover:translate-y-0.5 sm:block" />
+              <ChevronDown size={12} className="hidden text-[#d8bc7f]/70 transition group-hover:translate-y-0.5 sm:block" />
             </Link>
 
             <button
@@ -165,7 +180,7 @@ export function PublicHeader() {
               aria-expanded={menuOpen}
               aria-controls="public-mobile-nav"
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="grid size-9 place-items-center rounded-full border border-[#2C2C2C]/25 bg-[#FCFAF5] text-[#1A1A1A] transition hover:border-[#C5A059] lg:hidden"
+              className="grid size-9 place-items-center rounded-full border border-[#c7a45a]/30 text-[#f7f2e7] transition hover:border-[#c7a45a]/70 lg:hidden"
             >
               <span className="flex flex-col gap-[3px]" aria-hidden="true">
                 <span className="h-px w-4 bg-current" />
@@ -179,11 +194,11 @@ export function PublicHeader() {
         {/* Menú móvil */}
         <div
           id="public-mobile-nav"
-          className={`overflow-hidden border-t border-[#C5A059]/25 bg-[#FCFAF5]/98 transition-[max-height,opacity] duration-300 lg:hidden ${
+          className={`overflow-hidden border-t border-[#c7a45a]/15 bg-[#080c16]/97 transition-[max-height,opacity] duration-300 lg:hidden ${
             menuOpen ? "max-h-[70vh] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <nav className="grid grid-cols-2 gap-1 px-4 py-4 text-sm text-[#2C2C2C]/85" aria-label="Navegación móvil">
+          <nav className="grid grid-cols-2 gap-1 px-4 py-4 text-sm text-[#e9e2d2]/80" aria-label="Navegación móvil">
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
               const active = isNavLinkActive(label, href, pathname);
               return (
@@ -192,14 +207,14 @@ export function PublicHeader() {
                   href={resolveHref(href, onLanding)}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition hover:bg-[#C5A059]/12 hover:text-[#1A1A1A] ${
-                    active ? `bg-[#C5A059]/15 font-semibold text-[#1A1A1A] ${ACTIVE_LINK_GLOW}` : ""
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition hover:bg-white/[0.05] hover:text-[#e3c57c] ${
+                    active ? `bg-white/[0.04] text-[#f7f2e7] ${ACTIVE_LINK_GLOW}` : ""
                   }`}
                 >
                   <Icon
                     size={15}
                     strokeWidth={1.5}
-                    className={active ? "text-[#8B6914]" : "text-[#9E7B2F]"}
+                    className={active ? "text-[#C5A059]" : "text-[#d8bc7f]/80"}
                   />
                   {label}
                 </Link>
