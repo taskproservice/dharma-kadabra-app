@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { ArrowLeft, KeyRound, Lock } from "lucide-react";
+import { DASHBOARD_HOME_BY_ROLE, parseRole } from "../lib/rbac-config";
 
-export function StaffLoginForm({ callbackUrl, hasError }: { callbackUrl: string; hasError: boolean }) {
+export function StaffLoginForm({ callbackUrl, hasError }: { callbackUrl: string | null; hasError: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(hasError ? "No fue posible iniciar sesión. Inténtalo de nuevo." : "");
@@ -17,9 +18,17 @@ export function StaffLoginForm({ callbackUrl, hasError }: { callbackUrl: string;
     setPending(true);
     setError("");
     try {
-      const result = await signIn("staff", { email, password, redirect: false, callbackUrl });
+      const result = await signIn("staff", { email, password, redirect: false, callbackUrl: callbackUrl ?? "/dashboard" });
       if (!result || result.error) throw new Error("Correo o contraseña incorrectos.");
-      window.location.assign(callbackUrl);
+      // Sin callbackUrl explícito, cada rol entra directo a su panel:
+      // Admin → /dashboard/admin, Ingeniería → /dashboard/ingenieria, etc.
+      let target = callbackUrl;
+      if (!target) {
+        const session = await getSession().catch(() => null);
+        const role = parseRole(session?.user?.role);
+        target = role ? DASHBOARD_HOME_BY_ROLE[role] : "/dashboard";
+      }
+      window.location.assign(target);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Inténtalo de nuevo.");
       setPending(false);

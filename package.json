@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
-    "build": "npm run db:sync && next build",
+    "build": "node scripts/db-sync.mjs generate-only && next build",
     "db:sync": "node scripts/db-sync.mjs",
+    "db:push": "node scripts/db-sync.mjs",
     "start": "next start --hostname 0.0.0.0",
     "lint": "next lint",
     "seed": "node scripts/seed-products.mjs",

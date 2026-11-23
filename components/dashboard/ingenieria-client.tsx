@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { UserManagement, type StaffUser } from "./user-management";
 
 interface HealthResponse {
   status: "healthy" | "degraded";
@@ -42,8 +43,8 @@ function formatUptime(seconds: number): string {
   return `${minutes} min`;
 }
 
-/** Panel Ingeniería · estado del sistema, configuración y modo mantenimiento. */
-export function IngenieriaClient() {
+/** Panel Ingeniería · estado del sistema, configuración, modo mantenimiento y gestión de usuarios. */
+export function IngenieriaClient({ initialUsers }: { initialUsers: StaffUser[] }) {
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -98,7 +99,7 @@ export function IngenieriaClient() {
         <p className="text-sm font-medium text-[#d8bc7f]">Panel Ingeniería · Soporte</p>
         <h1 className="mt-1 font-display text-3xl font-semibold text-[#f7f2e7]">Estado del sistema</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[#e9e2d2]/55">
-          Salud de la base de datos, configuración de entorno y herramientas de contingencia.
+          Salud de la base de datos, configuración de entorno, herramientas de contingencia y gestión de usuarios del equipo.
         </p>
       </header>
 
@@ -236,6 +237,9 @@ export function IngenieriaClient() {
           </a>
         </CardContent>
       </Card>
+
+      {/* Gestión de usuarios (solo ADMIN e Ingeniería) */}
+      <UserManagement initialUsers={initialUsers} />
     </div>
   );
 }
