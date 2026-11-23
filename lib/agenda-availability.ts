@@ -56,6 +56,25 @@ export function getCalendarDates(monthKey: string) {
 }
 
 /* -------------------------------------------------------------------------- */
+/* FASE 1 · Agenda por terapeuta                                               */
+/* -------------------------------------------------------------------------- */
+
+/** Límite razonable de longitud para un id de Prisma (cuid/uuid) recibido por query. */
+const ASSIGNEE_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
+
+/**
+ * Normaliza el `assigneeId` de una query string:
+ * - ausente, vacío o `all` → `null` (disponibilidad de toda la casa).
+ * - con formato inválido → `undefined` (la ruta responde 400).
+ */
+export function parseAssigneeId(raw: string | null | undefined): string | null | undefined {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed === "all") return null;
+  return ASSIGNEE_ID_RE.test(trimmed) ? trimmed : undefined;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Disponibilidad real desde la plantilla de trabajo                           */
 /* -------------------------------------------------------------------------- */
 

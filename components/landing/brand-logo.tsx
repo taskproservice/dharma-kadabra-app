@@ -44,19 +44,23 @@ export function BrandLogo({ size = 48 }: { size?: number }) {
   );
 }
 
-/** Bloque de marca completo: logotipo + wordmark editorial + tagline. */
-export function BrandLockup({ size = 52, glow = false }: { size?: number; glow?: boolean }) {
+/**
+ * Bloque de marca completo: logotipo + wordmark editorial + tagline.
+ * `tone="papyrus"` lo tiñe para fondos claros (p. ej. /agenda en Papiro).
+ */
+export function BrandLockup({ size = 52, glow = false, tone = "dark" }: { size?: number; glow?: boolean; tone?: "dark" | "papyrus" }) {
+  const light = tone === "papyrus";
   return (
     <span className="flex items-center gap-3">
       <BrandLogo size={size} />
       <span className="flex flex-col leading-none">
-        <span className={`font-display text-[15px] font-medium tracking-[.2em] text-papyrus sm:text-[17px] ${glow ? "drop-shadow-[0_0_14px_rgba(244,239,230,.18)]" : ""}`}>
+        <span className={`font-display text-[15px] font-medium tracking-[.2em] sm:text-[17px] ${light ? "text-ink" : "text-papyrus"} ${glow ? "drop-shadow-[0_0_14px_rgba(244,239,230,.18)]" : ""}`}>
           DHARMA
         </span>
-        <span className="font-display text-[15px] font-medium tracking-[.2em] text-gold-light sm:text-[17px]">
+        <span className={`font-display text-[15px] font-medium tracking-[.2em] sm:text-[17px] ${light ? "text-bronze" : "text-gold-light"}`}>
           KADABRA
         </span>
-        <span className="mt-1.5 hidden text-[6.5px] font-medium uppercase leading-relaxed tracking-[.22em] text-papyrus/45 sm:block">
+        <span className={`mt-1.5 hidden text-[6.5px] font-medium uppercase leading-relaxed tracking-[.22em] sm:block ${light ? "text-ink-muted" : "text-papyrus/45"}`}>
           Talismanes maestros
           <br />
           Registros akáshicos

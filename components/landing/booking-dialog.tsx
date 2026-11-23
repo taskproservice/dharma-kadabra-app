@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { ArrowLeft, ArrowRight, CalendarDays, CalendarX2, Check, CreditCard, LoaderCircle, MapPin, Sparkles, Video } from "lucide-react";
 import { getWorkTemplateSlots } from "../../lib/agenda-availability";
 import type { Service } from "../../lib/data/services";
+import type { PublicCollaborator } from "../../lib/therapists";
+import { TherapistAvatar } from "../agenda/therapist-selector";
 
 const bookingSchema = z.object({
   clientName: z.string().trim().min(2, "Escribe tu nombre completo."),
@@ -31,11 +33,13 @@ type BookingDialogProps = {
   initialDate?: string;
   initialTime?: string;
   appearance?: "night" | "papyrus";
+  /** FASE 1 · Terapeuta elegido en la Agenda: se guarda como `assigneeId`. */
+  assignee?: PublicCollaborator | null;
   /** Notifica cuando la reserva se registra correctamente (para refrescar la agenda). */
   onBooked?: () => void;
 };
 
-export function BookingDialog({ service, close, initialDate = "", initialTime = "", appearance = "night", onBooked }: BookingDialogProps) {
+export function BookingDialog({ service, close, initialDate = "", initialTime = "", appearance = "night", assignee = null, onBooked }: BookingDialogProps) {
   const [step, setStep] = useState(1);
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState("");
@@ -50,7 +54,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
   const mutedText = papyrus ? "text-ink-muted" : "text-papyrus/55";
   const accentText = papyrus ? "text-bronze" : "text-gold-light";
   const fieldClasses = `h-10 min-w-0 w-full rounded-xl border outline-none focus:ring-2 ${papyrus
-    ? "border-gold/35 bg-papyrus-soft text-ink placeholder:text-ink-muted focus:border-bronze focus:ring-gold/25"
+    ? "border-gold/35 bg-papyrus-light text-ink placeholder:text-ink-muted focus:border-bronze focus:ring-gold/25"
     : "border-gold/20 bg-obsidian-deep/70 text-papyrus placeholder:text-papyrus/40 focus:border-gold focus:ring-gold/20"}`;
 
   const continueToPayment = handleSubmit((values) => {
@@ -74,6 +78,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
         modality: bookingInfo.modality,
         dateTime: new Date(`${bookingInfo.date}T${bookingInfo.time}:00`).toISOString(),
         serviceId: service.id,
+        ...(assignee ? { assigneeId: assignee.id } : {}),
       };
       const response = await fetch("/api/appointments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json().catch(() => ({}));
@@ -130,7 +135,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
       <fieldset>
         <legend className={`text-xs font-semibold ${papyrus ? "text-ink" : "text-papyrus/80"}`}>Modalidad de tu sesión</legend>
         <div className="mt-1.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2" role="radiogroup" aria-label="Elige entre sesión presencial o videollamada">
-          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-soft" : "border-gold/20 bg-obsidian-deep/60"}`}>
+          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-light" : "border-gold/20 bg-obsidian-deep/60"}`}>
             <input {...register("modality")} type="radio" value="IN_PERSON" className="peer sr-only" />
             <span className={`flex items-start gap-2.5 rounded-lg p-1 transition peer-checked:bg-gold/12 peer-checked:ring-1 peer-checked:ring-gold/50`}>
               <MapPin size={17} className={`mt-0.5 shrink-0 ${papyrus ? "text-bronze" : "text-gold-light"}`} aria-hidden="true" />
@@ -140,7 +145,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
               </span>
             </span>
           </label>
-          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-soft" : "border-gold/20 bg-obsidian-deep/60"}`}>
+          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-light" : "border-gold/20 bg-obsidian-deep/60"}`}>
             <input {...register("modality")} type="radio" value="VIDEO_CALL" className="peer sr-only" />
             <span className={`flex items-start gap-2.5 rounded-lg p-1 transition peer-checked:bg-gold/12 peer-checked:ring-1 peer-checked:ring-gold/50`}>
               <Video size={17} className={`mt-0.5 shrink-0 ${papyrus ? "text-bronze" : "text-gold-light"}`} aria-hidden="true" />
@@ -162,7 +167,15 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
 
     {step === 2 && <div className="space-y-5">
       <div><p className={`text-[10px] font-semibold uppercase tracking-[.2em] ${accentText}`}>Resumen de tu sesión</p><h3 className="mt-2 font-display text-2xl">{service.name}</h3></div>
-      <div className={`divide-y divide-gold/12 rounded-xl border border-gold/20 px-4 ${papyrus ? "bg-papyrus-soft" : "bg-papyrus/[0.04]"}`}>
+      <div className={`divide-y divide-gold/12 rounded-xl border border-gold/20 px-4 ${papyrus ? "bg-papyrus-light" : "bg-papyrus/[0.04]"}`}>
+        {assignee && (
+          <div className="flex items-center justify-between gap-3 py-3 text-sm">
+            <span className={papyrus ? "text-ink-muted" : "text-papyrus/55"}>Tu terapeuta</span>
+            <span className="inline-flex items-center gap-2 font-medium">
+              <TherapistAvatar person={assignee} size={24} /> {assignee.name}
+            </span>
+          </div>
+        )}
         <SummaryRow label="Modalidad" value={bookingInfo?.modality === "VIDEO_CALL" ? "Videollamada · Zoom / Meet" : "Presencial · Estudio"} papyrus={papyrus} />
         <SummaryRow label="Costo del servicio" value={`$${service.price.toLocaleString("es-MX")} MXN`} papyrus={papyrus} />
         <SummaryRow label="Anticipo para reservar · 20%" value={`$${deposit.toLocaleString("es-MX")} MXN`} emphasis papyrus={papyrus} />
@@ -172,7 +185,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
       {error && <p role="alert" className={`rounded-lg border border-red-500/35 bg-red-500/10 p-3 text-sm ${papyrus ? "text-red-800" : "text-red-200"}`}>{error}{needsLogin && <> <Link href="/mi-cuenta" className="font-semibold underline underline-offset-4">Ir a Mi Cuenta</Link></>}</p>}
       <div className="space-y-2.5">
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button type="button" onClick={() => setStep(1)} className={`inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-gold/30 px-4 text-sm sm:w-auto ${papyrus ? "bg-papyrus-soft hover:bg-papyrus-warm" : "hover:bg-papyrus/[0.04]"}`}><ArrowLeft size={15} /> Volver</button>
+          <button type="button" onClick={() => setStep(1)} className={`inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-gold/30 px-4 text-sm sm:w-auto ${papyrus ? "bg-papyrus-light hover:bg-papyrus-warm" : "hover:bg-papyrus/[0.04]"}`}><ArrowLeft size={15} /> Volver</button>
           <button type="button" disabled={isPaying} onClick={payDeposit} className="flex min-h-12 min-w-0 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 text-center text-sm font-bold leading-5 text-obsidian shadow-sm transition hover:bg-gold-bright disabled:cursor-wait disabled:opacity-70 sm:flex-1">{isPaying ? <><LoaderCircle size={16} className="shrink-0 animate-spin" /> Procesando…</> : <>Apartar horario (sin cargo ahora) <ArrowRight size={15} className="shrink-0" /></>}</button>
         </div>
         <button
@@ -180,7 +193,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
           disabled
           aria-disabled="true"
           title="Próximamente: cobro automático del anticipo (20%) con tarjeta en integración"
-          className={`flex min-h-10 w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-gold/20 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[.14em] opacity-70 ${papyrus ? "bg-papyrus-soft/70 text-ink-muted" : "bg-papyrus/[0.02] text-papyrus/40"}`}
+          className={`flex min-h-10 w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-gold/20 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[.14em] opacity-70 ${papyrus ? "bg-papyrus-light/70 text-ink-muted" : "bg-papyrus/[0.02] text-papyrus/40"}`}
         >
           <CreditCard size={14} className="shrink-0 opacity-70" />
           <span>Pago en línea con tarjeta (20%) · Próximamente</span>
@@ -189,9 +202,9 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
     </div>}
 
     {step === 3 && <div className="space-y-5 py-2">
-      <div className={`mx-auto grid size-14 place-items-center rounded-full ${papyrus ? "bg-papyrus-soft text-[#436746]" : "bg-papyrus/[0.04] text-[#a9c08a]"}`}><Check size={28} /></div>
+      <div className={`mx-auto grid size-14 place-items-center rounded-full ${papyrus ? "bg-papyrus-light text-[#436746]" : "bg-papyrus/[0.04] text-[#a9c08a]"}`}><Check size={28} /></div>
       <div className="text-center"><p className={`text-[10px] font-semibold uppercase tracking-[.22em] ${accentText}`}>Reserva registrada</p><h3 className="mt-2 font-display text-3xl">Tu horario está apartado.</h3><p className={`mt-2 text-sm ${mutedText}`}>Folio {bookingId.slice(-8).toUpperCase()}</p></div>
-      <div className={`rounded-xl border border-gold/30 p-4 ${papyrus ? "bg-papyrus-soft" : "bg-obsidian-soft"}`}>
+      <div className={`rounded-xl border border-gold/30 p-4 ${papyrus ? "bg-papyrus-light" : "bg-obsidian-soft"}`}>
         <p className="flex items-center gap-2 font-semibold"><Sparkles size={16} className={accentText} /> Prepara tu espacio</p>
         <p className={`mt-2 text-sm leading-6 ${papyrus ? "text-ink-muted" : "text-papyrus/70"}`}>
           {bookingInfo?.modality === "VIDEO_CALL"

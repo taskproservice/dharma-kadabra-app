@@ -29,7 +29,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   // Lista explícita de conflicto antes de escribir: el horario exacto no lo ha
   // podido ocupar otro usuario hace apenas unos segundos.
   try {
-    const conflict = await findSlotConflict(date, id);
+    // FASE 1 · El horario solo choca dentro de la agenda de su terapeuta.
+    const conflict = await findSlotConflict(date, { assigneeId: appointment.assigneeId, excludeAppointmentId: id });
     if (conflict) return NextResponse.json({ error: "Ese horario acaba de reservarse. Elige otro horario.", code: "SLOT_TAKEN" }, { status: 409 });
   } catch (error) {
     console.error("Error al verificar el horario:", error);
@@ -38,7 +39,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   try {
     // El anticipo ya pagado se conserva; la cita vuelve a PENDING hasta que se confirme el nuevo horario.
-    const updated = await withSlotLock<Appointment>(date, id, (tx) => tx.appointment.update({ where: { id }, data: { date, status: "PENDING" } }));
+    const updated = await withSlotLock<Appointment>(
+      date,
+      { assigneeId: appointment.assigneeId, excludeAppointmentId: id },
+      (tx) => tx.appointment.update({ where: { id }, data: { date, status: "PENDING" } }),
+    );
     return NextResponse.json({ appointment: { id: updated.id, date: updated.date, status: updated.status } });
   } catch (error) {
     if (error instanceof SlotUnavailableError) return NextResponse.json({ error: "Ese horario no está disponible.", code: "SLOT_TAKEN" }, { status: 409 });
