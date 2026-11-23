@@ -121,6 +121,7 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
     stock: product ? String(product.stock) : "0",
     availability: product?.availability ?? "available",
     published: product?.published ?? false,
+    isVisible: product?.isVisible ?? true,
     imageUrl: product?.imageUrl ?? "",
   });
   const [priceFromMargin, setPriceFromMargin] = useState(false);
@@ -173,6 +174,7 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
           stock,
           availability: stock === 0 ? "out_of_stock" : form.availability,
           published: form.published,
+          isVisible: form.isVisible,
           imageUrl: form.imageUrl.trim(),
         }),
       });
@@ -659,6 +661,7 @@ const SAMPLE_PRODUCT = (
     currency: "MXN",
     availability: "available",
     published: true,
+    isVisible: true,
     stock: 1,
     imageUrl: "",
     category,

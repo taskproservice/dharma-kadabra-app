@@ -14,7 +14,7 @@ const credentialsSchema = z.object({
 });
 
 /**
- * NextAuth para el equipo del dashboard (ADMIN, ENGINEER, SOCIAL_MEDIA, COLLABORATOR).
+ * NextAuth para el equipo del dashboard (ADMIN, ENGINEER, COLLABORATOR, MARKETING).
  * El rol viaja dentro del JWT cifrado; nunca se acepta desde query params,
  * cabeceras o cookies editables por el navegador.
  */

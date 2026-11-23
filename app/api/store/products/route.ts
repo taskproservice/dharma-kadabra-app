@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isMaintenanceMode } from "../../../../lib/maintenance";
 import { MAX_PRODUCTS_PER_CATEGORY } from "../../../../modules/holistic-store/constants";
 import { getPublishedProducts, normalizeStoreError } from "../../../../modules/holistic-store/data";
 import { STORE_CATEGORIES, type StoreCategory } from "../../../../modules/holistic-store/types";
@@ -26,6 +27,14 @@ const STATUS_BY_CODE: Record<string, number> = {
  * pantalla de error elegante.
  */
 export async function GET(request: Request) {
+  // Modo Mantenimiento (Panel de Ingeniería): el catálogo se retira temporalmente.
+  if (await isMaintenanceMode().catch(() => false)) {
+    return NextResponse.json(
+      { error: "La tienda está en mantenimiento. Vuelve en unos minutos.", code: "MAINTENANCE" },
+      { status: 503 },
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category") ?? "";
 

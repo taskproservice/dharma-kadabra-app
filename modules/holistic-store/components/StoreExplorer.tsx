@@ -165,6 +165,7 @@ export function StoreExplorer({
                 product={product}
                 template={template}
                 isAuthenticated={isAuthenticated}
+                trackableView
               />
             ))}
           </div>

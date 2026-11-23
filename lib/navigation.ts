@@ -12,6 +12,7 @@ import {
   AudioLines,
   BookOpen,
   CalendarDays,
+  Cpu,
   CreditCard,
   Film,
   Flame,
@@ -100,6 +101,13 @@ export const DASHBOARD_NAVIGATION: NavGroup[] = [
         description: "Citas, disponibilidad y recordatorios.",
       },
       {
+        label: "Marketing",
+        href: "/dashboard/marketing",
+        icon: Megaphone,
+        description: "Inventario, visibilidad y KPIs de la tienda.",
+        roles: ["ADMIN", "MARKETING"],
+      },
+      {
         label: "Eventos",
         href: "/dashboard/eventos",
         icon: MoonStar,
@@ -179,10 +187,17 @@ export const DASHBOARD_NAVIGATION: NavGroup[] = [
     title: "Administración",
     items: [
       {
+        label: "Ingeniería",
+        href: "/dashboard/ingenieria",
+        icon: Cpu,
+        description: "Salud del sistema, variables y modo mantenimiento.",
+        roles: ["ADMIN", "ENGINEER"],
+      },
+      {
         label: "Panel administrativo",
         href: "/dashboard/admin",
         icon: Settings,
-        description: "Preferencias del negocio y del equipo.",
+        description: "KPIs, usuarios y roles del negocio.",
       },
       {
         label: "Información general",
@@ -246,9 +261,9 @@ const ROLE_LABEL_OVERRIDES: Partial<Record<Role, Record<string, string>>> = {
  */
 const ROLE_NAV_EXCLUSIONS: Partial<Record<Role, string[]>> = {
   // La colaboradora no necesita una sección "Inicio": su home es su agenda.
-  COLLABORATOR: ["/dashboard", "/dashboard/redes", "/dashboard/video", "/dashboard/diseno"],
-  // Social media no usa el centro de comando financiero.
-  SOCIAL_MEDIA: ["/dashboard", "/dashboard/agenda", "/dashboard/eventos", "/dashboard/colaboradores"],
+  COLLABORATOR: ["/dashboard", "/dashboard/redes", "/dashboard/video", "/dashboard/diseno", "/dashboard/tour", "/dashboard/agente-marketing"],
+  // El CM entra directo a su panel comercial; no opera la agenda interna.
+  MARKETING: ["/dashboard", "/dashboard/agenda", "/dashboard/eventos", "/dashboard/colaboradores", "/dashboard/pos", "/dashboard/inventario", "/dashboard/tour"],
   // El cliente de tienda solo navega a su perfil.
   CLIENT: ["/dashboard"],
 };

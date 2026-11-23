@@ -141,21 +141,21 @@ export async function getStorefrontData(
   try {
     const [rows, grouped, styles] = await Promise.all([
       prisma.product.findMany({
-        where: { published: true, category },
+        where: { published: true, isVisible: true, category },
         select: PUBLIC_SELECT,
         orderBy: [{ availability: "asc" }, { name: "asc" }],
         take: limit,
       }),
       prisma.product.groupBy({
         by: ["category"],
-        where: { published: true },
+        where: { published: true, isVisible: true },
         _count: { category: true },
       }),
       prisma.storeCategoryStyle.findMany().catch(() => []),
     ]);
 
     const counts: Record<string, number> = {};
-    for (const row of grouped) counts[row.category] = row._count.category;
+    for (const row of grouped) counts[row.category] = row._count?.category ?? 0;
 
     const templates: CategoryTemplateMap = {};
     for (const style of styles) {
@@ -177,13 +177,83 @@ export async function getStorefrontData(
 export async function getPublishedProducts(category: StoreCategory, limit = MAX_PRODUCTS_PER_CATEGORY) {
   const [rows, total] = await Promise.all([
     prisma.product.findMany({
-      where: { published: true, category },
+      where: { published: true, isVisible: true, category },
       select: PUBLIC_SELECT,
       orderBy: [{ availability: "asc" }, { name: "asc" }],
       take: limit,
     }),
-    prisma.product.count({ where: { published: true, category } }),
+    prisma.product.count({ where: { published: true, isVisible: true, category } }),
   ]);
 
   return { products: rows.map(toStoreProduct), total };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Analítica de Marketing · visitas y productos más vistos                    */
+/* -------------------------------------------------------------------------- */
+
+/** Registra una visita a la tienda pública. Nunca debe romper la página. */
+export async function recordStoreVisit(path = "/tienda"): Promise<boolean> {
+  try {
+    await prisma.storeVisit.create({ data: { path } });
+    return true;
+  } catch (error) {
+    console.error("[Holistic Store] no se pudo registrar la visita:", error);
+    return false;
+  }
+}
+
+/** Registra la vista de una ficha de producto (desde la tienda pública). */
+export async function recordProductView(productId: string): Promise<boolean> {
+  if (!productId) return false;
+  try {
+    await prisma.productView.create({ data: { productId } });
+    return true;
+  } catch (error) {
+    console.error("[Holistic Store] no se pudo registrar la vista del producto:", error);
+    return false;
+  }
+}
+
+export type AnalyticsSummary = {
+  totalVisits: number;
+  visitsLast7Days: number;
+  topProducts: { id: string; name: string; views: number }[];
+};
+
+/**
+ * Resumen para el Panel de Marketing: visitas acumuladas y las 5 piezas más
+ * vistas. Si la base de datos falla, devuelve ceros (nunca cifras inventadas).
+ */
+export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
+  const empty: AnalyticsSummary = { totalVisits: 0, visitsLast7Days: 0, topProducts: [] };
+  try {
+    const since = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000);
+    const [totalVisits, visitsLast7Days, grouped] = await Promise.all([
+      prisma.storeVisit.count(),
+      prisma.storeVisit.count({ where: { visitedAt: { gte: since } } }),
+      prisma.productView.groupBy({
+        by: ["productId"],
+        _count: { productId: true },
+        orderBy: { _count: { productId: "desc" } },
+        take: 5,
+      }),
+    ]);
+
+    const ids = grouped.map((row) => row.productId);
+    const products = ids.length
+      ? await prisma.product.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } })
+      : [];
+    const nameById = new Map(products.map((product) => [product.id, product.name]));
+    const topProducts = grouped.map((row) => ({
+      id: row.productId,
+      name: nameById.get(row.productId) ?? "Producto eliminado",
+      views: row._count.productId,
+    }));
+
+    return { totalVisits, visitsLast7Days, topProducts };
+  } catch (error) {
+    console.error("[Holistic Store] no se pudo calcular la analítica:", error);
+    return empty;
+  }
 }

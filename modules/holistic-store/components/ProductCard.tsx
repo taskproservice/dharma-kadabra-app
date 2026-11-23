@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import { useCartStore } from "../../../stores/cart";
 import { CATEGORY_META } from "../constants";
+import { recordProductView } from "../data";
 import type { StoreProduct, StoreTemplateId } from "../types";
 import { formatPrice } from "../utils";
 import { WhatsAppButton } from "./WhatsAppButton";
@@ -101,6 +102,8 @@ type Props = {
   product: StoreProduct;
   template: StoreTemplateId;
   isAuthenticated?: boolean;
+  /** Solo la tienda pública registra vistas (las vistas previas del Admin no). */
+  trackableView?: boolean;
 };
 
 /**
@@ -109,9 +112,17 @@ type Props = {
  * transfiere a WhatsApp con un humano si hace falta).
  * El estilo visual lo define la plantilla asignada a su categoría.
  */
-export function ProductCard({ product, template }: Props) {
+export function ProductCard({ product, template, isAuthenticated = false, trackableView = false }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
   const openCart = useCartStore((state) => state.openCart);
+  const trackedRef = useRef(false);
+
+  // Analítica de Marketing: una vista por montaje de la tarjeta real.
+  useEffect(() => {
+    if (!trackableView || trackedRef.current) return;
+    trackedRef.current = true;
+    void recordProductView(product.id);
+  }, [trackableView, product.id]);
 
   const styles = TEMPLATE_STYLES[template] ?? TEMPLATE_STYLES.oro;
   const outOfStock = product.availability === "out_of_stock";

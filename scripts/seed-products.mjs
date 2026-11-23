@@ -40,6 +40,7 @@ function normalize(product) {
     stock,
     availability,
     published: product.published !== false,
+    isVisible: product.isVisible !== false,
     profitMargin: price > 0 ? Math.round(((price - cost) / price) * 1000) / 10 : 0,
   };
 }

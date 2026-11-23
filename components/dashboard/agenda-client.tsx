@@ -14,16 +14,21 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  MapPin,
   MessageCircle,
   Phone,
   Plus,
   Send,
   ShieldCheck,
   Sparkles,
+  UserRound,
+  Video,
   X,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { AgendaSlotSkeleton } from "../ui/skeleton";
+import { AvailabilityPlanner } from "./availability-planner";
+import type { Role } from "../../lib/rbac-config";
 
 export type AppointmentItem = {
   id: string;
@@ -31,10 +36,16 @@ export type AppointmentItem = {
   clientPhone: string;
   date: string; // ISO string e.g. "2026-11-18T10:00:00"
   service: string;
+  /** Presencial en el estudio o videollamada (Zoom/Meet). */
+  modality: "IN_PERSON" | "VIDEO_CALL";
   status: "CONFIRMED" | "PENDING" | "COMPLETED";
   notificationsSent: ("7_DAYS" | "1_DAY" | "1_HOUR")[];
+  assigneeId?: string | null;
+  assigneeName?: string | null;
   notes?: string;
 };
+
+export type CollaboratorOption = { id: string; name: string };
 
 // Horas del día para los slots de tiempo editoriales (08:00 a 19:00)
 const TIME_SLOTS = [
@@ -59,8 +70,20 @@ const SERVICES_LIST = [
   "Acompañamiento Espiritual",
 ];
 
-export default function AgendaClient({ initialAppointments }: { initialAppointments: AppointmentItem[] }) {
+export default function AgendaClient({
+  initialAppointments,
+  viewerRole,
+  viewerId,
+  collaborators = [],
+}: {
+  initialAppointments: AppointmentItem[];
+  viewerRole: Role;
+  viewerId: string;
+  collaborators?: CollaboratorOption[];
+}) {
   const [appointments, setAppointments] = useState<AppointmentItem[]>(initialAppointments);
+  const isCollaborator = viewerRole === "COLLABORATOR";
+  const canAssign = viewerRole === "ADMIN" || viewerRole === "ENGINEER";
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -76,6 +99,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
   const [modalService, setModalService] = useState(SERVICES_LIST[0]);
   const [modalHour, setModalHour] = useState("10");
   const [modalStatus, setModalStatus] = useState<"CONFIRMED" | "PENDING">("CONFIRMED");
+  const [modalModality, setModalModality] = useState<"IN_PERSON" | "VIDEO_CALL">("IN_PERSON");
+  const [modalAssignee, setModalAssignee] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [modalError, setModalError] = useState("");
   const [modalConflict, setModalConflict] = useState("");
@@ -161,6 +186,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
     setModalClientPhone("");
     setModalService(SERVICES_LIST[0]);
     setModalStatus("CONFIRMED");
+    setModalModality("IN_PERSON");
+    setModalAssignee(isCollaborator ? viewerId : "");
     setModalError("");
     setModalConflict("");
     setIsModalOpen(true);
@@ -199,6 +226,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
           dateTime: dateTime.toISOString(),
           service: modalService,
           status: modalStatus,
+          modality: modalModality,
+          ...(modalAssignee ? { assigneeId: modalAssignee } : {}),
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -216,8 +245,13 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
           clientPhone: modalClientPhone.trim(),
           date: new Date(result.appointment.date).toISOString(),
           service: modalService,
+          modality: result.appointment.modality ?? modalModality,
           status: result.appointment.status,
           notificationsSent: [],
+          assigneeId: result.appointment.assigneeId ?? null,
+          assigneeName: modalAssignee
+            ? collaborators.find((collaborator) => collaborator.id === modalAssignee)?.name ?? null
+            : null,
         },
       ]);
       setIsModalOpen(false);
@@ -314,6 +348,8 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
     setModalClientPhone("");
     setModalService(SERVICES_LIST[0]);
     setModalStatus("CONFIRMED");
+    setModalModality("IN_PERSON");
+    setModalAssignee(isCollaborator ? viewerId : "");
     setModalError("");
     setModalConflict("");
     setIsModalOpen(true);
@@ -372,15 +408,17 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
             </div>
 
             {/* Botón para disparar la verificación de notificaciones WhatsApp */}
-            <Button
-              onClick={runNotificationSimulation}
-              disabled={isSimulating}
-              variant="outline"
-              className="border-[#c7a45a]/40 bg-white/[0.04] text-[#d8bc7f] hover:bg-[#c7a45a]/12 hover:border-[#c7a45a]"
-            >
-              <Bell size={16} className={isSimulating ? "animate-spin" : "text-[#e3c57c]"} />
-              {isSimulating ? "Verificando..." : "Motor de Recordatorios"}
-            </Button>
+            {!isCollaborator && (
+              <Button
+                onClick={runNotificationSimulation}
+                disabled={isSimulating}
+                variant="outline"
+                className="border-[#c7a45a]/40 bg-white/[0.04] text-[#d8bc7f] hover:bg-[#c7a45a]/12 hover:border-[#c7a45a]"
+              >
+                <Bell size={16} className={isSimulating ? "animate-spin" : "text-[#e3c57c]"} />
+                {isSimulating ? "Verificando..." : "Motor de Recordatorios"}
+              </Button>
+            )}
 
             {/* Botón para crear nueva cita */}
             <Button
@@ -437,6 +475,11 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
           </div>
         </div>
       </header>
+
+      {/* Panel del colaborador: su parrilla semanal de disponibilidad */}
+      {isCollaborator && (
+        <AvailabilityPlanner viewerRole={viewerRole} userId={viewerId} viewerId={viewerId} />
+      )}
 
       {/* Banner de Feedback de Simulación de WhatsApp */}
       {simulationLog && (
@@ -516,6 +559,23 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                           <span className="flex items-center gap-1 font-medium text-[#d8bc7f]">
                             <Sparkles size={13} /> {appointment.service}
                           </span>
+                          {/* Modalidad: cámara si es videollamada, ubicación si es presencial */}
+                          <span
+                            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-semibold ${
+                              appointment.modality === "VIDEO_CALL"
+                                ? "bg-sky-400/12 text-sky-300 border border-sky-400/30"
+                                : "bg-emerald-400/10 text-emerald-300 border border-emerald-400/25"
+                            }`}
+                            title={appointment.modality === "VIDEO_CALL" ? "Videollamada (Zoom / Meet)" : "Presencial en el estudio"}
+                          >
+                            {appointment.modality === "VIDEO_CALL" ? <Video size={11} /> : <MapPin size={11} />}
+                            {appointment.modality === "VIDEO_CALL" ? "Videollamada" : "Presencial"}
+                          </span>
+                          {appointment.assigneeName && (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-[#c7a45a]/25 bg-[#c7a45a]/10 px-2 py-0.5 text-[#e3c57c]">
+                              <UserRound size={11} /> {appointment.assigneeName}
+                            </span>
+                          )}
                           <span className="text-[#e9e2d2]/30">·</span>
                           <span className="flex items-center gap-1 font-mono text-[#e9e2d2]/70">
                             <Phone size={12} /> {appointment.clientPhone}
@@ -776,6 +836,41 @@ export default function AgendaClient({ initialAppointments }: { initialAppointme
                   </select>
                 </div>
               </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">
+                  Modalidad
+                </label>
+                <div className="grid grid-cols-2 gap-2.5" role="radiogroup" aria-label="Modalidad de la cita">
+                  <label className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition ${modalModality === "IN_PERSON" ? "border-[#c7a45a]/70 bg-[#c7a45a]/12 text-[#f7f2e7]" : "border-[#c7a45a]/20 bg-white/[0.04] text-[#e9e2d2]/65"}`}>
+                    <input type="radio" name="modality" value="IN_PERSON" checked={modalModality === "IN_PERSON"} onChange={() => setModalModality("IN_PERSON")} className="accent-[#c7a45a]" />
+                    <MapPin size={14} className="shrink-0 text-[#d8bc7f]" /> Presencial
+                  </label>
+                  <label className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition ${modalModality === "VIDEO_CALL" ? "border-[#c7a45a]/70 bg-[#c7a45a]/12 text-[#f7f2e7]" : "border-[#c7a45a]/20 bg-white/[0.04] text-[#e9e2d2]/65"}`}>
+                    <input type="radio" name="modality" value="VIDEO_CALL" checked={modalModality === "VIDEO_CALL"} onChange={() => setModalModality("VIDEO_CALL")} className="accent-[#c7a45a]" />
+                    <Video size={14} className="shrink-0 text-[#d8bc7f]" /> Videollamada
+                  </label>
+                </div>
+              </div>
+
+              {canAssign && (
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5" htmlFor="modal-assignee">
+                    Colaborador responsable
+                  </label>
+                  <select
+                    id="modal-assignee"
+                    value={modalAssignee}
+                    onChange={(e) => setModalAssignee(e.target.value)}
+                    className="w-full rounded-xl border border-[#c7a45a]/20 bg-white/[0.05] px-3.5 py-2.5 text-sm text-[#e9e2d2] outline-none focus:border-[#c7a45a]"
+                  >
+                    <option value="">Sin asignar</option>
+                    {collaborators.map((collaborator) => (
+                      <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-[#e9e2d2]/80 mb-1.5">

@@ -4,6 +4,8 @@ import { hashPassword } from "./password";
 import type { Role } from "./rbac-config";
 
 export type AppointmentStatus = "PENDING" | "CONFIRMED" | "COMPLETED";
+/** Modalidad de la cita: estudio presencial o videollamada (Zoom/Meet). */
+export type AppointmentModality = "IN_PERSON" | "VIDEO_CALL";
 
 export interface Appointment {
   id: string;
@@ -12,10 +14,13 @@ export interface Appointment {
   clientPhone: string;
   date: Date;
   service: string;
+  modality: AppointmentModality;
   status: AppointmentStatus;
   depositPaid: boolean;
   notificationsSent: string[];
   customerId?: string | null;
+  /** Colaborador responsable de la sesión. */
+  assigneeId?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -52,6 +57,8 @@ export type ProductRecord = {
   currency: string;
   availability: string;
   published: boolean;
+  /** Botón de visibilidad: si es false, la pieza no aparece en la tienda. */
+  isVisible: boolean;
   stock: number;
   imageUrl: string;
   category: string;

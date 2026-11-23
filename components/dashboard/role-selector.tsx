@@ -8,7 +8,7 @@ import { ROLE_PREVIEW_COOKIE, type Role } from "../../lib/rbac-config";
 const ROLE_OPTIONS: { role: Role; label: string; description: string }[] = [
   { role: "ADMIN", label: "Administradora (Admin)", description: "Ve todo el sistema" },
   { role: "ENGINEER", label: "Ingeniero (Soporte)", description: "Todo excepto Finanzas y Pasarela" },
-  { role: "SOCIAL_MEDIA", label: "Social Media", description: "Redes y Contenido" },
+  { role: "MARKETING", label: "Marketing (CM)", description: "Inventario, visibilidad y métricas" },
   { role: "COLLABORATOR", label: "Colaboradora", description: "Perfil, Agenda, Audios" },
   { role: "CLIENT", label: "Cliente", description: "Perfil personal" },
 ];
