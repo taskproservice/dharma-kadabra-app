@@ -20,12 +20,15 @@ export interface RoleConfig {
 export const ROLES: Role[] = ["ADMIN", "ENGINEER", "COLLABORATOR", "MARKETING", "CLIENT"];
 
 /**
- * Página de inicio del dashboard según el rol. Se usa en el middleware para
- * devolver a cada rol a un punto de entrada que sí tenga permitido.
+ * Panel de inicio del dashboard según el rol. Es el destino automático tras
+ * iniciar sesión en `/login` (sin `callbackUrl` explícito) y el punto al que
+ * el middleware devuelve a cada rol cuando abre una ruta que no le pertenece.
+ * Cada rol entra directo a su panel: Admin → Panel Admin, Ingeniería →
+ * Panel Ingeniería, Marketing → Panel Marketing, etc.
  */
 export const DASHBOARD_HOME_BY_ROLE: Record<Role, string> = {
-  ADMIN: "/dashboard",
-  ENGINEER: "/dashboard",
+  ADMIN: "/dashboard/admin",
+  ENGINEER: "/dashboard/ingenieria",
   COLLABORATOR: "/dashboard/agenda",
   MARKETING: "/dashboard/marketing",
   CLIENT: "/dashboard/perfil",
@@ -251,12 +254,15 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
     DELETE: ["ADMIN"],
   },
   users: {
-    // Gestión de colaboradores y roles: solo la administradora.
-    GET: ["ADMIN"],
-    POST: ["ADMIN"],
-    PUT: ["ADMIN"],
-    PATCH: ["ADMIN"],
-    DELETE: ["ADMIN"],
+    // Gestión de usuarios del equipo (crear, asignar rol, activar/desactivar):
+    // solo Administración e Ingeniería. La interfaz vive en el Panel Admin
+    // (/dashboard/admin) y en el Panel Ingeniería (/dashboard/ingenieria).
+    // Ningún otro rol puede crear ni modificar cuentas.
+    GET: ["ADMIN", "ENGINEER"],
+    POST: ["ADMIN", "ENGINEER"],
+    PUT: ["ADMIN", "ENGINEER"],
+    PATCH: ["ADMIN", "ENGINEER"],
+    DELETE: ["ADMIN", "ENGINEER"],
   },
   system: {
     // Salud del sistema y ajustes operativos (modo mantenimiento).

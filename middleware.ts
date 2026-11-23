@@ -26,8 +26,15 @@ export async function middleware(request: NextRequest) {
   const previewRole = sessionRole === "ADMIN" ? parseRole(request.cookies.get(ROLE_PREVIEW_COOKIE)?.value) : null;
   const effectiveRole: Role = previewRole ?? sessionRole;
 
-  if (pathname !== "/dashboard" && !isRouteAllowedForRole(effectiveRole, pathname)) {
-    // Cada rol vuelve a su propio punto de entrada permitido (no todos tienen /dashboard).
+  // `/dashboard` no es un panel visible: es solo la puerta que reparte a
+  // cada rol a su panel (Admin → /dashboard/admin, Ingeniería →
+  // /dashboard/ingenieria, Marketing → /dashboard/marketing, …).
+  if (pathname === "/dashboard") {
+    return NextResponse.redirect(new URL(DASHBOARD_HOME_BY_ROLE[effectiveRole], request.url));
+  }
+
+  if (!isRouteAllowedForRole(effectiveRole, pathname)) {
+    // Cada rol vuelve a su propio panel permitido.
     return NextResponse.redirect(new URL(DASHBOARD_HOME_BY_ROLE[effectiveRole], request.url));
   }
 

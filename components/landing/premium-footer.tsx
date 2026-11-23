@@ -233,6 +233,15 @@ export function PremiumFooter() {
           <p className="text-[11px] uppercase tracking-[.2em] text-papyrus/50">
             © 2026 Dharma Kadabra · Un camino hacia ti
           </p>
+          {/* Único acceso interno del sitio público: lleva a /login y, tras
+              autenticarse, cada rol cae en su propio panel. Los dashboards
+              nunca se enlazan desde la vista pública. */}
+          <Link
+            href="/login"
+            className="text-[11px] uppercase tracking-[.2em] text-papyrus/35 transition hover:text-gold"
+          >
+            Acceso equipo
+          </Link>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

@@ -6,9 +6,9 @@ import { authorize, parseRole, ROLES, type Role } from "../../../../lib/rbac";
 export const dynamic = "force-dynamic";
 
 /**
- * Panel Admin · actualizar un miembro del equipo.
- * PATCH /api/users/:id → nombre, rol y estado activo/inactivo (solo ADMIN).
- * Una administradora no puede desactivarse o rebajarse a sí misma.
+ * Panel Admin e Ingeniería · actualizar un miembro del equipo.
+ * PATCH /api/users/:id → nombre, rol y estado activo/inactivo (solo ADMIN e ENGINEER).
+ * Nadie puede desactivarse o cambiarse el rol a sí mismo.
  */
 
 const STAFF_ROLES = ROLES.filter((role) => role !== "CLIENT");

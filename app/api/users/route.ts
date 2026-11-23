@@ -7,9 +7,9 @@ import { authorize, parseRole, ROLES, type Role } from "../../../lib/rbac";
 export const dynamic = "force-dynamic";
 
 /**
- * Gestión de usuarios del equipo · Panel Admin.
- * - GET /api/users → listado sin contraseñas (solo ADMIN).
- * - POST /api/users → crea un colaborador y le asigna un rol (solo ADMIN).
+ * Gestión de usuarios del equipo · Panel Admin y Panel Ingeniería.
+ * - GET /api/users → listado sin contraseñas (solo ADMIN e ENGINEER).
+ * - POST /api/users → crea un usuario y le asigna un rol (solo ADMIN e ENGINEER).
  */
 
 const STAFF_ROLES = ROLES.filter((role) => role !== "CLIENT");
