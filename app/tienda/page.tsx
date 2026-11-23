@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Hammer } from "lucide-react";
 import { PublicHeader } from "../../components/landing/public-header";
 import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { getPrincipal } from "../../lib/rbac";
+import { isMaintenanceMode } from "../../lib/maintenance";
 import { DEFAULT_CATEGORY } from "../../modules/holistic-store/constants";
-import { getStorefrontData } from "../../modules/holistic-store/data";
+import { getStorefrontData, recordStoreVisit, type StorefrontData } from "../../modules/holistic-store/data";
 import { StoreBanner } from "../../modules/holistic-store/components/StoreBanner";
 import { StoreErrorPanel } from "../../modules/holistic-store/components/StoreErrorPanel";
 import { StoreExplorer } from "../../modules/holistic-store/components/StoreExplorer";
@@ -21,11 +22,22 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
-  const [{ products, counts, templates, error }, principal] = await Promise.all([
-    getStorefrontData(DEFAULT_CATEGORY),
-    getPrincipal().catch(() => null),
-  ]);
-  const isAuthenticated = Boolean(principal);
+  // El Panel de Ingeniería puede retirar la tienda temporalmente.
+  const maintenance = await isMaintenanceMode().catch(() => false);
+  // Cada visita alimenta los KPIs del Panel de Marketing.
+  void (await recordStoreVisit("/tienda"));
+
+  let storefront: StorefrontData = { products: [], counts: {}, templates: {}, error: null };
+  let isAuthenticated = false;
+  if (!maintenance) {
+    const [data, principal] = await Promise.all([
+      getStorefrontData(DEFAULT_CATEGORY),
+      getPrincipal().catch(() => null),
+    ]);
+    storefront = data;
+    isAuthenticated = Boolean(principal);
+  }
+  const { products, counts, templates, error } = storefront;
 
   return (
     <>
@@ -71,7 +83,18 @@ export default async function TiendaPage() {
 
           {/* Catálogo por categorías */}
           <section aria-label="Catálogo de la tienda" className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-18">
-            {error ? (
+            {maintenance ? (
+              <div className="grid place-items-center rounded-2xl border border-gold/25 bg-papyrus/[0.02] px-6 py-20 text-center">
+                <div>
+                  <Hammer size={28} className="mx-auto text-gold" />
+                  <p className="mt-4 font-display text-3xl text-papyrus">Tienda en mantenimiento</p>
+                  <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-papyrus/55">
+                    Estamos ajustando detalles para cuidar tu experiencia. Vuelve en unos minutos o
+                    escríbenos por WhatsApp y te atendemos con gusto.
+                  </p>
+                </div>
+              </div>
+            ) : error ? (
               <StoreErrorPanel title="No pudimos cargar la tienda" message={error.message} detail={error.detail} />
             ) : (
               <StoreExplorer

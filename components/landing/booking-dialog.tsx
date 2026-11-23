@@ -5,7 +5,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ArrowLeft, ArrowRight, CalendarDays, CalendarX2, Check, CreditCard, LoaderCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, CalendarX2, Check, CreditCard, LoaderCircle, MapPin, Sparkles, Video } from "lucide-react";
 import { getWorkTemplateSlots } from "../../lib/agenda-availability";
 import type { Service } from "../../lib/data/services";
 
@@ -13,6 +13,7 @@ const bookingSchema = z.object({
   clientName: z.string().trim().min(2, "Escribe tu nombre completo."),
   clientEmail: z.string().trim().email("Escribe un correo válido."),
   clientPhone: z.string().trim().min(8, "Incluye un teléfono válido."),
+  modality: z.enum(["IN_PERSON", "VIDEO_CALL"]),
   date: z.string().min(1, "Elige una fecha."),
   time: z.string().min(1, "Elige un horario."),
 }).refine((value) => new Date(`${value.date}T${value.time}:00`).getTime() > Date.now(), {
@@ -43,7 +44,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
   const [bookingInfo, setBookingInfo] = useState<BookingValues | null>(null);
   // Estado elegante para el 409 ("ese horario acaba de reservarse").
   const [conflict, setConflict] = useState("");
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: initialDate, time: initialTime } });
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<BookingValues>({ resolver: zodResolver(bookingSchema), defaultValues: { date: initialDate, time: initialTime, modality: "IN_PERSON" } });
   const deposit = Math.round(service.price * 0.2);
   const papyrus = appearance === "papyrus";
   const mutedText = papyrus ? "text-ink-muted" : "text-papyrus/55";
@@ -70,6 +71,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
         clientName: bookingInfo.clientName,
         clientEmail: bookingInfo.clientEmail,
         clientPhone: bookingInfo.clientPhone,
+        modality: bookingInfo.modality,
         dateTime: new Date(`${bookingInfo.date}T${bookingInfo.time}:00`).toISOString(),
         serviceId: service.id,
       };
@@ -125,6 +127,31 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
       <Field label="Nombre completo" error={errors.clientName?.message} papyrus={papyrus}><input {...register("clientName")} autoComplete="name" placeholder="Tu nombre" className={`${fieldClasses} px-3 text-sm`} /></Field>
       <Field label="Correo electrónico" error={errors.clientEmail?.message} papyrus={papyrus}><input {...register("clientEmail")} type="email" autoComplete="email" placeholder="tu@correo.com" className={`${fieldClasses} px-3 text-sm`} /></Field>
       <Field label="Teléfono / WhatsApp" error={errors.clientPhone?.message} papyrus={papyrus}><input {...register("clientPhone")} type="tel" autoComplete="tel" placeholder="+52 664 123 4567" className={`${fieldClasses} px-3 text-sm`} /></Field>
+      <fieldset>
+        <legend className={`text-xs font-semibold ${papyrus ? "text-ink" : "text-papyrus/80"}`}>Modalidad de tu sesión</legend>
+        <div className="mt-1.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2" role="radiogroup" aria-label="Elige entre sesión presencial o videollamada">
+          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-soft" : "border-gold/20 bg-obsidian-deep/60"}`}>
+            <input {...register("modality")} type="radio" value="IN_PERSON" className="peer sr-only" />
+            <span className={`flex items-start gap-2.5 rounded-lg p-1 transition peer-checked:bg-gold/12 peer-checked:ring-1 peer-checked:ring-gold/50`}>
+              <MapPin size={17} className={`mt-0.5 shrink-0 ${papyrus ? "text-bronze" : "text-gold-light"}`} aria-hidden="true" />
+              <span className="min-w-0">
+                <span className={`block text-sm font-semibold ${papyrus ? "text-ink" : "text-papyrus"}`}>Presencial</span>
+                <span className={`mt-0.5 block text-[11px] leading-4 ${papyrus ? "text-ink-muted" : "text-papyrus/50"}`}>En el estudio · Tijuana</span>
+              </span>
+            </span>
+          </label>
+          <label className={`block min-w-0 cursor-pointer rounded-xl border p-3 transition peer-focus-visible:ring-2 peer-focus-visible:ring-gold/40 ${papyrus ? "border-gold/30 bg-papyrus-soft" : "border-gold/20 bg-obsidian-deep/60"}`}>
+            <input {...register("modality")} type="radio" value="VIDEO_CALL" className="peer sr-only" />
+            <span className={`flex items-start gap-2.5 rounded-lg p-1 transition peer-checked:bg-gold/12 peer-checked:ring-1 peer-checked:ring-gold/50`}>
+              <Video size={17} className={`mt-0.5 shrink-0 ${papyrus ? "text-bronze" : "text-gold-light"}`} aria-hidden="true" />
+              <span className="min-w-0">
+                <span className={`block text-sm font-semibold ${papyrus ? "text-ink" : "text-papyrus"}`}>Videollamada</span>
+                <span className={`mt-0.5 block text-[11px] leading-4 ${papyrus ? "text-ink-muted" : "text-papyrus/50"}`}>Zoom / Meet · desde tu espacio</span>
+              </span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="Fecha" error={errors.date?.message} papyrus={papyrus}><input {...register("date")} type="date" min={minDate} className={`${fieldClasses} px-2 text-xs`} /></Field>
         <Field label="Horario" error={errors.time?.message} papyrus={papyrus}><select {...register("time")} defaultValue="" className={`${fieldClasses} px-2 text-xs`}><option value="" disabled>Elige hora</option>{timeSlots.map((time) => <option key={time} value={time}>{time}</option>)}</select></Field>
@@ -136,6 +163,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
     {step === 2 && <div className="space-y-5">
       <div><p className={`text-[10px] font-semibold uppercase tracking-[.2em] ${accentText}`}>Resumen de tu sesión</p><h3 className="mt-2 font-display text-2xl">{service.name}</h3></div>
       <div className={`divide-y divide-gold/12 rounded-xl border border-gold/20 px-4 ${papyrus ? "bg-papyrus-soft" : "bg-papyrus/[0.04]"}`}>
+        <SummaryRow label="Modalidad" value={bookingInfo?.modality === "VIDEO_CALL" ? "Videollamada · Zoom / Meet" : "Presencial · Estudio"} papyrus={papyrus} />
         <SummaryRow label="Costo del servicio" value={`$${service.price.toLocaleString("es-MX")} MXN`} papyrus={papyrus} />
         <SummaryRow label="Anticipo para reservar · 20%" value={`$${deposit.toLocaleString("es-MX")} MXN`} emphasis papyrus={papyrus} />
         <SummaryRow label="Resto el día de tu sesión" value={`$${(service.price - deposit).toLocaleString("es-MX")} MXN`} papyrus={papyrus} />
@@ -165,7 +193,11 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
       <div className="text-center"><p className={`text-[10px] font-semibold uppercase tracking-[.22em] ${accentText}`}>Reserva registrada</p><h3 className="mt-2 font-display text-3xl">Tu horario está apartado.</h3><p className={`mt-2 text-sm ${mutedText}`}>Folio {bookingId.slice(-8).toUpperCase()}</p></div>
       <div className={`rounded-xl border border-gold/30 p-4 ${papyrus ? "bg-papyrus-soft" : "bg-obsidian-soft"}`}>
         <p className="flex items-center gap-2 font-semibold"><Sparkles size={16} className={accentText} /> Prepara tu espacio</p>
-        <p className={`mt-2 text-sm leading-6 ${papyrus ? "text-ink-muted" : "text-papyrus/70"}`}>Busca un lugar sin ruido, usa audífonos y ten cerca tus registros o runas. Recibirás el link de la videollamada por correo y WhatsApp.</p>
+        <p className={`mt-2 text-sm leading-6 ${papyrus ? "text-ink-muted" : "text-papyrus/70"}`}>
+          {bookingInfo?.modality === "VIDEO_CALL"
+            ? "Busca un lugar sin ruido, usa audífonos y ten a la mano tus registros o runas. Recibirás el link de la videollamada por correo y WhatsApp."
+            : "Llega con unos minutos de anticipación y ten a la mano tus registros o runas. Te esperamos en el estudio. Confirmaremos tu cita por correo y WhatsApp."}
+        </p>
       </div>
       <p className={`flex items-center gap-2 text-xs ${papyrus ? "text-ink-muted" : "text-papyrus/50"}`}><CalendarDays size={14} className="shrink-0" /> Estado de la cita: pendiente de pago del anticipo. Te confirmaremos en cuanto se acredite.</p>
       <button type="button" onClick={close} className="h-12 w-full cursor-pointer rounded-xl bg-gold text-sm font-semibold text-obsidian">Listo</button>

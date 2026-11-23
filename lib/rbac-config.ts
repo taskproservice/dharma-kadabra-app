@@ -6,7 +6,7 @@
  * que es el que extrae la sesión verificada en el servidor.
  */
 
-export type Role = "ADMIN" | "ENGINEER" | "SOCIAL_MEDIA" | "COLLABORATOR" | "CLIENT";
+export type Role = "ADMIN" | "ENGINEER" | "COLLABORATOR" | "MARKETING" | "CLIENT";
 
 export interface RoleConfig {
   role: Role;
@@ -17,7 +17,7 @@ export interface RoleConfig {
   isAllowed: (path: string) => boolean;
 }
 
-export const ROLES: Role[] = ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR", "CLIENT"];
+export const ROLES: Role[] = ["ADMIN", "ENGINEER", "COLLABORATOR", "MARKETING", "CLIENT"];
 
 /**
  * Página de inicio del dashboard según el rol. Se usa en el middleware para
@@ -26,8 +26,8 @@ export const ROLES: Role[] = ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR
 export const DASHBOARD_HOME_BY_ROLE: Record<Role, string> = {
   ADMIN: "/dashboard",
   ENGINEER: "/dashboard",
-  SOCIAL_MEDIA: "/dashboard/redes",
-  COLLABORATOR: "/dashboard/perfil",
+  COLLABORATOR: "/dashboard/agenda",
+  MARKETING: "/dashboard/marketing",
   CLIENT: "/dashboard/perfil",
 };
 
@@ -48,9 +48,10 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     role: "ENGINEER",
     label: "Ingeniero (Soporte)",
     badge: "Soporte Técnico",
-    description: "Acceso a todo el sistema excepto Finanzas, Pasarela de Pagos y Runas.",
+    description: "Opera el sistema, cuida la salud técnica y atiende soporte.",
     allowedHrefs: [
       "/dashboard",
+      "/dashboard/ingenieria",
       "/dashboard/resumen",
       "/dashboard/perfil",
       "/dashboard/pos",
@@ -66,12 +67,12 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
       "/dashboard/agente-ventas",
       "/dashboard/agente-marketing",
       "/dashboard/colaboradores",
-      "/dashboard/admin",
       "/dashboard/panel-administrativo",
       "/dashboard/info",
       "/dashboard/informacion-general",
     ],
-    // Ve todo, excepto Finanzas, Pasarela de Pagos y Runas
+    // Ve todo excepto: Finanzas, Pasarela de Pagos, Runas, Panel Admin (solo
+    // Paola) y Marketing (solo el CM).
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       const isForbidden =
@@ -82,48 +83,61 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
         clean === "/dashboard/pasarela-pagos" ||
         clean.startsWith("/dashboard/pasarela-pagos/") ||
         clean === "/dashboard/runas" ||
-        clean.startsWith("/dashboard/runas/");
+        clean.startsWith("/dashboard/runas/") ||
+        clean === "/dashboard/admin" ||
+        clean.startsWith("/dashboard/admin/") ||
+        clean === "/dashboard/marketing" ||
+        clean.startsWith("/dashboard/marketing/");
       return !isForbidden;
-    },
-  },
-  SOCIAL_MEDIA: {
-    role: "SOCIAL_MEDIA",
-    label: "Social Media Manager",
-    badge: "Marketing & Redes",
-    description: "Solo ve Redes Sociales y Contenido (audio y video).",
-    // Solo ve Resumen (Métricas), Audio/Video, y un nuevo módulo "Redes Sociales" (donde pueda programar posts)
-    allowedHrefs: [
-      "/dashboard/audio",
-      "/dashboard/video",
-      "/dashboard/redes",
-    ],
-    isAllowed: (path: string) => {
-      const clean = path.split("?")[0].replace(/\/$/, "");
-      const allowedPrefixes = [
-        "/dashboard/audio",
-        "/dashboard/video",
-        "/dashboard/redes",
-      ];
-      return allowedPrefixes.some((allowed) => clean === allowed || clean.startsWith(allowed + "/"));
     },
   },
   COLLABORATOR: {
     role: "COLLABORATOR",
     label: "Colaboradora",
     badge: "Terapeuta / Guía",
-    description: "Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio.",
-    // Solo ve su propio Perfil, Agenda Electrónica (solo sus citas), y Audio
+    description: "Solo ve su propia Agenda (sus citas), disponibilidad, Perfil y Audios.",
     allowedHrefs: [
-      "/dashboard/perfil",
+      "/dashboard",
       "/dashboard/agenda",
+      "/dashboard/perfil",
       "/dashboard/audio",
     ],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       const allowedPrefixes = [
-        "/dashboard/perfil",
         "/dashboard/agenda",
+        "/dashboard/perfil",
         "/dashboard/audio",
+      ];
+      return (
+        clean === "/dashboard" ||
+        allowedPrefixes.some((allowed) => clean === allowed || clean.startsWith(allowed + "/"))
+      );
+    },
+  },
+  MARKETING: {
+    role: "MARKETING",
+    label: "Community Manager",
+    badge: "Marketing & Redes",
+    description: "Administra inventario, visibilidad de la tienda y métricas comerciales.",
+    // Panel de Marketing (inventario y KPIs), Redes Sociales y contenido.
+    allowedHrefs: [
+      "/dashboard",
+      "/dashboard/marketing",
+      "/dashboard/redes",
+      "/dashboard/audio",
+      "/dashboard/video",
+      "/dashboard/perfil",
+    ],
+    isAllowed: (path: string) => {
+      const clean = path.split("?")[0].replace(/\/$/, "");
+      if (clean === "/dashboard") return true;
+      const allowedPrefixes = [
+        "/dashboard/marketing",
+        "/dashboard/redes",
+        "/dashboard/audio",
+        "/dashboard/video",
+        "/dashboard/perfil",
       ];
       return allowedPrefixes.some((allowed) => clean === allowed || clean.startsWith(allowed + "/"));
     },
@@ -165,7 +179,18 @@ export function isRouteAllowedForRole(role: Role, path: string): boolean {
 /* -------------------------------------------------------------------------- */
 
 export type ApiAction = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type ApiResource = "appointments" | "events" | "notifications" | "products" | "pos" | "store" | "tour";
+export type ApiResource =
+  | "appointments"
+  | "events"
+  | "notifications"
+  | "products"
+  | "pos"
+  | "store"
+  | "tour"
+  | "users"
+  | "system"
+  | "availability"
+  | "analytics";
 
 /**
  * Matriz de autorización de la API: recurso → método HTTP → roles permitidos.
@@ -184,7 +209,7 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
     DELETE: ["ADMIN"],
   },
   events: {
-    GET: ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR"],
+    GET: ["ADMIN", "ENGINEER", "MARKETING", "COLLABORATOR"],
     POST: ["ADMIN", "ENGINEER"],
     PUT: ["ADMIN", "ENGINEER"],
     PATCH: ["ADMIN", "ENGINEER"],
@@ -197,12 +222,13 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
     POST: ["ADMIN", "ENGINEER"],
   },
   products: {
-    // Catálogo del Punto de Venta: solo el equipo que opera la terminal.
-    GET: ["ADMIN", "ENGINEER"],
-    // Holistic Store · altas, ediciones y bajas del inventario: solo ADMIN.
-    POST: ["ADMIN"],
-    PUT: ["ADMIN"],
-    PATCH: ["ADMIN"],
+    // Catálogo interno: ADMIN, soporte y el CM (inventario de Marketing).
+    GET: ["ADMIN", "ENGINEER", "MARKETING"],
+    // Altas, edición y visibilidad del inventario: ADMIN y MARKETING.
+    POST: ["ADMIN", "MARKETING"],
+    PUT: ["ADMIN", "MARKETING"],
+    PATCH: ["ADMIN", "MARKETING"],
+    // Las bajas las reserva la administradora.
     DELETE: ["ADMIN"],
   },
   pos: {
@@ -211,17 +237,44 @@ export const API_PERMISSIONS: Record<ApiResource, Partial<Record<ApiAction, read
   },
   store: {
     // Holistic Store · plantillas visuales por categoría: solo ADMIN.
+    GET: ["ADMIN", "ENGINEER", "MARKETING"],
     PUT: ["ADMIN"],
     PATCH: ["ADMIN"],
   },
   tour: {
     // Tour de marca (video inmersivo del Hero). El GET es público (la landing
     // lo sirve a todos); la gestión del video y los capítulos es del equipo.
-    GET: ["ADMIN", "ENGINEER", "SOCIAL_MEDIA", "COLLABORATOR", "CLIENT"],
+    GET: ["ADMIN", "ENGINEER", "MARKETING", "COLLABORATOR", "CLIENT"],
     POST: ["ADMIN", "ENGINEER"],
     PUT: ["ADMIN", "ENGINEER"],
     PATCH: ["ADMIN", "ENGINEER"],
     DELETE: ["ADMIN"],
+  },
+  users: {
+    // Gestión de colaboradores y roles: solo la administradora.
+    GET: ["ADMIN"],
+    POST: ["ADMIN"],
+    PUT: ["ADMIN"],
+    PATCH: ["ADMIN"],
+    DELETE: ["ADMIN"],
+  },
+  system: {
+    // Salud del sistema y ajustes operativos (modo mantenimiento).
+    GET: ["ADMIN", "ENGINEER"],
+    POST: ["ADMIN", "ENGINEER"],
+    PUT: ["ADMIN", "ENGINEER"],
+    PATCH: ["ADMIN", "ENGINEER"],
+  },
+  availability: {
+    // Cada colaborador administra su propia parrilla semanal.
+    GET: ["ADMIN", "ENGINEER", "COLLABORATOR"],
+    POST: ["ADMIN", "COLLABORATOR"],
+    PUT: ["ADMIN", "COLLABORATOR"],
+    PATCH: ["ADMIN", "COLLABORATOR"],
+  },
+  analytics: {
+    // Visitas a la tienda y productos más vistos.
+    GET: ["ADMIN", "MARKETING"],
   },
 };
 

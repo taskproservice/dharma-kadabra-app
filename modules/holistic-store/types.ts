@@ -35,6 +35,8 @@ export type AdminProduct = StoreProduct & {
   cost: number;
   profitMargin: number;
   published: boolean;
+  /** Botón de visibilidad del panel de Marketing. */
+  isVisible: boolean;
   stock: number;
   createdAt: string;
   updatedAt: string;

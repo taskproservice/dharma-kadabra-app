@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { ArrowUpRight, AudioLines, CalendarDays, CreditCard, Palette, ShoppingCart, TrendingUp, UserRound, Video, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, AudioLines, CalendarDays, CreditCard, Megaphone, Palette, Share2, ShoppingCart, TrendingUp, UserRound, Video, type LucideIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
 import { getStaffPrincipal, parseRole, ROLE_PERMISSIONS, ROLE_PREVIEW_COOKIE, type Role } from "../../lib/rbac";
 import { prisma } from "../../lib/prisma";
@@ -19,8 +19,9 @@ const shortcuts: Record<Role, { title: string; description: string; href: string
     { title: "Mi Perfil", description: "Revisa tu perfil y la información que compartes.", href: "/dashboard/perfil", icon: UserRound, label: "Ver mi perfil" },
     { title: "Audios", description: "Accede a los recursos de audio del equipo.", href: "/dashboard/audio", icon: AudioLines, label: "Escuchar audios" },
   ],
-  SOCIAL_MEDIA: [
-    { title: "Redes Sociales", description: "Organiza el contenido y las publicaciones.", href: "/dashboard/redes", icon: Palette, label: "Ver contenido" },
+  MARKETING: [
+    { title: "Panel de Marketing", description: "Inventario, visibilidad de productos y KPIs de la tienda.", href: "/dashboard/marketing", icon: Megaphone, label: "Abrir panel" },
+    { title: "Redes Sociales", description: "Organiza el contenido y las publicaciones.", href: "/dashboard/redes", icon: Share2, label: "Ver contenido" },
     { title: "Audios", description: "Gestiona y consulta los recursos de audio.", href: "/dashboard/audio", icon: AudioLines, label: "Abrir audios" },
     { title: "Video", description: "Consulta el espacio de video del equipo.", href: "/dashboard/video", icon: Video, label: "Abrir videos" },
   ],

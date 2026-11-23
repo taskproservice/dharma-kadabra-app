@@ -1,16 +1,66 @@
-"use client";
-import { useState } from "react";
-import { Save, ShieldCheck } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
-import { Input } from "../../../components/ui/input";
+import { redirect } from "next/navigation";
+import { AdminPanelClient, type AdminKpis, type StaffUser } from "../../../components/dashboard/admin-panel-client";
+import { prisma } from "../../../lib/prisma";
+import { DASHBOARD_HOME_BY_ROLE, getStaffPrincipal, parseRole } from "../../../lib/rbac";
 
-export default function AdminPage() {
-  const [saved, setSaved] = useState(false);
-  return <div className="mx-auto max-w-4xl space-y-7"><div><h1 className="text-3xl font-semibold text-papyrus">Panel administrativo</h1><p className="mt-2 text-papyrus/55">Configuración general y acceso del equipo.</p></div>
-    <Card><CardHeader><CardTitle className="flex items-center gap-2"><ShieldCheck size={19} className="text-gold"/>Preferencias del negocio</CardTitle><CardDescription>Ajustes base para tu espacio de trabajo.</CardDescription></CardHeader><CardContent><form className="space-y-5" onChange={() => setSaved(false)} onSubmit={(e) => { e.preventDefault(); setSaved(true); }}>
-      <div className="grid gap-5 sm:grid-cols-2"><label className="space-y-2 text-sm font-medium">Nombre del negocio<Input defaultValue="Dharma Kadabra"/></label><label className="space-y-2 text-sm font-medium">Zona horaria<select className="field-dark h-10 px-3"><option>America/Tijuana</option><option>America/Mexico_City</option></select></label><label className="space-y-2 text-sm font-medium">Moneda<Input defaultValue="MXN · Peso mexicano"/></label><label className="space-y-2 text-sm font-medium">Correo de soporte<Input type="email" defaultValue="hola@dharmakadabra.mx"/></label></div>
-      <div className="space-y-3 rounded-xl bg-papyrus/[0.03] p-4"><label className="flex items-center justify-between gap-4 text-sm"><span><b className="block">Notificaciones de ventas</b><span className="text-xs text-papyrus/45">Recibe un aviso con cada nueva venta.</span></span><input type="checkbox" defaultChecked className="size-4 accent-gold"/></label><label className="flex items-center justify-between gap-4 border-t border-gold/14 pt-3 text-sm"><span><b className="block">Acceso de colaboradores</b><span className="text-xs text-papyrus/45">Permitir acceso a los módulos asignados.</span></span><input type="checkbox" defaultChecked className="size-4 accent-gold"/></label></div>
-      <div className="flex items-center justify-end gap-3">{saved && <span role="status" className="text-sm text-emerald-300">Cambios guardados en esta sesión</span>}<Button type="submit"><Save size={16}/>Guardar configuración</Button></div>
-    </form></CardContent></Card></div>;
+export const dynamic = "force-dynamic";
+
+const EMPTY_KPIS: AdminKpis = { monthRevenue: 0, weekAppointments: 0, lowStockCount: 0, lowStock: [] };
+
+/**
+ * Panel Admin · Solo Paola.
+ * KPIs globales (ingresos del mes, citas de la semana, productos con bajo
+ * stock) y gestión de usuarios con roles. El middleware ya protege la ruta;
+ * la página lo verifica de nuevo para defender por capas.
+ */
+async function loadAdminData(): Promise<{ kpis: AdminKpis; users: StaffUser[] }> {
+  try {
+    const now = new Date();
+    const monthStart = new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000);
+    const weekEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    const [monthPurchases, weekAppointments, lowStockRows, userRows] = await Promise.all([
+      prisma.purchase.findMany({ where: { purchasedAt: { gte: monthStart } }, include: { product: true } }),
+      prisma.appointment.count({ where: { date: { gte: now, lte: weekEnd } } }),
+      prisma.product.findMany({
+        where: { stock: { lte: 5 } },
+        orderBy: [{ stock: "asc" }, { name: "asc" }],
+        select: { id: true, name: true, stock: true },
+        take: 5,
+      }),
+      prisma.user.findMany({
+        orderBy: [{ active: "desc" }, { createdAt: "desc" }],
+        select: { id: true, name: true, email: true, role: true, active: true, createdAt: true },
+      }),
+    ]);
+
+    const monthRevenue = monthPurchases.reduce((sum, purchase) => sum + (purchase.product?.price ?? 0), 0);
+
+    return {
+      kpis: {
+        monthRevenue,
+        weekAppointments,
+        lowStockCount: lowStockRows.length,
+        lowStock: lowStockRows.map((row) => ({ id: row.id, name: row.name, stock: row.stock })),
+      },
+      users: userRows.map((row) => ({
+        ...row,
+        role: parseRole(row.role) ?? "COLLABORATOR",
+        createdAt: row.createdAt.toISOString(),
+      })),
+    };
+  } catch (error) {
+    console.error("Error al cargar el Panel Admin:", error);
+    return { kpis: EMPTY_KPIS, users: [] };
+  }
+}
+
+export default async function AdminPanelPage() {
+  const staff = await getStaffPrincipal();
+  if (!staff) redirect("/login?callbackUrl=/dashboard/admin");
+  if (staff.role !== "ADMIN") redirect(DASHBOARD_HOME_BY_ROLE[staff.role]);
+
+  const { kpis, users } = await loadAdminData();
+
+  return <AdminPanelClient initialUsers={users} initialKpis={kpis} />;
 }

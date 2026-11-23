@@ -13,11 +13,13 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED") // Recomendado para Vercel (migraciones seguras)
 }
 
+// Roles del equipo (RBAC). CLIENT se reserva para las cuentas de tienda,
+// que viven en `Customer` y usan su propia sesión.
 enum Role {
   ADMIN
   ENGINEER
-  SOCIAL_MEDIA
   COLLABORATOR
+  MARKETING
   CLIENT
 }
 
@@ -25,6 +27,12 @@ enum AppointmentStatus {
   PENDING
   CONFIRMED
   COMPLETED
+}
+
+// Modalidad obligatoria de cada cita: estudio presencial o videollamada.
+enum Modality {
+  IN_PERSON
+  VIDEO_CALL
 }
 
 // Cuentas del equipo (dashboard). Se autentican con NextAuth (Credentials).
@@ -36,6 +44,9 @@ model User {
   passwordHash String
   role         Role     @default(COLLABORATOR)
   active       Boolean  @default(true)
+  // Disponibilidad semanal del colaborador: [{ "weekday": 0-6, "hour": 9-18 }, ...]
+  weeklyAvailability Json             @default("[]")
+  assignedAppointments Appointment[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -47,16 +58,23 @@ model Appointment {
   clientPhone       String
   date              DateTime
   service           String
+  // Modalidad obligatoria: presencial en el estudio o videollamada (Zoom/Meet).
+  modality          Modality          @default(IN_PERSON)
   status            AppointmentStatus @default(PENDING)
   depositPaid       Boolean           @default(false)
   notificationsSent Json              @default("[]")
   customerId        String?
   customer          Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  // Colaborador responsable de la sesión (la agenda del rol COLLABORATOR
+  // solo muestra las citas que le fueron asignadas).
+  assigneeId        String?
+  assignee          User?             @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
   @@index([date, status])
   @@index([clientEmail, date])
+  @@index([assigneeId, date])
 }
 
 model Customer {
@@ -83,15 +101,19 @@ model Product {
   currency     String         @default("MXN")
   availability String         @default("available")
   published    Boolean        @default(false)
+  // Botón de visibilidad del panel de Marketing: si se apaga, la pieza
+  // desaparece de la tienda pública sin borrar el registro.
+  isVisible    Boolean        @default(true)
   stock        Int            @default(0)
   imageUrl     String
   category     String
   events       SpecialEvent[] @relation("EventProducts")
   purchases    Purchase[]
+  views        ProductView[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
-  @@index([category, published])
+  @@index([category, published, isVisible])
 }
 
 model SpecialEvent {
@@ -151,4 +173,31 @@ model TourVideo {
   ctaLink   String   @default("#coleccion")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Ajustes operativos del sistema (panel de Ingeniería).
+// `maintenance_mode` = "true" oculta temporalmente la tienda pública.
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// Analítica de Marketing · visitas a la tienda pública.
+model StoreVisit {
+  id        String   @id @default(cuid())
+  path      String   @default("/tienda")
+  visitedAt DateTime @default(now())
+
+  @@index([visitedAt])
+}
+
+// Analítica de Marketing · vistas de cada ficha de producto.
+model ProductView {
+  id        String   @id @default(cuid())
+  productId String
+  viewedAt  DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, viewedAt])
 }
