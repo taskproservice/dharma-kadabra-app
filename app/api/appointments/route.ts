@@ -4,6 +4,7 @@ import { services } from "../../../lib/data/services";
 import { SlotUnavailableError, findSlotConflict, withSlotLock } from "../../../lib/booking";
 import { prisma, type Appointment, type AppointmentModality, type AppointmentStatus } from "../../../lib/prisma";
 import { authorize } from "../../../lib/rbac";
+import { isTherapistRole } from "../../../lib/therapists";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,8 @@ const customerBookingSchema = z.object({
   modality: modalitySchema,
   dateTime: z.string().datetime(),
   serviceId: z.string().min(1),
+  /** FASE 1 · Terapeuta elegido en la Agenda Digital ("¿Con quién deseas tu sesión?"). */
+  assigneeId: z.string().trim().min(1).optional(),
 });
 
 /**
@@ -36,6 +39,28 @@ const staffBookingSchema = z.object({
   /** Colaborador responsable de la sesión (lo asigna el equipo). */
   assigneeId: z.string().trim().min(1).optional(),
 });
+
+/**
+ * Valida que el responsable sea una cuenta agendable (ADMIN o COLLABORATOR)
+ * y esté activa. Devuelve el id normalizado o un error 400.
+ */
+async function resolveAssignee(
+  rawAssigneeId: string | undefined,
+): Promise<{ ok: true; assigneeId: string | null } | { ok: false; response: NextResponse }> {
+  if (!rawAssigneeId) return { ok: true, assigneeId: null };
+
+  const assignee = await prisma.user.findUnique({
+    where: { id: rawAssigneeId },
+    select: { id: true, active: true, role: true },
+  });
+  if (!assignee || !assignee.active || !isTherapistRole(assignee.role)) {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "El colaborador asignado no está disponible." }, { status: 400 }),
+    };
+  }
+  return { ok: true, assigneeId: assignee.id };
+}
 
 function slotTakenResponse() {
   return NextResponse.json(
@@ -83,6 +108,11 @@ export async function POST(request: Request) {
     // Un cliente solo puede reservar a su nombre: el correo y la cuenta salen de la sesión.
     clientEmail = principal.email.toLowerCase();
     depositPrice = Math.round(service.price * DEPOSIT_RATE);
+
+    // El cliente elige a su terapeuta; se valida que sea una cuenta agendable activa.
+    const resolved = await resolveAssignee(parsed.data.assigneeId);
+    if (!resolved.ok) return resolved.response;
+    assigneeId = resolved.assigneeId;
   } else {
     const parsed = staffBookingSchema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: "Revisa tus datos y vuelve a intentarlo." }, { status: 400 });
@@ -94,14 +124,10 @@ export async function POST(request: Request) {
     modality = parsed.data.modality;
     clientEmail = parsed.data.clientEmail?.toLowerCase() ?? "";
 
-    // Si se asigna un responsable, debe existir y ser una cuenta activa.
-    if (parsed.data.assigneeId) {
-      const assignee = await prisma.user.findUnique({ where: { id: parsed.data.assigneeId }, select: { id: true, active: true } });
-      if (!assignee || !assignee.active) {
-        return NextResponse.json({ error: "El colaborador asignado no está disponible." }, { status: 400 });
-      }
-      assigneeId = assignee.id;
-    }
+    // Si se asigna un responsable, debe existir, estar activo y ser agendable.
+    const resolved = await resolveAssignee(parsed.data.assigneeId);
+    if (!resolved.ok) return resolved.response;
+    assigneeId = resolved.assigneeId;
   }
 
   if (Number.isNaN(date.getTime()) || date.getTime() <= Date.now()) return NextResponse.json({ error: "El horario debe ser una fecha futura." }, { status: 400 });
@@ -109,7 +135,7 @@ export async function POST(request: Request) {
   // Lista explícita de conflicto antes de escribir: ese horario exacto no lo
   // puede tener otro usuario hace apenas unos segundos.
   try {
-    const conflict = await findSlotConflict(date);
+    const conflict = await findSlotConflict(date, { assigneeId });
     if (conflict) return slotTakenResponse();
   } catch (error) {
     console.error("Error al verificar el horario:", error);
@@ -117,7 +143,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const appointment = await withSlotLock<Appointment>(date, null, (tx) =>
+    const appointment = await withSlotLock<Appointment>(date, { assigneeId }, (tx) =>
       tx.appointment.create({
         data: {
           clientName,

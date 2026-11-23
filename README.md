@@ -37,6 +37,14 @@ En desarrollo sin `DATABASE_URL` puedes definir `DEV_ADMIN_EMAIL` y `DEV_ADMIN_P
 - Las cuentas de clientes se sirven en `/mi-cuenta`; las contraseñas se derivan con scrypt y la cookie de sesión está firmada, es `HttpOnly` y `SameSite=Lax`.
 - Los productos y audios comprados se consultan desde `Purchase` y `AudioPurchase`. La integración de checkout deberá crear esos registros cuando se habilite la compra en línea.
 
+### Agenda Digital por terapeuta
+
+- `GET /api/collaborators` es **público** y devuelve el equipo agendable: cuentas activas con rol `ADMIN` (Paola) o `COLLABORATOR` (terapeutas). Solo expone `{ id, name, role, avatarUrl }`; el correo y el hash nunca salen del servidor. El retrato se resuelve por nombre desde `lib/data/collaborators.ts` (`lib/therapists.ts`).
+- `GET /api/availability?month=YYYY-MM&assigneeId=<id>` resta **solo** las citas (`PENDING`/`CONFIRMED`) de esa persona. Sin `assigneeId` (o con `assigneeId=all`) se usa la disponibilidad de toda la casa. Un `assigneeId` con formato inválido responde `400`.
+- `POST /api/appointments` acepta `assigneeId` tanto para clientes como para el equipo; se valida que sea una cuenta activa con rol agendable. `PATCH /api/appointments/:id` reevalúa el choque de horario dentro de la agenda del terapeuta original.
+- El conflicto de horario (`lib/booking.ts`) se evalúa por agenda: dos terapeutas pueden tener sesión a la misma hora, una misma persona no. La transacción `Serializable` toma además un advisory lock de PostgreSQL por `assigneeId`, de modo que dos reservas simultáneas del mismo terapeuta se serializan aunque la tabla todavía no tenga un índice único.
+- En la UI (`components/landing/digital-agenda.tsx` + `components/agenda/therapist-selector.tsx`), el paso «¿Con quién deseas tu sesión?» muestra radios con avatar arriba del calendario; el panel de reserva y el `BookingDialog` propagan el terapeuta elegido.
+
 ### Configuración de producción
 
 Configura `DATABASE_URL`, `NEXTAUTH_URL` (fuera de Vercel), `CRON_SECRET` y un secreto aleatorio largo en `AUTH_SECRET` (por ejemplo, genera uno con `openssl rand -base64 32`). Aplica el esquema con:

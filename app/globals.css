@@ -14,6 +14,8 @@
   --color-obsidian-elevated: #1E222B;
   --color-papyrus: #F4EFE6;
   --color-papyrus-light: #FCFAF5;
+  /* Superficie crema para tarjetas y campos sobre Papiro (BookingDialog). */
+  --color-papyrus-soft: #FCFAF5;
   --color-papyrus-warm: #EDE4D4;
   --color-gold: #C5A059;
   --color-gold-light: #D8BC7F;

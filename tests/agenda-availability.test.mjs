@@ -6,6 +6,7 @@ import {
   getAvailableSlotsForDate,
   findFirstAvailableDate,
   isDateAvailable,
+  parseAssigneeId,
 } from "../lib/agenda-availability.ts";
 
 /** Instante local "2026-11-22T10:00" en el TZ del proceso, como ISO. */
@@ -52,4 +53,31 @@ test("findFirstAvailableDate devuelve null cuando no quedan horarios en el mes",
   const blocked = [0, 1, 2].flatMap((dayOffset) => [9, 10, 11, 12, 13, 14, 15, 16, 17].map((h) => localIso(dayOffset, h)));
   assert.equal(getBlockedSlotKeysForDate("2026-11-22", blocked).size, 9);
   assert.equal(findFirstAvailableDate("2026-11", "2026-11-22", blocked, new Date(2026, 10, 22, 8, 0, 0)), "2026-11-25");
+});
+
+/* -------------------------------------------------------------------------- */
+/* FASE 1 · Disponibilidad por terapeuta                                       */
+/* -------------------------------------------------------------------------- */
+
+test("parseAssigneeId: sin parámetro o 'all' = disponibilidad de toda la casa", () => {
+  assert.equal(parseAssigneeId(null), null);
+  assert.equal(parseAssigneeId(""), null);
+  assert.equal(parseAssigneeId("all"), null);
+  assert.equal(parseAssigneeId("  all  "), null);
+});
+
+test("parseAssigneeId: acepta ids de Prisma y rechaza formatos inválidos", () => {
+  assert.equal(parseAssigneeId("clx123abc_-4"), "clx123abc_-4");
+  assert.equal(parseAssigneeId("  cmpaw8k9p0000abcd  "), "cmpaw8k9p0000abcd");
+  assert.equal(parseAssigneeId("../../etc/passwd"), undefined);
+  assert.equal(parseAssigneeId("id con espacios"), undefined);
+});
+
+test("cada terapeuta calcula su propia parrilla a partir de sus citas", () => {
+  // Paola tiene cita a las 10:00; Lucía no tiene nada ese día.
+  const paolaBlocked = [localIso(0, 10)];
+  const luciaBlocked = [];
+
+  assert.equal(getAvailableSlotsForDate("2026-11-22", paolaBlocked, new Date(2026, 10, 22, 8, 0, 0)).includes("10:00"), false);
+  assert.equal(getAvailableSlotsForDate("2026-11-22", luciaBlocked, new Date(2026, 10, 22, 8, 0, 0)).includes("10:00"), true);
 });
