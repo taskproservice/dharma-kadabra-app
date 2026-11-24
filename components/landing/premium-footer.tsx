@@ -54,7 +54,14 @@ export function PremiumFooter() {
   };
 
   return (
-    <footer className="relative border-t border-[#C5A059]/25 bg-[#1E1914] px-5 pb-10 pt-16 text-[#F5F2EB] sm:px-8">
+    <footer
+      className="relative isolate overflow-hidden border-t border-[#C5A059]/25 px-5 pb-10 pt-14 text-[#F5F2EB] sm:px-8"
+      style={{
+        backgroundImage: "linear-gradient(rgba(22, 18, 14, .88), rgba(22, 18, 14, .94)), url('/images/runas/runas-sobre-madera.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center 55%",
+      }}
+    >
       {/* Filete de oro antiguo: la marca se cierra con una línea de luz. */}
       <span
         aria-hidden="true"

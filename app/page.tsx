@@ -9,9 +9,10 @@ import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
-import cuarzoClaro from "../public/images/productos/cuarzo-claro.jpg";
 import amuletoLunar from "../public/images/productos/amuleto-lunar.jpg";
-import runasLino from "../public/images/runas/runas-sobre-lino.jpg";
+import manuscritosPalma from "../public/images/akashic/manuscritos-palma.jpg";
+import bosqueLuz from "../public/images/akashic/bosque-luz.jpg";
+import meditacionAmanecer from "../public/images/akashic/meditacion-amanecer.jpg";
 import piedrasTerciopelo from "../public/images/runas/piedras-terciopelo.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { RitualEventsSection } from "../components/landing/ritual-events";
@@ -133,37 +134,34 @@ export default async function HomePage() {
 
       <LunarBanner />
 
-      {/* Manifiesto · papiro, mucho aire y palabras en oro antiguo */}
+      {/* Manifiesto editorial: declaración y fotografía a sangre en dos columnas */}
       <section
         id="manifiesto"
-        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 pb-20 pt-16 sm:px-8 lg:pb-28 lg:pt-24"
+        className="scroll-mt-24 overflow-hidden bg-[#F5F2EB]"
       >
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 size-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_70%)] blur-3xl"
-        />
-        <FlowStone
-          src={cuarzoClaro}
-          position="-right-28 top-8 hidden sm:block sm:-right-16 lg:right-4 xl:right-16"
-          size="size-32 sm:size-40 lg:size-48"
-          renderWidth={192}
-          opacity="opacity-[0.20]"
-          frame="blob"
-          speed="slow"
-          rotate="rotate-6"
-        />
-        <FlowCrystal className="left-[8%] top-24 hidden size-3 lg:block" />
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <div className="flex justify-center">
-            <Eyebrow center>Manifiesto</Eyebrow>
+        <div className="grid min-h-[390px] lg:min-h-[440px] lg:grid-cols-2">
+          <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:px-[max(3rem,calc((100vw-80rem)/2))] lg:py-20 lg:pr-14 xl:pl-[max(5rem,calc((100vw-80rem)/2))]">
+            <Eyebrow>Manifiesto</Eyebrow>
+            <p className="mt-7 max-w-2xl font-display text-[2rem] leading-[1.15] text-[#2C241B] sm:text-4xl lg:text-[2.65rem]">
+              Unimos la sabiduría ancestral con herramientas cotidianas, para que cultives una relación{" "}
+              <em className="italic text-[#6B4E1E]">más consciente</em>{" "}
+              contigo y con el mundo que te rodea.
+            </p>
           </div>
-          <p className="mt-10 font-display text-3xl leading-[1.32] text-sanctuary-ink sm:text-4xl lg:text-[3.2rem]">
-            Unimos la sabiduría espiritual ancestral con herramientas cotidianas
-            para que cultives una relación{" "}
-            <em className="italic text-sanctuary-gold-leaf">más consciente</em>{" "}
-            contigo y con el mundo que te rodea.
-          </p>
-          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-sanctuary-gold/70 to-transparent" />
+          <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px] lg:min-h-full">
+            <Image
+              src={manuscritosPalma}
+              alt="Manuscritos antiguos iluminados por la luz suave de una ventana"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              quality={88}
+              className="object-cover object-center"
+            />
+            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#4B3925]/15 via-transparent to-[#2C241B]/10" />
+            <p className="absolute bottom-8 right-8 max-w-48 border-l border-[#F5F2EB]/80 pl-4 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-white drop-shadow-md sm:bottom-12 sm:right-12">
+              Tradición con propósito para la vida real
+            </p>
+          </div>
         </div>
       </section>
 
@@ -257,7 +255,7 @@ export default async function HomePage() {
       {/* Equipo — retratos editoriales sobre madera */}
       <section
         id="equipo"
-        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-16 sm:px-8 lg:py-24"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-12 sm:px-8 lg:py-16"
       >
         <FlowStone
           src={amuletoLunar}
@@ -283,20 +281,20 @@ export default async function HomePage() {
               cálido para crecer.
             </p>
           </div>
-          <div className="mt-14 grid gap-5 sm:grid-cols-3 lg:gap-6">
+          <div className="mt-9 grid gap-4 sm:grid-cols-3 lg:gap-5">
             {collaborators.map((member, index) => (
               /* Tarjeta Premium Orgánico: blanca, texto centrado, retrato ovalado
                  con bordes suaves y sombra muy ligera. */
               <article
                 key={member.id}
-                className="group rounded-3xl border border-stone-200 bg-white p-6 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] lg:p-8"
+                className="group rounded-3xl border border-[#E6DFD1] bg-[#F0EBE0]/75 p-6 text-center shadow-[0_6px_22px_rgba(44,36,27,.045)] transition duration-300 hover:-translate-y-1 hover:bg-[#F5F2EB] hover:shadow-[0_12px_30px_rgba(0,0,0,0.07)] lg:p-8"
               >
                 <span className="font-display text-sm text-bronze">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante.
                     Ovalado con filo blanco y sombra suave. */}
-                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.10)]">
+                <div className="relative mx-auto mt-5 aspect-square w-[62%] overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.10)]">
                   <Image
                     src={member.photoUrl}
                     alt={`Retrato de ${member.name}`}
@@ -305,8 +303,8 @@ export default async function HomePage() {
                     className="object-cover grayscale-[.25] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                   />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-[#2C241B]">{member.name}</h3>
-                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-ink-muted">
+                <h3 className="mt-6 font-display text-2xl text-[#805F2B]">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#514333]">
                   {member.specialty}
                 </p>
               </article>
@@ -315,45 +313,44 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Pilares — información general sobre papiro profundo */}
+      {/* Refugio: mitad editorial oscura y mitad tarjetas de pilares */}
       <section
         id="nosotros"
-        className="sanctuary-leaf sanctuary-leaf-deep relative scroll-mt-24 overflow-hidden border-y border-sanctuary-border/70 px-5 py-16 sm:px-8 lg:py-24"
+        className="scroll-mt-24 overflow-hidden bg-[#F0EBE0]"
       >
-        <FlowStone
-          src={runasLino}
-          position="-left-28 top-1/2 hidden -translate-y-1/2 sm:block lg:-left-16 xl:left-0"
-          size="size-40 lg:size-52"
-          renderWidth={208}
-          opacity="opacity-[0.16]"
-          frame="pebble"
-          speed="slow"
-          rotate="rotate-12"
-        />
-        <div className="relative z-10 mx-auto max-w-7xl">
-          <div className="max-w-2xl">
-            <Eyebrow>Información general</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
-              Un refugio para tu{" "}
-              <em className="italic text-sanctuary-gold-ink">bienestar.</em>
-            </h2>
+        <div className="grid lg:min-h-[430px] lg:grid-cols-2">
+          <div className="relative flex min-h-[330px] items-end overflow-hidden px-7 py-10 sm:px-12 sm:py-14 lg:min-h-[430px] lg:px-16 lg:py-16">
+            <Image
+              src={bosqueLuz}
+              alt="Luz del amanecer entre árboles de un bosque"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,rgba(17,24,16,.82),rgba(24,31,20,.57)),linear-gradient(0deg,rgba(16,20,14,.52),transparent)]" />
+            <div className="relative z-10 max-w-lg">
+              <p className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.3em] text-[#D8BC7F] before:h-px before:w-8 before:bg-[#D8BC7F]/80">Tu bienestar, nuestro propósito</p>
+              <h2 className="mt-5 font-display text-4xl leading-[1.05] text-[#FCFAF5] sm:text-5xl lg:text-[3.4rem]">
+                Un refugio para tu <em className="italic text-[#D8BC7F]">bienestar.</em>
+              </h2>
+              <p className="mt-5 max-w-md text-sm leading-7 text-[#F5F2EB]/90">
+                Tradición, herramientas y personas que te acompañan en cada paso.
+              </p>
+            </div>
           </div>
-          <div className="mt-16 grid gap-5 md:grid-cols-3">
+          <div className="flex flex-col justify-center gap-3 px-5 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
             {pillars.map(({ icon: Icon, title, text }) => (
-              /* Pilar · tarjeta blanca Premium Orgánico con acento dorado sutil */
               <article
                 key={title}
-                className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] lg:p-10"
+                className="flex items-start gap-4 rounded-2xl border border-[#E4DDCF] bg-white px-5 py-5 shadow-[0_5px_18px_rgba(44,36,27,.045)] sm:gap-5 sm:px-6"
               >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-gold/10 blur-2xl transition duration-300 group-hover:bg-gold/20"
-                />
-                <span className="relative grid size-11 place-items-center rounded-full border border-gold/40 bg-gold/10">
-                  <Icon size={22} strokeWidth={1.25} className="text-bronze" />
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#F5F2EB] text-[#805F2B]">
+                  <Icon size={21} strokeWidth={1.35} aria-hidden="true" />
                 </span>
-                <h3 className="relative mt-8 font-display text-2xl text-[#2C241B]">{title}</h3>
-                <p className="relative mt-4 text-sm leading-7 text-[#2C241B]">{text}</p>
+                <div>
+                  <h3 className="font-display text-xl text-[#2C241B] sm:text-2xl">{title}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-[#5B5143] sm:text-sm">{text}</p>
+                </div>
               </article>
             ))}
           </div>
@@ -363,10 +360,10 @@ export default async function HomePage() {
       {/* Beneficios · layout editorial con filetes finos */}
       <section
         id="beneficios"
-        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-16 sm:px-8 lg:py-24"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-10 sm:px-8 lg:py-14"
       >
         <FlowCrystal className="right-[10%] top-24 hidden size-4 lg:block" />
-        <div className="relative z-10 mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12">
           <div>
             <Eyebrow>Tu espacio, a tu manera</Eyebrow>
             <h2 className="mt-6 font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
@@ -382,7 +379,7 @@ export default async function HomePage() {
             {benefits.map((benefit, index) => (
               <li
                 key={benefit.title}
-                className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-sanctuary-border py-7 sm:grid-cols-[4rem_1fr_1fr]"
+                className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-sanctuary-border py-5 sm:grid-cols-[4rem_1fr_1fr]"
               >
                 <span className="font-display text-lg italic text-sanctuary-gold-ink">
                   {String(index + 1).padStart(2, "0")}
@@ -397,43 +394,34 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Prueba gratis — tarjeta marfil con sombra cálida */}
+      {/* Prueba gratis — cierre panorámico y luminoso antes del footer */}
       <section
         id="prueba"
-        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-12 sm:px-8 lg:py-16"
+        className="relative isolate scroll-mt-24 overflow-hidden px-5 py-12 text-center sm:px-8 sm:py-14 lg:py-16"
       >
-        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden rounded-3xl border border-stone-200 bg-white px-6 py-10 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:px-16 sm:py-14">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_70%)] blur-2xl"
-          />
-          <span
-            aria-hidden="true"
-            className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-sanctuary-gold shadow-[0_0_12px_rgba(197,160,89,.6)]"
-          />
-          <div className="relative flex justify-center">
-            <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
-          </div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#2C241B] sm:text-6xl">
-            Regálate un momento para{" "}
-            <em className="italic text-[#C5A059]">reconectar.</em>
+        <Image
+          src={meditacionAmanecer}
+          alt="Silueta meditando al amanecer en un paisaje cálido"
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover object-center"
+        />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[#F5F2EB]/55" />
+        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-3">
+          <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
+          <h2 className="mx-auto max-w-4xl font-display text-4xl leading-[1.05] text-[#2C241B] sm:text-5xl lg:text-[3.4rem]">
+            Regálate un momento para <em className="italic text-[#6B4E1E]">reconectar.</em>
           </h2>
-          <p className="relative mx-auto max-w-lg text-base leading-7 text-[#2C241B]">
+          <p className="mx-auto max-w-lg text-sm leading-6 text-[#2C241B]">
             Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.
           </p>
           <Link
             href="/mi-cuenta"
-            className="group relative inline-flex items-center gap-3 rounded-full bg-sanctuary-gold px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-ink shadow-[0_14px_30px_-16px_rgba(197,160,89,.75)] transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bronze"
+            className="group mt-2 inline-flex items-center gap-3 rounded-full bg-[#C5A059] px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.24em] text-[#2C241B] shadow-[0_14px_30px_-16px_rgba(197,160,89,.75)] transition hover:bg-[#D8BC7F] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2C241B]"
           >
-            Comenzar Prueba Gratis{" "}
-            <ArrowUpRight
-              size={15}
-              className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
+            Comenzar prueba gratis{" "}
+            <ArrowUpRight size={14} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-ink-muted/80">
-            COMIENZA CUANDO TU ALMA TE LO INDIQUE
-          </p>
         </div>
       </section>
 
