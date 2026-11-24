@@ -5,9 +5,23 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services, formatSessionPrice } from "../../lib/data/services";
 import runasMadera from "../../public/images/runas/runas-sobre-madera.jpg";
-import altarVela from "../../public/images/akashic/libro-vela.jpg";
+import libroVela from "../../public/images/akashic/libro-vela.jpg";
 
-const serviceImages = [runasMadera, altarVela];
+/**
+ * Fotografía real de cada servicio, asociada por `id` (no por posición) para que
+ * el fondo siempre corresponda: el libro con la vela para los Registros
+ * Akáshicos y las piedras de runas para la lectura de Runas.
+ */
+const serviceImages: Record<string, { src: typeof runasMadera; alt: string }> = {
+  "registros-akashicos": {
+    src: libroVela,
+    alt: "Libro antiguo abierto con un mapa celeste junto a una vela encendida",
+  },
+  "lectura-de-runas": {
+    src: runasMadera,
+    alt: "Piedras de runas grabadas dispuestas sobre una mesa de madera oscura",
+  },
+};
 
 const eyebrow =
   "mb-5 flex items-center gap-4 text-[11px] font-semibold uppercase tracking-[.35em] text-sanctuary-gold-ink before:h-px before:w-10 before:bg-sanctuary-gold/70";
@@ -37,20 +51,25 @@ export function ServicesSection() {
           {services.map((service, index) => (
             <article
               key={service.id}
-              className="group relative isolate flex min-h-[350px] flex-col overflow-hidden rounded-[1.75rem] bg-[#30271E] text-white shadow-[0_18px_46px_rgba(44,36,27,.16)] sm:min-h-[390px]"
+              className="group relative isolate flex min-h-[350px] flex-col overflow-hidden rounded-[1.75rem] bg-[#241E18] text-white shadow-[0_18px_46px_rgba(44,36,27,.16)] sm:min-h-[390px]"
             >
               <Image
-                src={serviceImages[index % serviceImages.length]}
-                alt={index === 0 ? "Runas de piedra sobre una mesa de madera oscura" : "Libro antiguo abierto junto a una vela encendida"}
+                src={serviceImages[service.id].src}
+                alt={serviceImages[service.id].alt}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 quality={88}
-                className="-z-20 object-cover transition duration-700 group-hover:scale-[1.04]"
+                className="-z-20 object-cover object-center transition duration-700 group-hover:scale-[1.04]"
               />
-              <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,17,14,.2)_0%,rgba(20,17,14,.35)_35%,rgba(20,17,14,.9)_100%)]" />
+              {/* Degradado oscuro sobre la fotografía: el texto marfil y dorado
+                  se lee con contraste AA en cualquier punto de la imagen. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-transparent"
+              />
 
               <div className="flex items-center justify-between px-6 pt-6 sm:px-8 sm:pt-8">
-                <span className="font-display text-3xl text-[#E3C57C]" aria-hidden="true">{service.symbol}</span>
+                <span className="rune-glyph text-3xl text-[#E3C57C]" aria-hidden="true">{service.symbol}</span>
                 <span className="rounded-full border border-white/40 bg-black/15 px-3 py-1.5 text-[9px] font-medium uppercase tracking-[.2em] text-white/90 backdrop-blur-sm">
                   0{index + 1} · {service.duration}
                 </span>

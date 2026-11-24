@@ -2,7 +2,7 @@
 
 import { Children, useCallback, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export type HeroSlide = {
   eyebrow: string;
@@ -76,7 +76,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       id="inicio"
       aria-roledescription="carrusel"
       aria-label="Dharma Kadabra"
-      className="relative flex min-h-[92svh] w-full flex-col overflow-hidden bg-gradient-to-b from-[#F5F2EB] to-[#FCFAF5] text-[#2C241B] lg:h-screen lg:max-h-[980px] lg:min-h-[720px]"
+      className="relative flex min-h-[92svh] w-full flex-col overflow-hidden bg-[#141210] text-[#F5F2EB] lg:h-screen lg:max-h-[980px] lg:min-h-[720px]"
       onKeyDown={(event) => {
         if (event.key === "ArrowRight") goTo(active + 1);
         if (event.key === "ArrowLeft") goTo(active - 1);
@@ -97,12 +97,13 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
         );
       })}
 
-      {/* Capa (overlay) papiro translúcida sobre la fotografía: aclara el banner y garantiza legibilidad del texto café oscuro */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F5F2EB]/85 via-[#F5F2EB]/72 to-[#F5F2EB]/55" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#FCFAF5]/80 to-transparent" />
+      {/* Velo fotográfico oscuro: como en la referencia, la imagen respira a la
+          derecha mientras el texto marfil se lee sobre el degradado izquierdo. */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(12,10,8,.90)_0%,rgba(18,15,11,.72)_42%,rgba(18,15,11,.30)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0C0A08]/85 to-transparent" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(80px,12vh,130px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(80px,12vh,130px)] bg-gradient-to-b from-transparent to-[#12100D]/85"
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8 lg:pt-28">
@@ -112,17 +113,17 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
             <div key={active}>
               <div className="hero-rise flex items-center gap-4">
                 <span className="h-px w-12 bg-gradient-to-r from-[#C5A059] to-[#C5A059]/20" aria-hidden="true" />
-                <p className="text-[10px] font-semibold uppercase tracking-[.42em] text-bronze sm:text-[11px]">
+                <p className="text-[10px] font-semibold uppercase tracking-[.42em] text-[#D8BC7F] sm:text-[11px]">
                   {current.eyebrow}
                 </p>
               </div>
-              <h1 className="hero-rise mt-7 font-display text-[clamp(2.7rem,7vw,5.2rem)] font-normal leading-[1.02] tracking-[-.015em] text-[#2C241B] [animation-delay:120ms]">
+              <h1 className="hero-rise mt-7 font-display text-[clamp(2.7rem,7vw,5.2rem)] font-normal leading-[1.02] tracking-[-.015em] text-[#FBF8F1] [animation-delay:120ms]">
                 {current.title}{" "}
-                <em className="relative font-display italic text-[#C5A059]">
+                <em className="relative font-display italic text-[#D8BC7F]">
                   {current.accent}
                 </em>
               </h1>
-              <p className="hero-rise mt-7 max-w-xl text-[15px] font-normal leading-7 text-[#2C241B]/85 [animation-delay:240ms] sm:text-lg sm:leading-8">
+              <p className="hero-rise mt-7 max-w-xl text-[15px] font-normal leading-7 text-[#F5F2EB]/80 [animation-delay:240ms] sm:text-lg sm:leading-8">
                 {current.text}
               </p>
             </div>
@@ -143,10 +144,10 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       {/* Controles inferiores */}
       <div className="relative z-10 mt-6">
         <div className="mx-auto flex max-w-[1500px] items-center gap-5 px-5 pb-6 sm:px-8">
-          <p className="font-display text-sm tabular-nums text-[#2C241B]" aria-live="polite">
-            <span className="font-semibold text-bronze">{pad(active + 1)}</span>
-            <span className="mx-2 text-[#2C241B]/50">/</span>
-            <span className="text-[#2C241B]/70">{pad(total)}</span>
+          <p className="font-display text-sm tabular-nums text-[#F5F2EB]" aria-live="polite">
+            <span className="font-semibold text-[#D8BC7F]">{pad(active + 1)}</span>
+            <span className="mx-2 text-[#F5F2EB]/40">/</span>
+            <span className="text-[#F5F2EB]/65">{pad(total)}</span>
           </p>
           <div className="hidden max-w-md flex-1 items-center gap-2.5 sm:flex">
             {slides.map((slide, index) => (
@@ -158,7 +159,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
                 aria-current={index === active}
                 className="group relative h-5 flex-1"
               >
-                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#2C241B]/15 transition group-hover:bg-[#2C241B]/35" />
+                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#F5F2EB]/20 transition group-hover:bg-[#F5F2EB]/45" />
                 <span className={`absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#C5A059] transition-[width] duration-700 ${index === active ? "w-full" : "w-0"}`} />
               </button>
             ))}
@@ -168,7 +169,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
               type="button"
               onClick={() => goTo(active - 1)}
               aria-label="Diapositiva anterior"
-              className="grid size-10 place-items-center rounded-full border border-stone-300 bg-white/90 text-[#2C241B] shadow-[0_4px_14px_rgba(44,36,27,0.06)] transition hover:border-[#C5A059] hover:text-bronze"
+              className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/25 bg-white/10 text-[#F5F2EB] backdrop-blur-sm transition hover:border-[#C5A059] hover:bg-white/20 hover:text-[#D8BC7F]"
             >
               <ArrowLeft size={15} />
             </button>
@@ -176,7 +177,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
               type="button"
               onClick={() => goTo(active + 1)}
               aria-label="Diapositiva siguiente"
-              className="grid size-10 place-items-center rounded-full border border-stone-300 bg-white/90 text-[#2C241B] shadow-[0_4px_14px_rgba(44,36,27,0.06)] transition hover:border-[#C5A059] hover:text-bronze"
+              className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/25 bg-white/10 text-[#F5F2EB] backdrop-blur-sm transition hover:border-[#C5A059] hover:bg-white/20 hover:text-[#D8BC7F]"
             >
               <ArrowRight size={15} />
             </button>
@@ -187,42 +188,42 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
   );
 }
 
-/** Marca editorial flotante del hero: logo y tagline en versión clara. */
+/**
+ * Marca editorial del hero: cristal muy sutil (sin cajas blancas sólidas) con
+ * únicamente el emblema oficial y los textos dorados de la casa.
+ */
 export function HeroMedallion() {
   return (
-    <div className="relative mx-auto w-full max-w-[360px] rounded-3xl border border-stone-200/90 bg-[#FCFAF5]/90 p-7 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-sm sm:max-w-[400px] sm:p-9">
-        <div className="relative mx-auto w-fit">
-          <span aria-hidden="true" className="glow-pulse absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_65%)] blur-xl" />
-          <Image
-            src="/images/logo.png"
-            alt="Emblema de Dharma Kadabra: talismán de geometría sagrada"
-            width={150}
-            height={150}
-            sizes="132px"
-            priority
-            className="relative mx-auto h-[112px] w-[112px] object-contain drop-shadow-[0_6px_18px_rgba(197,160,89,0.35)] sm:h-[124px] sm:w-[124px]"
-          />
-        </div>
+    <div className="relative mx-auto w-full max-w-[360px] rounded-3xl border border-white/15 bg-white/10 p-7 text-center shadow-[0_18px_50px_-24px_rgba(0,0,0,.55)] backdrop-blur-sm sm:max-w-[400px] sm:p-9">
+      <div className="relative mx-auto w-fit">
+        <span
+          aria-hidden="true"
+          className="glow-pulse absolute inset-[-45%] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.30),transparent_65%)] blur-xl"
+        />
+        <Image
+          src="/images/logo.png"
+          alt="Emblema de Dharma Kadabra: talismán de geometría sagrada"
+          width={150}
+          height={150}
+          sizes="132px"
+          priority
+          className="relative mx-auto h-[112px] w-[112px] bg-transparent object-contain drop-shadow-[0_6px_18px_rgba(197,160,89,0.35)] sm:h-[124px] sm:w-[124px]"
+        />
+      </div>
 
-        <p className="relative mt-5 font-display text-[26px] leading-[1.05] tracking-[.08em] text-[#2C241B] sm:text-[30px]">
-          DHARMA
-          <br />
-          <span className="text-[#C5A059]">KADABRA</span>
-        </p>
-        <p className="relative mx-auto mt-3 max-w-[15rem] text-[8.5px] font-semibold uppercase leading-relaxed tracking-[.24em] text-[#2C241B]/70">
-          Talismanes maestros
-          <br />
-          Registros akáshicos
-        </p>
-        <p className="relative mt-5 font-display text-[15px] italic text-bronze sm:text-base">
-          Conecta · Transforma · Armoniza
-        </p>
-
-        <span aria-hidden="true" className="relative mt-6 flex items-center justify-center gap-2 text-[#C5A059]">
-          <Sparkles size={11} />
-          <span className="h-px w-10 bg-[#C5A059]/50" />
-          <Sparkles size={11} />
-        </span>
+      <p className="relative mt-5 font-display text-[26px] leading-[1.05] tracking-[.08em] text-[#EFD9A4] sm:text-[30px]">
+        DHARMA
+        <br />
+        <span className="text-[#C5A059]">KADABRA</span>
+      </p>
+      <p className="relative mx-auto mt-3 max-w-[15rem] text-[8.5px] font-semibold uppercase leading-relaxed tracking-[.24em] text-[#E3C57C]/80">
+        Talismanes maestros
+        <br />
+        Registros akáshicos
+      </p>
+      <p className="relative mt-5 font-display text-[15px] italic text-[#D8BC7F] sm:text-base">
+        Conecta · Transforma · Armoniza
+      </p>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import amuletoLunar from "../public/images/productos/amuleto-lunar.jpg";
-import manuscritosPalma from "../public/images/akashic/manuscritos-palma.jpg";
+import sombraPlanta from "../public/images/manifiesto/sombra-planta.jpg";
 import bosqueLuz from "../public/images/akashic/bosque-luz.jpg";
 import meditacionAmanecer from "../public/images/akashic/meditacion-amanecer.jpg";
 import piedrasTerciopelo from "../public/images/runas/piedras-terciopelo.jpg";
@@ -96,7 +96,7 @@ export default async function HomePage() {
     <main className="relative bg-sanctuary-parchment text-sanctuary-ink">
       <PublicHeader />
 
-      {/* Hero luminoso Premium Orgánico: degradado de papiro a marfil */}
+      {/* Hero fotográfico oscuro (como la referencia) con el cristal de marca */}
       <HeroCarousel
         slides={slides}
         medallion={<HeroMedallion />}
@@ -139,8 +139,9 @@ export default async function HomePage() {
         id="manifiesto"
         className="scroll-mt-24 overflow-hidden bg-[#F5F2EB]"
       >
-        <div className="grid min-h-[390px] lg:min-h-[440px] lg:grid-cols-2">
-          <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:px-[max(3rem,calc((100vw-80rem)/2))] lg:py-20 lg:pr-14 xl:pl-[max(5rem,calc((100vw-80rem)/2))]">
+        <div className="grid min-h-[390px] grid-cols-1 lg:min-h-[520px] lg:grid-cols-2">
+          {/* Columna izquierda · declaración editorial */}
+          <div className="flex flex-col justify-center px-6 py-14 sm:px-10 lg:py-20 lg:pl-[max(3rem,calc((100vw-80rem)/2))] lg:pr-14 xl:pl-[max(5rem,calc((100vw-80rem)/2))]">
             <Eyebrow>Manifiesto</Eyebrow>
             <p className="mt-7 max-w-2xl font-display text-[2rem] leading-[1.15] text-[#2C241B] sm:text-4xl lg:text-[2.65rem]">
               Unimos la sabiduría ancestral con herramientas cotidianas, para que cultives una relación{" "}
@@ -148,17 +149,21 @@ export default async function HomePage() {
               contigo y con el mundo que te rodea.
             </p>
           </div>
-          <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px] lg:min-h-full">
+          {/* Columna derecha · sombra botánica a sangre, a todo el alto */}
+          <div className="relative min-h-[320px] w-full overflow-hidden bg-[#E7DECB] sm:min-h-[420px] lg:min-h-full">
             <Image
-              src={manuscritosPalma}
-              alt="Manuscritos antiguos iluminados por la luz suave de una ventana"
+              src={sombraPlanta}
+              alt="Sombra de hojas de palma sobre un muro de cal en tonos beige"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               quality={88}
-              className="object-cover object-center"
+              className="h-full w-full object-cover object-center"
             />
-            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#4B3925]/15 via-transparent to-[#2C241B]/10" />
-            <p className="absolute bottom-8 right-8 max-w-48 border-l border-[#F5F2EB]/80 pl-4 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-white drop-shadow-md sm:bottom-12 sm:right-12">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(245,242,235,.45)_0%,rgba(245,242,235,.06)_32%,transparent_100%)]"
+            />
+            <p className="absolute bottom-6 right-5 max-w-52 rounded-sm border-l-2 border-[#C5A059] bg-[#F5F2EB]/80 px-4 py-3 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-[#3A2E1E] backdrop-blur-sm sm:bottom-10 sm:right-10">
               Tradición con propósito para la vida real
             </p>
           </div>
@@ -283,27 +288,30 @@ export default async function HomePage() {
           </div>
           <div className="mt-9 grid gap-4 sm:grid-cols-3 lg:gap-5">
             {collaborators.map((member, index) => (
-              /* Tarjeta Premium Orgánico: blanca, texto centrado, retrato ovalado
-                 con bordes suaves y sombra muy ligera. */
+              /* Tarjeta Premium Orgánico: superficie marfil, retrato circular de
+                 tamaño uniforme y textos centrados debajo. */
               <article
                 key={member.id}
-                className="group rounded-3xl border border-[#E6DFD1] bg-[#F0EBE0]/75 p-6 text-center shadow-[0_6px_22px_rgba(44,36,27,.045)] transition duration-300 hover:-translate-y-1 hover:bg-[#F5F2EB] hover:shadow-[0_12px_30px_rgba(0,0,0,0.07)] lg:p-8"
+                className="group flex flex-col items-center rounded-3xl border border-[#E6DFD1] bg-white/80 p-6 text-center shadow-[0_6px_22px_rgba(44,36,27,.045)] transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_12px_30px_rgba(0,0,0,0.07)] lg:p-8"
               >
-                <span className="font-display text-sm text-bronze">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante.
-                    Ovalado con filo blanco y sombra suave. */}
-                <div className="relative mx-auto mt-5 aspect-square w-[62%] overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.10)]">
+                {/* Retrato uniforme: mismo diámetro en las tres tarjetas */}
+                <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.12)] sm:h-44 sm:w-44 lg:h-48 lg:w-48">
                   <Image
                     src={member.photoUrl}
                     alt={`Retrato de ${member.name}`}
                     fill
-                    sizes="(min-width: 1024px) 18vw, 60vw"
-                    className="object-cover grayscale-[.25] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                    sizes="192px"
+                    className="object-cover object-center grayscale-[.2] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                   />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-[#805F2B]">{member.name}</h3>
+                {/* Número y nombre en una sola fila flex, siempre alineados */}
+                <div className="mt-6 flex w-full items-center justify-center gap-3">
+                  <span className="font-display text-sm italic text-[#A98343]" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span aria-hidden="true" className="h-px w-6 bg-[#C5A059]/45" />
+                  <h3 className="font-display text-2xl text-[#805F2B]">{member.name}</h3>
+                </div>
                 <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#514333]">
                   {member.specialty}
                 </p>
@@ -319,15 +327,18 @@ export default async function HomePage() {
         className="scroll-mt-24 overflow-hidden bg-[#F0EBE0]"
       >
         <div className="grid lg:min-h-[430px] lg:grid-cols-2">
-          <div className="relative flex min-h-[330px] items-end overflow-hidden px-7 py-10 sm:px-12 sm:py-14 lg:min-h-[430px] lg:px-16 lg:py-16">
+          <div className="relative flex min-h-[330px] items-end overflow-hidden bg-[#3B4234] px-7 py-10 sm:px-12 sm:py-14 lg:min-h-[430px] lg:px-16 lg:py-16">
             <Image
               src={bosqueLuz}
-              alt="Luz del amanecer entre árboles de un bosque"
+              alt="Luz del amanecer entre los árboles de un bosque"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
+              className="h-full w-full object-cover"
             />
-            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,rgba(17,24,16,.82),rgba(24,31,20,.57)),linear-gradient(0deg,rgba(16,20,14,.52),transparent)]" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(30,36,26,.90)_0%,rgba(43,50,37,.70)_55%,rgba(48,56,42,.55)_100%),linear-gradient(0deg,rgba(22,26,19,.72)_0%,transparent_65%)]"
+            />
             <div className="relative z-10 max-w-lg">
               <p className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.3em] text-[#D8BC7F] before:h-px before:w-8 before:bg-[#D8BC7F]/80">Tu bienestar, nuestro propósito</p>
               <h2 className="mt-5 font-display text-4xl leading-[1.05] text-[#FCFAF5] sm:text-5xl lg:text-[3.4rem]">
@@ -404,9 +415,12 @@ export default async function HomePage() {
           alt="Silueta meditando al amanecer en un paisaje cálido"
           fill
           sizes="100vw"
-          className="-z-20 object-cover object-center"
+          className="-z-20 object-cover object-[center_68%]"
         />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[#F5F2EB]/55" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(245,242,235,.74)_0%,rgba(245,242,235,.40)_55%,rgba(245,242,235,.66)_100%)]"
+        />
         <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-3">
           <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
           <h2 className="mx-auto max-w-4xl font-display text-4xl leading-[1.05] text-[#2C241B] sm:text-5xl lg:text-[3.4rem]">
