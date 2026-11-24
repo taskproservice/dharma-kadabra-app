@@ -330,12 +330,16 @@ textarea {
   height: clamp(140px, 22vh, 220px);
   z-index: 5;
   pointer-events: none;
-  /* El último tramo empata con el papiro de la sección siguiente (banda lunar). */
+  /* La luz entra al santuario: la noche pasa por cafés cálidos antes de
+     asentarse en el papiro (evita el tramo gris de una interpolación directa).
+     El último tramo empata con el papiro de la sección siguiente. */
   background: linear-gradient(
     to bottom,
     rgba(17, 17, 15, 0) 0%,
-    rgba(17, 17, 15, 0.45) 25%,
-    rgba(215, 196, 163, 0.55) 72%,
+    rgba(17, 17, 15, 0.5) 20%,
+    rgba(52, 42, 30, 0.75) 40%,
+    rgba(124, 98, 64, 0.85) 60%,
+    rgba(190, 166, 127, 0.95) 80%,
     var(--sanctuary-hero-fade, #d7c4a3) 100%
   );
 }
