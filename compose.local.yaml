@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${LOCAL_POSTGRES_DB:?Run npm run setup:local to create .env.local}
+      POSTGRES_USER: ${LOCAL_POSTGRES_USER:?Run npm run setup:local to create .env.local}
+      POSTGRES_PASSWORD: ${LOCAL_POSTGRES_PASSWORD:?Run npm run setup:local to create .env.local}
+    ports:
+      - "127.0.0.1:${LOCAL_POSTGRES_PORT:-54329}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  postgres-data:

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "node scripts/db-sync.mjs generate-only && next build",
+    "setup:local": "node scripts/setup-local.mjs",
     "config:verify": "node scripts/verify-local-config.mjs",
     "db:sync": "node scripts/db-sync.mjs",
     "db:push": "node scripts/db-sync.mjs",

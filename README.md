@@ -51,6 +51,26 @@ node scripts/create-staff-user.mjs --email persona@dominio.com --deactivate
 - El conflicto de horario (`lib/booking.ts`) se evalúa por agenda: dos terapeutas pueden tener sesión a la misma hora, una misma persona no. La transacción `Serializable` toma además un advisory lock de PostgreSQL por `assigneeId`, de modo que dos reservas simultáneas del mismo terapeuta se serializan aunque la tabla todavía no tenga un índice único.
 - En la UI (`components/landing/digital-agenda.tsx` + `components/agenda/therapist-selector.tsx`), el paso «¿Con quién deseas tu sesión?» muestra radios con avatar arriba del calendario; el panel de reserva y el `BookingDialog` propagan el terapeuta elegido.
 
+### Desarrollo local
+
+Con Node.js, dependencias instaladas y Docker Desktop/Engine iniciado:
+
+```bash
+npm ci
+npm run setup:local
+npm run dev
+```
+
+`setup:local` crea `.env.local` si no existe, con secretos aleatorios exclusivos para desarrollo y URLs hacia un PostgreSQL local en Docker (puerto `54329`, enlazado solo a `127.0.0.1`). Regenera Prisma Client (la primera vez puede requerir descargar el motor de Prisma). Si la base está vacía, aplica el schema actual sin `--accept-data-loss`, registra como baseline las migraciones versionadas y carga el catálogo. Si ya encuentra tablas, deja schema y datos intactos. No descarga ni copia secretos de Vercel, no lee `.env.production.local` y no sobrescribe un `.env.local` existente; si ese archivo no corresponde a esta base local, se detiene para protegerlo.
+
+El setup no inventa credenciales de IA o correo. Esas integraciones son opcionales y, cuando se habiliten, requieren claves propias del proveedor; `DEEPSEEK_API_KEY` es legacy y el código actual no la usa. Para detener PostgreSQL sin borrar su volumen:
+
+```bash
+docker compose --env-file .env.local -f compose.local.yaml down
+```
+
+No agregues `-v` salvo que quieras borrar deliberadamente los datos de la base local.
+
 ### Configuración de producción
 
 Configura `DATABASE_URL` para la aplicación y `DATABASE_URL_UNPOOLED` para tareas de migración, además de `AUTH_SECRET` y `CRON_SECRET`. Genera `AUTH_SECRET` como valor aleatorio largo (por ejemplo, `openssl rand -base64 32`). Define `NEXTAUTH_URL` fuera de Vercel o cuando necesites fijar el dominio canónico. Ejecuta los comandos con las variables exportadas en el entorno seguro correspondiente.
@@ -75,7 +95,7 @@ Con Node.js y dependencias instaladas, ejecuta:
 npm run config:verify
 ```
 
-Por defecto verifica Production. Si no existe `.env.production.local`, el script la descarga desde Vercel con `vercel env pull`; requiere que Vercel CLI esté autenticado y el proyecto enlazado. Si el archivo ya existe, lo reutiliza y no lo sobrescribe. Para actualizarlo, respáldalo y elimínalo antes de volver a ejecutar. El archivo está excluido por `.gitignore`; el script verifica esa condición y nunca imprime los valores.
+Este comando verifica Production y no prepara el entorno local; para eso usa `npm run setup:local`. Si no existe `.env.production.local`, el script la descarga desde Vercel con `vercel env pull`; requiere que Vercel CLI esté autenticado y el proyecto enlazado. Si Vercel escribe `[SENSITIVE]`, es un marcador y no una credencial recuperable: el verificador lo marca como `OCULTA` y omite la conexión que no puede validar. Si el archivo ya existe, lo reutiliza y no lo sobrescribe. Para actualizar variables no sensibles, respáldalo y elimínalo antes de volver a ejecutar; las variables `Sensitive` seguirán apareciendo como marcador y no se podrán recuperar desde la CLI. El archivo está excluido por `.gitignore`; el script verifica esa condición y nunca imprime los valores.
 
 Después de crear la rama `staging` y configurar variables Preview:
 

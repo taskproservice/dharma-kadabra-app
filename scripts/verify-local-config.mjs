@@ -78,10 +78,37 @@ function redact(text, env) {
     .replace(/^Datasource .*$/gm, "Datasource: [detalles de conexión ocultos]");
 }
 
-function reportVariable(label, isSet, { required = false, valid = true, note = "" } = {}) {
-  const status = !isSet ? (required ? "FALTA" : "no configurada (opcional)") : valid ? "OK" : "REVISAR";
-  console.log(`  ${label}: ${status}${note ? ` — ${note}` : ""}`);
-  return required && (!isSet || !valid);
+function isSensitivePlaceholder(value) {
+  return /^\[(?:SENSITIVE|REDACTED|MASKED|HIDDEN)\]$/i.test(String(value ?? "").trim());
+}
+
+function hasUsableValue(value) {
+  return Boolean(String(value ?? "").trim()) && !isSensitivePlaceholder(value);
+}
+
+function isPostgresUrl(value) {
+  if (!hasUsableValue(value)) return false;
+  try {
+    const parsed = new URL(value);
+    return ["postgres:", "postgresql:"].includes(parsed.protocol) && Boolean(parsed.hostname) && parsed.pathname.length > 1;
+  } catch {
+    return false;
+  }
+}
+
+function reportVariable(label, value, { required = false, valid = true, note = "" } = {}) {
+  const isSet = Boolean(String(value ?? "").trim());
+  const isMasked = isSensitivePlaceholder(value);
+  const status = isMasked
+    ? "OCULTA"
+    : !isSet
+      ? required ? "FALTA" : "no configurada (opcional)"
+      : valid ? "OK" : "REVISAR";
+  const effectiveNote = isMasked
+    ? "Vercel ocultó el valor; se necesita un valor real para verificarlo localmente"
+    : note;
+  console.log(`  ${label}: ${status}${effectiveNote ? ` — ${effectiveNote}` : ""}`);
+  return required && (!isSet || isMasked || !valid);
 }
 
 async function ensureEnvFile(environment, fileName, noPull) {
@@ -160,50 +187,45 @@ async function main() {
   const authSecret = process.env.AUTH_SECRET?.trim() || process.env.NEXTAUTH_SECRET?.trim() || "";
   const cronRequired = environment === "production";
 
-  let databaseUrlValid = false;
-  if (databaseUrl) {
-    try {
-      const parsed = new URL(databaseUrl);
-      databaseUrlValid = ["postgres:", "postgresql:"].includes(parsed.protocol);
-    } catch {
-      databaseUrlValid = false;
-    }
-  }
+  const databaseUrlValid = isPostgresUrl(databaseUrl);
+  const directUrlValid = isPostgresUrl(directUrl);
 
-  problems += Number(reportVariable("DATABASE_URL", Boolean(databaseUrl), {
+  problems += Number(reportVariable("DATABASE_URL", databaseUrl, {
     required: true,
     valid: databaseUrlValid,
     note: databaseUrl ? "valor oculto; se espera PostgreSQL" : "runtime",
   }));
-  problems += Number(reportVariable("AUTH_SECRET / NEXTAUTH_SECRET", Boolean(authSecret), {
+  problems += Number(reportVariable("AUTH_SECRET / NEXTAUTH_SECRET", authSecret, {
     required: true,
     valid: authSecret.length >= 32,
     note: authSecret ? "valor oculto; debe ser aleatorio y largo" : "sesiones",
   }));
-  problems += Number(reportVariable("DATABASE_URL_UNPOOLED", Boolean(directUrl), {
+  problems += Number(reportVariable("DATABASE_URL_UNPOOLED", directUrl, {
     required: true,
+    valid: directUrlValid,
     note: "conexión directa para Prisma Migrate",
   }));
-  problems += Number(reportVariable("CRON_SECRET", Boolean(process.env.CRON_SECRET?.trim()), {
+  problems += Number(reportVariable("CRON_SECRET", process.env.CRON_SECRET, {
     required: cronRequired,
     note: "autoriza el cron productivo",
   }));
 
   const nextAuthUrl = process.env.NEXTAUTH_URL?.trim() ?? "";
-  problems += Number(reportVariable("NEXTAUTH_URL", Boolean(nextAuthUrl), {
+  problems += Number(reportVariable("NEXTAUTH_URL", nextAuthUrl, {
     required: true,
     valid: !nextAuthUrl || nextAuthUrl === EXPECTED_URLS[environment],
     note: nextAuthUrl ? `esperado ${EXPECTED_URLS[environment]}` : "host canónico",
   }));
 
-  reportVariable("NEXT_PUBLIC_STORE_WHATSAPP", Boolean(process.env.NEXT_PUBLIC_STORE_WHATSAPP?.trim()));
-  reportVariable("OPENAI_API_KEY (configuración actual, opcional)", Boolean(process.env.OPENAI_API_KEY?.trim()));
-  reportVariable("DEEPSEEK_API_KEY (legacy; el código actual no la usa)", Boolean(process.env.DEEPSEEK_API_KEY?.trim()));
-  reportVariable("RESEND_API_KEY (pendiente de integración)", Boolean(process.env.RESEND_API_KEY?.trim()));
-  reportVariable("RESEND_FROM_EMAIL (pendiente de integración)", Boolean(process.env.RESEND_FROM_EMAIL?.trim()));
-  reportVariable("AI_PROVIDER (pendiente de normalización)", Boolean(process.env.AI_PROVIDER?.trim()));
-  reportVariable("AI_API_KEY (pendiente de normalización)", Boolean(process.env.AI_API_KEY?.trim()));
-  reportVariable("AI_MODEL (pendiente de normalización)", Boolean(process.env.AI_MODEL?.trim()));
+  reportVariable("NEXT_PUBLIC_STORE_WHATSAPP", process.env.NEXT_PUBLIC_STORE_WHATSAPP);
+  reportVariable("OPENAI_API_KEY (configuración actual, opcional)", process.env.OPENAI_API_KEY);
+  reportVariable("DEEPSEEK_API_KEY (legacy; el código actual no la usa)", process.env.DEEPSEEK_API_KEY);
+  reportVariable("DEEPSEEK_MODEL (legacy; el nombre de modelo no es secreto)", process.env.DEEPSEEK_MODEL);
+  reportVariable("RESEND_API_KEY (pendiente de integración)", process.env.RESEND_API_KEY);
+  reportVariable("RESEND_FROM_EMAIL (pendiente de integración)", process.env.RESEND_FROM_EMAIL);
+  reportVariable("AI_PROVIDER (pendiente de normalización)", process.env.AI_PROVIDER);
+  reportVariable("AI_API_KEY (pendiente de normalización)", process.env.AI_API_KEY);
+  reportVariable("AI_MODEL (pendiente de normalización)", process.env.AI_MODEL);
 
   if (environment === "staging") {
     const productionPath = resolve(ROOT, ".env.production.local");
@@ -215,7 +237,7 @@ async function main() {
         ["DATABASE_URL", process.env.DATABASE_URL?.trim(), productionEnv.DATABASE_URL?.trim()],
         ["AUTH_SECRET", stagingAuth, productionAuth],
       ]) {
-        if (stagingValue && productionValue && stagingValue === productionValue) {
+        if (hasUsableValue(stagingValue) && hasUsableValue(productionValue) && stagingValue === productionValue) {
           console.log(`  AISLAMIENTO: ${key} coincide con Production — REVISAR`);
           problems += 1;
         }
@@ -224,7 +246,8 @@ async function main() {
   }
 
   const prismaCli = resolve(ROOT, "node_modules/prisma/build/index.js");
-  if (databaseUrl && directUrl && existsSync(prismaCli)) {
+  const prismaClient = resolve(ROOT, "src/generated/prisma/index.js");
+  if (databaseUrlValid && directUrlValid && existsSync(prismaCli)) {
     console.log("\n--- Estado de migraciones (lectura) ---");
     const status = run(process.execPath, [prismaCli, "migrate", "status", "--schema=prisma/schema.prisma"], {
       env: process.env,
@@ -240,11 +263,15 @@ async function main() {
       if (status.status !== 0) problems += 1;
     }
   } else {
-    console.log("\nEstado de migraciones: omitido; requiere DATABASE_URL, DATABASE_URL_UNPOOLED y Prisma instalado.");
+    const requirements = [];
+    if (!databaseUrlValid) requirements.push("una DATABASE_URL PostgreSQL real");
+    if (!directUrlValid) requirements.push("una DATABASE_URL_UNPOOLED PostgreSQL real");
+    if (!existsSync(prismaCli)) requirements.push("Prisma CLI instalado");
+    console.log(`\nEstado de migraciones: omitido; requiere ${requirements.join(" y ") || "configuración válida"}.`);
     if (!existsSync(prismaCli)) problems += 1;
   }
 
-  if (databaseUrl && existsSync(prismaCli)) {
+  if (databaseUrlValid && existsSync(prismaClient)) {
     console.log("\n--- PostgreSQL y esquema (solo lectura) ---");
     let prisma;
     try {
@@ -300,7 +327,8 @@ async function main() {
       if (prisma) await prisma.$disconnect().catch(() => {});
     }
   } else {
-    console.log("\nVerificación PostgreSQL: omitida; falta DATABASE_URL o el cliente Prisma generado.");
+    console.log("\nVerificación PostgreSQL: omitida; requiere una DATABASE_URL PostgreSQL real y el cliente Prisma generado.");
+    if (!existsSync(prismaClient)) problems += 1;
   }
 
   console.log(`\nResultado: ${problems ? `REVISAR (${problems} hallazgo(s))` : "OK"}`);
