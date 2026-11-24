@@ -209,6 +209,20 @@ textarea {
     var(--color-sanctuary-parchment);
 }
 
+/* Noto Sans Runic: los símbolos del Elder Futhark se ven igual en cualquier
+   equipo, también en las tarjetas de servicios de la landing. */
+@font-face {
+  font-family: "Noto Runic";
+  src: url("/fonts/NotoSansRunic-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+.rune-glyph {
+  font-family: "Noto Runic", "Segoe UI Historic", "Noto Sans Runic", serif;
+  font-weight: 400;
+  line-height: 1;
+}
+
 /* Secciones de la landing: beige + grano + dos luces radiales muy suaves.
    El contenido viaja por encima del grano (z-index negativo del ::before). */
 .sanctuary-leaf {

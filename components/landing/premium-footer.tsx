@@ -55,9 +55,10 @@ export function PremiumFooter() {
 
   return (
     <footer
-      className="relative isolate overflow-hidden border-t border-[#C5A059]/25 px-5 pb-10 pt-14 text-[#F5F2EB] sm:px-8"
+      className="relative isolate overflow-hidden border-t border-[#C5A059]/25 bg-[#241C15] px-5 pb-10 pt-14 text-[#F5F2EB] sm:px-8"
       style={{
-        backgroundImage: "linear-gradient(rgba(22, 18, 14, .88), rgba(22, 18, 14, .94)), url('/images/runas/runas-sobre-madera.jpg')",
+        backgroundImage:
+          "linear-gradient(rgba(36, 28, 21, .90), rgba(28, 22, 17, .96)), url('/images/runas/runas-sobre-madera.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center 55%",
       }}
@@ -91,7 +92,7 @@ export function PremiumFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram de Dharma Kadabra"
-                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/25 text-[#F5F2EB]/85 transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
+                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/30 text-[#F5F2EB] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
                 >
                   <Instagram size={17} />
                 </a>
@@ -113,7 +114,7 @@ export function PremiumFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook de Dharma Kadabra"
-                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/25 text-[#F5F2EB]/85 transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
+                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/30 text-[#F5F2EB] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
                 >
                   <Facebook size={17} />
                 </a>
@@ -135,7 +136,7 @@ export function PremiumFooter() {
           {/* Columna 2 — Atención a clientes */}
           <nav aria-label="Atención a clientes">
             <ColumnTitle>Atención a Clientes</ColumnTitle>
-            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-[#F5F2EB]/85">
+            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-[#F5F2EB]/90">
               <li>
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-start gap-3 transition hover:text-[#D8BC7F]">
                   <Mail size={16} className="mt-1 shrink-0 text-[#C5A059]" />
@@ -181,7 +182,7 @@ export function PremiumFooter() {
           {/* Columna 3 — Políticas */}
           <nav aria-label="Políticas">
             <ColumnTitle>Políticas</ColumnTitle>
-            <ul className="mt-6 space-y-3.5 text-sm font-light text-[#F5F2EB]/85">
+            <ul className="mt-6 space-y-3.5 text-sm font-light text-[#F5F2EB]/90">
               {policies.map((policy) => (
                 <li key={policy.label}>
                   <span

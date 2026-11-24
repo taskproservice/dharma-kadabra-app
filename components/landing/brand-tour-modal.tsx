@@ -833,7 +833,7 @@ export function BrandTourTrigger({ config }: { config: TourVideoConfig }) {
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#2C241B] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C241B] transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059]/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2C241B]"
+        className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#F5F2EB]/50 bg-white/5 px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#F5F2EB] backdrop-blur-sm transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059]/20 hover:text-[#EFD9A4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
       >
         Quiénes somos
         <Film size={14} className="transition duration-300 group-hover:scale-110" aria-hidden="true" />

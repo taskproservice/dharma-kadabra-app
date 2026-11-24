@@ -16,8 +16,11 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     // Anchos de srcset para fondos a pantalla completa, hasta 4K (3840px).
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    // Calidades permitidas para <Image quality={...}>.
-    qualities: [75, 90],
+    // Calidades permitidas para <Image quality={...}>. Next rechaza con 400
+    // cualquier calidad que no esté en esta lista (y la imagen deja ver su
+    // texto alternativo), por eso incluimos también la calidad 88 que usan el
+    // manifiesto y las tarjetas de servicios.
+    qualities: [75, 88, 90],
     // Cachea las variantes optimizadas 30 días en el CDN/servidor.
     minimumCacheTTL: 60 * 60 * 24 * 30,
     // Holistic Store · el Admin puede pegar URLs de imagen externas.
