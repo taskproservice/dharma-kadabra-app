@@ -27,8 +27,6 @@ export function WhatsAppButton({
 }: WhatsAppButtonProps) {
   const openWithProduct = useCozyStore((state) => state.openWithProduct);
 
-  const isLightCard = template === "papiro";
-
   const baseClasses =
     "inline-flex w-full items-center justify-center gap-2 rounded-xl border bg-transparent px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] transition-all duration-300";
 
@@ -48,11 +46,7 @@ export function WhatsAppButton({
         })
       }
       aria-label={`Consultar ${product.name} con Cozy`}
-      className={`${baseClasses} border-gold ${
-        isLightCard
-          ? "text-ink hover:bg-gold/15"
-          : "text-gold hover:bg-gold/15 hover:text-gold-bright"
-      } cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${className}`}
+      className={`${baseClasses} border-stone-200 text-sanctuary-ink-soft hover:border-gold/60 hover:bg-gold/10 hover:text-bronze cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${className}`}
     >
       <MessageCircle size={14} className="shrink-0" aria-hidden="true" />
       <span>PREGUNTAR A COZY</span>

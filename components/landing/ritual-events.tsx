@@ -50,8 +50,8 @@ export function RitualEventsSection({
         night
           ? "border-gold/20 bg-obsidian"
           : papyrus
-            ? "border-sanctuary-border bg-sanctuary-parchment-light"
-            : "sanctuary-leaf sanctuary-leaf-wood border-sanctuary-border"
+            ? "border-stone-200/70 bg-sanctuary-parchment-light"
+            : "sanctuary-leaf border-stone-200/70"
       }`}
     >
       <div className="relative z-10 mx-auto max-w-7xl">
@@ -92,18 +92,14 @@ export function RitualEventsSection({
                 className={`flex gap-4 rounded-3xl p-5 ${
                   night
                     ? "border border-gold/15 bg-papyrus/[0.035]"
-                    : papyrus
-                      ? "sanctuary-card-quiet"
-                      : "sanctuary-card-olive"
+                    : "border border-stone-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
                 }`}
               >
                 <div
                   className={`grid size-11 shrink-0 place-items-center rounded-full ${
                     night
                       ? "bg-obsidian-soft text-gold-light"
-                      : papyrus
-                        ? "border border-sanctuary-gold/35 bg-sanctuary-wood-light text-sanctuary-gold-ink"
-                        : "border border-[#C5A059]/35 bg-[#F4EFE6]/10 text-[#C5A059]"
+                      : "border border-gold/40 bg-gold/10 text-bronze"
                   }`}
                 >
                   <MoonStar size={20} />
@@ -111,7 +107,7 @@ export function RitualEventsSection({
                 <div className="min-w-0">
                   <p
                     className={`flex items-center gap-1.5 text-[10px] uppercase tracking-[.15em] ${
-                      night ? "text-gold-light" : papyrus ? "text-sanctuary-gold-ink" : "text-[#C5A059]"
+                      night ? "text-gold-light" : "text-bronze"
                     }`}
                   >
                     <CalendarDays size={13} />
@@ -123,18 +119,14 @@ export function RitualEventsSection({
                   </p>
                   <h3
                     className={`mt-1 font-display text-xl ${
-                      night ? "text-papyrus" : papyrus ? "text-sanctuary-ink" : "text-[#C5A059]"
+                      night ? "text-papyrus" : "text-ink"
                     }`}
                   >
                     {event.title}
                   </h3>
                   <p
                     className={`mt-1 text-xs leading-5 ${
-                      night
-                        ? "text-papyrus/55"
-                        : papyrus
-                          ? "text-sanctuary-ink-soft"
-                          : "text-[#F4EFE6]/80"
+                      night ? "text-papyrus/55" : "text-sanctuary-ink-soft"
                     }`}
                   >
                     {event.description}
@@ -142,11 +134,7 @@ export function RitualEventsSection({
                   {event.products.length > 0 && (
                     <p
                       className={`mt-2 text-[10px] font-medium ${
-                        night
-                          ? "text-papyrus/45"
-                          : papyrus
-                            ? "text-sanctuary-ink-soft"
-                            : "text-[#F4EFE6]/70"
+                        night ? "text-papyrus/45" : "text-ink-muted"
                       }`}
                     >
                       Objetos rituales: {event.products.join(" · ")}

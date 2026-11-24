@@ -168,16 +168,16 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
   return (
     <section aria-label="Calendario interactivo de disponibilidad" className="px-5 pb-16 sm:px-8 lg:pb-24">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,.85fr)] lg:items-start">
-        {/* FASE 2 · Calendario sobre Papiro claro con bordes dorados sutiles */}
-        <div className="relative min-w-0 overflow-hidden rounded-[1.75rem] border border-[#C5A059]/30 bg-[#FCFAF5] p-5 text-[#1A1A1A] shadow-[0_28px_80px_-48px_rgba(128,95,43,.45)] sm:p-7">
-          <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-28 size-72 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.18),transparent_70%)] blur-2xl" />
-          <div className="relative flex flex-wrap items-end justify-between gap-5 border-b border-[#C5A059]/30 pb-5 sm:pb-6">
+        {/* FASE 2 · Calendario Premium Orgánico: blanco, bordes stone muy sutiles */}
+        <div className="relative min-w-0 overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white p-5 text-ink shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:p-7">
+          <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-28 size-72 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.10),transparent_70%)] blur-2xl" />
+          <div className="relative flex flex-wrap items-end justify-between gap-5 border-b border-stone-200 pb-5 sm:pb-6">
             <div>
-              <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.24em] text-[#805F2B]">
+              <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.24em] text-bronze">
                 <CalendarDays size={13} className="mr-2 inline -translate-y-px" aria-hidden="true" />
                 Calendario mensual
               </p>
-              <h2 className="mt-1 font-cormorant text-3xl leading-none text-[#1A1A1A] sm:text-4xl">
+              <h2 className="mt-1 font-cormorant text-3xl leading-none text-ink sm:text-4xl">
                 {monthLabel}
               </h2>
             </div>
@@ -187,7 +187,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                 aria-label="Mes anterior"
                 disabled={previousMonthDisabled}
                 onClick={() => changeMonth(-1)}
-                className="grid size-10 place-items-center rounded-full border border-[#C5A059]/35 bg-[#F4EFE6] text-[#805F2B] transition hover:border-[#805F2B] hover:bg-[#C5A059]/15 hover:text-[#1A1A1A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#805F2B] disabled:cursor-not-allowed disabled:opacity-35"
+                className="grid size-10 place-items-center rounded-full border border-stone-200 bg-white text-bronze transition hover:border-gold/60 hover:bg-gold/10 hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <ChevronLeft size={18} aria-hidden="true" />
               </button>
@@ -195,7 +195,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                 type="button"
                 aria-label="Mes siguiente"
                 onClick={() => changeMonth(1)}
-                className="grid size-10 place-items-center rounded-full border border-[#C5A059]/35 bg-[#F4EFE6] text-[#805F2B] transition hover:border-[#805F2B] hover:bg-[#C5A059]/15 hover:text-[#1A1A1A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#805F2B]"
+                className="grid size-10 place-items-center rounded-full border border-stone-200 bg-white text-bronze transition hover:border-gold/60 hover:bg-gold/10 hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
               >
                 <ChevronRight size={18} aria-hidden="true" />
               </button>
@@ -216,13 +216,13 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             </p>
             <ul aria-label={`Fases lunares de ${monthLabel}`} className="-mx-5 mt-3 flex gap-2.5 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:mx-0 sm:px-0">
               {lunarEvents.map((event) => (
-                <li key={`${event.date}-${event.phase}`} className="flex min-w-[150px] flex-1 items-center gap-2.5 rounded-xl border border-[#C5A059]/30 bg-white px-3 py-2.5 shadow-[0_10px_24px_-22px_rgba(128,95,43,.6)]">
-                  <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#C5A059]/35 bg-[#F4EFE6] text-[#805F2B]" aria-hidden="true">
+                <li key={`${event.date}-${event.phase}`} className="flex min-w-[150px] flex-1 items-center gap-2.5 rounded-xl border border-stone-200 bg-papyrus-light px-3 py-2.5 shadow-[0_8px_24px_-20px_rgba(44,36,27,.35)]">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-bronze" aria-hidden="true">
                     <LunarEventIcon phase={event.phase} />
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-cormorant text-base leading-4 text-[#1A1A1A]">{event.title}</span>
-                    <time dateTime={event.date} className="mt-1 block text-[10px] capitalize text-[#5B5143]">
+                    <span className="block font-cormorant text-base leading-4 text-ink">{event.title}</span>
+                    <time dateTime={event.date} className="mt-1 block text-[10px] capitalize text-ink-muted">
                       {formatDate(event.date, { day: "numeric", month: "short" })}
                     </time>
                   </span>
@@ -235,7 +235,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             {WEEKDAYS.map((weekday) => (
               <div
                 key={weekday}
-                className="pb-2 text-center font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.12em] text-[#805F2B] sm:text-[10px]"
+                className="pb-2 text-center font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.12em] text-bronze sm:text-[10px]"
               >
                 {weekday}
               </div>
@@ -258,20 +258,20 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                   aria-pressed={isSelected}
                   aria-label={`${formatDate(dateKey, { day: "numeric", month: "long" })}, ${phase}, ${unavailableLabel}`}
                   onClick={() => setSelectedDate(dateKey)}
-                  className={`group relative flex min-h-[57px] flex-col items-center justify-between rounded-xl border px-1.5 py-2 text-center transition duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#805F2B] sm:min-h-[72px] sm:rounded-2xl sm:px-2 sm:py-2.5 ${
+                  className={`group relative flex min-h-[57px] flex-col items-center justify-between rounded-xl border px-1.5 py-2 text-center transition duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze sm:min-h-[72px] sm:rounded-2xl sm:px-2 sm:py-2.5 ${
                     !inActiveMonth
-                      ? "border-transparent text-[#1A1A1A]/20"
+                      ? "border-transparent text-ink/20"
                       : isPast
-                        ? "cursor-not-allowed border-[#C5A059]/15 bg-[#F4EFE6]/45 text-[#1A1A1A]/30"
+                        ? "cursor-not-allowed border-stone-200/70 bg-papyrus/60 text-ink/30"
                         : isLoading
-                          ? "border-[#C5A059]/20 bg-[#F4EFE6]/60 text-[#5B5143]/60"
+                          ? "border-stone-200 bg-papyrus/70 text-ink-muted/60"
                           : isSelected && !unavailable
-                          ? "border-[#C5A059] bg-[#C5A059]/25 text-[#1A1A1A] shadow-[0_0_22px_-12px_rgba(128,95,43,.7)]"
+                          ? "border-gold bg-gold/25 text-ink shadow-[0_8px_24px_-14px_rgba(197,160,89,.7)]"
                           : isSelected
-                            ? "border-[#C5A059]/45 bg-[#C5A059]/10 text-[#5B5143]"
+                            ? "border-gold/45 bg-gold/10 text-ink-muted"
                             : unavailable
-                            ? "border-[#C5A059]/18 bg-[#F4EFE6]/55 text-[#1A1A1A]/40 hover:border-[#C5A059]/35 hover:text-[#5B5143]"
-                            : "border-[#C5A059]/40 bg-[#F4EFE6]/60 text-[#1A1A1A] hover:border-[#805F2B]/70 hover:bg-[#C5A059]/15"
+                              ? "border-stone-200/80 bg-papyrus/50 text-ink/40 hover:border-gold/40 hover:text-ink-muted"
+                              : "border-stone-200 bg-white text-ink hover:border-gold/70 hover:bg-gold/10"
                   }`}
                 >
                   <span className="flex w-full items-center justify-between gap-1">
@@ -279,7 +279,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                       {Number(dateKey.slice(-2))}
                     </span>
                     {inActiveMonth && isLunarMarker && (
-                      <span className={phase === "Luna llena" ? "text-[#805F2B]" : "text-[#C5A059]"}>
+                      <span className={phase === "Luna llena" ? "text-bronze" : "text-gold"}>
                         <LunarMarker phase={phase} />
                       </span>
                     )}
@@ -294,16 +294,16 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             })}
           </div>
 
-          <div className="relative mt-5 flex flex-wrap gap-x-5 gap-y-3 border-t border-[#C5A059]/30 pt-4 font-[family-name:var(--font-montserrat)] text-[9px] uppercase tracking-[.12em] text-[#5B5143] sm:text-[10px]">
-            <span className="inline-flex items-center gap-2"><span className="size-2.5 rounded-full border border-[#805F2B]/70 bg-[#C5A059]/20" /> Disponible</span>
-            <span className="inline-flex items-center gap-2"><span className="size-2.5 rounded-full border border-[#C5A059]/25 bg-[#F4EFE6]" /> Sin horarios</span>
-            <span className="inline-flex items-center gap-2 text-[#805F2B]"><Circle size={12} fill="currentColor" /> Luna llena</span>
-            <span className="inline-flex items-center gap-2 text-[#805F2B]"><MoonStar size={13} /> Luna nueva</span>
+          <div className="relative mt-5 flex flex-wrap gap-x-5 gap-y-3 border-t border-stone-200 pt-4 font-[family-name:var(--font-montserrat)] text-[9px] uppercase tracking-[.12em] text-ink-muted sm:text-[10px]">
+            <span className="inline-flex items-center gap-2"><span className="size-2.5 rounded-full border border-bronze/70 bg-gold/20" /> Disponible</span>
+            <span className="inline-flex items-center gap-2"><span className="size-2.5 rounded-full border border-gold/25 bg-papyrus" /> Sin horarios</span>
+            <span className="inline-flex items-center gap-2 text-bronze"><Circle size={12} fill="currentColor" /> Luna llena</span>
+            <span className="inline-flex items-center gap-2 text-bronze"><MoonStar size={13} /> Luna nueva</span>
           </div>
         </div>
 
-        {/* FASE 2 · Panel de reserva: Papiro institucional, contraste armonioso */}
-        <aside aria-live="polite" className="sticky top-24 min-w-0 max-h-[85vh] overflow-y-auto custom-scrollbar rounded-[1.75rem] border border-[#C5A059]/30 bg-[#F4EFE6] p-5 text-ink shadow-[0_24px_80px_-50px_rgba(128,95,43,.5)] max-lg:relative sm:p-7 lg:max-h-[min(85vh,calc(100dvh-7rem))]">
+        {/* FASE 2 · Panel de reserva: blanco con sombra suave (Premium Orgánico) */}
+        <aside aria-live="polite" className="sticky top-24 min-w-0 max-h-[85vh] overflow-y-auto custom-scrollbar rounded-[1.75rem] border border-stone-200 bg-white p-5 text-ink shadow-[0_8px_30px_rgba(0,0,0,0.04)] max-lg:relative sm:p-7 lg:max-h-[min(85vh,calc(100dvh-7rem))]">
           <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 size-56 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_70%)] blur-2xl" />
           <div className="relative">
             <p className="font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.24em] text-bronze">
@@ -314,7 +314,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             </h2>
 
             {selectedTherapist ? (
-              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#C5A059]/35 bg-[#FCFAF5] px-3.5 py-3">
+              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-stone-200 bg-papyrus-light px-3.5 py-3">
                 <TherapistAvatar person={selectedTherapist} size={40} />
                 <div className="min-w-0">
                   <p className="font-[family-name:var(--font-montserrat)] text-[8px] font-semibold uppercase tracking-[.2em] text-ink-muted">
@@ -326,8 +326,8 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             ) : null}
 
             {selectedDate && (
-              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#C5A059]/25 bg-[#FCFAF5] p-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-full border border-[#C5A059]/35 bg-[#C5A059]/10 text-bronze">
+              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-stone-200 bg-papyrus-light p-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-bronze">
                   <LunarMarker phase={selectedPhase} />
                   {selectedPhase !== "Luna llena" && selectedPhase !== "Luna nueva" && <Sparkles size={18} aria-hidden="true" />}
                 </span>
@@ -341,7 +341,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
             )}
             {selectedDate && <p className="mt-3 text-xs leading-5 text-ink-muted">{phaseGuidance(selectedPhase)}</p>}
 
-            <div className="mt-6 border-t border-[#C5A059]/30 pt-5">
+            <div className="mt-6 border-t border-stone-200 pt-5">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="font-[family-name:var(--font-montserrat)] text-[10px] font-semibold uppercase tracking-[.18em] text-ink">
                   Horarios disponibles
@@ -358,7 +358,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                   <button
                     type="button"
                     onClick={refreshAvailability}
-                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-[#C5A059]/45 bg-[#FCFAF5] px-4 py-2 text-[11px] font-semibold uppercase tracking-[.12em] text-bronze transition hover:border-[#805F2B]/70 hover:bg-[#EDE4D4]/70"
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[.12em] text-bronze transition hover:border-gold/60 hover:bg-gold/10"
                   >
                     Reintentar
                   </button>
@@ -366,7 +366,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
               ) : blockedTimes === null ? (
                 <div aria-busy="true" className="mt-4 space-y-2.5">
                   {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="h-14 animate-pulse rounded-xl border border-[#C5A059]/25 bg-[#FCFAF5]" />
+                    <div key={index} className="h-14 animate-pulse rounded-xl border border-stone-200 bg-papyrus-light" />
                   ))}
                   <p className="pt-1 text-center text-[10px] text-ink-muted">
                     {selectedTherapist ? `Cargando la agenda de ${selectedTherapist.name}…` : "Cargando disponibilidad…"}
@@ -383,12 +383,12 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                         <button
                           type="button"
                           aria-label={`Reservar el ${selectedDateLabel} a las ${formatTime(time)}${selectedTherapist ? ` con ${selectedTherapist.name}` : ""}`}
-                          className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] px-4 py-3 text-left transition hover:border-[#805F2B]/70 hover:bg-[#C5A059]/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
+                          className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3 text-left shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition hover:border-gold/70 hover:shadow-[0_10px_28px_-18px_rgba(197,160,89,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
                         >
                           <span className="font-cormorant text-2xl leading-none text-ink">{formatTime(time)}</span>
-                          <span className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[8px] font-bold uppercase tracking-[.15em] text-bronze sm:text-[9px]">
-                            Reservar ahora
-                            <ArrowRight size={13} className="transition group-hover:translate-x-1" aria-hidden="true" />
+                          <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gold px-4 py-2 font-[family-name:var(--font-montserrat)] text-[9px] font-bold uppercase tracking-[.15em] text-ink transition group-hover:bg-gold-light sm:text-[10px]">
+                            Reservar
+                            <ArrowRight size={13} className="transition group-hover:translate-x-0.5" aria-hidden="true" />
                           </span>
                         </button>
                       }
@@ -407,7 +407,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                   ))}
                 </div>
               ) : (
-                <div className="mt-4 rounded-xl border border-[#C5A059]/30 bg-[#FCFAF5] p-4">
+                <div className="mt-4 rounded-xl border border-stone-200 bg-papyrus-light p-4">
                   <p className="font-[family-name:var(--font-montserrat)] text-xs font-medium text-ink">
                     {!selectedDate
                       ? "No quedan horarios disponibles en este mes."
@@ -416,7 +416,7 @@ export function DigitalAgenda({ todayKey: serverTodayKey }: { todayKey: string }
                   <p className="mt-1.5 text-[11px] leading-5 text-ink-muted">
                     {selectedTherapist
                       ? `${selectedTherapist.name} no tiene espacio este día. Prueba otra fecha o elige a otra persona del equipo.`
-                      : "Elige otro día marcado con borde dorado para consultar opciones."}
+                      : "Elige otro día marcado en dorado para consultar opciones."}
                   </p>
                 </div>
               )}
@@ -451,11 +451,11 @@ function SlotBookingContent({
   if (service) {
     return (
       <div className="space-y-4">
-        <div className="rounded-xl border border-[#C5A059]/30 bg-[#FCFAF5] p-3">
+        <div className="rounded-xl border border-stone-200 bg-papyrus-light p-3">
           <p className="text-[9px] font-semibold uppercase tracking-[.17em] text-bronze">Horario elegido</p>
           <p className="mt-1 text-xs text-ink">{capitalize(formatDate(date, { day: "numeric", month: "long", year: "numeric" }))} · {formatTime(time)}</p>
           {therapist && (
-            <p className="mt-2 flex items-center gap-2 border-t border-[#C5A059]/25 pt-2 text-[11px] text-ink-muted">
+            <p className="mt-2 flex items-center gap-2 border-t border-stone-200 pt-2 text-[11px] text-ink-muted">
               <TherapistAvatar person={therapist} size={22} /> Con {therapist.name}
             </p>
           )}
@@ -488,7 +488,7 @@ function SlotBookingContent({
             key={item.id}
             type="button"
             onClick={() => setServiceId(item.id)}
-            className="group flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border border-[#C5A059]/35 bg-[#FCFAF5] p-4 text-left transition hover:border-[#805F2B]/70 hover:bg-[#C5A059]/15"
+            className="group flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-gold/60 hover:bg-gold/5"
           >
             <span className="min-w-0">
               <span className="block font-cormorant text-xl text-ink">{item.name}</span>
@@ -500,7 +500,7 @@ function SlotBookingContent({
           </button>
         ))}
       </div>
-      <p className="border-t border-[#C5A059]/25 pt-3 text-[10px] leading-5 text-ink-muted">
+      <p className="border-t border-stone-200 pt-3 text-[10px] leading-5 text-ink-muted">
         Las limpiezas y rituales especiales se anuncian en los próximos encuentros de la agenda.
       </p>
     </div>

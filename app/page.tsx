@@ -185,8 +185,8 @@ export default async function HomePage() {
         <FlowCrystal className="right-[12%] top-16 hidden size-2.5 lg:block" tone="sage" />
         <article className="relative z-10 mx-auto max-w-6xl">
           <div className="grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
-            <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-3xl border-4 border-[#E6E1D6] shadow-[0_20px_50px_rgba(107,112,92,0.3)]">
+            <figure className="relative mx-auto w-full max-w-sm pb-16 md:max-w-none md:pb-0">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-3xl border-4 border-white bg-white shadow-[0_24px_60px_rgba(44,36,27,0.10)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -198,11 +198,20 @@ export default async function HomePage() {
                 />
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-[#C5A059]/30"
+                  className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-[#C5A059]/25"
                 />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-sanctuary-ink-soft">
-                Fundadora · Dharma Kadabra
+              {/* Tarjeta blanca de la fundadora: se posa sobre la fotografía */}
+              <figcaption className="absolute -bottom-2 left-3 right-3 rounded-2xl border border-stone-200 bg-white p-5 shadow-[0_16px_40px_rgba(44,36,27,0.08)] sm:left-auto sm:right-0 sm:w-64 lg:-right-6">
+                <p className="font-display text-xl leading-tight text-ink">
+                  Paola <em className="italic text-bronze">Hernández</em>
+                </p>
+                <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[.22em] text-ink-muted">
+                  Fundadora de Dharma Kadabra
+                </p>
+                <p className="mt-3 border-t border-stone-200 pt-3 font-display text-sm italic text-sanctuary-ink-soft">
+                  &ldquo;Tejedora de Conciencia&rdquo;
+                </p>
               </figcaption>
             </figure>
             <div>
@@ -276,26 +285,28 @@ export default async function HomePage() {
           </div>
           <div className="mt-14 grid gap-5 sm:grid-cols-3 lg:gap-6">
             {collaborators.map((member, index) => (
+              /* Tarjeta Premium Orgánico: blanca, texto centrado, retrato ovalado
+                 con bordes suaves y sombra muy ligera. */
               <article
                 key={member.id}
-                className="sanctuary-card-olive group p-6 text-center lg:p-8"
+                className="group rounded-3xl border border-stone-200 bg-white p-6 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] lg:p-8"
               >
-                <span className="font-display text-sm text-[#C5A059]">
+                <span className="font-display text-sm text-bronze">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante.
-                    Efecto Flow — bordes muy redondeados, sombra orgánica y filo beige. */}
-                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-full border-4 border-[#E6E1D6] bg-sanctuary-olive-deep shadow-[0_20px_50px_rgba(107,112,92,0.3)]">
+                    Ovalado con filo blanco y sombra suave. */}
+                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.10)]">
                   <Image
                     src={member.photoUrl}
                     alt={`Retrato de ${member.name}`}
                     fill
                     sizes="(min-width: 1024px) 18vw, 60vw"
-                    className="object-cover grayscale-[.35] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                    className="object-cover grayscale-[.25] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                   />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-[#C5A059]">{member.name}</h3>
-                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#F4EFE6]/80">
+                <h3 className="mt-6 font-display text-2xl text-ink">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-ink-muted">
                   {member.specialty}
                 </p>
               </article>
@@ -329,18 +340,20 @@ export default async function HomePage() {
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="sanctuary-card-olive group relative overflow-hidden p-8 lg:p-10">
+              /* Pilar · tarjeta blanca Premium Orgánico con acento dorado sutil */
+              <article
+                key={title}
+                className="group relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)] lg:p-10"
+              >
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-sanctuary-gold/15 blur-2xl transition duration-300 group-hover:bg-sanctuary-gold/25"
+                  className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-gold/10 blur-2xl transition duration-300 group-hover:bg-gold/20"
                 />
-                <Icon
-                  size={22}
-                  strokeWidth={1.25}
-                  className="relative text-[#C5A059]"
-                />
-                <h3 className="relative mt-10 font-display text-2xl text-[#C5A059]">{title}</h3>
-                <p className="relative mt-4 text-sm leading-7 text-[#F4EFE6]/80">{text}</p>
+                <span className="relative grid size-11 place-items-center rounded-full border border-gold/40 bg-gold/10">
+                  <Icon size={22} strokeWidth={1.25} className="text-bronze" />
+                </span>
+                <h3 className="relative mt-8 font-display text-2xl text-ink">{title}</h3>
+                <p className="relative mt-4 text-sm leading-7 text-sanctuary-ink-soft">{text}</p>
               </article>
             ))}
           </div>
@@ -389,28 +402,28 @@ export default async function HomePage() {
         id="prueba"
         className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-12 sm:px-8 lg:py-16"
       >
-        <div className="sanctuary-card-olive relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
+        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden rounded-3xl border border-stone-200 bg-white px-6 py-10 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:px-16 sm:py-14">
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_70%)] blur-2xl"
+            className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_70%)] blur-2xl"
           />
           <span
             aria-hidden="true"
-            className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-sanctuary-gold shadow-[0_0_12px_rgba(197,160,89,.8)]"
+            className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-sanctuary-gold shadow-[0_0_12px_rgba(197,160,89,.6)]"
           />
           <div className="relative flex justify-center">
             <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
           </div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#C5A059] sm:text-6xl">
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-ink sm:text-6xl">
             Regálate un momento para{" "}
-            <em className="italic text-[#F4EFE6]">reconectar.</em>
+            <em className="italic text-bronze">reconectar.</em>
           </h2>
-          <p className="relative mx-auto max-w-lg text-base leading-7 text-[#F4EFE6]/80">
+          <p className="relative mx-auto max-w-lg text-base leading-7 text-sanctuary-ink-soft">
             Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.
           </p>
           <Link
             href="/mi-cuenta"
-            className="group relative inline-flex items-center gap-3 rounded-full bg-sanctuary-gold px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-sanctuary-ink shadow-[0_16px_36px_-20px_rgba(80,57,31,.65)] transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sanctuary-gold-ink"
+            className="group relative inline-flex items-center gap-3 rounded-full bg-sanctuary-gold px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-ink shadow-[0_14px_30px_-16px_rgba(197,160,89,.75)] transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bronze"
           >
             Comenzar Prueba Gratis{" "}
             <ArrowUpRight
@@ -418,7 +431,7 @@ export default async function HomePage() {
               className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-[#F4EFE6]/70">
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-ink-muted/80">
             COMIENZA CUANDO TU ALMA TE LO INDIQUE
           </p>
         </div>

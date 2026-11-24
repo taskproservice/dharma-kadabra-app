@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useCartStore } from "../../../stores/cart";
 import { CATEGORY_META } from "../constants";
 import { recordProductView } from "../data";
@@ -10,6 +10,12 @@ import type { StoreProduct, StoreTemplateId } from "../types";
 import { formatPrice } from "../utils";
 import { WhatsAppButton } from "./WhatsAppButton";
 
+/**
+ * Premium Orgánico: las tres plantillas de categoría comparten la tarjeta
+ * blanca limpia (fondo #FFFFFF, borde stone sutil, sombra muy suave) y se
+ * distinguen solo por el chip de categoría, en colores pasteles con texto
+ * oscuro: beige (Oro), verde salvia (Papiro) y blush (Fuego).
+ */
 const TEMPLATE_STYLES: Record<
   StoreTemplateId,
   {
@@ -23,31 +29,34 @@ const TEMPLATE_STYLES: Record<
   }
 > = {
   oro: {
-    card: "border-gold/35 bg-gradient-to-b from-obsidian-soft to-obsidian hover:border-gold/70",
-    id: "text-gold/80",
-    name: "text-papyrus",
-    description: "text-papyrus/55",
-    price: "text-gold",
-    currencyChip: "border-gold/40 text-gold",
-    categoryChip: "bg-obsidian/85 text-gold-bright",
+    card: "border-stone-200 bg-white hover:border-gold/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)]",
+    id: "text-ink-muted/70",
+    name: "text-ink",
+    description: "text-ink-muted",
+    price: "text-ink",
+    currencyChip: "border-stone-200 text-ink-muted",
+    /* Pastel beige */
+    categoryChip: "bg-[#F3EDDF] text-[#6B5D4A]",
   },
   papiro: {
-    card: "border-gold/50 bg-papyrus hover:border-gold hover:shadow-[0_24px_50px_-24px_rgba(26,26,26,.45)]",
-    id: "text-ink/50",
+    card: "border-stone-200 bg-white hover:border-gold/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)]",
+    id: "text-ink-muted/70",
     name: "text-ink",
-    description: "text-ink/65",
+    description: "text-ink-muted",
     price: "text-ink",
-    currencyChip: "border-ink/30 text-ink/80",
-    categoryChip: "bg-papyrus/90 text-ink",
+    currencyChip: "border-stone-200 text-ink-muted",
+    /* Pastel verde salvia */
+    categoryChip: "bg-[#E8EDE0] text-[#4F5B43]",
   },
   fuego: {
-    card: "border-ember/45 bg-gradient-to-b from-[#221310] to-[#140d0b] hover:border-ember/80 hover:shadow-[0_24px_50px_-24px_rgba(217,101,56,.35)]",
-    id: "text-ember/90",
-    name: "text-papyrus",
-    description: "text-papyrus/55",
-    price: "text-[#e88a5f]",
-    currencyChip: "border-ember/50 text-[#e88a5f]",
-    categoryChip: "bg-[#140d0b]/85 text-[#f0a37e]",
+    card: "border-stone-200 bg-white hover:border-gold/50 hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)]",
+    id: "text-ink-muted/70",
+    name: "text-ink",
+    description: "text-ink-muted",
+    price: "text-ink",
+    currencyChip: "border-stone-200 text-ink-muted",
+    /* Pastel blush */
+    categoryChip: "bg-[#F4E8E0] text-[#7A4A33]",
   },
 };
 
@@ -55,12 +64,12 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
   const [failed, setFailed] = useState(false);
   const out = product.availability === "out_of_stock";
   const fallbackBg =
-    template === "papiro"
-      ? "linear-gradient(150deg, #F4EFE6, #EDE4D4)"
-      : "linear-gradient(150deg, #161920, #0F1115)";
+    template === "fuego"
+      ? "linear-gradient(150deg, #F7F0EA, #F0E0D3)"
+      : "linear-gradient(150deg, #FAF8F3, #F0EBE0)";
 
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden bg-obsidian-soft">
+    <div className="relative aspect-[4/5] w-full overflow-hidden bg-papyrus">
       {!failed && product.imageUrl ? (
         <Image
           src={product.imageUrl}
@@ -77,11 +86,7 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
           className="grid h-full w-full place-items-center"
           style={{ background: fallbackBg }}
         >
-          <span
-            className={`font-display text-6xl ${template === "papiro" ? "text-gold/60" : "text-gold/50"}`}
-          >
-            ✧
-          </span>
+          <span className="font-display text-6xl text-gold/50">✧</span>
         </div>
       )}
       <span
@@ -90,7 +95,7 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
         {product.category}
       </span>
       {out && (
-        <span className="absolute right-3 top-3 rounded-full bg-ember px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-papyrus shadow-md">
+        <span className="absolute right-3 top-3 rounded-full bg-[#E9E4DA] px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-[#6B5D4A] shadow-md">
           Agotado
         </span>
       )}
@@ -110,7 +115,7 @@ type Props = {
  * Tarjeta de producto de la tienda pública: ID, imagen, nombre, descripción
  * corta, precio con moneda y acciones de compra (carrito + Cozy, que
  * transfiere a WhatsApp con un humano si hace falta).
- * El estilo visual lo define la plantilla asignada a su categoría.
+ * El acento pastel del chip lo define la plantilla asignada a su categoría.
  */
 export function ProductCard({ product, template, isAuthenticated = false, trackableView = false }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -145,7 +150,7 @@ export function ProductCard({ product, template, isAuthenticated = false, tracka
 
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-lg shadow-obsidian-deep/45 transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
     >
       <div className="overflow-hidden rounded-xl">
         <CardImage product={product} template={template} />
@@ -175,15 +180,15 @@ export function ProductCard({ product, template, isAuthenticated = false, tracka
             disabled={outOfStock}
             aria-disabled={outOfStock}
             onClick={handleBuy}
-            aria-label={outOfStock ? `${product.name} agotado` : `Comprar ${product.name}`}
-            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] text-obsidian transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
+            aria-label={outOfStock ? `${product.name} agotado` : `Agregar ${product.name} al carrito`}
+            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-3 py-2.5 text-[11px] font-semibold text-ink transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
               outOfStock
-                ? "cursor-not-allowed opacity-50"
-                : "cursor-pointer hover:bg-gold-light hover:shadow-[0_0_16px_rgba(197,160,89,0.4)] active:scale-[0.99]"
+                ? "cursor-not-allowed bg-stone-200 text-ink-muted"
+                : "cursor-pointer hover:bg-gold-light hover:shadow-[0_8px_20px_rgba(197,160,89,0.35)] active:scale-[0.99]"
             }`}
           >
-            {!outOfStock && <ShoppingBag size={14} className="shrink-0" aria-hidden="true" />}
-            <span>{outOfStock ? "AGOTADO" : "COMPRAR"}</span>
+            <ShoppingCart size={14} className="shrink-0" aria-hidden="true" />
+            <span>{outOfStock ? "Agotado" : "Agregar al carrito"}</span>
           </button>
 
           {/* Embudo de Cozy: abre el widget con el contexto del producto.
