@@ -12,16 +12,16 @@
   --color-obsidian-deep: #0A0C0F;
   --color-obsidian-soft: #161920;
   --color-obsidian-elevated: #1E222B;
-  --color-papyrus: #F4EFE6;
+  --color-papyrus: #F5F2EB;
   --color-papyrus-light: #FCFAF5;
-  /* Superficie crema para tarjetas y campos sobre Papiro (BookingDialog). */
-  --color-papyrus-soft: #FCFAF5;
-  --color-papyrus-warm: #EDE4D4;
+  /* Superficie marfil para tarjetas y campos sobre Beige (BookingDialog, Mi Cuenta). */
+  --color-papyrus-soft: #FAF8F3;
+  --color-papyrus-warm: #F0EBE0;
   --color-gold: #C5A059;
   --color-gold-light: #D8BC7F;
   --color-gold-bright: #E3C57C;
   --color-bronze: #805F2B;
-  --color-ink: #1A1A1A;
+  --color-ink: #2C241B;
   --color-ink-muted: #5B5143;
   --color-ember: #D96538;
 
@@ -39,29 +39,24 @@
   --color-cream-300: #E8E1D5;
 
   /* ----------------------------------------------------------------------- */
-  /*  SANTUARIO ANCESTRAL · Lujo espiritual, naturaleza y sabiduría atemporal  */
-  /*  Paleta holística de la Landing: papiro/beige, verde oliva orgánico,      */
-  /*  tinta café y oro antiguo. Contenedores y tarjetas viven en Verde Oliva;  */
-  /*  su texto es Beige Claro y sus títulos, en Dorado.                        */
+  /*  PREMIUM ORGÁNICO · Limpio, cálido, luminoso y de alta gama.             */
+  /*  Beige/papiro muy claro de fondo, marfil sólido en header, footer y      */
+  /*  superficies; tarjetas blancas con sombras suaves; texto café oscuro     */
+  /*  y dorado cálido para acentos, botones y filetes.                        */
   /*  (Equivalencias del brief: parchmentLight → sanctuary-parchment-light,    */
   /*   woodLight → sanctuary-wood-light, inkSoft → sanctuary-ink-soft, etc.)   */
   /* ----------------------------------------------------------------------- */
-  /* Fondo principal (Papiro/Beige). */
-  --color-sanctuary-parchment: #E6E1D6;
-  --color-sanctuary-parchment-light: #EDE9E1;
-  --color-sanctuary-parchment-deep: #D8D1C1;
-  /* Papiro de marca solicitado para el shell y el header translúcido. */
-  --color-sanctuary-parchment-warm: #E9E3D5;
+  /* Fondo principal (Beige/Papiro muy claro). */
+  --color-sanctuary-parchment: #F5F2EB;
+  --color-sanctuary-parchment-light: #FAF8F3;
+  --color-sanctuary-parchment-deep: #EFEAE0;
+  /* Marfil de marca para el shell, el header translúcido y las tarjetas. */
+  --color-sanctuary-parchment-warm: #F5F2EB;
 
-  /* Contenedores y Tarjetas (Verde Oliva) + su texto (Beige Claro). */
-  --color-sanctuary-olive: #6B705C;
-  --color-sanctuary-olive-deep: #5A5F4D;
-  --color-sanctuary-olive-soft: #7C8270;
-  --color-sanctuary-olive-ink: #F4EFE6;
-
-  --color-sanctuary-wood: #E8DCC6;
-  --color-sanctuary-wood-light: #F2EBDD;
-  --color-sanctuary-wood-dark: #D8C6A8;
+  /* Neutros cálidos para bandas y marcos (reemplazan al verde oliva). */
+  --color-sanctuary-wood: #F7F4ED;
+  --color-sanctuary-wood-light: #FCFAF5;
+  --color-sanctuary-wood-dark: #EDE7DB;
 
   --color-sanctuary-ink: #2C241B;
   --color-sanctuary-ink-soft: #514333;
@@ -76,10 +71,10 @@
      suficiente contraste sobre papiro profundo (≥4.5:1 en todos los fondos). */
   --color-sanctuary-gold-leaf: #5F4518;
   /* Oro antiguo legible sobre papiro (AA): #C5A059 es solo para acentos,
-     filetes, iconografía y superficies oscuras. Sobre papiro/madera los
+     filetes, iconografía y superficies oscuras. Sobre beige/marfil los
      textos dorados usan este oro profundo de tinta. */
   --color-sanctuary-gold-ink: #6B4E1E;
-  /* Variante de oro-tinta para papiro profundo (#D8D1C1): AA también en
+  /* Variante de oro-tinta para bandas profundas (#EFEAE0): AA también en
      microcopy. */
   --color-sanctuary-gold-deep-ink: #5A4116;
 
@@ -89,20 +84,20 @@
   --color-sanctuary-border: #C6BFAA;
   --color-sanctuary-border-light: #D6D0C0;
 
-  /* Sombras orgánicas: profundidad de oliva y papiro, nunca negro intenso. */
-  --shadow-sanctuary: 0 8px 24px rgba(107, 112, 92, 0.12), 0 2px 6px rgba(107, 112, 92, 0.08);
-  --shadow-sanctuary-lift: 0 14px 32px rgba(107, 112, 92, 0.18), 0 4px 10px rgba(107, 112, 92, 0.1);
-  --shadow-sanctuary-card: 0 10px 40px rgba(107, 112, 92, 0.16);
+  /* Sombras de alta gama: neutras, extremadamente suaves y luminosas. */
+  --shadow-sanctuary: 0 8px 30px rgba(0, 0, 0, 0.04);
+  --shadow-sanctuary-lift: 0 12px 36px rgba(0, 0, 0, 0.06);
+  --shadow-sanctuary-card: 0 8px 30px rgba(0, 0, 0, 0.04);
 }
 
 /* ------------------------------------------------------------------------- */
 /*  Tokens                                                                    */
 /* ------------------------------------------------------------------------- */
 :root {
-  /* La marca oscura sigue viva en el Hero y el Footer; el resto del sitio es
-     un santuario de papiro. `color-scheme: light dark` evita que los controles
-     nativos (selects, scrollbars) se pinten solo para un tema. */
-  color-scheme: light dark;
+  /* Premium Orgánico: el sitio es luminoso y cálido. Solo el Hero (y los
+     módulos internos del dashboard) conservan superficies nocturnas.
+     `color-scheme: light` fija los controles nativos en modo claro. */
+  color-scheme: light;
   --night-950: #0A0C0F;
   --night-900: #0F1115;
   --night-800: #161920;
@@ -113,10 +108,10 @@
   --gold-300: #E3C57C;
   --cream-100: #F4EFE6;
   --cream-300: #E8E1D5;
-  --papyrus-surface: #F4EFE6;
-  --papyrus-ink: #1A1A1A;
+  --papyrus-surface: #F5F2EB;
+  --papyrus-ink: #2C241B;
   --papyrus-accent-ink: #805F2B;
-  --ink-muted: rgba(244, 239, 230, 0.62);
+  --ink-muted: rgba(44, 36, 27, 0.62);
   --hairline: rgba(197, 160, 89, 0.2);
   --glass-fill: linear-gradient(155deg, rgba(244, 239, 230, 0.06) 0%, rgba(244, 239, 230, 0.018) 55%, rgba(197, 160, 89, 0.035) 100%);
   --glass-fill-strong: linear-gradient(160deg, rgba(26, 30, 39, 0.95) 0%, rgba(15, 17, 21, 0.92) 100%);
@@ -172,22 +167,22 @@ textarea {
 
 /* Scrollbar cálido solo para el panel de reserva de la Agenda. */
 .custom-scrollbar {
-  scrollbar-color: rgba(128, 95, 43, 0.55) #F4EFE6;
+  scrollbar-color: rgba(128, 95, 43, 0.45) #F5F2EB;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(128, 95, 43, 0.55);
-  border: 2px solid #F4EFE6;
+  background: rgba(128, 95, 43, 0.45);
+  border: 2px solid #F5F2EB;
   background-clip: padding-box;
 }
 
 /* ------------------------------------------------------------------------- */
-/*  SANTUARIO ANCESTRAL · Superficies de papiro y madera                      */
+/*  PREMIUM ORGÁNICO · Superficies de papiro y marfil                         */
 /*  El fondo no es un color plano: lleva grano de fibra natural, una luz      */
 /*  radial muy suave y filetes de oro antiguo. Todo con CSS, sin assets.      */
 /* ------------------------------------------------------------------------- */
 
-/* Grano de papiro envejecido: ruido fractal casi imperceptible (opacidad 12%)
-   mezclado en `multiply` sobre la madera clara. */
+/* Grano de papiro: ruido fractal casi imperceptible (opacidad 6%)
+   mezclado en `multiply` sobre el beige claro. */
 .sanctuary-texture {
   position: relative;
   isolation: isolate;
@@ -200,29 +195,29 @@ textarea {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.12;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
 
-/* Atmósfera: dos luces radiales (una clara arriba a la izquierda, una cálida
-   abajo a la derecha) que dan profundidad al plano de papiro. */
+/* Atmósfera: dos luces radiales (una blanca arriba a la izquierda, una cálida
+   abajo a la derecha) que dan profundidad luminosa al plano de beige. */
 .sanctuary-atmosphere {
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(255, 255, 255, 0.25), transparent 45%),
-    radial-gradient(ellipse at 85% 80%, rgba(107, 112, 92, 0.08), transparent 50%),
+    radial-gradient(ellipse at 15% 20%, rgba(255, 255, 255, 0.65), transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(197, 160, 89, 0.05), transparent 50%),
     var(--color-sanctuary-parchment);
 }
 
-/* Hojas de la landing: papiro + grano + dos luces radiales muy suaves.
+/* Secciones de la landing: beige + grano + dos luces radiales muy suaves.
    El contenido viaja por encima del grano (z-index negativo del ::before). */
 .sanctuary-leaf {
   position: relative;
   isolation: isolate;
   background-color: var(--color-sanctuary-parchment);
   background-image:
-    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.22), transparent 46%),
-    radial-gradient(ellipse at 88% 100%, rgba(107, 112, 92, 0.08), transparent 52%);
+    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.6), transparent 46%),
+    radial-gradient(ellipse at 88% 100%, rgba(197, 160, 89, 0.05), transparent 52%);
   color: var(--color-sanctuary-ink);
 }
 .sanctuary-leaf::before {
@@ -231,7 +226,7 @@ textarea {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.12;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
@@ -244,20 +239,17 @@ textarea {
 .sanctuary-leaf-wood {
   background-color: var(--color-sanctuary-wood);
   background-image:
-    radial-gradient(ellipse at 18% 10%, rgba(255, 255, 255, 0.2), transparent 50%),
-    radial-gradient(ellipse at 82% 90%, rgba(165, 125, 70, 0.1), transparent 55%);
+    radial-gradient(ellipse at 18% 10%, rgba(255, 255, 255, 0.6), transparent 50%),
+    radial-gradient(ellipse at 82% 90%, rgba(197, 160, 89, 0.06), transparent 55%);
 }
 
-/* Tarjetas: objetos físicos de marfil cálido posados sobre la madera.
-   Sombra oliva difusa, borde de oro antiguo y elevación serena al hover. */
+/* Tarjetas: superficies blancas limpias posadas sobre el beige.
+   Borde stone muy sutil y sombra extremadamente suave de alta gama. */
 .sanctuary-card {
-  background: var(--color-sanctuary-wood-light);
-  border: 1px solid rgba(165, 131, 78, 0.16);
-  border-radius: 18px;
-  box-shadow:
-    0 8px 24px rgba(107, 112, 92, 0.12),
-    0 2px 6px rgba(107, 112, 92, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background: #FFFFFF;
+  border: 1px solid var(--color-sanctuary-border-light);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
   transition:
     transform 350ms ease,
     box-shadow 350ms ease,
@@ -265,53 +257,18 @@ textarea {
 }
 
 .sanctuary-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(197, 160, 89, 0.4);
-  box-shadow:
-    0 14px 32px rgba(107, 112, 92, 0.18),
-    0 4px 10px rgba(107, 112, 92, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px);
+  border-color: rgba(197, 160, 89, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
 }
 
 /* Variante sin elevación: para tarjetas informativas dentro de una sección
    que ya tiene superficies anidadas (evita el efecto "SaaS flotante"). */
 .sanctuary-card-quiet {
-  background: var(--color-sanctuary-wood-light);
-  border: 1px solid rgba(165, 131, 78, 0.16);
-  border-radius: 18px;
-  box-shadow:
-    0 8px 24px rgba(107, 112, 92, 0.12),
-    0 2px 6px rgba(107, 112, 92, 0.08);
-}
-
-/* Tarjetas oliva · contenedores de la paleta holística: fondo Verde Oliva
-   (#6B705C), texto Beige Claro (#F4EFE6), títulos en Dorado y una sombra
-   orgánica suave. El hover conserva la elevación serena del santuario. */
-.sanctuary-card-olive {
-  background: var(--color-sanctuary-olive);
-  border: 1px solid rgba(244, 239, 230, 0.16);
-  border-radius: 24px;
-  color: var(--color-sanctuary-olive-ink);
-  box-shadow: 0 10px 30px rgba(107, 112, 92, 0.2);
-  transition:
-    transform 350ms ease,
-    box-shadow 350ms ease,
-    border-color 350ms ease;
-}
-
-.sanctuary-card-olive:hover {
-  transform: translateY(-4px);
-  border-color: rgba(197, 160, 89, 0.45);
-  box-shadow: 0 18px 44px rgba(107, 112, 92, 0.32);
-}
-
-/* Sobre oliva el microcopy dorado usa el oro de acento (#C5A059): el oro de
-   tinta está pensado para papiro claro y perdería presencia sobre oliva. */
-.sanctuary-card-olive .sanctuary-eyebrow {
-  color: var(--color-sanctuary-gold);
-}
-.sanctuary-card-olive .sanctuary-eyebrow::before {
-  background: linear-gradient(90deg, rgba(197, 160, 89, 0.85), rgba(197, 160, 89, 0.12));
+  background: #FFFFFF;
+  border: 1px solid var(--color-sanctuary-border-light);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
 }
 
 /* Microcopy editorial: mayúsculas, tracking amplio y oro antiguo legible. */
@@ -351,26 +308,24 @@ textarea {
   background: linear-gradient(90deg, transparent, rgba(169, 131, 67, 0.45), transparent);
 }
 
-/* Transición Hero oscuro → papiro. El gradiente inferior vive en el propio
+/* Transición Hero oscuro → beige. El gradiente inferior vive en el propio
    hero (hero-carousel / akashic-hero / rune-experience) como
-   `bg-gradient-to-b from-transparent to-[#E6E1D6]`, para conectar la portada
+   `bg-gradient-to-b from-transparent to-[#F5F2EB]`, para conectar la portada
    con el nuevo fondo beige sin cortes ni bandas visibles. */
 .hero-sanctuary {
   position: relative;
   background-color: var(--color-sanctuary-night);
 }
 
-/* Cierre de marca: el papiro se asienta en la noche del footer. El degradado
-   baja del beige al café casi negro sin cortes ni bandas visibles. */
+/* Cierre de marca: el beige se asienta en el marfil del footer. El degradado
+   baja del papiro al marfil sólido sin cortes ni bandas visibles. */
 .sanctuary-dusk {
   background: linear-gradient(
     to bottom,
-    rgba(230, 225, 214, 0) 0%,
-    rgba(216, 208, 189, 0.35) 12%,
-    rgba(90, 74, 54, 0.62) 30%,
-    rgba(40, 35, 27, 0.92) 55%,
-    #17150f 78%,
-    #11110f 100%
+    rgba(245, 242, 235, 0) 0%,
+    rgba(245, 242, 235, 0.65) 18%,
+    #FAF8F3 45%,
+    #FCFAF5 100%
   );
 }
 
@@ -505,6 +460,32 @@ textarea {
 select.field-dark option {
   background: var(--night-900);
   color: var(--cream-100);
+}
+
+/* Campos limpios para formularios Premium Orgánico (Mi Cuenta, Login,
+   Booking): fondo beige muy claro, borde stone sutil y focus dorado. */
+.field-light {
+  width: 100%;
+  border-radius: 0.85rem;
+  border: 1px solid #E3DCCC;
+  background: #FAF8F3;
+  color: #2C241B;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.field-light::placeholder {
+  color: #9C917E;
+}
+.field-light:focus {
+  border-color: rgba(197, 160, 89, 0.75);
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.18);
+  background: #FFFFFF;
+}
+select.field-light option {
+  background: #FFFFFF;
+  color: #2C241B;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -918,12 +899,10 @@ html {
   .float-element-slow {
     animation: none;
   }
-  .sanctuary-card,
-  .sanctuary-card-olive {
+  .sanctuary-card {
     transition: none;
   }
-  .sanctuary-card:hover,
-  .sanctuary-card-olive:hover {
+  .sanctuary-card:hover {
     transform: none;
   }
   html {

@@ -7,7 +7,6 @@ import type { CategoryTemplateMap, StoreCategory, StoreProduct } from "../types"
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCard } from "./ProductCard";
 import { StoreErrorPanel } from "./StoreErrorPanel";
-import { ProductCardSkeleton } from "../../../components/ui/skeleton";
 
 type Props = {
   initialCategory: StoreCategory;
@@ -102,16 +101,16 @@ export function StoreExplorer({
 
   return (
     <div id="tienda-holistica-catalogo" className="scroll-mt-24">
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-gold/20 pb-8">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-stone-200 pb-8">
         <div>
-          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-gold">
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[.35em] text-bronze">
             <span aria-hidden="true" className="h-px w-10 bg-gold/60" />
             Holistic Store
           </p>
-          <h2 className="mt-5 font-display text-4xl leading-none text-papyrus sm:text-5xl">
-            Explora la <em className="italic text-gold">colección.</em>
+          <h2 className="mt-5 font-display text-4xl leading-none text-ink sm:text-5xl">
+            Explora la <em className="italic text-bronze">colección.</em>
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-papyrus/55">
+          <p className="mt-4 max-w-xl text-sm leading-7 text-ink-muted">
             {meta.symbol} {active} · {meta.tagline}. Piezas publicadas, listas para consultar por WhatsApp.
           </p>
         </div>
@@ -124,7 +123,15 @@ export function StoreExplorer({
           aria-label={`Cargando ${active}`}
         >
           {Array.from({ length: 10 }).map((_, i) => (
-            <ProductCardSkeleton key={i} />
+            <div key={i} className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+              <div className="aspect-[4/5] w-full animate-pulse bg-papyrus" />
+              <div className="space-y-2.5 p-4">
+                <div className="h-3 w-1/3 animate-pulse rounded bg-papyrus" />
+                <div className="h-4 w-4/5 animate-pulse rounded bg-papyrus" />
+                <div className="h-3 w-full animate-pulse rounded bg-papyrus" />
+                <div className="h-9 w-full animate-pulse rounded-xl bg-papyrus" />
+              </div>
+            </div>
           ))}
         </div>
       ) : error ? (
@@ -137,11 +144,11 @@ export function StoreExplorer({
           />
         </div>
       ) : products.length === 0 ? (
-        <div className="mt-10 grid place-items-center rounded-2xl border border-dashed border-gold/25 bg-papyrus/[0.02] px-6 py-16 text-center">
+        <div className="mt-10 grid place-items-center rounded-3xl border border-dashed border-stone-300 bg-white/70 px-6 py-16 text-center shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
           <div>
-            <Sparkles size={26} className="mx-auto text-gold" />
-            <p className="mt-4 font-display text-2xl text-papyrus">Próximamente en {active}</p>
-            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-papyrus/55">
+            <Sparkles size={26} className="mx-auto text-bronze" />
+            <p className="mt-4 font-display text-2xl text-ink">Próximamente en {active}</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-ink-muted">
               Estamos preparando nuevas piezas para esta colección. Escríbenos y te avisamos primero.
             </p>
             {whatsappValid && (
@@ -149,7 +156,7 @@ export function StoreExplorer({
                 href={`https://wa.me/${whatsappDigits}?text=${encodeURIComponent(`Hola, quiero que me avisen cuando haya novedades en ${active} de Holistic Store.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/50 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold-bright transition hover:bg-gold hover:text-obsidian"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-[11px] font-semibold uppercase tracking-[.22em] text-ink transition hover:bg-gold-light"
               >
                 <MessageCircle size={14} /> Avisarme por WhatsApp
               </a>
@@ -169,7 +176,7 @@ export function StoreExplorer({
               />
             ))}
           </div>
-          <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-papyrus/35">
+          <p className="mt-8 text-center text-[11px] uppercase tracking-[.25em] text-ink-muted/70">
             Mostrando {products.length} {products.length === 1 ? "pieza" : "piezas"} de {active}
           </p>
         </>

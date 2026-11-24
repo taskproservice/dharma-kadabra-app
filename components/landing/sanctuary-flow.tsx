@@ -108,9 +108,9 @@ export function FlowCrystal({
       <span
         className={`block size-full rotate-[18deg] rounded-[38%] border ${
           tone === "gold"
-            ? "border-sanctuary-gold/45 bg-[linear-gradient(150deg,rgba(242,235,221,.85),rgba(217,188,124,.35)_55%,rgba(169,131,67,.28))]"
-            : "border-[#8a8a6a]/40 bg-[linear-gradient(150deg,rgba(242,235,221,.8),rgba(160,168,138,.3)_60%,rgba(110,120,94,.22))]"
-        } shadow-[inset_0_1px_0_rgba(255,255,255,.7),0_10px_24px_-14px_rgba(80,57,31,.5)]`}
+            ? "border-sanctuary-gold/45 bg-[linear-gradient(150deg,rgba(250,248,243,.9),rgba(217,188,124,.32)_55%,rgba(169,131,67,.25))]"
+            : "border-sanctuary-gold/25 bg-[linear-gradient(150deg,rgba(250,248,243,.9),rgba(228,217,196,.4)_60%,rgba(197,160,89,.18))]"
+        } shadow-[inset_0_1px_0_rgba(255,255,255,.7),0_10px_24px_-14px_rgba(80,57,31,.4)]`}
       />
     </span>
   );

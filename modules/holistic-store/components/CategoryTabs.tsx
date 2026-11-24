@@ -32,18 +32,18 @@ export function CategoryTabs({ active, counts, onChange }: Props) {
             onClick={() => onChange(category)}
             className={`group inline-flex items-center gap-2.5 rounded-full border px-5 py-3 text-[11px] font-semibold uppercase tracking-[.22em] transition-all duration-300 ${
               selected
-                ? "border-gold bg-gradient-to-r from-gold-light via-gold to-gold-bright text-obsidian shadow-[0_14px_36px_-16px_rgba(197,160,89,.8)]"
-                : "border-gold/30 bg-papyrus/[0.03] text-papyrus/65 hover:border-gold/70 hover:text-papyrus"
+                ? "border-gold bg-gold text-ink shadow-[0_14px_36px_-16px_rgba(197,160,89,.8)]"
+                : "border-stone-200 bg-white text-sanctuary-ink-soft hover:border-gold/60 hover:text-bronze"
             }`}
           >
-            <span aria-hidden="true" className={selected ? "text-obsidian/70" : "text-gold"}>
+            <span aria-hidden="true" className={selected ? "text-ink/70" : "text-bronze"}>
               {CATEGORY_META[category].symbol}
             </span>
             {category}
             <span
               aria-label={`${count} piezas`}
               className={`rounded-full px-2 py-0.5 text-[10px] font-bold tracking-normal ${
-                selected ? "bg-obsidian/15 text-obsidian" : "bg-papyrus/10 text-papyrus/50"
+                selected ? "bg-ink/10 text-ink" : "bg-papyrus text-sanctuary-ink-soft"
               }`}
             >
               {count}

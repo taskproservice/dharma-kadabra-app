@@ -8,6 +8,7 @@ import {
   Flower2,
   Gift,
   Home,
+  Search,
   ShoppingBag,
   Sparkles,
   UsersRound,
@@ -35,8 +36,9 @@ const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Beneficios", href: "#beneficios", icon: Gift },
 ];
 
-const ACTIVE_LINK_GLOW =
-  "relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gold after:shadow-[0_0_12px_rgba(197,160,89,0.8)]";
+/* Premium Orgánico: el enlace activo se subraya con Dorado (#C5A059). */
+const ACTIVE_LINK_UNDERLINE =
+  "relative after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:rounded-full after:bg-gold";
 
 /** `/tienda` es ruta propia; el resto son anclas de la landing. */
 const isRouteHref = (href: string) => href.startsWith("/");
@@ -65,11 +67,14 @@ function isNavLinkActive(label: string, href: string, pathname: string | null): 
 }
 
 /**
- * `tone` adapta el header al fondo de la página: `dark` (nocturno, por
- * defecto) o `papyrus` para las vistas en Papiro institucional como /agenda.
+ * Header Premium Orgánico: Marfil Sólido (#FCFAF5) en todas las páginas,
+ * con borde inferior sutil (stone), menú en Café Oscuro, acentos en Dorado
+ * y acciones de búsqueda + carrito + Mi Cuenta a la derecha.
+ *
+ * La prop `tone` se conserva por compatibilidad con vistas existentes
+ * (p. ej. /agenda); ambas variantes son ahora luminosas.
  */
 export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = {}) {
-  const light = tone === "papyrus";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -79,13 +84,6 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
 
   // En la landing (`/`) las anclas se resuelven en la misma página.
   const onLanding = pathname === "/";
-  const onStore = Boolean(pathname && (pathname === "/tienda" || pathname.startsWith("/tienda/")));
-  const showCartTrigger = onStore || cartCount > 0;
-  // El Hero de la landing y la portada de la tienda son nocturnos: en la
-  // primera pantalla el header se lee en papiro; al bajar al santuario claro
-  // (o de inmediato en /agenda, que ya es papiro) se invierte a tinta.
-  const darkHero = onLanding || onStore;
-  const onParchment: boolean = light || scrolled || !darkHero;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -106,24 +104,18 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b transition-all duration-500 ${
-          darkHero && !onParchment
-            ? "border-gold/15 bg-obsidian/55 text-papyrus backdrop-blur-md"
-            : scrolled
-              ? "border-sanctuary-gold/40 bg-sanctuary-parchment/90 text-sanctuary-ink shadow-[0_16px_44px_-30px_rgba(80,57,31,.5)] backdrop-blur-xl"
-              : "border-sanctuary-gold/30 bg-sanctuary-parchment/80 text-sanctuary-ink backdrop-blur-md"
+        className={`fixed inset-x-0 top-0 z-40 border-b border-stone-200/80 bg-papyrus-light text-ink transition-all duration-500 ${
+          scrolled ? "shadow-[0_10px_30px_-18px_rgba(44,36,27,0.25)]" : ""
         }`}
       >
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-2.5 sm:px-8">
           <Link href="/" aria-label="Dharma Kadabra · Inicio" className="shrink-0">
-            <BrandLockup size={58} tone={darkHero && !onParchment ? "dark" : "papyrus"} />
+            <BrandLockup size={58} tone="papyrus" />
           </Link>
 
           {/* Navegación de escritorio */}
           <nav
-            className={`hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] lg:flex xl:gap-1 xl:text-[11px] ${
-              onParchment ? "text-sanctuary-ink-soft" : "text-papyrus"
-            }`}
+            className="hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] text-sanctuary-ink-soft lg:flex xl:gap-1 xl:text-[11px]"
             aria-label="Navegación principal"
           >
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
@@ -136,25 +128,17 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   aria-current={active ? "page" : undefined}
                   className={`group flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
                     active
-                      ? `${
-                          onParchment ? "text-sanctuary-ink" : "text-papyrus"
-                        } ${ACTIVE_LINK_GLOW}`
-                      : onParchment
-                        ? "relative hover:text-sanctuary-gold-ink"
-                        : "relative hover:text-gold-bright"
+                      ? `text-ink ${ACTIVE_LINK_UNDERLINE}`
+                      : "relative hover:text-bronze"
                   }`}
                 >
                   <Icon
                     size={17}
                     strokeWidth={1.35}
                     className={
-                      onParchment
-                        ? active
-                          ? "text-sanctuary-gold-ink transition"
-                          : "text-sanctuary-gold-leaf transition group-hover:text-sanctuary-gold-ink"
-                        : active
-                          ? "text-gold transition"
-                          : "text-gold-light transition group-hover:text-gold-bright"
+                      active
+                        ? "text-gold transition"
+                        : "text-sanctuary-gold-leaf transition group-hover:text-bronze"
                     }
                   />
                   <span className="whitespace-nowrap">{label}</span>
@@ -164,43 +148,43 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
-            {showCartTrigger && (
-              <button
-                type="button"
-                onClick={openCart}
-                aria-label={`Abrir carrito (${cartCount} ${cartCount === 1 ? "pieza" : "piezas"})`}
-                className={`relative grid size-9 place-items-center rounded-full border transition ${
-                  onParchment
-                    ? "border-sanctuary-gold/50 bg-sanctuary-wood-light text-sanctuary-gold-ink hover:border-sanctuary-gold-ink hover:bg-sanctuary-wood"
-                    : "border-gold/40 bg-papyrus/[0.03] text-gold hover:border-gold hover:bg-gold/15"
-                }`}
-              >
-                <ShoppingBag size={15} strokeWidth={1.6} />
-                {cartCount > 0 && (
-                  <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-sanctuary-gold px-1 text-[10px] font-bold leading-[18px] text-sanctuary-ink shadow-[0_0_10px_rgba(197,160,89,0.7)]">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            )}
+            {/* Búsqueda */}
+            <button
+              type="button"
+              aria-label="Buscar"
+              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-sanctuary-ink-soft transition hover:border-gold/60 hover:text-bronze"
+            >
+              <Search size={15} strokeWidth={1.6} />
+            </button>
 
-            {/* Mi Cuenta */}
+            {/* Carrito */}
+            <button
+              type="button"
+              onClick={openCart}
+              aria-label={`Abrir carrito (${cartCount} ${cartCount === 1 ? "pieza" : "piezas"})`}
+              className="relative grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-sanctuary-ink-soft transition hover:border-gold/60 hover:text-bronze"
+            >
+              <ShoppingBag size={15} strokeWidth={1.6} />
+              {cartCount > 0 && (
+                <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-gold px-1 text-[10px] font-bold leading-[18px] text-ink shadow-[0_2px_8px_rgba(197,160,89,0.5)]">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {/* Mi Cuenta · borde dorado con texto café sobre fondo dorado suave */}
             <Link
               href="/mi-cuenta"
               aria-current={pathname?.startsWith("/mi-cuenta") ? "page" : undefined}
               className={`group flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-2 text-[11px] font-medium transition sm:pl-2.5 sm:pr-3.5 ${
-                onParchment
-                  ? "border-sanctuary-gold/45 bg-sanctuary-wood-light text-sanctuary-ink hover:border-sanctuary-gold-ink hover:bg-sanctuary-wood"
-                  : "border-gold/35 bg-papyrus/[0.03] text-papyrus hover:border-gold/70 hover:bg-gold/10"
-              } ${
                 pathname?.startsWith("/mi-cuenta")
-                  ? "border-sanctuary-gold shadow-[0_0_12px_rgba(197,160,89,0.35)]"
-                  : ""
+                  ? "border-gold bg-gold/15 text-ink"
+                  : "border-gold/50 bg-gold/10 text-ink hover:border-gold hover:bg-gold/15"
               }`}
             >
               <span
-                className={`grid size-7 place-items-center rounded-full border border-sanctuary-gold/35 bg-gold/10 ${
-                  onParchment ? "text-sanctuary-gold-ink" : "text-gold-light"
+                className={`grid size-7 place-items-center rounded-full border border-gold/40 bg-gold/10 ${
+                  "text-bronze"
                 }`}
               >
                 <UserRound size={14} strokeWidth={1.6} />
@@ -214,11 +198,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
               aria-expanded={menuOpen}
               aria-controls="public-mobile-nav"
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              className={`grid size-9 place-items-center rounded-full border transition lg:hidden ${
-                onParchment
-                  ? "border-sanctuary-gold/40 text-sanctuary-ink hover:border-sanctuary-gold-ink"
-                  : "border-gold/30 text-papyrus hover:border-gold/70"
-              }`}
+              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-ink transition hover:border-gold/60 hover:text-bronze lg:hidden"
             >
               <span className="flex flex-col gap-[3px]" aria-hidden="true">
                 <span className="h-px w-4 bg-current" />
@@ -229,19 +209,15 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
           </div>
         </div>
 
-        {/* Menú móvil */}
+        {/* Menú móvil · marfil con acentos dorados */}
         <div
           id="public-mobile-nav"
-          className={`overflow-hidden border-t transition-[max-height,opacity] duration-300 lg:hidden ${
-            onParchment
-              ? "border-sanctuary-gold/30 bg-sanctuary-parchment-light"
-              : "border-gold/15 bg-obsidian/97"
-          } ${menuOpen ? "max-h-[70vh] opacity-100" : "max-h-0 opacity-0"}`}
+          className={`overflow-hidden border-t border-stone-200/80 bg-papyrus-light transition-[max-height,opacity] duration-300 lg:hidden ${
+            menuOpen ? "max-h-[70vh] opacity-100" : "max-h-0 opacity-0"
+          }`}
         >
           <nav
-            className={`grid grid-cols-2 gap-1 px-4 py-4 text-sm ${
-              onParchment ? "text-sanctuary-ink" : "text-papyrus"
-            }`}
+            className="grid grid-cols-2 gap-1 px-4 py-4 text-sm text-ink"
             aria-label="Navegación móvil"
           >
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
@@ -253,29 +229,15 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMenuOpen(false)}
                   className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition ${
-                    onParchment
-                      ? "hover:bg-sanctuary-wood hover:text-sanctuary-gold-ink"
-                      : "hover:bg-papyrus/[0.05] hover:text-gold-bright"
-                  } ${
                     active
-                      ? (onParchment
-                          ? "bg-sanctuary-wood text-sanctuary-ink"
-                          : "bg-papyrus/[0.04] text-papyrus") + ` ${ACTIVE_LINK_GLOW}`
-                      : ""
+                      ? "bg-gold/12 text-ink"
+                      : "hover:bg-papyrus hover:text-bronze"
                   }`}
                 >
                   <Icon
                     size={15}
                     strokeWidth={1.5}
-                    className={
-                      onParchment
-                        ? active
-                          ? "text-sanctuary-gold-ink"
-                          : "text-sanctuary-gold-leaf"
-                        : active
-                          ? "text-gold"
-                          : "text-gold-light"
-                    }
+                    className={active ? "text-gold" : "text-sanctuary-gold-leaf"}
                   />
                   {label}
                 </Link>

@@ -140,7 +140,7 @@ function Hero() {
       {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#E6E1D6]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
       />
 
       <div className="relative mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
@@ -272,7 +272,7 @@ function EditorialBreak() {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.35),rgba(17,17,15,.88))]" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(230,225,214,.45)_55%,#E6E1D6)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(245,242,235,.45)_55%,#F5F2EB)]"
       />
       <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
         <span aria-hidden="true" className="rune-glyph text-2xl text-gold">ᛟ</span>

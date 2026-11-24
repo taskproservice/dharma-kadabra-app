@@ -71,7 +71,7 @@ export function TherapistSelector({
       {loading ? (
         <div aria-busy="true" className="mt-3 flex gap-2.5">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="h-[70px] w-[150px] animate-pulse rounded-2xl border border-[#C5A059]/25 bg-[#FCFAF5]" />
+            <div key={index} className="h-[70px] w-[150px] animate-pulse rounded-2xl border border-stone-200 bg-papyrus-light" />
           ))}
         </div>
       ) : (
@@ -85,10 +85,10 @@ export function TherapistSelector({
             return (
               <label
                 key={person.id}
-                className={`flex min-w-[168px] cursor-pointer snap-start items-center gap-2.5 rounded-2xl border px-3 py-2.5 transition has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[#805F2B] ${
+                className={`flex min-w-[168px] cursor-pointer snap-start items-center gap-2.5 rounded-2xl border px-3 py-2.5 transition has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-bronze ${
                   selected
-                    ? "border-[#C5A059] bg-[#C5A059]/18 text-[#1A1A1A] shadow-[0_10px_24px_-16px_rgba(128,95,43,.75)]"
-                    : "border-[#C5A059]/30 bg-[#FCFAF5] text-[#1A1A1A] hover:border-[#C5A059]/70 hover:bg-[#EDE4D4]/60"
+                    ? "border-gold bg-gold/15 text-ink shadow-[0_10px_24px_-16px_rgba(197,160,89,.6)]"
+                    : "border-stone-200 bg-white text-ink hover:border-gold/60 hover:bg-papyrus-light"
                 }`}
               >
                 <input

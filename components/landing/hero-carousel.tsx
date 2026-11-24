@@ -103,10 +103,10 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-sanctuary-night via-sanctuary-night/70 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-obsidian/90 to-transparent" />
 
-      {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
+      {/* Gradiente inferior: conecta la portada con el beige Premium Orgánico */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#E6E1D6]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8 lg:pt-28">
