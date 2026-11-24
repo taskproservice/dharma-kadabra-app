@@ -1,4 +1,6 @@
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 /**
  * Sincronización resiliente de Prisma para `npm run build` y `postinstall`:
@@ -16,30 +18,59 @@ import { spawnSync } from "node:child_process";
  * pipeline de build con `npm run db:push`.
  */
 const mode = process.argv[2] ?? "sync";
+const isWindows = process.platform === "win32";
+const prismaCli = resolve(process.cwd(), "node_modules/prisma/build/index.js");
 
-function run(args, extraEnv = {}) {
-  return spawnSync("npx", ["prisma", ...args], {
+if (!existsSync(prismaCli)) {
+  console.error("[db:sync] Prisma CLI no está instalado localmente. Ejecuta npm ci con las devDependencies habilitadas.");
+  process.exit(1);
+}
+
+function run(args, extraEnv = {}, options = {}) {
+  return spawnSync(process.execPath, [prismaCli, ...args], {
+    cwd: process.cwd(),
     stdio: "pipe",
     encoding: "utf8",
     env: { ...process.env, ...extraEnv },
+    ...options,
   });
+}
+
+function printOutput(output, stream = process.stdout) {
+  if (typeof output === "string" && output.length > 0) stream.write(output);
+}
+
+function reportSpawnError(result, label) {
+  if (result.error) {
+    console.error(`[db:sync] No se pudo iniciar ${label} (${result.error.code ?? "error"}): ${result.error.message}`);
+  }
 }
 
 const gen = run(["generate"]);
 if (gen.status === 0) {
-  process.stdout.write(gen.stdout);
+  printOutput(gen.stdout);
 } else {
-  const fallback = run(["generate", "--no-engine"], {
-    PRISMA_SCHEMA_ENGINE_BINARY: "/bin/true",
-    PRISMA_QUERY_ENGINE_LIBRARY: "/bin/true",
-    PRISMA_QUERY_ENGINE_BINARY: "/bin/true",
-    PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING: "1",
-  });
+  const fallbackEnv = { PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING: "1" };
+  // /bin/true solo existe en Unix. En Windows dejamos que Prisma use sus
+  // motores WASM; si no están disponibles, abajo se informa el error real.
+  if (!isWindows) {
+    Object.assign(fallbackEnv, {
+      PRISMA_SCHEMA_ENGINE_BINARY: "/bin/true",
+      PRISMA_QUERY_ENGINE_LIBRARY: "/bin/true",
+      PRISMA_QUERY_ENGINE_BINARY: "/bin/true",
+    });
+  }
+
+  const fallback = run(["generate", "--no-engine"], fallbackEnv);
   if (fallback.status !== 0) {
-    process.stderr.write(gen.stderr || fallback.stderr);
+    printOutput(gen.stderr, process.stderr);
+    printOutput(fallback.stdout, process.stderr);
+    printOutput(fallback.stderr, process.stderr);
+    reportSpawnError(fallback, "Prisma CLI (fallback)");
+    reportSpawnError(gen, "Prisma CLI");
     process.exit(fallback.status ?? 1);
   }
-  process.stdout.write(fallback.stdout);
+  printOutput(fallback.stdout);
 }
 
 if (mode === "generate-only") {
@@ -55,8 +86,9 @@ if (isPlaceholder) {
   process.exit(0);
 }
 
-const push = spawnSync("npx", ["prisma", "db", "push"], {
-  stdio: "inherit",
-  env: process.env,
-});
-process.exit(push.status ?? 0);
+const push = run(["db", "push"], {}, { stdio: "inherit" });
+if (push.error) {
+  reportSpawnError(push, "Prisma CLI");
+  process.exit(1);
+}
+process.exit(push.status ?? 1);
