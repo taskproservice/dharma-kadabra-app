@@ -64,25 +64,20 @@ export function AkashicBenefits() {
       </div>
     </section>
 
-    {/* Banda editorial entre Beneficios y Proceso, como en la página de Runas. */}
-    <section aria-label="Frase editorial" className="relative flex min-h-[34vh] items-center overflow-hidden bg-sanctuary-night">
+    {/* Banda editorial entre Beneficios y Proceso, sobre marfil luminoso. */}
+    <section aria-label="Frase editorial" className="relative flex min-h-[34vh] items-center overflow-hidden border-y border-stone-200 bg-[#FCFAF5]">
       <Image
         src={akashicImages.editorial}
         alt="Bosque con rayos de luz dorada atravesando los árboles al amanecer"
         fill
         sizes="100vw"
         quality={90}
-        className="object-cover opacity-40"
+        className="object-cover opacity-20"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.35),rgba(17,17,15,.88))]" />
-      {/* La noche editorial se disuelve en el papiro del santuario. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(245,242,235,.45)_55%,#F5F2EB)]"
-      />
-      <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
-        <span aria-hidden="true" className="text-2xl text-gold">✧</span>
-        <p className="akashic-display mt-4 text-2xl font-light italic leading-tight text-papyrus sm:text-4xl">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(245,242,235,.94))]" />
+      <div className="relative z-10 mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
+        <span aria-hidden="true" className="text-2xl text-[#C5A059]">✧</span>
+        <p className="akashic-display mt-4 text-2xl font-light italic leading-tight text-[#2C241B] sm:text-4xl">
           &ldquo;{akashicContent.editorial.quote}&rdquo;
         </p>
         <div className="akashic-hairline mx-auto mt-5 h-px w-40" />

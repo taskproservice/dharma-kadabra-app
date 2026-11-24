@@ -91,7 +91,7 @@ function Eyebrow({ children, light = false }: { children: React.ReactNode; light
 
 function SiteHeader() {
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-sanctuary-gold/30 bg-sanctuary-parchment/85 text-sanctuary-ink backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-stone-200 bg-[#FCFAF5] text-[#2C241B]">
       <div className="mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-6 px-5 sm:px-8">
         <Link href="/" aria-label="Volver al inicio de Dharma Kadabra" className="shrink-0">
           <BrandLockup size={40} tone="papyrus" />
@@ -105,14 +105,14 @@ function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="text-[10px] font-semibold uppercase tracking-[.22em] text-sanctuary-ink-soft transition hover:text-sanctuary-gold-ink"
+              className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#2C241B] transition hover:text-sanctuary-gold-ink"
             >
               {link.label}
             </a>
           ))}
         </nav>
         <RuneBookingCTA
-          className="shrink-0 cursor-pointer border border-sanctuary-gold-ink/60 px-4 py-2.5 text-[9px] font-semibold uppercase tracking-[.2em] text-sanctuary-gold-ink transition hover:bg-sanctuary-gold hover:text-sanctuary-ink sm:px-6"
+          className="shrink-0 cursor-pointer rounded-full border border-[#C5A059] bg-[#C5A059]/15 px-4 py-2.5 text-[9px] font-semibold uppercase tracking-[.2em] text-[#2C241B] transition hover:bg-[#C5A059] sm:px-6"
           label="Reservar sesión de Lectura de Runas"
         >
           Reservar sesión
@@ -124,7 +124,7 @@ function SiteHeader() {
 
 function Hero() {
   return (
-    <section id="inicio" className="hero-sanctuary relative flex min-h-[100svh] items-center overflow-hidden bg-sanctuary-night pt-24">
+    <section id="inicio" className="relative flex min-h-[92svh] items-center overflow-hidden bg-gradient-to-b from-[#F5F2EB] to-[#FCFAF5] pt-24 text-[#2C241B]">
       <Image
         src={IMAGES.hero}
         alt="Libro antiguo abierto con un círculo de símbolos rúnicos iluminado por una vela"
@@ -132,43 +132,43 @@ function Hero() {
         priority
         sizes="100vw"
         quality={90}
-        className="object-cover opacity-55"
+        className="object-cover opacity-25"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.74)_0%,rgba(17,17,15,.48)_35%,rgba(17,17,15,.94)_100%)]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_68%)] blur-3xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.92)_0%,rgba(245,242,235,.82)_45%,rgba(245,242,235,.96)_100%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_68%)] blur-3xl" />
 
       {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(110px,18vh,180px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
       />
 
-      <div className="relative mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
         <div className="flex justify-center">
-          <Eyebrow>Dharma Kadabra · Sabiduría nórdica</Eyebrow>
+          <Eyebrow light>Dharma Kadabra · Sabiduría nórdica</Eyebrow>
         </div>
-        <h1 className="rune-display mt-9 text-[clamp(3rem,10vw,8rem)] font-light uppercase leading-[.92] tracking-[.06em] text-gold drop-shadow-[0_10px_40px_rgba(0,0,0,.75)]">
+        <h1 className="rune-display mt-9 text-[clamp(3rem,10vw,8rem)] font-light uppercase leading-[.92] tracking-[.06em] text-[#2C241B]">
           EL LENGUAJE
           <br />
-          DEL DESTINO
+          <span className="text-[#C5A059]">DEL DESTINO</span>
         </h1>
         <div className="rune-hairline mx-auto mt-9 h-px w-56" />
-        <p className="mx-auto mt-9 max-w-2xl text-sm leading-8 text-papyrus/78 sm:text-base">
+        <p className="mx-auto mt-9 max-w-2xl text-sm leading-8 text-[#2C241B]/85 sm:text-base">
           Veinticinco símbolos, tres posiciones y una conversación honesta con el momento que vives. Las runas no dictan tu camino: te enseñan a leerlo.
         </p>
         <button
           type="button"
           onClick={() => document.getElementById("biblioteca")?.scrollIntoView({ behavior: "smooth" })}
-          className="group mt-11 inline-flex cursor-pointer items-center gap-4 rounded-full border border-gold/70 bg-gold/10 px-8 py-4 text-[10px] font-semibold uppercase tracking-[.26em] text-papyrus transition hover:bg-gold hover:text-obsidian"
+          className="group mt-11 inline-flex cursor-pointer items-center gap-4 rounded-full border border-[#2C241B] bg-transparent px-8 py-4 text-[10px] font-semibold uppercase tracking-[.26em] text-[#2C241B] transition hover:border-[#C5A059] hover:bg-[#C5A059]"
         >
           DESCUBRIR LAS RUNAS
           <ArrowDown size={15} className="transition group-hover:translate-y-1" />
         </button>
       </div>
 
-      <div className="absolute inset-x-0 bottom-8 mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-5 text-[9px] uppercase tracking-[.3em] text-papyrus/45 sm:justify-between">
+      <div className="absolute inset-x-0 bottom-8 z-10 mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-5 text-[9px] uppercase tracking-[.3em] text-[#2C241B]/70 sm:justify-between">
         <span>25 símbolos</span>
-        <span className="rune-glyph text-sm text-gold/70">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ</span>
+        <span className="rune-glyph text-sm text-bronze">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ</span>
         <span>Una lectura presente</span>
       </div>
     </section>
@@ -260,23 +260,19 @@ function Purpose() {
 
 function EditorialBreak() {
   return (
-    <section className="relative flex min-h-[34vh] items-center overflow-hidden bg-sanctuary-night">
+    <section className="relative flex min-h-[34vh] items-center overflow-hidden border-y border-stone-200 bg-[#FCFAF5]">
       <Image
         src={IMAGES.editorial}
         alt="Piedras negras con runas doradas extendidas sobre un paño de lino"
         fill
         sizes="100vw"
         quality={90}
-        className="object-cover opacity-40"
+        className="object-cover opacity-20"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.35),rgba(17,17,15,.88))]" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(245,242,235,.45)_55%,#F5F2EB)]"
-      />
-      <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
-        <span aria-hidden="true" className="rune-glyph text-2xl text-gold">ᛟ</span>
-        <p className="rune-display mt-4 text-2xl font-light italic leading-tight text-papyrus sm:text-4xl">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(245,242,235,.94))]" />
+      <div className="relative z-10 mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
+        <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059]">ᛟ</span>
+        <p className="rune-display mt-4 text-2xl font-light italic leading-tight text-[#2C241B] sm:text-4xl">
           &ldquo;La runa no predice el destino: revela la pregunta que el alma ya estaba haciendo.&rdquo;
         </p>
         <div className="rune-hairline mx-auto mt-5 h-px w-40" />
@@ -375,24 +371,24 @@ function Transformations() {
 
         <div className="mt-5 grid gap-3 sm:gap-4 md:grid-cols-2">
           {pillars.map((pillar) => (
-            <article key={pillar.title} className="group relative min-h-[150px] overflow-hidden rounded-2xl border border-sanctuary-gold/30 p-4 shadow-[0_18px_40px_-28px_rgba(80,57,31,.7)] sm:p-5">
+            <article key={pillar.title} className="group relative min-h-[160px] overflow-hidden rounded-3xl border border-stone-200 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:p-6">
               <Image
                 src={pillar.image}
                 alt=""
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-cover opacity-35 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-45"
+                className="object-cover opacity-15 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-25"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.5),rgba(17,17,15,.92))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.86),rgba(255,255,255,.94))]" />
               <div className="relative flex h-full flex-col">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[.28em] text-gold-light">{pillar.number}</span>
-                  <span aria-hidden="true" className="rune-glyph text-xl text-gold/70">{pillar.glyph}</span>
+                  <span className="text-[10px] font-semibold tracking-[.28em] text-bronze">{pillar.number}</span>
+                  <span aria-hidden="true" className="rune-glyph text-xl text-[#C5A059]">{pillar.glyph}</span>
                 </div>
                 <div className="mt-auto">
-                  <h3 className="rune-display text-2xl font-light text-papyrus sm:text-3xl">{pillar.title}</h3>
+                  <h3 className="rune-display text-2xl font-light text-[#2C241B] sm:text-3xl">{pillar.title}</h3>
                   <div className="rune-hairline my-1.5 h-px w-20" />
-                  <p className="max-w-md text-xs leading-5 text-papyrus/65">{pillar.text}</p>
+                  <p className="max-w-md text-xs leading-5 text-[#2C241B]/80">{pillar.text}</p>
                 </div>
               </div>
             </article>

@@ -95,7 +95,7 @@ export default async function HomePage() {
     <main className="relative bg-sanctuary-parchment text-sanctuary-ink">
       <PublicHeader />
 
-      {/* Hero cinematográfico: conserva la noche y se funde con el papiro */}
+      {/* Hero luminoso Premium Orgánico: degradado de papiro a marfil */}
       <HeroCarousel
         slides={slides}
         medallion={<HeroMedallion />}
@@ -103,7 +103,7 @@ export default async function HomePage() {
           <>
             <Link
               href="/tienda"
-              className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-light via-gold to-gold-bright px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-obsidian shadow-[0_18px_50px_-20px_rgba(197,160,89,.8)] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-bright"
+              className="group inline-flex items-center gap-3 rounded-full bg-[#C5A059] px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C241B] shadow-[0_14px_34px_-16px_rgba(197,160,89,.75)] transition hover:bg-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2C241B]"
             >
               Explorar Colección
               <ArrowRight
@@ -202,28 +202,28 @@ export default async function HomePage() {
                 />
               </div>
               {/* Tarjeta blanca de la fundadora: se posa sobre la fotografía */}
-              <figcaption className="absolute -bottom-2 left-3 right-3 rounded-2xl border border-stone-200 bg-white p-5 shadow-[0_16px_40px_rgba(44,36,27,0.08)] sm:left-auto sm:right-0 sm:w-64 lg:-right-6">
-                <p className="font-display text-xl leading-tight text-ink">
+              <figcaption className="absolute -bottom-2 left-3 right-3 rounded-3xl border border-stone-200 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:left-auto sm:right-0 sm:w-64 lg:-right-6">
+                <p className="font-display text-xl leading-tight text-[#2C241B]">
                   Paola <em className="italic text-bronze">Hernández</em>
                 </p>
                 <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[.22em] text-ink-muted">
                   Fundadora de Dharma Kadabra
                 </p>
-                <p className="mt-3 border-t border-stone-200 pt-3 font-display text-sm italic text-sanctuary-ink-soft">
+                <p className="mt-3 border-t border-stone-200 pt-3 font-display text-sm italic text-[#2C241B]">
                   &ldquo;Tejedora de Conciencia&rdquo;
                 </p>
               </figcaption>
             </figure>
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-sanctuary-ink sm:text-6xl">
-                Paola <em className="italic text-sanctuary-gold-leaf">Hernández</em>
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-[#2C241B] sm:text-6xl">
+                Paola <em className="italic text-[#C5A059]">Hernández</em>
               </h2>
               <p className="mt-5 font-display text-xl italic text-sanctuary-gold-ink sm:text-2xl">
                 &ldquo;Tejedora de Conciencia&rdquo;
               </p>
               <div className="mt-8 h-px w-16 bg-gradient-to-r from-sanctuary-gold to-transparent" />
-              <div className="mt-8 max-w-xl font-sans text-base leading-8 text-sanctuary-ink-soft">
+              <div className="mt-8 max-w-xl font-sans text-base leading-8 text-[#2C241B]">
                 <p>
                   Cada alma guarda una sabiduría profunda que merece un espacio seguro para
                   expresarse. A través de mis canalizaciones, camino contigo desde el amor para
@@ -235,11 +235,11 @@ export default async function HomePage() {
               <div className="mt-10 flex flex-wrap items-center gap-8">
                 <a
                   href="#nosotros"
-                  className="inline-flex items-center gap-3 border-b border-sanctuary-gold/45 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-sanctuary-ink transition duration-300 hover:border-sanctuary-gold-ink hover:text-sanctuary-gold-ink"
+                  className="inline-flex items-center gap-3 rounded-full bg-[#C5A059] px-6 py-3.5 text-[10px] font-semibold uppercase tracking-[.24em] text-[#2C241B] shadow-[0_12px_28px_-14px_rgba(197,160,89,0.7)] transition duration-300 hover:bg-gold-light"
                 >
                   Conoce nuestra historia <ArrowRight size={14} />
                 </a>
-                <span className="font-display text-lg italic text-sanctuary-ink-soft">
+                <span className="font-display text-lg italic text-[#2C241B]">
                   Con amor, Paola
                 </span>
               </div>
@@ -278,7 +278,7 @@ export default async function HomePage() {
                 <em className="italic text-sanctuary-gold-leaf">acompañan.</em>
               </h2>
             </div>
-            <p className="max-w-sm text-sm leading-7 text-sanctuary-ink-soft">
+            <p className="max-w-sm text-sm leading-7 text-[#2C241B]">
               Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio
               cálido para crecer.
             </p>
@@ -305,7 +305,7 @@ export default async function HomePage() {
                     className="object-cover grayscale-[.25] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                   />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-ink">{member.name}</h3>
+                <h3 className="mt-6 font-display text-2xl text-[#2C241B]">{member.name}</h3>
                 <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-ink-muted">
                   {member.specialty}
                 </p>
@@ -352,8 +352,8 @@ export default async function HomePage() {
                 <span className="relative grid size-11 place-items-center rounded-full border border-gold/40 bg-gold/10">
                   <Icon size={22} strokeWidth={1.25} className="text-bronze" />
                 </span>
-                <h3 className="relative mt-8 font-display text-2xl text-ink">{title}</h3>
-                <p className="relative mt-4 text-sm leading-7 text-sanctuary-ink-soft">{text}</p>
+                <h3 className="relative mt-8 font-display text-2xl text-[#2C241B]">{title}</h3>
+                <p className="relative mt-4 text-sm leading-7 text-[#2C241B]">{text}</p>
               </article>
             ))}
           </div>
@@ -373,7 +373,7 @@ export default async function HomePage() {
               Beneficios para acompañar{" "}
               <em className="italic text-sanctuary-gold-leaf">tu viaje.</em>
             </h2>
-            <p className="mt-8 max-w-md leading-7 text-sanctuary-ink-soft">
+            <p className="mt-8 max-w-md leading-7 text-[#2C241B]">
               Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa,
               desde donde estés.
             </p>
@@ -387,8 +387,8 @@ export default async function HomePage() {
                 <span className="font-display text-lg italic text-sanctuary-gold-ink">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-2xl text-sanctuary-ink">{benefit.title}</h3>
-                <p className="col-start-2 text-sm leading-6 text-sanctuary-ink-soft sm:col-start-3">
+                <h3 className="font-display text-2xl text-[#2C241B]">{benefit.title}</h3>
+                <p className="col-start-2 text-sm leading-6 text-[#2C241B] sm:col-start-3">
                   {benefit.text}
                 </p>
               </li>
@@ -414,11 +414,11 @@ export default async function HomePage() {
           <div className="relative flex justify-center">
             <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
           </div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-ink sm:text-6xl">
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#2C241B] sm:text-6xl">
             Regálate un momento para{" "}
-            <em className="italic text-bronze">reconectar.</em>
+            <em className="italic text-[#C5A059]">reconectar.</em>
           </h2>
-          <p className="relative mx-auto max-w-lg text-base leading-7 text-sanctuary-ink-soft">
+          <p className="relative mx-auto max-w-lg text-base leading-7 text-[#2C241B]">
             Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.
           </p>
           <Link

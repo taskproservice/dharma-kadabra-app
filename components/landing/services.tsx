@@ -30,11 +30,11 @@ export function ServicesSection() {
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="max-w-2xl">
           <p className={eyebrow}>Encuentros para tu camino</p>
-          <h2 className="font-display text-5xl leading-tight text-sanctuary-ink sm:text-6xl">
+          <h2 className="font-display text-5xl leading-tight text-[#2C241B] sm:text-6xl">
             Sabiduría para{" "}
-            <em className="italic text-sanctuary-gold-leaf">escucharte.</em>
+            <em className="italic text-[#C5A059]">escucharte.</em>
           </h2>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-sanctuary-ink-soft">
+          <p className="mt-5 max-w-xl text-sm leading-7 text-[#2C241B]">
             Las runas son una brújula terrenal para el momento presente; los Registros Akáshicos,
             una memoria sutil del alma. Dos puertas distintas para encontrar orientación.
           </p>
@@ -58,22 +58,22 @@ export function ServicesSection() {
               <p className="mt-8 text-[10px] font-semibold uppercase tracking-[.25em] text-bronze">
                 {service.essence}
               </p>
-              <h3 className="mt-3 font-display text-3xl leading-snug text-ink">
+              <h3 className="mt-3 font-display text-3xl leading-snug text-[#2C241B]">
                 {service.name}
                 {service.id === "registros-akashicos" ? ":" : ""}
               </h3>
-              <p className="mt-5 flex-1 text-sm leading-7 text-sanctuary-ink-soft">
+              <p className="mt-5 flex-1 text-sm leading-7 text-[#2C241B]">
                 {service.description}
               </p>
               <div className="mt-auto flex flex-wrap items-center justify-between gap-4 border-t border-stone-200 pt-8">
-                <span className="whitespace-nowrap font-display text-2xl text-ink">
+                <span className="whitespace-nowrap font-display text-2xl text-[#2C241B]">
                   {formatSessionPrice(service.price)}
                 </span>
                 <Link
                   href={
                     service.id === "lectura-de-runas" ? "/servicios/runas" : "/registros-akashicos"
                   }
-                  className="inline-flex items-center gap-2 rounded-full bg-sanctuary-gold px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-ink transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#C5A059] px-5 py-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#2C241B] transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
                 >
                   Agendar Sesión <ArrowRight size={14} />
                 </Link>
