@@ -104,8 +104,8 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b border-stone-200/80 bg-papyrus-light text-ink transition-all duration-500 ${
-          scrolled ? "shadow-[0_10px_30px_-18px_rgba(44,36,27,0.25)]" : ""
+        className={`fixed inset-x-0 top-0 z-40 border-b border-stone-200 bg-[#FCFAF5] text-[#2C241B] transition-all duration-500 ${
+          scrolled ? "shadow-[0_10px_30px_-18px_rgba(44,36,27,0.20)]" : ""
         }`}
       >
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-2.5 sm:px-8">
@@ -115,7 +115,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
 
           {/* Navegación de escritorio */}
           <nav
-            className="hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] text-sanctuary-ink-soft lg:flex xl:gap-1 xl:text-[11px]"
+            className="hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] text-[#2C241B] lg:flex xl:gap-1 xl:text-[11px]"
             aria-label="Navegación principal"
           >
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
@@ -126,9 +126,9 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   key={label}
                   href={target}
                   aria-current={active ? "page" : undefined}
-                  className={`group flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
+                  className={`group flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 text-[#2C241B] transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
                     active
-                      ? `text-ink ${ACTIVE_LINK_UNDERLINE}`
+                      ? `font-semibold text-[#2C241B] ${ACTIVE_LINK_UNDERLINE}`
                       : "relative hover:text-bronze"
                   }`}
                 >
@@ -137,7 +137,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                     strokeWidth={1.35}
                     className={
                       active
-                        ? "text-gold transition"
+                        ? "text-[#C5A059] transition"
                         : "text-sanctuary-gold-leaf transition group-hover:text-bronze"
                     }
                   />
@@ -152,7 +152,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
             <button
               type="button"
               aria-label="Buscar"
-              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-sanctuary-ink-soft transition hover:border-gold/60 hover:text-bronze"
+              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-[#2C241B] transition hover:border-gold/60 hover:text-bronze"
             >
               <Search size={15} strokeWidth={1.6} />
             </button>
@@ -162,31 +162,27 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
               type="button"
               onClick={openCart}
               aria-label={`Abrir carrito (${cartCount} ${cartCount === 1 ? "pieza" : "piezas"})`}
-              className="relative grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-sanctuary-ink-soft transition hover:border-gold/60 hover:text-bronze"
+              className="relative grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-[#2C241B] transition hover:border-gold/60 hover:text-bronze"
             >
               <ShoppingBag size={15} strokeWidth={1.6} />
               {cartCount > 0 && (
-                <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-gold px-1 text-[10px] font-bold leading-[18px] text-ink shadow-[0_2px_8px_rgba(197,160,89,0.5)]">
+                <span className="cart-pop absolute -right-1 -top-1 grid min-w-[18px] place-items-center rounded-full bg-[#C5A059] px-1 text-[10px] font-bold leading-[18px] text-[#2C241B] shadow-[0_2px_8px_rgba(197,160,89,0.5)]">
                   {cartCount}
                 </span>
               )}
             </button>
 
-            {/* Mi Cuenta · borde dorado con texto café sobre fondo dorado suave */}
+            {/* Mi Cuenta · texto oscuro y borde dorado sobre fondo dorado suave */}
             <Link
               href="/mi-cuenta"
               aria-current={pathname?.startsWith("/mi-cuenta") ? "page" : undefined}
-              className={`group flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-2 text-[11px] font-medium transition sm:pl-2.5 sm:pr-3.5 ${
+              className={`group flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-2 text-[11px] font-medium text-[#2C241B] transition sm:pl-2.5 sm:pr-3.5 ${
                 pathname?.startsWith("/mi-cuenta")
-                  ? "border-gold bg-gold/15 text-ink"
-                  : "border-gold/50 bg-gold/10 text-ink hover:border-gold hover:bg-gold/15"
+                  ? "border-[#C5A059] bg-[#C5A059]/25 text-[#2C241B]"
+                  : "border-[#C5A059] bg-[#C5A059]/15 text-[#2C241B] hover:bg-[#C5A059]/25"
               }`}
             >
-              <span
-                className={`grid size-7 place-items-center rounded-full border border-gold/40 bg-gold/10 ${
-                  "text-bronze"
-                }`}
-              >
+              <span className="grid size-7 place-items-center rounded-full border border-[#C5A059]/50 bg-[#FCFAF5] text-bronze">
                 <UserRound size={14} strokeWidth={1.6} />
               </span>
               <span className="hidden sm:inline">Mi Cuenta</span>
@@ -198,7 +194,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
               aria-expanded={menuOpen}
               aria-controls="public-mobile-nav"
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-ink transition hover:border-gold/60 hover:text-bronze lg:hidden"
+              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-[#2C241B] transition hover:border-gold/60 hover:text-bronze lg:hidden"
             >
               <span className="flex flex-col gap-[3px]" aria-hidden="true">
                 <span className="h-px w-4 bg-current" />
@@ -212,12 +208,12 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
         {/* Menú móvil · marfil con acentos dorados */}
         <div
           id="public-mobile-nav"
-          className={`overflow-hidden border-t border-stone-200/80 bg-papyrus-light transition-[max-height,opacity] duration-300 lg:hidden ${
+          className={`overflow-hidden border-t border-stone-200 bg-[#FCFAF5] transition-[max-height,opacity] duration-300 lg:hidden ${
             menuOpen ? "max-h-[70vh] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <nav
-            className="grid grid-cols-2 gap-1 px-4 py-4 text-sm text-ink"
+            className="grid grid-cols-2 gap-1 px-4 py-4 text-sm text-[#2C241B]"
             aria-label="Navegación móvil"
           >
             {NAV_LINKS.map(({ label, href, icon: Icon }) => {
@@ -228,16 +224,16 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   href={resolveHref(href, onLanding)}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition ${
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[#2C241B] transition ${
                     active
-                      ? "bg-gold/12 text-ink"
-                      : "hover:bg-papyrus hover:text-bronze"
+                      ? "bg-[#C5A059]/15 font-medium text-[#2C241B]"
+                      : "hover:bg-[#F5F2EB] hover:text-bronze"
                   }`}
                 >
                   <Icon
                     size={15}
                     strokeWidth={1.5}
-                    className={active ? "text-gold" : "text-sanctuary-gold-leaf"}
+                    className={active ? "text-[#C5A059]" : "text-sanctuary-gold-leaf"}
                   />
                   {label}
                 </Link>

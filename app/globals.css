@@ -248,7 +248,7 @@ textarea {
 .sanctuary-card {
   background: #FFFFFF;
   border: 1px solid var(--color-sanctuary-border-light);
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
   transition:
     transform 350ms ease,
@@ -267,7 +267,7 @@ textarea {
 .sanctuary-card-quiet {
   background: #FFFFFF;
   border: 1px solid var(--color-sanctuary-border-light);
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
 }
 
@@ -308,13 +308,13 @@ textarea {
   background: linear-gradient(90deg, transparent, rgba(169, 131, 67, 0.45), transparent);
 }
 
-/* Transición Hero oscuro → beige. El gradiente inferior vive en el propio
+/* Transición Hero claro → beige. El gradiente inferior vive en el propio
    hero (hero-carousel / akashic-hero / rune-experience) como
    `bg-gradient-to-b from-transparent to-[#F5F2EB]`, para conectar la portada
-   con el nuevo fondo beige sin cortes ni bandas visibles. */
+   con el fondo beige sin cortes ni bandas visibles. */
 .hero-sanctuary {
   position: relative;
-  background-color: var(--color-sanctuary-night);
+  background-color: #FCFAF5;
 }
 
 /* Cierre de marca: el beige se asienta en el marfil del footer. El degradado

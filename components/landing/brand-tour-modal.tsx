@@ -518,28 +518,28 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      {/* Marco cinematográfico Carbón Profundo (#0F1115) al 90% de pantalla, sin scrollbars */}
+      {/* Marco luminoso Marfil (#FCFAF5) al 90% de pantalla, sin scrollbars */}
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="brand-tour-title"
-        className="tour-modal-in relative flex h-[90dvh] max-h-[860px] w-full max-w-[1160px] flex-col justify-between overflow-hidden rounded-3xl border border-gold/30 bg-obsidian/95 px-5 py-4 text-papyrus shadow-[0_40px_140px_-20px_rgba(0,0,0,0.95),0_0_80px_-30px_rgba(197,160,89,0.22)] backdrop-blur-2xl sm:px-8 sm:py-5 md:px-10 md:py-6"
+        className="tour-modal-in relative flex h-[90dvh] max-h-[860px] w-full max-w-[1160px] flex-col justify-between overflow-hidden rounded-3xl border border-stone-200 bg-[#FCFAF5] px-5 py-4 text-[#2C241B] shadow-[0_32px_100px_-20px_rgba(0,0,0,0.45)] sm:px-8 sm:py-5 md:px-10 md:py-6"
       >
-        {/* Atmósfera ambiental dorada sobre carbón profundo */}
+        {/* Atmósfera ambiental dorada sobre marfil */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="absolute -top-36 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.14),transparent_68%)] blur-3xl" />
-          <span className="absolute -bottom-32 -right-24 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.08),transparent_70%)] blur-3xl" />
-          <span className="absolute inset-2.5 rounded-[1.25rem] border border-gold/10" />
+          <span className="absolute -top-36 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.16),transparent_68%)] blur-3xl" />
+          <span className="absolute -bottom-32 -right-24 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.10),transparent_70%)] blur-3xl" />
+          <span className="absolute inset-2.5 rounded-[1.25rem] border border-[#C5A059]/25" />
         </div>
 
-        {/* Barra superior: distintivo editorial + botón de cierre dorado */}
+        {/* Barra superior: distintivo editorial + botón de cierre */}
         <header className="relative z-20 flex shrink-0 items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span
               aria-hidden="true"
-              className="hidden h-px w-8 bg-gradient-to-r from-gold to-transparent sm:block"
+              className="hidden h-px w-8 bg-gradient-to-r from-[#C5A059] to-transparent sm:block"
             />
-            <p className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.34em] text-gold">
+            <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.34em] text-bronze">
               <Sparkles size={12} aria-hidden="true" />
               Dharma Kadabra · Tour de Marca
             </p>
@@ -549,7 +549,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
             type="button"
             onClick={onClose}
             aria-label="Cerrar el tour"
-            className="grid size-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-obsidian/80 text-gold transition duration-300 hover:border-gold hover:bg-gold hover:text-obsidian hover:shadow-[0_0_28px_rgba(197,160,89,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:size-11"
+            className="grid size-10 shrink-0 place-items-center rounded-full border border-stone-300 bg-white text-[#2C241B] transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#2C241B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C5A059] sm:size-11"
           >
             <X size={18} strokeWidth={1.75} />
           </button>
@@ -558,32 +558,32 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
         {/* Escenario central: reproductor 16:9 contenido con exactitud dentro del viewport */}
         <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-3 sm:py-4">
           <div
-            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gold/30 bg-obsidian-deep shadow-[0_32px_90px_-28px_rgba(0,0,0,0.95),0_0_0_1px_rgba(197,160,89,0.08)]"
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-stone-200 bg-[#F5F2EB] shadow-[0_16px_50px_-20px_rgba(44,36,27,0.22)]"
             style={{
               maxWidth: "min(920px, max(240px, calc((min(90dvh, 860px) - 14.5rem) * 16 / 9)))",
             }}
           >
-            {/* Poster oscuro de fondo mientras carga el reproductor */}
+            {/* Poster suave de fondo mientras carga el reproductor */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-25"
+              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-20"
               style={{ backgroundImage: `url(${DARK_POSTER_SRC})` }}
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/65 to-obsidian/40"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-[#F5F2EB]/75 to-[#FCFAF5]/70"
             />
 
             {/* Estado elegante cuando aún no hay video configurado */}
             {!hasVideo ? (
               <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 text-center">
-                <div className="grid size-14 place-items-center rounded-full border border-gold/45 bg-obsidian/80 text-gold shadow-[0_0_40px_rgba(197,160,89,0.2)]">
+                <div className="grid size-14 place-items-center rounded-full border border-[#C5A059]/50 bg-white text-bronze shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
                   <Film size={24} strokeWidth={1.4} />
                 </div>
-                <p className="mt-5 font-cormorant text-2xl font-normal tracking-[0.01em] text-papyrus sm:text-3xl">
+                <p className="mt-5 font-cormorant text-2xl font-normal tracking-[0.01em] text-[#2C241B] sm:text-3xl">
                   El tour estará disponible pronto
                 </p>
-                <p className="mt-2.5 max-w-md text-xs leading-6 text-papyrus/60 sm:text-sm">
+                <p className="mt-2.5 max-w-md text-xs leading-6 text-[#2C241B]/75 sm:text-sm">
                   Estamos preparando una experiencia audiovisual inmersiva para compartir nuestra
                   historia contigo.
                 </p>
@@ -776,16 +776,16 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
           </div>
         </div>
 
-        {/* Pie editorial bajo el video: Título en Cormorant Garamond Oro + CTA */}
-        <footer className="relative z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-t border-gold/18 pt-3.5 text-center sm:flex-row sm:gap-6 sm:pt-4 sm:text-left">
+        {/* Pie editorial bajo el video: Título en Cormorant Garamond + CTA */}
+        <footer className="relative z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-t border-stone-200 pt-3.5 text-center sm:flex-row sm:gap-6 sm:pt-4 sm:text-left">
           <div className="min-w-0">
             <h2
               id="brand-tour-title"
-              className="truncate font-cormorant text-2xl font-medium leading-tight tracking-[0.015em] text-gold sm:text-3xl md:text-[2.15rem]"
+              className="truncate font-cormorant text-2xl font-medium leading-tight tracking-[0.015em] text-[#2C241B] sm:text-3xl md:text-[2.15rem]"
             >
               {tourTitle}
             </h2>
-            <p className="mt-0.5 truncate text-[10px] uppercase tracking-[.28em] text-papyrus/55">
+            <p className="mt-0.5 truncate text-[10px] uppercase tracking-[.28em] text-bronze">
               {activeChapter ? activeChapter.label : "Conecta · Transforma · Armoniza"}
             </p>
           </div>
@@ -793,7 +793,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
           <button
             type="button"
             onClick={handleExploreCollection}
-            className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-gold via-gold-bright to-gold px-7 py-3 text-[10px] font-semibold uppercase tracking-[.28em] text-obsidian shadow-[0_14px_40px_-14px_rgba(197,160,89,0.85)] transition duration-300 hover:brightness-110 hover:shadow-[0_18px_48px_-12px_rgba(197,160,89,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold sm:px-8 sm:py-3.5 sm:text-[11px]"
+            className="group inline-flex shrink-0 cursor-pointer items-center gap-3 rounded-full bg-[#C5A059] px-7 py-3 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C241B] shadow-[0_14px_34px_-14px_rgba(197,160,89,0.75)] transition duration-300 hover:bg-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059] sm:px-8 sm:py-3.5 sm:text-[11px]"
           >
             {ctaLabel}
             <ArrowRight
@@ -833,7 +833,7 @@ export function BrandTourTrigger({ config }: { config: TourVideoConfig }) {
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="group inline-flex items-center gap-3 rounded-full border border-gold bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-papyrus transition duration-300 hover:bg-gold hover:text-obsidian hover:shadow-[0_0_40px_-6px_rgba(197,160,89,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+        className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#2C241B] bg-transparent px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C241B] transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059]/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2C241B]"
       >
         Quiénes somos
         <Film size={14} className="transition duration-300 group-hover:scale-110" aria-hidden="true" />

@@ -17,7 +17,7 @@ export function BrandLogo({ size = 48 }: { size?: number }) {
     return (
       <span className="flex items-center gap-2.5 drop-shadow-[0_0_15px_rgba(197,160,89,0.35)]">
         <Flame size={22} className="text-gold" aria-hidden="true" />
-        <span className="font-display text-xl tracking-wide text-papyrus">
+        <span className="font-display text-xl tracking-wide text-current">
           Dharma <em className="italic text-gold">Kadabra</em>
         </span>
       </span>

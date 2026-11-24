@@ -66,20 +66,20 @@ export function ThreeRuneSpread() {
                 >
                   <span className="rune-card-3d relative block h-full w-full" data-flipped={Boolean(rune)}>
                     {/* Dorso */}
-                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center border border-gold/45 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.14),transparent_62%),linear-gradient(155deg,#161920,#0F1115)] p-2">
-                      <span aria-hidden="true" className="absolute inset-3 border border-gold/15" />
-                      <span aria-hidden="true" className="rune-glyph mb-1 text-xl text-gold/80">ᛟ</span>
-                      <span className="relative text-center text-[8px] uppercase leading-4 tracking-[.22em] text-papyrus/45">
+                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-stone-200 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.16),transparent_65%),linear-gradient(155deg,#FCFAF5,#F5F2EB)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                      <span aria-hidden="true" className="absolute inset-3 rounded-xl border border-[#C5A059]/30" />
+                      <span aria-hidden="true" className="rune-glyph mb-1 text-xl text-[#C5A059]">ᛟ</span>
+                      <span className="relative text-center text-[8px] font-semibold uppercase leading-4 tracking-[.22em] text-[#2C241B]/70">
                         {rune ? "Runa revelada" : "Toca para revelar"}
                       </span>
                     </span>
 
                     {/* Frente */}
-                    <span className="rune-face rune-face--back absolute inset-0 flex flex-col items-center justify-center border border-gold/60 bg-[linear-gradient(160deg,#1D212B,#0F1115)] p-2 text-center">
-                      <span aria-hidden="true" className="rune-glyph text-3xl text-gold sm:text-4xl">{rune?.symbol ?? "✧"}</span>
-                      <span className="rune-display mt-1 text-sm text-papyrus">{rune?.name ?? ""}</span>
-                      <span className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-papyrus/55">{rune?.meaning ?? ""}</span>
-                      <span className="mt-auto pt-1 text-[8px] uppercase tracking-[.2em] text-gold/70">
+                    <span className="rune-face rune-face--back absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-[#C5A059]/60 bg-white p-2 text-center shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+                      <span aria-hidden="true" className="rune-glyph text-3xl text-[#C5A059] sm:text-4xl">{rune?.symbol ?? "✧"}</span>
+                      <span className="rune-display mt-1 text-sm font-medium text-[#2C241B]">{rune?.name ?? ""}</span>
+                      <span className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-[#2C241B]/75">{rune?.meaning ?? ""}</span>
+                      <span className="mt-auto pt-1 text-[8px] font-semibold uppercase tracking-[.2em] text-bronze">
                         {rune ? `Runa ${String(rune.number).padStart(2, "0")}` : ""}
                       </span>
                     </span>
