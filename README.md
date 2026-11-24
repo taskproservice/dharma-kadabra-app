@@ -9,24 +9,30 @@ Esta versión reúne los cambios de ambas ramas, conservando sus commits en el h
 - `arena/09a74da0-dharma-kadabra-app` (`9db4ca0`): navegación por roles, módulo de redes sociales y animación Cozy Fire.
 - `arena/edb80ff0-dharma-kadabra-app` (`5c464ee`): reservas, calendario de eventos y Mi Cuenta.
 
-Los contratos de Prisma se regeneran desde el esquema combinado con `npx prisma contract emit`. `npm run generate:client` genera el cliente real de Prisma 6 en `node_modules`, compatible con el import de `@prisma/client`; no se versionan clientes simulados ni archivos de compilación.
+Los contratos de Prisma se regeneran desde el esquema combinado con `npx prisma contract emit`. El cliente de Prisma se genera desde `prisma/schema.prisma` en `src/generated/prisma`; `postinstall` y `npm run build` ejecutan la generación resiliente de `scripts/db-sync.mjs`. No se versionan clientes generados ni archivos de compilación.
 
 ## Seguridad y control de acceso (RBAC)
 
-- **Equipo (dashboard):** inicia sesión en `/login` con NextAuth (Credentials + JWT cifrado, 8 h). El rol (`ADMIN`, `ENGINEER`, `SOCIAL_MEDIA`, `COLLABORATOR`) se guarda en el modelo `User` y viaja dentro del token; ya no se acepta desde query params, cabeceras ni cookies.
+- **Equipo (dashboard):** inicia sesión en `/login` con NextAuth (Credentials + JWT cifrado, 8 h). El rol (`ADMIN`, `ENGINEER`, `MARKETING`, `COLLABORATOR`) se guarda en el modelo `User` y viaja dentro del token; ya no se acepta desde query params, cabeceras ni cookies.
 - **Clientes:** usan su cuenta de `/mi-cuenta` (cookie firmada `HttpOnly`) y se tratan como rol `CLIENT`.
 - **API:** cada handler de `app/api/` llama a `authorize(recurso, método)` de `lib/rbac.ts`. Sin sesión → `401`; rol sin permiso → `403`. La matriz de permisos está en `API_PERMISSIONS` (`lib/rbac-config.ts`) y deniega por defecto. En cada petición, el rol del equipo se vuelve a validar contra la base de datos, de modo que desactivar una cuenta tiene efecto inmediato.
 - Excepciones deliberadas: `/api/auth/*` (NextAuth) y `/api/customer-auth`, porque son los endpoints que emiten la sesión. `GET /api/cron/notifications` acepta `Authorization: Bearer $CRON_SECRET` (Vercel Cron) o una sesión ADMIN.
 - **Selector de roles:** solo aparece si la sesión es `ADMIN` y sirve únicamente para previsualizar la navegación de otro rol (cookie `dk_role_preview`). La API siempre autoriza con el rol real.
 
-Crear o actualizar una cuenta del equipo:
+Crear o actualizar una cuenta del equipo (la contraseña se lee desde el entorno, no desde argumentos CLI):
 
 ```bash
-STAFF_PASSWORD='contraseña-larga-y-única' node scripts/create-staff-user.mjs --email paola@dharmakadabra.com --name "Paola Hernández" --role ADMIN
-# Desactivar: node scripts/create-staff-user.mjs --email persona@dominio.com --deactivate
+read -r -s -p 'Contraseña temporal para la cuenta: ' STAFF_PASSWORD
+printf '\n'
+export STAFF_PASSWORD
+node scripts/create-staff-user.mjs --email paola@dharmakadabra.com --name "Paola Hernández" --role ADMIN
+unset STAFF_PASSWORD
+
+# Desactivar una cuenta:
+node scripts/create-staff-user.mjs --email persona@dominio.com --deactivate
 ```
 
-En desarrollo sin `DATABASE_URL` puedes definir `DEV_ADMIN_EMAIL` y `DEV_ADMIN_PASSWORD` para tener una administradora en memoria (se ignora en producción). Consulta `.env.example`.
+`STAFF_PASSWORD` debe tener entre 12 y 128 caracteres. El script solo permite roles de equipo (`ADMIN`, `ENGINEER`, `COLLABORATOR`, `MARKETING`); las cuentas de clientes se guardan en `Customer`. Las funciones persistentes requieren PostgreSQL: no hay un administrador general en memoria cuando falta `DATABASE_URL`.
 
 ## Reservas, eventos y cuentas de cliente
 
@@ -47,17 +53,43 @@ En desarrollo sin `DATABASE_URL` puedes definir `DEV_ADMIN_EMAIL` y `DEV_ADMIN_P
 
 ### Configuración de producción
 
-Configura `DATABASE_URL`, `NEXTAUTH_URL` (fuera de Vercel), `CRON_SECRET` y un secreto aleatorio largo en `AUTH_SECRET` (por ejemplo, genera uno con `openssl rand -base64 32`). Aplica el esquema con:
+Configura `DATABASE_URL` para la aplicación y `DATABASE_URL_UNPOOLED` para tareas de migración, además de `AUTH_SECRET` y `CRON_SECRET`. Genera `AUTH_SECRET` como valor aleatorio largo (por ejemplo, `openssl rand -base64 32`). Define `NEXTAUTH_URL` fuera de Vercel o cuando necesites fijar el dominio canónico. Ejecuta los comandos con las variables exportadas en el entorno seguro correspondiente.
+
+Una vez que la base tenga el baseline correcto, aplica migraciones y compila con:
 
 ```bash
 npm ci
-npx --yes prisma@6.19.3 --config prisma.client.config.ts migrate deploy --schema prisma/schema.prisma
+npx prisma migrate deploy --schema prisma/schema.prisma
 npm run build
 ```
 
-La migración amplía una base existente que ya contiene la tabla `Appointment`; para una base vacía se necesita primero una migración inicial o establecer la línea base correspondiente. El despliegue necesita acceso al servidor oficial de motores de Prisma para generar el cliente.
+No ejecutes `migrate deploy` directamente sobre una base vacía: la primera migración actual presupone que ya existe `Appointment`. Para el bootstrap de una base vacía o la reconciliación segura de una base existente, sigue [`docs/database-bootstrap.md`](docs/database-bootstrap.md). No se aplica schema ni se ejecuta seed durante `npm run build`.
 
-La migración de reservas, clientes, productos y eventos está en `prisma/migrations/20261119000000_booking_customers_rituals/`. Sin `DATABASE_URL`, el proyecto usa un almacén en memoria para la previsualización local; esos registros no son persistentes entre reinicios.
+La migración de reservas, clientes, productos y eventos está en `prisma/migrations/20261119000000_booking_customers_rituals/`. El proyecto no tiene una base de datos general en memoria: algunas páginas públicas degradan con datos alternativos, pero reservas, cuentas, catálogo persistente y administración requieren PostgreSQL.
+
+### Verificación local de configuración
+
+Con Node.js y dependencias instaladas, ejecuta:
+
+```bash
+npm run config:verify
+```
+
+Por defecto verifica Production. Si no existe `.env.production.local`, el script la descarga desde Vercel con `vercel env pull`; requiere que Vercel CLI esté autenticado y el proyecto enlazado. Si el archivo ya existe, lo reutiliza y no lo sobrescribe. Para actualizarlo, respáldalo y elimínalo antes de volver a ejecutar. El archivo está excluido por `.gitignore`; el script verifica esa condición y nunca imprime los valores.
+
+Después de crear la rama `staging` y configurar variables Preview:
+
+```bash
+npm run config:verify -- --environment=staging
+```
+
+Para imprimir también los nombres de columnas del schema (sin filas de datos):
+
+```bash
+npm run config:verify -- --schema-details
+```
+
+La verificación consulta presencia de variables, `prisma migrate status`, `SELECT 1`, tablas y el registro de migraciones. No ejecuta `db push`, `migrate deploy` ni `migrate resolve`.
 
 ### Página de Lectura de Runas
 
