@@ -78,7 +78,7 @@ export function AkashicBenefits() {
       {/* La noche editorial se disuelve en el papiro del santuario. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(215,196,163,.45)_55%,#d7c4a3)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(230,225,214,.45)_55%,#E6E1D6)]"
       />
       <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
         <span aria-hidden="true" className="text-2xl text-gold">✧</span>

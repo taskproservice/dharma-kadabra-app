@@ -137,6 +137,12 @@ function Hero() {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.74)_0%,rgba(17,17,15,.48)_35%,rgba(17,17,15,.94)_100%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_68%)] blur-3xl" />
 
+      {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#E6E1D6]"
+      />
+
       <div className="relative mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
         <div className="flex justify-center">
           <Eyebrow>Dharma Kadabra · Sabiduría nórdica</Eyebrow>
@@ -266,7 +272,7 @@ function EditorialBreak() {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.35),rgba(17,17,15,.88))]" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(215,196,163,.45)_55%,#d7c4a3)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,transparent,rgba(230,225,214,.45)_55%,#E6E1D6)]"
       />
       <div className="relative mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
         <span aria-hidden="true" className="rune-glyph text-2xl text-gold">ᛟ</span>

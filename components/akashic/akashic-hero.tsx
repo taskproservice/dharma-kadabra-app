@@ -23,6 +23,12 @@ export function AkashicHero() {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.74)_0%,rgba(17,17,15,.48)_35%,rgba(17,17,15,.94)_100%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_68%)] blur-3xl" />
 
+      {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(140px,22vh,220px)] bg-gradient-to-b from-transparent to-[#E6E1D6]"
+      />
+
       <div className="relative mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
         <div className="flex justify-center">
           <Eyebrow>{hero.eyebrow}</Eyebrow>

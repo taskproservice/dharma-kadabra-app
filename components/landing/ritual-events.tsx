@@ -89,19 +89,21 @@ export function RitualEventsSection({
             {events.map((event) => (
               <article
                 key={event.id}
-                className={`flex gap-4 rounded-2xl p-5 ${
+                className={`flex gap-4 rounded-3xl p-5 ${
                   night
                     ? "border border-gold/15 bg-papyrus/[0.035]"
                     : papyrus
                       ? "sanctuary-card-quiet"
-                      : "sanctuary-card"
+                      : "sanctuary-card-olive"
                 }`}
               >
                 <div
                   className={`grid size-11 shrink-0 place-items-center rounded-full ${
                     night
                       ? "bg-obsidian-soft text-gold-light"
-                      : "border border-sanctuary-gold/35 bg-sanctuary-wood-light text-sanctuary-gold-ink"
+                      : papyrus
+                        ? "border border-sanctuary-gold/35 bg-sanctuary-wood-light text-sanctuary-gold-ink"
+                        : "border border-[#C5A059]/35 bg-[#F4EFE6]/10 text-[#C5A059]"
                   }`}
                 >
                   <MoonStar size={20} />
@@ -109,7 +111,7 @@ export function RitualEventsSection({
                 <div className="min-w-0">
                   <p
                     className={`flex items-center gap-1.5 text-[10px] uppercase tracking-[.15em] ${
-                      night ? "text-gold-light" : "text-sanctuary-gold-ink"
+                      night ? "text-gold-light" : papyrus ? "text-sanctuary-gold-ink" : "text-[#C5A059]"
                     }`}
                   >
                     <CalendarDays size={13} />
@@ -120,18 +122,32 @@ export function RitualEventsSection({
                     }).format(new Date(event.date))}
                   </p>
                   <h3
-                    className={`mt-1 font-display text-xl ${night ? "text-papyrus" : "text-sanctuary-ink"}`}
+                    className={`mt-1 font-display text-xl ${
+                      night ? "text-papyrus" : papyrus ? "text-sanctuary-ink" : "text-[#C5A059]"
+                    }`}
                   >
                     {event.title}
                   </h3>
                   <p
-                    className={`mt-1 text-xs leading-5 ${night ? "text-papyrus/55" : "text-sanctuary-ink-soft"}`}
+                    className={`mt-1 text-xs leading-5 ${
+                      night
+                        ? "text-papyrus/55"
+                        : papyrus
+                          ? "text-sanctuary-ink-soft"
+                          : "text-[#F4EFE6]/80"
+                    }`}
                   >
                     {event.description}
                   </p>
                   {event.products.length > 0 && (
                     <p
-                      className={`mt-2 text-[10px] font-medium ${night ? "text-papyrus/45" : "text-sanctuary-ink-soft"}`}
+                      className={`mt-2 text-[10px] font-medium ${
+                        night
+                          ? "text-papyrus/45"
+                          : papyrus
+                            ? "text-sanctuary-ink-soft"
+                            : "text-[#F4EFE6]/70"
+                      }`}
                     >
                       Objetos rituales: {event.products.join(" · ")}
                     </p>

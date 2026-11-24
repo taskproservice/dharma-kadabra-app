@@ -119,7 +119,7 @@ export function PremiumFooter() {
           {/* Columna 2 — Atención a clientes */}
           <nav aria-label="Atención a clientes">
             <ColumnTitle>Atención a Clientes</ColumnTitle>
-            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-papyrus/60">
+            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-papyrus/75">
               <li>
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-start gap-3 transition hover:text-gold">
                   <Mail size={16} className="mt-1 shrink-0 text-gold/80" />
@@ -165,7 +165,7 @@ export function PremiumFooter() {
           {/* Columna 3 — Políticas */}
           <nav aria-label="Políticas">
             <ColumnTitle>Políticas</ColumnTitle>
-            <ul className="mt-6 space-y-3.5 text-sm font-light text-papyrus/60">
+            <ul className="mt-6 space-y-3.5 text-sm font-light text-papyrus/75">
               {policies.map((policy) => (
                 <li key={policy.label}>
                   <span

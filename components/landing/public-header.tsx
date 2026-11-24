@@ -122,7 +122,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
           {/* Navegación de escritorio */}
           <nav
             className={`hidden min-w-0 items-stretch gap-0.5 text-[10.5px] font-medium tracking-[.05em] lg:flex xl:gap-1 xl:text-[11px] ${
-              onParchment ? "text-sanctuary-ink-soft" : "text-papyrus/75"
+              onParchment ? "text-sanctuary-ink-soft" : "text-papyrus"
             }`}
             aria-label="Navegación principal"
           >
@@ -154,7 +154,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                           : "text-sanctuary-gold-leaf transition group-hover:text-sanctuary-gold-ink"
                         : active
                           ? "text-gold transition"
-                          : "text-gold-light/85 transition group-hover:text-gold-bright"
+                          : "text-gold-light transition group-hover:text-gold-bright"
                     }
                   />
                   <span className="whitespace-nowrap">{label}</span>
@@ -240,7 +240,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
         >
           <nav
             className={`grid grid-cols-2 gap-1 px-4 py-4 text-sm ${
-              onParchment ? "text-sanctuary-ink" : "text-papyrus/80"
+              onParchment ? "text-sanctuary-ink" : "text-papyrus"
             }`}
             aria-label="Navegación móvil"
           >
@@ -274,7 +274,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                           : "text-sanctuary-gold-leaf"
                         : active
                           ? "text-gold"
-                          : "text-gold-light/80"
+                          : "text-gold-light"
                     }
                   />
                   {label}
