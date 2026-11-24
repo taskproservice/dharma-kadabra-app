@@ -42,7 +42,7 @@ export function LunarBanner() {
           <p className="mt-2 text-sm text-sanctuary-ink-soft">
             Próxima Luna Llena:{" "}
             <time dateTime={nextFullMoon.toISOString()}>{fullMoonDate}</time>{" "}
-            <span className="text-xs text-sanctuary-ink-muted">(fecha estimada, UTC)</span>
+            <span className="text-xs text-sanctuary-ink-soft">(fecha estimada, UTC)</span>
           </p>
           <p className="mt-1 text-xs leading-5 text-sanctuary-ink-soft">
             Ideal para limpiar Runas, Pulseras y Piedras

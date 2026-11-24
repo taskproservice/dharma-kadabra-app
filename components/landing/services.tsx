@@ -49,7 +49,7 @@ export function ServicesSection() {
                 <span aria-hidden="true" className="font-display text-4xl text-sanctuary-gold-ink">
                   {service.symbol}
                 </span>
-                <span className="text-[10px] uppercase tracking-[.2em] text-sanctuary-ink-muted">
+                <span className="text-[10px] uppercase tracking-[.2em] text-sanctuary-ink-soft">
                   0{index + 1} · {service.duration}
                 </span>
               </div>

@@ -70,6 +70,9 @@
      filetes, iconografía y superficies oscuras. Sobre papiro/madera los
      textos dorados usan este oro profundo de tinta. */
   --color-sanctuary-gold-ink: #6B4E1E;
+  /* Variante de oro-tinta para papiro profundo (#C9B38F): 4.69:1, AA también
+     en microcopy. */
+  --color-sanctuary-gold-deep-ink: #5A4116;
 
   --color-sanctuary-night: #11110F;
   --color-sanctuary-night-soft: #1B1915;
@@ -300,10 +303,11 @@ textarea {
 .sanctuary-eyebrow-center::before {
   display: none;
 }
-/* Sobre papiro profundo (banda de Pilares) el microcopy baja a oro profundo
-   para conservar contraste AA. */
+/* Sobre papiro profundo (banda de Pilares) el microcopy usa un oro más oscuro:
+   #6B4E1E baja a 3.78:1 sobre #C9B38F y no alcanzaría AA en texto pequeño.
+   Los titulares grandes sí conservan el oro de tinta. */
 .sanctuary-leaf-deep .sanctuary-eyebrow {
-  color: var(--color-sanctuary-gold-ink);
+  color: var(--color-sanctuary-gold-deep-ink);
 }
 
 /* Filete de oro antiguo entre secciones editoriales. */

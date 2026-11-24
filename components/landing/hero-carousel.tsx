@@ -143,7 +143,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
         <div className="mx-auto flex max-w-[1500px] items-center gap-5 px-5 pb-6 sm:px-8">
           <p className="font-display text-sm tabular-nums text-sanctuary-ink" aria-live="polite">
             <span className="text-sanctuary-gold-ink">{pad(active + 1)}</span>
-            <span className="mx-2 text-sanctuary-ink-muted">/</span>
+            <span className="mx-2 text-sanctuary-ink-soft">/</span>
             <span className="text-sanctuary-ink-soft">{pad(total)}</span>
           </p>
           <div className="hidden max-w-md flex-1 items-center gap-2.5 sm:flex">

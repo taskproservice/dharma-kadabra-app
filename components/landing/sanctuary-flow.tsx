@@ -40,6 +40,8 @@ export type FlowStoneProps = {
   /** Marco orgánico del recorte fotográfico. */
   frame?: "pebble" | "blob" | "arch" | "leaf";
   rotate?: string;
+  /** Ancho real del recorte en escritorio, para que `next/image` sirva el tamaño justo. */
+  renderWidth?: number;
 };
 
 const frameClasses = {
@@ -61,6 +63,7 @@ export function FlowStone({
   speed = "base",
   frame = "pebble",
   rotate = "rotate-0",
+  renderWidth = 220,
 }: FlowStoneProps) {
   return (
     <div
@@ -76,7 +79,7 @@ export function FlowStone({
           src={src}
           alt=""
           fill
-          sizes="(min-width: 1024px) 220px, 40vw"
+          sizes={`(min-width: 1024px) ${renderWidth}px, 55vw`}
           className="object-cover saturate-[.72]"
         />
         {/* Velo cálido: funde la foto con el papiro en vez de parecer un sticker. */}

@@ -101,7 +101,7 @@ export function CozyWidget() {
               <h2 id={titleId} className="truncate font-display text-lg leading-tight text-sanctuary-ink">
                 Cozy <span className="italic text-sanctuary-gold-leaf">– Tu guía interior</span>
               </h2>
-              <p className="mt-0.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[.2em] text-sanctuary-ink-muted">
+              <p className="mt-0.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[.2em] text-sanctuary-ink-soft">
                 <span className="size-1.5 rounded-full bg-emerald-600" aria-hidden="true" /> En línea
               </p>
             </div>
@@ -109,7 +109,7 @@ export function CozyWidget() {
               type="button"
               onClick={close}
               aria-label="Cerrar chat con Cozy"
-              className="grid size-9 place-items-center rounded-full text-sanctuary-ink-muted transition hover:bg-sanctuary-gold/15 hover:text-sanctuary-ink"
+              className="grid size-9 place-items-center rounded-full text-sanctuary-ink-soft transition hover:bg-sanctuary-gold/15 hover:text-sanctuary-ink"
             >
               <X size={18} />
             </button>
@@ -118,7 +118,7 @@ export function CozyWidget() {
           {/* Contexto del producto consultado */}
           {productContext && (
             <div className="flex items-center gap-2 border-b border-sanctuary-border/70 bg-sanctuary-wood px-4 py-2.5">
-              <span className="min-w-0 flex-1 truncate text-xs text-sanctuary-ink-muted">
+              <span className="min-w-0 flex-1 truncate text-xs text-sanctuary-ink-soft">
                 <span className="font-semibold text-sanctuary-ink">{productContext.name}</span>
                 {" · "}
                 {productContext.category}
@@ -134,7 +134,7 @@ export function CozyWidget() {
                 type="button"
                 onClick={clearProductContext}
                 aria-label="Quitar contexto del producto"
-                className="grid size-6 shrink-0 place-items-center rounded-full text-sanctuary-ink-muted transition hover:bg-sanctuary-gold/15 hover:text-sanctuary-ink"
+                className="grid size-6 shrink-0 place-items-center rounded-full text-sanctuary-ink-soft transition hover:bg-sanctuary-gold/15 hover:text-sanctuary-ink"
               >
                 <X size={13} />
               </button>
@@ -143,7 +143,7 @@ export function CozyWidget() {
 
           {/* Mensajes */}
           <div ref={listRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-5" aria-live="polite">
-            <p className="text-center text-[10px] uppercase tracking-[.25em] text-sanctuary-ink-muted">Hoy</p>
+            <p className="text-center text-[10px] uppercase tracking-[.25em] text-sanctuary-ink-soft">Hoy</p>
             {messages.map((message) => (
               <div key={message.id} className={`flex items-end gap-2 ${message.from === "user" ? "justify-end" : "justify-start"}`}>
                 {message.from === "cozy" && (
@@ -160,7 +160,7 @@ export function CozyWidget() {
                 >
                   <span className="sr-only">{message.from === "cozy" ? "Cozy dice:" : "Tú dices:"} </span>
                   {message.text}
-                  <span className="mt-1 block text-[10px] text-sanctuary-ink-muted">{message.time}</span>
+                  <span className="mt-1 block text-[10px] text-sanctuary-ink-soft">{message.time}</span>
                 </div>
               </div>
             ))}
@@ -197,7 +197,7 @@ export function CozyWidget() {
           {/* Transferencia a humano: botón de WhatsApp con Paola */}
           {handoffReady && (
             <div className="border-t border-sanctuary-border bg-sanctuary-wood-light px-4 py-3">
-              <p className="text-center text-xs text-sanctuary-ink-muted">
+              <p className="text-center text-xs text-sanctuary-ink-soft">
                 ¿Prefieres hablar con Paola, nuestra asesora?
               </p>
               {whatsappReady ? (
@@ -217,7 +217,7 @@ export function CozyWidget() {
                   disabled
                   aria-disabled="true"
                   title="WhatsApp comercial directo · Próximamente"
-                  className="mt-2 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-sanctuary-gold/40 px-3 py-2.5 text-[11px] font-bold uppercase tracking-[.18em] text-sanctuary-ink-muted opacity-80"
+                  className="mt-2 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-sanctuary-gold/40 px-3 py-2.5 text-[11px] font-bold uppercase tracking-[.18em] text-sanctuary-ink-soft opacity-80"
                 >
                   <MessageCircle size={15} className="shrink-0" aria-hidden="true" />
                   <span>WhatsApp · Próximamente</span>
@@ -249,7 +249,7 @@ export function CozyWidget() {
               onChange={(event) => setDraft(event.target.value)}
               placeholder="Escribe lo que sientes…"
               autoComplete="off"
-              className="h-11 min-w-0 flex-1 rounded-full border border-sanctuary-gold/40 bg-sanctuary-wood-light px-4 text-sm text-sanctuary-ink outline-none placeholder:text-sanctuary-ink-muted focus:border-sanctuary-gold-ink focus:ring-2 focus:ring-sanctuary-gold/25"
+              className="h-11 min-w-0 flex-1 rounded-full border border-sanctuary-gold/40 bg-sanctuary-wood-light px-4 text-sm text-sanctuary-ink outline-none placeholder:text-sanctuary-ink-soft focus:border-sanctuary-gold-ink focus:ring-2 focus:ring-sanctuary-gold/25"
             />
             <button
               type="submit"

@@ -146,7 +146,8 @@ export default async function HomePage() {
           src={cuarzoClaro}
           position="-right-28 top-8 hidden sm:block sm:-right-16 lg:right-4 xl:right-16"
           size="size-32 sm:size-40 lg:size-48"
-          opacity="opacity-[0.16]"
+          renderWidth={192}
+          opacity="opacity-[0.20]"
           frame="blob"
           speed="slow"
           rotate="rotate-6"
@@ -175,7 +176,8 @@ export default async function HomePage() {
           src={piedrasTerciopelo}
           position="-left-32 bottom-8 hidden sm:block lg:-left-20 xl:left-0"
           size="size-40 lg:size-56"
-          opacity="opacity-[0.14] sm:opacity-[0.18]"
+          renderWidth={224}
+          opacity="opacity-[0.18] sm:opacity-[0.22]"
           frame="pebble"
           speed="slow"
           rotate="-rotate-6"
@@ -199,7 +201,7 @@ export default async function HomePage() {
                   className="pointer-events-none absolute inset-0 rounded-[1.6rem] ring-1 ring-inset ring-white/25"
                 />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-sanctuary-ink-muted">
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-sanctuary-ink-soft">
                 Fundadora · Dharma Kadabra
               </figcaption>
             </figure>
@@ -252,7 +254,8 @@ export default async function HomePage() {
           src={amuletoLunar}
           position="-right-28 top-10 hidden sm:block lg:-right-16 xl:right-2"
           size="size-36 lg:size-48"
-          opacity="opacity-[0.15]"
+          renderWidth={192}
+          opacity="opacity-[0.19]"
           frame="arch"
           speed="slow"
           rotate="rotate-3"
@@ -309,7 +312,8 @@ export default async function HomePage() {
           src={runasLino}
           position="-left-28 top-1/2 hidden -translate-y-1/2 sm:block lg:-left-16 xl:left-0"
           size="size-40 lg:size-52"
-          opacity="opacity-[0.12]"
+          renderWidth={208}
+          opacity="opacity-[0.16]"
           frame="pebble"
           speed="slow"
           rotate="rotate-12"
@@ -413,7 +417,7 @@ export default async function HomePage() {
               className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-sanctuary-ink-muted">
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-sanctuary-ink-soft">
             COMIENZA CUANDO TU ALMA TE LO INDIQUE
           </p>
         </div>

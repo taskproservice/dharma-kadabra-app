@@ -131,7 +131,7 @@ export function RitualEventsSection({
                   </p>
                   {event.products.length > 0 && (
                     <p
-                      className={`mt-2 text-[10px] font-medium ${night ? "text-papyrus/45" : "text-sanctuary-ink-muted"}`}
+                      className={`mt-2 text-[10px] font-medium ${night ? "text-papyrus/45" : "text-sanctuary-ink-soft"}`}
                     >
                       Objetos rituales: {event.products.join(" · ")}
                     </p>

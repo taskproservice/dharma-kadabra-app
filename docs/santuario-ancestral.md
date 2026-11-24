@@ -20,20 +20,28 @@ mediante `@theme`), sin una segunda configuración de Tailwind.
 | `sanctuary-wood-light` | `#F2EBDD` | Tarjetas principales (marfil cálido) |
 | `sanctuary-ink` | `#2C241B` | Títulos y párrafos |
 | `sanctuary-ink-soft` | `#514333` | Textos secundarios |
-| `sanctuary-ink-muted` | `#796A57` | Microcopy auxiliar |
+| `sanctuary-ink-muted` | `#796A57` | Referencia de paleta (no se usa en texto pequeño: 3.07:1) |
 | `sanctuary-gold` | `#C5A059` | Acentos, iconografía, botones primarios |
 | `sanctuary-gold-light` | `#D9BC7C` | Hover de botones dorados |
 | `sanctuary-gold-deep` | `#A98343` | Superficies y filetes dorados |
 | `sanctuary-gold-ink` | `#6B4E1E` | Oro legible sobre papiro (AA) |
 | `sanctuary-gold-leaf` | `#5F4518` | Palabra destacada de titulares (AA) |
+| `sanctuary-gold-deep-ink` | `#5A4116` | Microcopy dorado sobre papiro profundo (AA) |
 | `sanctuary-night` | `#11110F` | Hero, cartas de runas |
 
 ### Regla de legibilidad
 
 `#C5A059` **no** se usa para texto corrido sobre papiro (1.44:1). Sobre
 superficies claras, los textos dorados usan `gold-ink` (4.5:1 en papiro) o
-`gold-leaf` (5.24:1 en papiro, 4.39:1 en papiro profundo). El dorado brillante
-se reserva para el Hero, las tarjetas oscuras y la iconografía.
+`gold-leaf` (5.24:1 en papiro). El dorado brillante se reserva para el Hero,
+las tarjetas oscuras y la iconografía.
+
+En bandas de papiro profundo (`#C9B38F`) el oro de tinta baja a
+`gold-deep-ink` (4.69:1) para el microcopy; `gold-leaf` queda ahí solo para
+titulares grandes (≥24 px), donde el umbral AA es 3:1.
+
+Los textos secundarios y el microcopy usan `ink-soft` (5.60:1), nunca
+`ink-muted`, que no alcanza AA en cuerpo pequeño sobre papiro.
 
 El blanco solo aparece sobre imágenes o superficies oscuras.
 
@@ -45,6 +53,7 @@ El blanco solo aparece sobre imágenes o superficies oscuras.
 | `ink-soft` sobre `parchment` | 5.60 |
 | `gold-ink` sobre `parchment` | 4.50 |
 | `gold-leaf` sobre `parchment` | 5.24 |
+| `gold-deep-ink` sobre `parchment-deep` | 4.69 |
 | `ink` sobre `gold` (botón primario) | 6.21 |
 | `gold` sobre `night` | 7.69 |
 | `parchment` sobre `night` | 11.08 |
@@ -78,7 +87,9 @@ de baja opacidad.
 
 - `FlowStone` recorta fotografías de piedras/cristales ya presentes en
   `public/images` en marcos orgánicos (`pebble`, `blob`, `arch`, `leaf`),
-  con opacidad 0.12–0.18, `blur(2px)`, máscara radial y velo cálido.
+  con opacidad 0.16–0.22, `blur(2px)`, máscara radial y velo cálido. La mezcla
+  `multiply` + máscara hace que el peso visual percibido sea menor que el valor
+  nominal: piedra presente, nunca sticker.
 - `FlowCrystal` dibuja cuarzos de detalle con CSS y filo de oro.
 - Flotación con `@keyframes sanctuary-float` (8 s y 12 s desfasados).
 - Se ocultan en móvil (`hidden sm:block`): sin saturación ni desbordes.
