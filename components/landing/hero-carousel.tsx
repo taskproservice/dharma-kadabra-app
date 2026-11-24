@@ -90,20 +90,19 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
             key={index}
             aria-hidden={!isActive}
             aria-roledescription="diapositiva"
-            className={`absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(.22,.61,.36,1)] ${isActive ? "opacity-30" : "opacity-0"}`}
+            className={`absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(.22,.61,.36,1)] ${isActive ? "opacity-100" : "opacity-0"}`}
           >
             <div className={`h-full w-full ${isActive ? "hero-zoom" : ""}`}>{image}</div>
           </div>
         );
       })}
 
-      {/* Velos luminosos: suavizan las imágenes sobre una capa marfil/papiro para texto café oscuro */}
-      <div className="pointer-events-none absolute inset-0 bg-[#F5F2EB]/85" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(252,250,245,.96)_0%,rgba(245,242,235,.90)_46%,rgba(245,242,235,.68)_78%,rgba(252,250,245,.88)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#FCFAF5] via-[#FCFAF5]/75 to-transparent" />
+      {/* Capa (overlay) papiro translúcida sobre la fotografía: aclara el banner y garantiza legibilidad del texto café oscuro */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F5F2EB]/85 via-[#F5F2EB]/72 to-[#F5F2EB]/55" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#FCFAF5]/80 to-transparent" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(110px,18vh,180px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(80px,12vh,130px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8 lg:pt-28">

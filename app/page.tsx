@@ -23,9 +23,9 @@ import { prisma } from "../lib/prisma";
 import { DEFAULT_TOUR, parseTourChapters, type TourVideoConfig } from "../lib/tour";
 
 const heroImages = [
+  { src: altarRitual, alt: "Altar con velas encendidas, merkaba dorada, cuarzos, lavanda e incienso sobre un pergamino de símbolos" },
   { src: joyeriaSagrada, alt: "Medallas de geometría sagrada en oro y bronce con piedras de lapislázuli sobre piedra y papiro" },
   { src: sabiduriaAncestral, alt: "Libro antiguo abierto con un medallón dorado, compás y pergaminos sobre una mesa de madera" },
-  { src: altarRitual, alt: "Altar con velas encendidas, merkaba dorada, cuarzos, lavanda e incienso sobre un pergamino de símbolos" },
 ];
 
 const slides: HeroSlide[] = [
