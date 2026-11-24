@@ -9,11 +9,16 @@ import joyeriaSagrada from "../public/images/hero/joyeria-sagrada.jpg";
 import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
+import cuarzoClaro from "../public/images/productos/cuarzo-claro.jpg";
+import amuletoLunar from "../public/images/productos/amuleto-lunar.jpg";
+import runasLino from "../public/images/runas/runas-sobre-lino.jpg";
+import piedrasTerciopelo from "../public/images/runas/piedras-terciopelo.jpg";
 import { collaborators } from "../lib/data/collaborators";
 import { RitualEventsSection } from "../components/landing/ritual-events";
 import { ServicesSection } from "../components/landing/services";
 import { PremiumFooter } from "../components/landing/premium-footer";
 import { BrandTourTrigger } from "../components/landing/brand-tour-modal";
+import { FlowCrystal, FlowStone } from "../components/landing/sanctuary-flow";
 import { prisma } from "../lib/prisma";
 import { DEFAULT_TOUR, parseTourChapters, type TourVideoConfig } from "../lib/tour";
 
@@ -42,8 +47,12 @@ const benefits = [
   { title: "Comunidad", text: "Personas que crecen y aprenden contigo." },
 ];
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="eyebrow-gold">{children}</p>;
+function Eyebrow({ children, center = false }: { children: React.ReactNode; center?: boolean }) {
+  return (
+    <p className={`sanctuary-eyebrow${center ? " sanctuary-eyebrow-center" : ""}`}>
+      {children}
+    </p>
+  );
 }
 
 export const dynamic = "force-dynamic";
@@ -83,10 +92,10 @@ export default async function HomePage() {
 
   return (
     <>
-    <main className="relative bg-obsidian text-papyrus">
+    <main className="relative bg-sanctuary-parchment text-sanctuary-ink">
       <PublicHeader />
 
-      {/* Hero cinematográfico con tarjeta de cristal */}
+      {/* Hero cinematográfico: conserva la noche y se funde con el papiro */}
       <HeroCarousel
         slides={slides}
         medallion={<HeroMedallion />}
@@ -124,24 +133,58 @@ export default async function HomePage() {
 
       <LunarBanner />
 
-      {/* Manifiesto */}
-      <section id="manifiesto" className="relative scroll-mt-24 overflow-hidden px-5 py-20 sm:px-8 lg:py-28">
-        <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 size-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.10),transparent_70%)] blur-3xl" />
-        <div className="relative mx-auto max-w-4xl text-center">
-          <div className="flex justify-center"><Eyebrow>Manifiesto</Eyebrow></div>
-          <p className="mt-10 font-display text-3xl leading-[1.32] text-papyrus sm:text-4xl lg:text-[3.2rem]">
-            Unimos la sabiduría espiritual ancestral con herramientas cotidianas para que cultives una relación <em className="italic text-gold-bright">más consciente</em> contigo y con el mundo que te rodea.
+      {/* Manifiesto · papiro, mucho aire y palabras en oro antiguo */}
+      <section
+        id="manifiesto"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 pb-20 pt-16 sm:px-8 lg:pb-28 lg:pt-24"
+      >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 size-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_70%)] blur-3xl"
+        />
+        <FlowStone
+          src={cuarzoClaro}
+          position="-right-28 top-8 hidden sm:block sm:-right-16 lg:right-4 xl:right-16"
+          size="size-32 sm:size-40 lg:size-48"
+          opacity="opacity-[0.16]"
+          frame="blob"
+          speed="slow"
+          rotate="rotate-6"
+        />
+        <FlowCrystal className="left-[8%] top-24 hidden size-3 lg:block" />
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <div className="flex justify-center">
+            <Eyebrow center>Manifiesto</Eyebrow>
+          </div>
+          <p className="mt-10 font-display text-3xl leading-[1.32] text-sanctuary-ink sm:text-4xl lg:text-[3.2rem]">
+            Unimos la sabiduría espiritual ancestral con herramientas cotidianas
+            para que cultives una relación{" "}
+            <em className="italic text-sanctuary-gold-leaf">más consciente</em>{" "}
+            contigo y con el mundo que te rodea.
           </p>
-          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-gold/70 to-transparent" />
+          <div className="mx-auto mt-12 h-16 w-px bg-gradient-to-b from-sanctuary-gold/70 to-transparent" />
         </div>
       </section>
 
-      {/* Quiénes somos — Paola sobre Papiro */}
-      <section id="paola" className="papyrus-section relative scroll-mt-24 overflow-hidden bg-papyrus px-5 py-16 text-ink sm:px-8 lg:py-24">
-        <article className="mx-auto max-w-6xl">
+      {/* Quiénes somos — Paola sobre madera clara */}
+      <section
+        id="paola"
+        className="sanctuary-leaf sanctuary-leaf-light relative scroll-mt-24 overflow-hidden border-y border-sanctuary-border-light px-5 py-16 sm:px-8 lg:py-24"
+      >
+        <FlowStone
+          src={piedrasTerciopelo}
+          position="-left-32 bottom-8 hidden sm:block lg:-left-20 xl:left-0"
+          size="size-40 lg:size-56"
+          opacity="opacity-[0.14] sm:opacity-[0.18]"
+          frame="pebble"
+          speed="slow"
+          rotate="-rotate-6"
+        />
+        <FlowCrystal className="right-[12%] top-16 hidden size-2.5 lg:block" tone="sage" />
+        <article className="relative z-10 mx-auto max-w-6xl">
           <div className="grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-sm border border-gold/60 shadow-[0_30px_60px_-30px_rgba(26,26,26,0.3)]">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-[1.6rem] border border-sanctuary-gold/55 shadow-[0_30px_60px_-34px_rgba(80,57,31,0.55)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -151,20 +194,43 @@ export default async function HomePage() {
                   placeholder="blur"
                   className="object-cover"
                 />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-[1.6rem] ring-1 ring-inset ring-white/25"
+                />
               </div>
-              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-ink/70">Fundadora · Dharma Kadabra</figcaption>
+              <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-sanctuary-ink-muted">
+                Fundadora · Dharma Kadabra
+              </figcaption>
             </figure>
             <div>
               <Eyebrow>Una guía cercana</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-ink sm:text-6xl">Paola <em className="italic text-bronze">Hernández</em></h2>
-              <p className="mt-5 font-display text-xl italic text-bronze sm:text-2xl">&ldquo;Tejedora de Conciencia&rdquo;</p>
-              <div className="mt-8 h-px w-16 bg-gradient-to-r from-gold to-transparent" />
-              <div className="mt-8 font-sans text-base leading-8 text-ink/80">
-                <p>Cada alma guarda una sabiduría profunda que merece un espacio seguro para expresarse. A través de mis canalizaciones, camino contigo desde el amor para que reconectes con tu esencia y encuentres tus propias respuestas. Dharma Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y profundo respeto por el ritmo de cada alma.</p>
+              <h2 className="mt-6 font-display text-5xl leading-[1.02] text-sanctuary-ink sm:text-6xl">
+                Paola <em className="italic text-sanctuary-gold-leaf">Hernández</em>
+              </h2>
+              <p className="mt-5 font-display text-xl italic text-sanctuary-gold-ink sm:text-2xl">
+                &ldquo;Tejedora de Conciencia&rdquo;
+              </p>
+              <div className="mt-8 h-px w-16 bg-gradient-to-r from-sanctuary-gold to-transparent" />
+              <div className="mt-8 max-w-xl font-sans text-base leading-8 text-sanctuary-ink-soft">
+                <p>
+                  Cada alma guarda una sabiduría profunda que merece un espacio seguro para
+                  expresarse. A través de mis canalizaciones, camino contigo desde el amor para
+                  que reconectes con tu esencia y encuentres tus propias respuestas. Dharma
+                  Kadabra acerca prácticas ancestrales al mundo moderno con sencillez, amor y
+                  profundo respeto por el ritmo de cada alma.
+                </p>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-8">
-                <a href="#nosotros" className="inline-flex items-center gap-3 border-b border-gold/40 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-ink transition duration-300 hover:border-gold hover:text-bronze">Conoce nuestra historia <ArrowRight size={14} /></a>
-                <span className="font-display text-lg italic text-ink/70">Con amor, Paola</span>
+                <a
+                  href="#nosotros"
+                  className="inline-flex items-center gap-3 border-b border-sanctuary-gold/45 pb-2 text-[11px] font-semibold uppercase tracking-[.28em] text-sanctuary-ink transition duration-300 hover:border-sanctuary-gold-ink hover:text-sanctuary-gold-ink"
+                >
+                  Conoce nuestra historia <ArrowRight size={14} />
+                </a>
+                <span className="font-display text-lg italic text-sanctuary-ink-soft">
+                  Con amor, Paola
+                </span>
               </div>
             </div>
           </div>
@@ -177,86 +243,179 @@ export default async function HomePage() {
       {/* Servicios agendables (runas, registros akáshicos) */}
       <ServicesSection />
 
-      {/* Equipo — retratos editoriales */}
-      <section id="equipo" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap items-end justify-between gap-8 border-b border-gold/15 pb-10">
+      {/* Equipo — retratos editoriales sobre madera */}
+      <section
+        id="equipo"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-16 sm:px-8 lg:py-24"
+      >
+        <FlowStone
+          src={amuletoLunar}
+          position="-right-28 top-10 hidden sm:block lg:-right-16 xl:right-2"
+          size="size-36 lg:size-48"
+          opacity="opacity-[0.15]"
+          frame="arch"
+          speed="slow"
+          rotate="rotate-3"
+        />
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="flex flex-wrap items-end justify-between gap-8 border-b border-sanctuary-border pb-10">
             <div>
               <Eyebrow>Nuestra comunidad</Eyebrow>
-              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-papyrus sm:text-6xl">Personas que <em className="italic text-gold-bright">acompañan.</em></h2>
+              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
+                Personas que{" "}
+                <em className="italic text-sanctuary-gold-leaf">acompañan.</em>
+              </h2>
             </div>
-            <p className="max-w-sm text-sm leading-7 text-papyrus/55">Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio cálido para crecer.</p>
+            <p className="max-w-sm text-sm leading-7 text-sanctuary-ink-soft">
+              Un equipo diverso de profesionales, unidos por una vocación: ofrecerte un espacio
+              cálido para crecer.
+            </p>
           </div>
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-gold/15 bg-gold/12 sm:grid-cols-3">
+          <div className="mt-14 grid gap-5 sm:grid-cols-3 lg:gap-6">
             {collaborators.map((member, index) => (
-              <article key={member.id} className="group bg-obsidian p-6 text-center transition hover:bg-obsidian-soft lg:p-8">
-                <span className="font-display text-sm text-gold">{String(index + 1).padStart(2, "0")}</span>
+              <article
+                key={member.id}
+                className="sanctuary-card group p-6 text-center lg:p-8"
+              >
+                <span className="font-display text-sm text-sanctuary-gold-ink">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante */}
-                <div className="relative mx-auto mt-5 aspect-[4/5] w-[60%] overflow-hidden border border-gold/25 bg-obsidian-soft shadow-[0_24px_50px_-24px_rgba(0,0,0,.8)]">
-                  <Image src={member.photoUrl} alt={`Retrato de ${member.name}`} fill sizes="(min-width: 1024px) 18vw, 60vw" className="object-cover grayscale transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0" />
+                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-[45%_55%_48%_52%/54%_46%_54%_46%] border border-sanctuary-gold/30 bg-sanctuary-wood shadow-[0_24px_50px_-28px_rgba(80,57,31,.5)]">
+                  <Image
+                    src={member.photoUrl}
+                    alt={`Retrato de ${member.name}`}
+                    fill
+                    sizes="(min-width: 1024px) 18vw, 60vw"
+                    className="object-cover grayscale-[.35] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                  />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-papyrus">{member.name}</h3>
-                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-papyrus/45">{member.specialty}</p>
+                <h3 className="mt-6 font-display text-2xl text-sanctuary-ink">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-sanctuary-gold-ink">
+                  {member.specialty}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pilares — imagen de altar con tarjetas Papiro */}
-      <section id="nosotros" className="relative scroll-mt-24 overflow-hidden bg-obsidian text-papyrus">
-        <Image src={altarRitual} alt="" fill sizes="100vw" placeholder="blur" className="object-cover opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/70 to-obsidian" />
-        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
+      {/* Pilares — información general sobre papiro profundo */}
+      <section
+        id="nosotros"
+        className="sanctuary-leaf sanctuary-leaf-deep relative scroll-mt-24 overflow-hidden border-y border-sanctuary-border/70 px-5 py-16 sm:px-8 lg:py-24"
+      >
+        <FlowStone
+          src={runasLino}
+          position="-left-28 top-1/2 hidden -translate-y-1/2 sm:block lg:-left-16 xl:left-0"
+          size="size-40 lg:size-52"
+          opacity="opacity-[0.12]"
+          frame="pebble"
+          speed="slow"
+          rotate="rotate-12"
+        />
+        <div className="relative z-10 mx-auto max-w-7xl">
           <div className="max-w-2xl">
             <Eyebrow>Información general</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-papyrus sm:text-6xl">Un refugio para tu <em className="italic text-gold-bright">bienestar.</em></h2>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
+              Un refugio para tu{" "}
+              <em className="italic text-sanctuary-gold-ink">bienestar.</em>
+            </h2>
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="papyrus-card group relative overflow-hidden rounded-2xl border border-gold/30 bg-papyrus p-8 shadow-[0_24px_50px_-24px_rgba(26,26,26,0.25),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[0_30px_60px_-24px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] lg:p-10">
-                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-gold/15 blur-2xl transition duration-300 group-hover:bg-gold/25" />
-                <Icon size={22} strokeWidth={1.25} className="relative text-gold" />
-                <h3 className="relative mt-10 font-display text-2xl text-ink">{title}</h3>
-                <p className="relative mt-4 text-sm font-light leading-7 text-ink/70">{text}</p>
+              <article key={title} className="sanctuary-card group relative overflow-hidden p-8 lg:p-10">
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-sanctuary-gold/15 blur-2xl transition duration-300 group-hover:bg-sanctuary-gold/25"
+                />
+                <Icon
+                  size={22}
+                  strokeWidth={1.25}
+                  className="relative text-sanctuary-gold-ink"
+                />
+                <h3 className="relative mt-10 font-display text-2xl text-sanctuary-ink">{title}</h3>
+                <p className="relative mt-4 text-sm leading-7 text-sanctuary-ink-soft">{text}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Beneficios */}
-      <section id="beneficios" className="relative scroll-mt-24 px-5 py-16 sm:px-8 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
+      {/* Beneficios · layout editorial con filetes finos */}
+      <section
+        id="beneficios"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-16 sm:px-8 lg:py-24"
+      >
+        <FlowCrystal className="right-[10%] top-24 hidden size-4 lg:block" />
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.9fr_1.1fr]">
           <div>
             <Eyebrow>Tu espacio, a tu manera</Eyebrow>
-            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-papyrus sm:text-6xl">Beneficios para acompañar <em className="italic text-gold-bright">tu viaje.</em></h2>
-            <p className="mt-8 max-w-md leading-7 text-papyrus/55">Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa, desde donde estés.</p>
+            <h2 className="mt-6 font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
+              Beneficios para acompañar{" "}
+              <em className="italic text-sanctuary-gold-leaf">tu viaje.</em>
+            </h2>
+            <p className="mt-8 max-w-md leading-7 text-sanctuary-ink-soft">
+              Todo lo que necesitas para hacer de tu bienestar una práctica posible y amorosa,
+              desde donde estés.
+            </p>
           </div>
-          <ol className="border-t border-gold/15">
+          <ol className="border-t border-sanctuary-border">
             {benefits.map((benefit, index) => (
-              <li key={benefit.title} className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-gold/15 py-7 sm:grid-cols-[4rem_1fr_1fr]">
-                <span className="font-display text-lg italic text-gold">{String(index + 1).padStart(2, "0")}</span>
-                <h3 className="font-display text-2xl text-papyrus">{benefit.title}</h3>
-                <p className="col-start-2 text-sm leading-6 text-papyrus/50 sm:col-start-3">{benefit.text}</p>
+              <li
+                key={benefit.title}
+                className="grid grid-cols-[3rem_1fr] items-baseline gap-4 border-b border-sanctuary-border py-7 sm:grid-cols-[4rem_1fr_1fr]"
+              >
+                <span className="font-display text-lg italic text-sanctuary-gold-ink">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-display text-2xl text-sanctuary-ink">{benefit.title}</h3>
+                <p className="col-start-2 text-sm leading-6 text-sanctuary-ink-soft sm:col-start-3">
+                  {benefit.text}
+                </p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* Prueba gratis — tarjeta Papiro */}
-      <section id="prueba" className="scroll-mt-24 bg-obsidian px-5 py-12 sm:px-8 lg:py-16">
-        <div className="papyrus-card relative mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden rounded-[1.25rem] border border-gold/30 bg-papyrus px-6 py-10 text-center shadow-[0_24px_60px_-32px_rgba(26,26,26,0.35),inset_0_1px_0_rgba(255,255,255,0.7)] transition duration-300 sm:px-16 sm:py-14">
-          <span aria-hidden="true" className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_70%)] blur-2xl" />
-          <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gold shadow-[0_0_12px_rgba(197,160,89,.9)]" />
-          <div className="relative flex justify-center"><Eyebrow>Tu primer paso empieza aquí</Eyebrow></div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-ink sm:text-6xl">Regálate un momento para <em className="italic text-bronze">reconectar.</em></h2>
-          <p className="relative mx-auto max-w-lg text-base font-light leading-7 text-ink/70">Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.</p>
-          <Link href="/mi-cuenta" className="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-gold-light via-gold to-gold-bright px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-obsidian shadow-[0_18px_50px_-20px_rgba(197,160,89,.8)] transition hover:brightness-110">
-            Comenzar Prueba Gratis <ArrowUpRight size={15} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      {/* Prueba gratis — tarjeta marfil con sombra cálida */}
+      <section
+        id="prueba"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-12 sm:px-8 lg:py-16"
+      >
+        <div className="sanctuary-card relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_70%)] blur-2xl"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-sanctuary-gold shadow-[0_0_12px_rgba(197,160,89,.8)]"
+          />
+          <div className="relative flex justify-center">
+            <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
+          </div>
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
+            Regálate un momento para{" "}
+            <em className="italic text-sanctuary-gold-leaf">reconectar.</em>
+          </h2>
+          <p className="relative mx-auto max-w-lg text-base leading-7 text-sanctuary-ink-soft">
+            Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.
+          </p>
+          <Link
+            href="/mi-cuenta"
+            className="group relative inline-flex items-center gap-3 rounded-full bg-sanctuary-gold px-8 py-4 text-[11px] font-semibold uppercase tracking-[.28em] text-sanctuary-ink shadow-[0_16px_36px_-20px_rgba(80,57,31,.65)] transition hover:bg-sanctuary-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sanctuary-gold-ink"
+          >
+            Comenzar Prueba Gratis{" "}
+            <ArrowUpRight
+              size={15}
+              className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-ink/50">COMIENZA CUANDO TU ALMA TE LO INDIQUE</p>
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-sanctuary-ink-muted">
+            COMIENZA CUANDO TU ALMA TE LO INDIQUE
+          </p>
         </div>
       </section>
 

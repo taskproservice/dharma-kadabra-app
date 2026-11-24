@@ -9,15 +9,15 @@ import type { ReactNode } from "react";
  * Oro #C5A059 · Tinta #2E231D · Fuego #D96538.
  */
 
-/** Placeholder de carga: fondo carbón profundo (#0F1115). */
+/** Placeholder de carga: marfil cálido (#F2EBDD), coherente con el papiro. */
 const BLUR_PLACEHOLDER =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMwRjExMTUiLz48L3N2Zz4=";
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNGMkVCREQiLz48L3N2Zz4=";
 
 export function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
     <p
-      className={`flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.34em] before:h-px before:w-9 before:bg-gold ${
-        light ? "text-ink/65" : "text-gold"
+      className={`flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.34em] before:h-px before:w-9 before:bg-sanctuary-gold ${
+        light ? "text-sanctuary-gold-ink" : "text-gold"
       }`}
     >
       {children}
@@ -25,7 +25,7 @@ export function Eyebrow({ children, light = false }: { children: ReactNode; ligh
   );
 }
 
-/** Imagen editorial con fondo nocturno temporal mientras carga. */
+/** Imagen editorial con fondo papiro temporal mientras carga. */
 export function AkashicImage({
   src,
   alt,
@@ -40,7 +40,7 @@ export function AkashicImage({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden bg-obsidian ${className}`}>
+    <div className={`relative overflow-hidden bg-sanctuary-wood ${className}`}>
       <Image
         src={src}
         alt={alt}

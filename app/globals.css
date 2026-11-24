@@ -37,13 +37,60 @@
   --color-cream-100: #F4EFE6;
   --color-cream-200: #EDE4D4;
   --color-cream-300: #E8E1D5;
+
+  /* ----------------------------------------------------------------------- */
+  /*  SANTUARIO ANCESTRAL · Lujo espiritual, naturaleza y sabiduría atemporal  */
+  /*  Paleta de la Landing: papiro oxidado, madera clara, tinta y oro antiguo. */
+  /*  (Equivalencias del brief: parchmentLight → sanctuary-parchment-light,    */
+  /*   woodLight → sanctuary-wood-light, inkSoft → sanctuary-ink-soft, etc.)   */
+  /* ----------------------------------------------------------------------- */
+  --color-sanctuary-parchment: #D7C4A3;
+  --color-sanctuary-parchment-light: #E9DDC7;
+  --color-sanctuary-parchment-deep: #C9B38F;
+  /* Papiro de marca solicitado para el shell y el header translúcido. */
+  --color-sanctuary-parchment-warm: #E6D7C3;
+
+  --color-sanctuary-wood: #E8DCC6;
+  --color-sanctuary-wood-light: #F2EBDD;
+  --color-sanctuary-wood-dark: #D8C6A8;
+
+  --color-sanctuary-ink: #2C241B;
+  --color-sanctuary-ink-soft: #514333;
+  --color-sanctuary-ink-muted: #796A57;
+
+  --color-sanctuary-gold: #C5A059;
+  --color-sanctuary-gold-light: #D9BC7C;
+  /* Oro profundo original (solo sobre nocturno o como superficie). */
+  --color-sanctuary-gold-deep: #A98343;
+  /* Oro antiguo editorial: la palabra destacada de cada titular sobre papiro.
+     Mantiene la calidez del oro con legibilidad AA en cuerpo grande y
+     suficiente contraste sobre papiro profundo (≥4.5:1 en todos los fondos). */
+  --color-sanctuary-gold-leaf: #5F4518;
+  /* Oro antiguo legible sobre papiro (AA): #C5A059 es solo para acentos,
+     filetes, iconografía y superficies oscuras. Sobre papiro/madera los
+     textos dorados usan este oro profundo de tinta. */
+  --color-sanctuary-gold-ink: #6B4E1E;
+
+  --color-sanctuary-night: #11110F;
+  --color-sanctuary-night-soft: #1B1915;
+
+  --color-sanctuary-border: #CDBB9E;
+  --color-sanctuary-border-light: #DED0B8;
+
+  /* Sombras cálidas: profundidad de madera y papiro, nunca negro intenso. */
+  --shadow-sanctuary: 0 8px 24px rgba(80, 57, 31, 0.07), 0 2px 6px rgba(80, 57, 31, 0.04);
+  --shadow-sanctuary-lift: 0 14px 32px rgba(80, 57, 31, 0.1), 0 4px 10px rgba(80, 57, 31, 0.05);
+  --shadow-sanctuary-card: 0 10px 40px rgba(44, 36, 27, 0.08);
 }
 
 /* ------------------------------------------------------------------------- */
 /*  Tokens                                                                    */
 /* ------------------------------------------------------------------------- */
 :root {
-  color-scheme: dark;
+  /* La marca oscura sigue viva en el Hero y el Footer; el resto del sitio es
+     un santuario de papiro. `color-scheme: light dark` evita que los controles
+     nativos (selects, scrollbars) se pinten solo para un tema. */
+  color-scheme: light dark;
   --night-950: #0A0C0F;
   --night-900: #0F1115;
   --night-800: #161920;
@@ -70,8 +117,8 @@ body {
 
 body {
   margin: 0;
-  background-color: var(--night-900);
-  color: var(--cream-100);
+  background-color: var(--color-sanctuary-parchment);
+  color: var(--color-sanctuary-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -88,14 +135,14 @@ textarea {
 }
 
 ::selection {
-  background: rgba(199, 164, 90, 0.32);
-  color: #fffdf7;
+  background: rgba(197, 160, 89, 0.32);
+  color: #2C241B;
 }
 
-/* Scrollbar nocturno */
+/* Scrollbar cálido, en sintonía con el santuario */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(199, 164, 90, 0.35) transparent;
+  scrollbar-color: rgba(169, 131, 67, 0.45) transparent;
 }
 *::-webkit-scrollbar {
   width: 9px;
@@ -105,7 +152,7 @@ textarea {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(199, 164, 90, 0.45), rgba(199, 164, 90, 0.2));
+  background: linear-gradient(180deg, rgba(169, 131, 67, 0.5), rgba(169, 131, 67, 0.22));
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
@@ -119,6 +166,214 @@ textarea {
   background: rgba(128, 95, 43, 0.55);
   border: 2px solid #F4EFE6;
   background-clip: padding-box;
+}
+
+/* ------------------------------------------------------------------------- */
+/*  SANTUARIO ANCESTRAL · Superficies de papiro y madera                      */
+/*  El fondo no es un color plano: lleva grano de fibra natural, una luz      */
+/*  radial muy suave y filetes de oro antiguo. Todo con CSS, sin assets.      */
+/* ------------------------------------------------------------------------- */
+
+/* Grano de papiro envejecido: ruido fractal casi imperceptible (opacidad 12%)
+   mezclado en `multiply` sobre la madera clara. */
+.sanctuary-texture {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sanctuary-parchment);
+}
+
+.sanctuary-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Atmósfera: dos luces radiales (una clara arriba a la izquierda, una cálida
+   abajo a la derecha) que dan profundidad al plano de papiro. */
+.sanctuary-atmosphere {
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(255, 255, 255, 0.25), transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(165, 125, 70, 0.08), transparent 50%),
+    var(--color-sanctuary-parchment);
+}
+
+/* Hojas de la landing: papiro + grano + dos luces radiales muy suaves.
+   El contenido viaja por encima del grano (z-index negativo del ::before). */
+.sanctuary-leaf {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sanctuary-parchment);
+  background-image:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.22), transparent 46%),
+    radial-gradient(ellipse at 88% 100%, rgba(165, 125, 70, 0.08), transparent 52%);
+  color: var(--color-sanctuary-ink);
+}
+.sanctuary-leaf::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+.sanctuary-leaf-light {
+  background-color: var(--color-sanctuary-parchment-light);
+}
+.sanctuary-leaf-deep {
+  background-color: var(--color-sanctuary-parchment-deep);
+}
+.sanctuary-leaf-wood {
+  background-color: var(--color-sanctuary-wood);
+  background-image:
+    radial-gradient(ellipse at 18% 10%, rgba(255, 255, 255, 0.2), transparent 50%),
+    radial-gradient(ellipse at 82% 90%, rgba(165, 125, 70, 0.1), transparent 55%);
+}
+
+/* Tarjetas: objetos físicos de marfil cálido posados sobre la madera.
+   Sombra marrón difusa, borde de oro antiguo y elevación serena al hover. */
+.sanctuary-card {
+  background: var(--color-sanctuary-wood-light);
+  border: 1px solid rgba(165, 131, 78, 0.16);
+  border-radius: 18px;
+  box-shadow:
+    0 8px 24px rgba(80, 57, 31, 0.07),
+    0 2px 6px rgba(80, 57, 31, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition:
+    transform 350ms ease,
+    box-shadow 350ms ease,
+    border-color 350ms ease;
+}
+
+.sanctuary-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(197, 160, 89, 0.4);
+  box-shadow:
+    0 14px 32px rgba(80, 57, 31, 0.1),
+    0 4px 10px rgba(80, 57, 31, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* La banda lunar es de madera tostada (un tono más profundo que las tarjetas). */
+.sanctuary-card.sanctuary-card-wood {
+  background: var(--color-sanctuary-wood);
+}
+
+/* Variante sin elevación: para tarjetas informativas dentro de una sección
+   que ya tiene superficies anidadas (evita el efecto "SaaS flotante"). */
+.sanctuary-card-quiet {
+  background: var(--color-sanctuary-wood-light);
+  border: 1px solid rgba(165, 131, 78, 0.16);
+  border-radius: 18px;
+  box-shadow:
+    0 8px 24px rgba(80, 57, 31, 0.07),
+    0 2px 6px rgba(80, 57, 31, 0.04);
+}
+
+/* Microcopy editorial: mayúsculas, tracking amplio y oro antiguo legible. */
+.sanctuary-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-sanctuary-gold-ink);
+}
+.sanctuary-eyebrow::before {
+  content: "";
+  height: 1px;
+  width: 2.5rem;
+  background: linear-gradient(90deg, rgba(169, 131, 67, 0.85), rgba(169, 131, 67, 0.12));
+}
+.sanctuary-eyebrow-center {
+  justify-content: center;
+}
+.sanctuary-eyebrow-center::before {
+  display: none;
+}
+/* Sobre papiro profundo (banda de Pilares) el microcopy baja a oro profundo
+   para conservar contraste AA. */
+.sanctuary-leaf-deep .sanctuary-eyebrow {
+  color: var(--color-sanctuary-gold-ink);
+}
+
+/* Filete de oro antiguo entre secciones editoriales. */
+.sanctuary-hairline {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgba(169, 131, 67, 0.45), transparent);
+}
+
+/* Transición Hero oscuro → papiro. La luz del santuario entra por la base:
+   el contenido del hero queda por encima con z-10 (ver hero-carousel). */
+.hero-sanctuary {
+  position: relative;
+  background-color: var(--color-sanctuary-night);
+}
+.hero-sanctuary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* En móvil la portada es más corta: la transición se ajusta para no rozar
+     los controles del carrusel. */
+  height: clamp(140px, 22vh, 220px);
+  z-index: 5;
+  pointer-events: none;
+  /* El último tramo empata con el papiro de la sección siguiente (banda lunar). */
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 17, 15, 0) 0%,
+    rgba(17, 17, 15, 0.45) 25%,
+    rgba(215, 196, 163, 0.55) 72%,
+    var(--sanctuary-hero-fade, #d7c4a3) 100%
+  );
+}
+
+/* Cierre de marca: el papiro se asienta en la noche del footer. El degradado
+   baja del papiro al café casi negro sin cortes ni bandas visibles. */
+.sanctuary-dusk {
+  background: linear-gradient(
+    to bottom,
+    rgba(215, 196, 163, 0) 0%,
+    rgba(201, 179, 143, 0.35) 12%,
+    rgba(90, 74, 54, 0.62) 30%,
+    rgba(40, 35, 27, 0.92) 55%,
+    #17150f 78%,
+    #11110f 100%
+  );
+}
+
+/* Elementos flow: piedras y cristales flotando en el aire del santuario. */
+@keyframes sanctuary-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(2deg);
+  }
+}
+
+.float-element {
+  animation: sanctuary-float 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.float-element-slow {
+  animation: sanctuary-float 12s ease-in-out infinite;
+  animation-delay: -3s;
+  will-change: transform;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -636,6 +891,18 @@ html {
   .fade-up,
   .total-tick {
     animation: none;
+  }
+  /* Santuario: las piedras y cristales quedan quietos y las tarjetas no se
+     elevan. El reposo no pierde la composición, solo el movimiento. */
+  .float-element,
+  .float-element-slow {
+    animation: none;
+  }
+  .sanctuary-card {
+    transition: none;
+  }
+  .sanctuary-card:hover {
+    transform: none;
   }
   html {
     scroll-behavior: auto;

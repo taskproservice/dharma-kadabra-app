@@ -51,18 +51,18 @@ export function ThreeRuneSpread() {
           const rune = revealed[index];
           return (
             <div key={position.number}>
-              <div className="mb-1 flex items-baseline justify-between border-b border-gold/25 pb-1">
-                <p className="rune-display text-base text-papyrus">{position.label}</p>
-                <span className="text-[10px] uppercase tracking-[.22em] text-gold/70">{position.number}</span>
+              <div className="mb-1 flex items-baseline justify-between border-b border-sanctuary-gold/40 pb-1">
+                <p className="rune-display text-base text-sanctuary-ink">{position.label}</p>
+                <span className="text-[10px] uppercase tracking-[.22em] text-sanctuary-gold-ink">{position.number}</span>
               </div>
-              <p className="mb-1 text-[10px] tracking-wide text-papyrus/45">{position.note}</p>
+              <p className="mb-1 text-[10px] tracking-wide text-sanctuary-ink-muted">{position.note}</p>
 
               <div className="[perspective:1400px]">
                 <button
                   type="button"
                   onClick={() => reveal(index)}
                   aria-label={rune ? `${position.label}: ${rune.name}, ${rune.meaning}` : `Revelar runa de ${position.label.toLowerCase()}`}
-                  className="relative block aspect-[4/5] max-h-[180px] w-full cursor-pointer rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian"
+                  className="relative block aspect-[4/5] max-h-[180px] w-full cursor-pointer rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-sanctuary-gold-ink focus-visible:ring-offset-2 focus-visible:ring-offset-sanctuary-parchment"
                 >
                   <span className="rune-card-3d relative block h-full w-full" data-flipped={Boolean(rune)}>
                     {/* Dorso */}
@@ -91,15 +91,15 @@ export function ThreeRuneSpread() {
         })}
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-gold/20 pt-2">
-        <p role="status" className="text-xs uppercase tracking-[.2em] text-papyrus/50">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-sanctuary-border pt-2">
+        <p role="status" className="text-xs uppercase tracking-[.2em] text-sanctuary-ink-muted">
           {count === 0 ? "Tres cartas boca abajo te esperan" : `${count} de 3 runas reveladas`}
         </p>
         {count > 0 && (
           <button
             type="button"
             onClick={reset}
-            className="inline-flex cursor-pointer items-center gap-2 text-[11px] font-semibold uppercase tracking-[.2em] text-gold transition hover:text-papyrus"
+            className="inline-flex cursor-pointer items-center gap-2 text-[11px] font-semibold uppercase tracking-[.2em] text-sanctuary-gold-ink transition hover:text-sanctuary-ink"
           >
             <RotateCcw size={14} /> Nueva tirada
           </button>
@@ -107,10 +107,10 @@ export function ThreeRuneSpread() {
       </div>
 
       <div className="mt-3 flex flex-col items-center gap-2 text-center">
-        <RuneBookingCTA className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[.24em] text-obsidian shadow-[0_18px_50px_-20px_rgba(197,160,89,.85)] transition hover:bg-gold-light">
+        <RuneBookingCTA className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-sanctuary-gold px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[.24em] text-sanctuary-ink shadow-[0_16px_36px_-20px_rgba(80,57,31,.65)] transition hover:bg-sanctuary-gold-light">
           AGENDAR MI LECTURA DE RUNAS <ArrowRight size={15} className="transition group-hover:translate-x-1" />
         </RuneBookingCTA>
-        <p className="text-[11px] leading-5 text-papyrus/45">
+        <p className="text-[11px] leading-5 text-sanctuary-ink-muted">
           La tirada es un primer acercamiento. En la sesión profundizamos juntas en tu lectura completa.
         </p>
       </div>

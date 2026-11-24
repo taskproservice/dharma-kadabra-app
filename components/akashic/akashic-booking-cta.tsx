@@ -34,12 +34,13 @@ export function AkashicBookingCTA({
         </button>
       }
       title={`Agendar · ${akashicReading?.name ?? "Lectura de Registros Akáshicos"}`}
+      appearance="papyrus"
     >
       {(close) =>
         akashicReading ? (
-          <BookingDialog service={akashicReading} close={close} />
+          <BookingDialog service={akashicReading} close={close} appearance="papyrus" />
         ) : (
-          <p className="text-sm text-papyrus/70">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-sanctuary-ink-soft">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>

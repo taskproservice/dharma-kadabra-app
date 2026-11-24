@@ -76,7 +76,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       id="inicio"
       aria-roledescription="carrusel"
       aria-label="Dharma Kadabra"
-      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-obsidian text-papyrus lg:h-screen lg:max-h-[1080px] lg:min-h-[760px]"
+      className="hero-sanctuary relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-sanctuary-night text-papyrus lg:h-screen lg:max-h-[1080px] lg:min-h-[760px]"
       onKeyDown={(event) => {
         if (event.key === "ArrowRight") goTo(active + 1);
         if (event.key === "ArrowLeft") goTo(active - 1);
@@ -100,7 +100,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
       {/* Velos cinematográficos: oscurecen el libro y protegen la legibilidad */}
       <div className="pointer-events-none absolute inset-0 bg-obsidian/55" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(10,12,15,.92)_0%,rgba(15,17,21,.72)_42%,rgba(15,17,21,.12)_72%,rgba(15,17,21,.55)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-obsidian via-obsidian/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-sanctuary-night via-sanctuary-night/70 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-obsidian/90 to-transparent" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col justify-center px-5 pb-10 pt-32 sm:px-8 lg:pt-28">
@@ -138,13 +138,13 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
         </div>
       </div>
 
-      {/* Controles inferiores */}
+      {/* Controles inferiores · por encima del degradado hacia el papiro */}
       <div className="relative z-10 mt-6">
         <div className="mx-auto flex max-w-[1500px] items-center gap-5 px-5 pb-6 sm:px-8">
-          <p className="font-display text-sm tabular-nums text-papyrus" aria-live="polite">
-            <span className="text-gold-bright">{pad(active + 1)}</span>
-            <span className="mx-2 text-papyrus/35">/</span>
-            <span className="text-papyrus/55">{pad(total)}</span>
+          <p className="font-display text-sm tabular-nums text-sanctuary-ink" aria-live="polite">
+            <span className="text-sanctuary-gold-ink">{pad(active + 1)}</span>
+            <span className="mx-2 text-sanctuary-ink-muted">/</span>
+            <span className="text-sanctuary-ink-soft">{pad(total)}</span>
           </p>
           <div className="hidden max-w-md flex-1 items-center gap-2.5 sm:flex">
             {slides.map((slide, index) => (
@@ -156,8 +156,8 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
                 aria-current={index === active}
                 className="group relative h-5 flex-1"
               >
-                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-papyrus/15 transition group-hover:bg-papyrus/35" />
-                <span className={`absolute left-0 top-1/2 h-px -translate-y-1/2 bg-gold-light shadow-[0_0_8px_rgba(216,188,127,.8)] transition-[width] duration-700 ${index === active ? "w-full" : "w-0"}`} />
+                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-sanctuary-ink/15 transition group-hover:bg-sanctuary-ink/35" />
+                <span className={`absolute left-0 top-1/2 h-px -translate-y-1/2 bg-sanctuary-gold-ink shadow-[0_0_8px_rgba(107,78,30,.5)] transition-[width] duration-700 ${index === active ? "w-full" : "w-0"}`} />
               </button>
             ))}
           </div>
@@ -166,7 +166,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
               type="button"
               onClick={() => goTo(active - 1)}
               aria-label="Diapositiva anterior"
-              className="grid size-10 place-items-center rounded-full border border-gold/30 text-papyrus/70 transition hover:border-gold hover:text-gold-bright hover:shadow-[0_0_20px_rgba(197,160,89,.28)]"
+              className="grid size-10 place-items-center rounded-full border border-sanctuary-gold-ink/45 bg-sanctuary-wood-light/70 text-sanctuary-ink-soft transition hover:border-sanctuary-gold-ink hover:text-sanctuary-gold-ink hover:shadow-[0_8px_20px_-12px_rgba(80,57,31,.55)]"
             >
               <ArrowLeft size={15} />
             </button>
@@ -174,7 +174,7 @@ export function HeroCarousel({ slides, children, medallion, cta, interval = 8000
               type="button"
               onClick={() => goTo(active + 1)}
               aria-label="Diapositiva siguiente"
-              className="grid size-10 place-items-center rounded-full border border-gold/30 text-papyrus/70 transition hover:border-gold hover:text-gold-bright hover:shadow-[0_0_20px_rgba(197,160,89,.28)]"
+              className="grid size-10 place-items-center rounded-full border border-sanctuary-gold-ink/45 bg-sanctuary-wood-light/70 text-sanctuary-ink-soft transition hover:border-sanctuary-gold-ink hover:text-sanctuary-gold-ink hover:shadow-[0_8px_20px_-12px_rgba(80,57,31,.55)]"
             >
               <ArrowRight size={15} />
             </button>

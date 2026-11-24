@@ -25,12 +25,13 @@ export function RuneBookingCTA({
         </button>
       }
       title={`Agendar · ${runeReading?.name ?? "Lectura de Runas"}`}
+      appearance="papyrus"
     >
       {(close) =>
         runeReading ? (
-          <BookingDialog service={runeReading} close={close} />
+          <BookingDialog service={runeReading} close={close} appearance="papyrus" />
         ) : (
-          <p className="text-sm text-papyrus/70">Servicio no disponible temporalmente.</p>
+          <p className="text-sm text-sanctuary-ink-soft">Servicio no disponible temporalmente.</p>
         )
       }
     </Dialog>
