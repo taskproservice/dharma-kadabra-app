@@ -49,7 +49,12 @@ export function PremiumFooter() {
   };
 
   return (
-    <footer className="border-t border-gold/18 bg-obsidian px-5 pb-10 pt-16 text-papyrus sm:px-8">
+    <footer className="sanctuary-dusk relative border-t border-sanctuary-gold/25 px-5 pb-10 pt-16 text-papyrus sm:px-8">
+      {/* Filete de oro antiguo: la marca se cierra con una línea de luz. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(197,160,89,.55),transparent)]"
+      />
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
           {/* Columna 1 — Marca */}

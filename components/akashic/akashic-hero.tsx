@@ -10,7 +10,7 @@ import { Eyebrow } from "./akashic-shared";
 export function AkashicHero() {
   const hero = akashicContent.hero;
   return (
-    <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden bg-obsidian pt-24">
+    <section id="inicio" className="hero-sanctuary relative flex min-h-[100svh] items-center overflow-hidden bg-sanctuary-night pt-24">
       <Image
         src={akashicImages.hero}
         alt="Mujer en meditación al amanecer, en silueta frente a la luz dorada"
@@ -20,7 +20,7 @@ export function AkashicHero() {
         quality={90}
         className="object-cover opacity-55"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,17,21,.74)_0%,rgba(15,17,21,.48)_35%,rgba(15,17,21,.94)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,17,15,.74)_0%,rgba(17,17,15,.48)_35%,rgba(17,17,15,.94)_100%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_68%)] blur-3xl" />
 
       <div className="relative mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
@@ -38,7 +38,7 @@ export function AkashicHero() {
         </p>
         <div className="mt-11 flex flex-wrap items-center justify-center gap-3">
           <AkashicBookingCTA
-            className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-gold px-8 py-4 text-[10px] font-semibold uppercase tracking-[.26em] text-obsidian shadow-[0_22px_60px_-22px_rgba(197,160,89,.9)] transition hover:bg-gold-light"
+            className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-gold px-8 py-4 text-[10px] font-semibold uppercase tracking-[.26em] text-sanctuary-ink shadow-[0_22px_60px_-22px_rgba(197,160,89,.9)] transition hover:bg-gold-light"
             label="Reservar mi lectura de Registros Akáshicos"
           >
             {hero.primaryCta}

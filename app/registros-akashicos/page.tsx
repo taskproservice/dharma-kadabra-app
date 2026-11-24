@@ -22,7 +22,7 @@ export default function RegistrosAkashicosPage() {
   return (
     <>
       <AkashicHeader />
-      <main className="bg-obsidian text-papyrus">
+      <main className="bg-sanctuary-parchment text-sanctuary-ink">
         <AkashicHero />
         <AkashicIntroduction />
         <AkashicMethod />
