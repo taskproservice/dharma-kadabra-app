@@ -186,7 +186,7 @@ export default async function HomePage() {
         <article className="relative z-10 mx-auto max-w-6xl">
           <div className="grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="mx-auto w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-[1.6rem] border border-sanctuary-gold/55 shadow-[0_30px_60px_-34px_rgba(80,57,31,0.55)]">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-3xl border-4 border-[#E6E1D6] shadow-[0_20px_50px_rgba(107,112,92,0.3)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -198,7 +198,7 @@ export default async function HomePage() {
                 />
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 rounded-[1.6rem] ring-1 ring-inset ring-white/25"
+                  className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-[#C5A059]/30"
                 />
               </div>
               <figcaption className="mt-5 text-center text-[10px] uppercase tracking-[.3em] text-sanctuary-ink-soft">
@@ -278,13 +278,14 @@ export default async function HomePage() {
             {collaborators.map((member, index) => (
               <article
                 key={member.id}
-                className="sanctuary-card group p-6 text-center lg:p-8"
+                className="sanctuary-card-olive group p-6 text-center lg:p-8"
               >
-                <span className="font-display text-sm text-sanctuary-gold-ink">
+                <span className="font-display text-sm text-[#C5A059]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante */}
-                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-[45%_55%_48%_52%/54%_46%_54%_46%] border border-sanctuary-gold/30 bg-sanctuary-wood shadow-[0_24px_50px_-28px_rgba(80,57,31,.5)]">
+                {/* Retrato compacto: contenedor al 60% del ancho, centrado y elegante.
+                    Efecto Flow — bordes muy redondeados, sombra orgánica y filo beige. */}
+                <div className="relative mx-auto mt-5 aspect-[4/5] w-[62%] overflow-hidden rounded-full border-4 border-[#E6E1D6] bg-sanctuary-olive-deep shadow-[0_20px_50px_rgba(107,112,92,0.3)]">
                   <Image
                     src={member.photoUrl}
                     alt={`Retrato de ${member.name}`}
@@ -293,8 +294,8 @@ export default async function HomePage() {
                     className="object-cover grayscale-[.35] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
                   />
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-sanctuary-ink">{member.name}</h3>
-                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-sanctuary-gold-ink">
+                <h3 className="mt-6 font-display text-2xl text-[#C5A059]">{member.name}</h3>
+                <p className="mt-2 text-[10px] uppercase tracking-[.22em] text-[#F4EFE6]/80">
                   {member.specialty}
                 </p>
               </article>
@@ -328,7 +329,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-16 grid gap-5 md:grid-cols-3">
             {pillars.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="sanctuary-card group relative overflow-hidden p-8 lg:p-10">
+              <article key={title} className="sanctuary-card-olive group relative overflow-hidden p-8 lg:p-10">
                 <span
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-sanctuary-gold/15 blur-2xl transition duration-300 group-hover:bg-sanctuary-gold/25"
@@ -336,10 +337,10 @@ export default async function HomePage() {
                 <Icon
                   size={22}
                   strokeWidth={1.25}
-                  className="relative text-sanctuary-gold-ink"
+                  className="relative text-[#C5A059]"
                 />
-                <h3 className="relative mt-10 font-display text-2xl text-sanctuary-ink">{title}</h3>
-                <p className="relative mt-4 text-sm leading-7 text-sanctuary-ink-soft">{text}</p>
+                <h3 className="relative mt-10 font-display text-2xl text-[#C5A059]">{title}</h3>
+                <p className="relative mt-4 text-sm leading-7 text-[#F4EFE6]/80">{text}</p>
               </article>
             ))}
           </div>
@@ -388,7 +389,7 @@ export default async function HomePage() {
         id="prueba"
         className="sanctuary-leaf relative scroll-mt-24 overflow-hidden px-5 py-12 sm:px-8 lg:py-16"
       >
-        <div className="sanctuary-card relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
+        <div className="sanctuary-card-olive relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-5 overflow-hidden px-6 py-10 text-center sm:px-16 sm:py-14">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.28),transparent_70%)] blur-2xl"
@@ -400,11 +401,11 @@ export default async function HomePage() {
           <div className="relative flex justify-center">
             <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>
           </div>
-          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-sanctuary-ink sm:text-6xl">
+          <h2 className="relative mx-auto max-w-3xl font-display text-5xl leading-[1.05] text-[#C5A059] sm:text-6xl">
             Regálate un momento para{" "}
-            <em className="italic text-sanctuary-gold-leaf">reconectar.</em>
+            <em className="italic text-[#F4EFE6]">reconectar.</em>
           </h2>
-          <p className="relative mx-auto max-w-lg text-base leading-7 text-sanctuary-ink-soft">
+          <p className="relative mx-auto max-w-lg text-base leading-7 text-[#F4EFE6]/80">
             Prueba gratis y descubre las herramientas y personas que pueden acompañar tu camino.
           </p>
           <Link
@@ -417,7 +418,7 @@ export default async function HomePage() {
               className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </Link>
-          <p className="relative text-[11px] uppercase tracking-[.2em] text-sanctuary-ink-soft">
+          <p className="relative text-[11px] uppercase tracking-[.2em] text-[#F4EFE6]/70">
             COMIENZA CUANDO TU ALMA TE LO INDIQUE
           </p>
         </div>
