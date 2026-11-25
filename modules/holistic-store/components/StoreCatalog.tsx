@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Sparkles, TriangleAlert } from "lucide-react";
+import { DEFAULT_CATEGORY_TEMPLATES } from "../constants";
 import { STORE_CATEGORIES, type CategoryTemplateMap, type StoreCategory, type StoreProduct } from "../types";
 import { ProductCard } from "./ProductCard";
 
@@ -111,7 +112,7 @@ export function StoreCatalog({ products, templates, initialError = null, isFallb
               <ProductCard
                 key={product.id}
                 product={product}
-                template={templates[product.category] ?? "oro"}
+                template={templates[product.category] ?? DEFAULT_CATEGORY_TEMPLATES[product.category] ?? "oro"}
                 trackableView={!isFallback}
               />
             ))}

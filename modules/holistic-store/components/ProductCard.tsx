@@ -90,9 +90,9 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
         </div>
       )}
       <span
-        className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[.18em] shadow-sm backdrop-blur-sm ${TEMPLATE_STYLES[template].categoryChip}`}
+        className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[.18em] shadow-sm backdrop-blur-sm ${(TEMPLATE_STYLES[template] ?? TEMPLATE_STYLES.oro).categoryChip}`}
       >
-        {product.category}
+        {product.category.toUpperCase()}
       </span>
       {out && (
         <span className="absolute right-3 top-3 rounded-full bg-[#E9E4DA] px-3 py-1 text-[9px] font-bold uppercase tracking-[.2em] text-[#6B5D4A] shadow-md">
@@ -150,22 +150,25 @@ export function ProductCard({ product, template, isAuthenticated = false, tracka
 
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
+      className={`group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border p-3 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 ${styles.card}`}
     >
       <div className="overflow-hidden rounded-xl">
         <CardImage product={product} template={template} />
       </div>
-      <div className="flex flex-1 flex-col px-1 pb-1 pt-2.5">
+      <div className="flex min-w-0 flex-1 flex-col px-1 pb-1 pt-2.5">
         <p
           className={`truncate font-mono text-[10px] uppercase tracking-[.18em] ${styles.id}`}
           title={product.id}
         >
           #{product.id}
         </p>
-        <h3 className={`mt-1 line-clamp-1 font-display text-base leading-snug ${styles.name}`}>
+        <h3
+          className={`mt-1 line-clamp-1 font-display text-base leading-snug ${styles.name}`}
+          title={product.name}
+        >
           {product.name}
         </h3>
-        <p className={`mt-0.5 line-clamp-2 text-xs leading-4 ${styles.description}`}>
+        <p className={`mt-0.5 line-clamp-2 min-h-[2rem] text-xs leading-4 ${styles.description}`}>
           {product.description}
         </p>
         <p className="mt-2 flex items-center gap-2">

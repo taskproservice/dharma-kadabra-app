@@ -30,7 +30,7 @@ import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
 import { usePosCartStore } from "../../stores/cart";
-import { CATEGORY_META, STORE_TEMPLATE_META } from "../../modules/holistic-store/constants";
+import { CATEGORY_META, DEFAULT_CATEGORY_TEMPLATES, STORE_TEMPLATE_META } from "../../modules/holistic-store/constants";
 import type {
   AdminProduct,
   CategoryTemplateMap,
@@ -697,7 +697,7 @@ function TemplatesTab({ products, notify }: { products: AdminProduct[]; notify: 
         body: JSON.stringify({
           styles: STORE_CATEGORIES.map((category) => ({
             category,
-            template: styles[category] ?? "oro",
+            template: styles[category] ?? DEFAULT_CATEGORY_TEMPLATES[category] ?? "oro",
           })),
         }),
       });
@@ -737,7 +737,7 @@ function TemplatesTab({ products, notify }: { products: AdminProduct[]; notify: 
       </div>
       <div className="grid gap-5 md:grid-cols-2">
         {STORE_CATEGORIES.map((category) => {
-          const current: StoreTemplateId = styles[category] ?? "oro";
+          const current: StoreTemplateId = styles[category] ?? DEFAULT_CATEGORY_TEMPLATES[category] ?? "oro";
           return (
             <article key={category} className="overflow-hidden rounded-2xl border border-[#c7a45a]/20 bg-[#0b1020]/60">
               <div className="flex items-center justify-between border-b border-[#c7a45a]/15 px-5 py-3.5">
