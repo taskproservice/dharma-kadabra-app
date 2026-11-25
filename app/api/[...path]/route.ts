@@ -3,6 +3,7 @@ import * as analytics from "../analytics/handler";
 import * as appointments from "../appointments/handler";
 import * as appointmentById from "../appointments/[id]/handler";
 import * as nextAuth from "../auth/[...nextauth]/handler";
+import * as forgotPassword from "../auth/forgot-password/handler";
 import * as availability from "../availability/handler";
 import * as availabilityMe from "../availability/me/handler";
 import * as collaborators from "../collaborators/handler";
@@ -41,6 +42,7 @@ const routeHandlers: Record<string, HandlerGroup> = {
   analytics: { GET: analytics.GET },
   appointments: { POST: appointments.POST },
   "appointments/[id]": { PATCH: appointmentById.PATCH },
+  "auth/forgot-password": { POST: forgotPassword.POST },
   "auth/[...nextauth]": { GET: nextAuth.GET, POST: nextAuth.POST },
   availability: { GET: availability.GET },
   "availability/me": { GET: availabilityMe.GET, PUT: availabilityMe.PUT },
@@ -69,6 +71,9 @@ const routeHandlers: Record<string, HandlerGroup> = {
 };
 
 function resolveEndpoint(path: string[]) {
+  if (path[0] === "auth" && path[1] === "forgot-password" && path.length === 2) {
+    return { key: "auth/forgot-password", params: undefined };
+  }
   if (path[0] === "auth" && path.length > 1) {
     return { key: "auth/[...nextauth]", params: { nextauth: path.slice(1) } };
   }

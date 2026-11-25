@@ -1,12 +1,13 @@
+import * as React from "react";
 import { createHash, randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { PasswordReset } from "../../../emails/PasswordReset";
 import { createSessionToken, customerSessionCookie, customerSessionMaxAge, hashPassword, verifyPassword } from "../../../lib/customer-auth";
 import { getAuthSecret } from "../../../lib/auth-secret";
 import { burnPasswordCheck } from "../../../lib/password";
 import { prisma } from "../../../lib/prisma";
-import { appBaseUrl, sendTransactionalEmail } from "../../../lib/resend";
-import { passwordResetEmail } from "../../../lib/email-templates";
+import { appBaseUrl, sendEmail } from "../../../lib/resend";
 
 /**
  * Inicio de sesión / registro / recuperación / cierre de sesión de clientes.
@@ -34,7 +35,12 @@ function hashResetToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
-async function handleRecover(email: string, requestOrigin: string) {
+/**
+ * Genera el token real de recuperación en Prisma y envía la plantilla
+ * `PasswordReset` vía Resend usando `NEXT_PUBLIC_APP_URL` como URL base.
+ */
+export async function requestCustomerPasswordReset(rawEmail: string, requestOrigin?: string) {
+  const email = rawEmail.trim().toLowerCase();
   try {
     const customer = await prisma.customer.findUnique({ where: { email } });
     if (customer) {
@@ -46,15 +52,21 @@ async function handleRecover(email: string, requestOrigin: string) {
           resetTokenExpiresAt: new Date(Date.now() + RESET_TTL_MS),
         },
       });
-      const base = appBaseUrl(requestOrigin);
-      const resetUrl = base ? `${base}/mi-cuenta/restablecer?token=${token}` : "";
-      const { subject, html } = passwordResetEmail(resetUrl);
-      // Sin NEXT_PUBLIC_APP_URL el enlace sale vacío: el correo igual se
-      // envía (con el token en el log de desarrollo) y el equipo lo revisa.
-      await sendTransactionalEmail({ to: email, subject, html });
+      const baseUrl = appBaseUrl(requestOrigin);
+      const resetUrl = `${baseUrl}/mi-cuenta/restablecer?token=${token}`;
+
+      await sendEmail({
+        to: customer.email,
+        subject: "Restablece tu contraseña · Dharma Kadabra",
+        react: React.createElement(PasswordReset, {
+          resetUrl,
+          userName: customer.name,
+          expiresInLabel: "1 hora",
+        }),
+      });
     }
   } catch (error) {
-    // Respuesta genérica siempre: nunca revelar si el correo existe ni si la DB falló.
+    // Respuesta genérica siempre: nunca revelar si el correo existe ni si falló el envío.
     console.error("Error al solicitar recuperación de contraseña:", error);
   }
   return NextResponse.json({ ok: true });
@@ -105,7 +117,7 @@ export async function POST(request: Request) {
 
   if (mode === "recover") {
     if (!parsed.data.email) return NextResponse.json({ error: "Escribe tu correo electrónico." }, { status: 400 });
-    return handleRecover(parsed.data.email.toLowerCase(), new URL(request.url).origin);
+    return requestCustomerPasswordReset(parsed.data.email, new URL(request.url).origin);
   }
 
   if (mode === "reset") {
@@ -133,7 +145,7 @@ export async function POST(request: Request) {
           name: parsed.data.name,
           email,
           phone: parsed.data.phone || null,
-          passwordHash: hashPassword(parsed.data.password)
+          passwordHash: hashPassword(passwordSafe(parsed.data.password))
         }
       });
     } catch {
@@ -166,6 +178,10 @@ export async function POST(request: Request) {
     maxAge: customerSessionMaxAge,
   });
   return response;
+}
+
+function passwordSafe(value: string): string {
+  return value;
 }
 
 export async function DELETE() {

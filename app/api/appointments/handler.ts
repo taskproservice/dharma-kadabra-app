@@ -1,16 +1,18 @@
+import * as React from "react";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { AppointmentConfirmation } from "../../../emails/AppointmentConfirmation";
 import { services } from "../../../lib/data/services";
 import { SlotUnavailableError, findSlotConflict, withSlotLock } from "../../../lib/booking";
 import { prisma, type Appointment, type AppointmentModality, type AppointmentStatus } from "../../../lib/prisma";
 import { authorize } from "../../../lib/rbac";
 import { isTherapistRole } from "../../../lib/therapists";
-import { appBaseUrl, sendTransactionalEmail } from "../../../lib/resend";
-import { appointmentConfirmationEmail } from "../../../lib/email-templates";
+import { appBaseUrl, sendEmail } from "../../../lib/resend";
 
 export const dynamic = "force-dynamic";
 
 const DEPOSIT_RATE = 0.2;
+const STUDIO_TIMEZONE = "America/Tijuana";
 const modalitySchema = z.enum(["IN_PERSON", "VIDEO_CALL"]).default("IN_PERSON");
 
 /** Reservas por el público (catálogo). Todo el flujo pasa por PENDING y anticipo. */
@@ -44,16 +46,19 @@ const staffBookingSchema = z.object({
 
 /**
  * Valida que el responsable sea una cuenta agendable (ADMIN o COLLABORATOR)
- * y esté activa. Devuelve el id normalizado o un error 400.
+ * y esté activa. Devuelve el id y nombre normalizados o un error 400.
  */
 async function resolveAssignee(
   rawAssigneeId: string | undefined,
-): Promise<{ ok: true; assigneeId: string | null } | { ok: false; response: NextResponse }> {
-  if (!rawAssigneeId) return { ok: true, assigneeId: null };
+): Promise<
+  | { ok: true; assigneeId: string | null; assigneeName: string | null }
+  | { ok: false; response: NextResponse }
+> {
+  if (!rawAssigneeId) return { ok: true, assigneeId: null, assigneeName: null };
 
   const assignee = await prisma.user.findUnique({
     where: { id: rawAssigneeId },
-    select: { id: true, active: true, role: true },
+    select: { id: true, name: true, active: true, role: true },
   });
   if (!assignee || !assignee.active || !isTherapistRole(assignee.role)) {
     return {
@@ -61,7 +66,7 @@ async function resolveAssignee(
       response: NextResponse.json({ error: "El colaborador asignado no está disponible." }, { status: 400 }),
     };
   }
-  return { ok: true, assigneeId: assignee.id };
+  return { ok: true, assigneeId: assignee.id, assigneeName: assignee.name };
 }
 
 function slotTakenResponse() {
@@ -94,6 +99,7 @@ export async function POST(request: Request) {
   let status: AppointmentStatus = "PENDING";
   let modality: AppointmentModality = "IN_PERSON";
   let assigneeId: string | null = null;
+  let assigneeName: string | null = null;
   let depositPrice: number | null = null;
 
   if (isCustomer) {
@@ -107,14 +113,15 @@ export async function POST(request: Request) {
     date = new Date(parsed.data.dateTime);
     serviceName = service.name;
     modality = parsed.data.modality;
-    // Un cliente solo puede reservar a su nombre: el correo y la cuenta salen de la sesión.
-    clientEmail = principal.email.toLowerCase();
+    // Se usa el correo dejado en el formulario y se vincula además customerId a la sesión.
+    clientEmail = parsed.data.clientEmail.toLowerCase() || principal.email.toLowerCase();
     depositPrice = Math.round(service.price * DEPOSIT_RATE);
 
     // El cliente elige a su terapeuta; se valida que sea una cuenta agendable activa.
     const resolved = await resolveAssignee(parsed.data.assigneeId);
     if (!resolved.ok) return resolved.response;
     assigneeId = resolved.assigneeId;
+    assigneeName = resolved.assigneeName;
   } else {
     const parsed = staffBookingSchema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: "Revisa tus datos y vuelve a intentarlo." }, { status: 400 });
@@ -130,6 +137,7 @@ export async function POST(request: Request) {
     const resolved = await resolveAssignee(parsed.data.assigneeId);
     if (!resolved.ok) return resolved.response;
     assigneeId = resolved.assigneeId;
+    assigneeName = resolved.assigneeName;
   }
 
   if (Number.isNaN(date.getTime()) || date.getTime() <= Date.now()) return NextResponse.json({ error: "El horario debe ser una fecha futura." }, { status: 400 });
@@ -162,6 +170,45 @@ export async function POST(request: Request) {
       }),
     );
 
+    // Confirmación por correo (Resend + React Email). Envuelto en try/catch
+    // para que un fallo en el envío de email jamás provoque la pérdida de la cita.
+    if (clientEmail) {
+      try {
+        const dateFormatted = new Intl.DateTimeFormat("es-MX", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          timeZone: STUDIO_TIMEZONE,
+        }).format(date);
+        const timeFormatted = `${new Intl.DateTimeFormat("es-MX", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: STUDIO_TIMEZONE,
+        }).format(date)} hrs (hora Tijuana)`;
+        const base = appBaseUrl(new URL(request.url).origin);
+
+        await sendEmail({
+          to: clientEmail,
+          subject: "Tu reserva está registrada · Dharma Kadabra",
+          react: React.createElement(AppointmentConfirmation, {
+            clientName,
+            service: serviceName,
+            date: dateFormatted,
+            time: timeFormatted,
+            modality,
+            therapistName: assigneeName,
+            depositAmount: isCustomer ? depositPrice : null,
+            folio: appointment.id.slice(-8).toUpperCase(),
+            accountUrl: `${base}/mi-cuenta`,
+          }),
+        });
+      } catch (emailError) {
+        console.error("Error al enviar correo de confirmación de cita:", emailError);
+      }
+    }
+
     const payload: Record<string, unknown> = {
       appointment: {
         id: appointment.id,
@@ -173,33 +220,6 @@ export async function POST(request: Request) {
       },
     };
     if (isCustomer) payload.payment = { required: true, amount: depositPrice, currency: "MXN" };
-
-    // Confirmación por correo (Resend). Nunca bloquea la reserva: si el
-    // envío falla, la cita ya quedó creada y el cliente la ve en Mi Cuenta.
-    if (clientEmail) {
-      try {
-        const dateLabel = new Intl.DateTimeFormat("es-MX", {
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }).format(date);
-        const base = appBaseUrl(new URL(request.url).origin);
-        const { subject, html } = appointmentConfirmationEmail({
-          clientName,
-          service: serviceName,
-          dateLabel,
-          modality,
-          depositAmount: isCustomer ? depositPrice : null,
-          accountUrl: base ? `${base}/mi-cuenta` : "/mi-cuenta",
-        });
-        await sendTransactionalEmail({ to: clientEmail, subject, html });
-      } catch (error) {
-        console.error("Error al enviar confirmación de cita:", error);
-      }
-    }
 
     return NextResponse.json(payload, { status: 201 });
   } catch (error) {
