@@ -7,16 +7,14 @@ import {
   ROLE_PREVIEW_COOKIE,
 } from "../../lib/rbac";
 
-export const dynamic = "force-dynamic";
-
 /**
  * `/dashboard` no renderiza un panel: reparte a cada rol a su panel de
  * inicio (Admin → /dashboard/admin, Ingeniería → /dashboard/ingenieria,
  * Marketing → /dashboard/marketing, Colaboradora → /dashboard/agenda).
- * El middleware ya hace esta redirección; esta página es el respaldo en
- * servidor por si se llega aquí sin pasar por él.
+ * El middleware ya hace esta redirección; esta es la alternativa del servidor
+ * para cuando se llega a la ruta sin pasar por él.
  */
-export default async function DashboardPage() {
+export async function redirectDashboardHome(): Promise<never> {
   const staff = await getStaffPrincipal();
   if (!staff) redirect("/login?callbackUrl=/dashboard");
 
