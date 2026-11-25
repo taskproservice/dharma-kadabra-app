@@ -8,7 +8,6 @@ import {
   Flower2,
   Gift,
   Home,
-  Search,
   ShoppingBag,
   Sparkles,
   UsersRound,
@@ -148,15 +147,6 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
-            {/* Búsqueda */}
-            <button
-              type="button"
-              aria-label="Buscar"
-              className="grid size-9 place-items-center rounded-full border border-stone-200 bg-white text-[#2C241B] transition hover:border-gold/60 hover:text-bronze"
-            >
-              <Search size={15} strokeWidth={1.6} />
-            </button>
-
             {/* Carrito */}
             <button
               type="button"

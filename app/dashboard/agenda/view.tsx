@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import AgendaClient, { type AppointmentItem, type CollaboratorOption } from "../../../components/dashboard/agenda-client";
 import { prisma } from "../../../lib/prisma";
-import { getStaffPrincipal } from "../../../lib/rbac";
+import { DASHBOARD_HOME_BY_ROLE, getStaffPrincipal } from "../../../lib/rbac";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +14,11 @@ export const dynamic = "force-dynamic";
 export default async function AgendaPage() {
   const staff = await getStaffPrincipal();
   if (!staff) redirect("/login?callbackUrl=/dashboard/agenda");
+  // Defensa en profundidad (además del middleware): solo ADMIN, ENGINEER y
+  // COLLABORATOR operan la agenda. MARKETING y CLIENT vuelven a su panel.
+  if (staff.role !== "ADMIN" && staff.role !== "ENGINEER" && staff.role !== "COLLABORATOR") {
+    redirect(DASHBOARD_HOME_BY_ROLE[staff.role]);
+  }
 
   // Sin base de datos o con error de conexión: agenda vacía en lugar de fallar.
   let appointments: Awaited<ReturnType<typeof prisma.appointment.findMany>> = [];

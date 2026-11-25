@@ -47,21 +47,11 @@ export type StoreDataError = {
   detail?: string;
 };
 
-export type StorefrontData = {
-  products: StoreProduct[];
-  counts: Record<string, number>;
-  templates: CategoryTemplateMap;
-  error: StoreDataError | null;
-};
-
-export type FeaturedStorefrontData = {
+export type CatalogStorefrontData = {
   products: StoreProduct[];
   error: StoreDataError | null;
   /** Indica si los productos provienen del fallback estático. */
   isFallback: boolean;
-};
-
-export type CatalogStorefrontData = FeaturedStorefrontData & {
   /** Plantillas visuales por categoría asignadas por el Admin. */
   templates: CategoryTemplateMap;
 };
@@ -344,92 +334,6 @@ export function normalizeStoreError(error: unknown, context: string): StoreDataE
       "No pudimos cargar la tienda en este momento. Vuelve a intentarlo en unos segundos.",
     detail: process.env.NODE_ENV === "production" ? undefined : detail,
   };
-}
-
-/**
- * Datos iniciales de la tienda: primera categoría + conteos por categoría +
- * plantillas visuales asignadas por el Admin.
- */
-export async function getStorefrontData(
-  category: StoreCategory,
-  limit = MAX_PRODUCTS_PER_CATEGORY,
-): Promise<StorefrontData> {
-  const empty: StorefrontData = { products: [], counts: {}, templates: {}, error: null };
-
-  try {
-    const [rows, grouped, styles] = await Promise.all([
-      prisma.product.findMany({
-        where: { published: true, isVisible: true, category },
-        select: PUBLIC_SELECT,
-        orderBy: [{ availability: "asc" }, { name: "asc" }],
-        take: limit,
-      }),
-      prisma.product.groupBy({
-        by: ["category"],
-        where: { published: true, isVisible: true },
-        _count: { category: true },
-      }),
-      prisma.storeCategoryStyle.findMany().catch(() => []),
-    ]);
-
-    const counts: Record<string, number> = {};
-    for (const row of grouped) counts[row.category] = row._count?.category ?? 0;
-
-    const templates: CategoryTemplateMap = {};
-    for (const style of styles) {
-      if (style.template === "oro" || style.template === "papiro" || style.template === "fuego") {
-        templates[style.category] = style.template;
-      }
-    }
-
-    return { products: rows.map(toStoreProduct), counts, templates, error: null };
-  } catch (error) {
-    const normalized = normalizeStoreError(error, `no se pudieron leer los productos de ${category}`);
-    // Fallback: muestra catálogo estático para que la tienda nunca quede rota.
-    const fallback = FALLBACK_STORE_PRODUCTS.filter((p) => p.category === category);
-    const fallbackCounts: Record<string, number> = {};
-    for (const p of FALLBACK_STORE_PRODUCTS) {
-      fallbackCounts[p.category] = (fallbackCounts[p.category] ?? 0) + 1;
-    }
-    return {
-      products: fallback.length > 0 ? fallback : FALLBACK_STORE_PRODUCTS,
-      counts: fallbackCounts,
-      templates: {},
-      error: normalized,
-    };
-  }
-}
-
-/**
- * Productos destacados/publicados para la portada de la tienda.
- * Devuelve hasta `limit` productos publicados y visibles de cualquier categoría.
- * En caso de error de DB, retorna un catálogo de respaldo (nunca rompe la página).
- */
-export async function getFeaturedStoreProducts(limit = 8): Promise<FeaturedStorefrontData> {
-  try {
-    const rows = await prisma.product.findMany({
-      where: { published: true, isVisible: true },
-      select: PUBLIC_SELECT,
-      orderBy: [{ createdAt: "desc" }],
-      take: limit,
-    });
-
-    if (rows.length === 0) {
-      return { products: FALLBACK_STORE_PRODUCTS.slice(0, limit), error: null, isFallback: true };
-    }
-
-    return { products: rows.map(toStoreProduct), error: null, isFallback: false };
-  } catch (error) {
-    const normalized = normalizeStoreError(
-      error,
-      "no se pudieron leer los productos destacados de la tienda",
-    );
-    return {
-      products: FALLBACK_STORE_PRODUCTS.slice(0, limit),
-      error: normalized,
-      isFallback: true,
-    };
-  }
 }
 
 /**
