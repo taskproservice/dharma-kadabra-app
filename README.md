@@ -59,6 +59,24 @@ La migración amplía una base existente que ya contiene la tabla `Appointment`;
 
 La migración de reservas, clientes, productos y eventos está en `prisma/migrations/20261119000000_booking_customers_rituals/`. Sin `DATABASE_URL`, el proyecto usa un almacén en memoria para la previsualización local; esos registros no son persistentes entre reinicios.
 
+### Inventario con SKU (Meta Commerce)
+
+La tabla `Product` requiere `sku` (único). Si tu base **ya tiene productos** y `npx prisma db push` responde *«Added the required column `sku` … it is not possible to execute this step»*, aplica la columna **sin perder datos**:
+
+```bash
+# Opción A · terminal (usa DATABASE_URL del entorno)
+node scripts/apply-sku.mjs
+
+# Opción B · sin terminal: pega scripts/sql/add-product-sku.sql en Supabase → SQL Editor → Run
+```
+
+El script es idempotente y transaccional: crea la columna si falta, rellena los productos existentes con un SKU derivado de su `id` (ej. `pulsera-ojo-de-tigre` → `PULSERA-OJO-DE-TIGRE`), aborta con rollback si quedara alguna fila sin SKU y aplica `NOT NULL` + el índice único `Product_sku_key`. **No borra ni modifica ninguna fila.** Después:
+
+```bash
+npm run seed     # opcional: asigna SKUs legibles PUL-001…010 / CAD-001…010
+npm run db:push  # ahora sí termina y regenera el cliente Prisma
+```
+
 ### Página de Lectura de Runas
 
 `app/servicios/runas` usa `Cormorant Garamond` de `next/font/google` únicamente en sus títulos; el cuerpo hereda `Inter` del layout. Para que el build funcione también sin acceso a `fonts.googleapis.com`, `next.config.js` activa un mock local con la misma fuente (SIL OFL 1.1) incluida en `config/fonts/`. Los glifos del Elder Futhark se sirven desde `public/fonts/` con Noto Sans Runic (SIL OFL 1.1).

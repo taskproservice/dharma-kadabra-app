@@ -7,7 +7,9 @@
 -- aplicar el NOT NULL sin perder registros. Paola puede renombrarlos después
 -- desde el panel de Marketing (ej. "PUL-001").
 
-ALTER TABLE "Product" ADD COLUMN "sku" TEXT;
+-- Idempotente: si un `prisma db push` anterior ya creó la columna (aunque
+-- fallara por el NOT NULL), aquí simplemente se continúa con el relleno.
+ALTER TABLE "Product" ADD COLUMN IF NOT EXISTS "sku" TEXT;
 
 -- Relleno del SKU histórico: slug del id en mayúsculas; los empates reciben
 -- un sufijo corto y determinista (hash del id) para no violar el UNIQUE.
@@ -22,7 +24,7 @@ WITH normalized AS (
       'PROD-' || UPPER(SUBSTRING(MD5("id") FROM 1 FOR 10))
     ) AS base_sku
   FROM "Product"
-  WHERE "sku" IS NULL
+  WHERE "sku" IS NULL OR BTRIM("sku") = ''
 ),
 ranked AS (
   SELECT
@@ -33,12 +35,38 @@ ranked AS (
 )
 UPDATE "Product" AS p
 SET "sku" = CASE
-  WHEN r.position = 1 THEN r.base_sku
-  ELSE r.base_sku || '-' || UPPER(SUBSTRING(MD5(r."id") FROM 1 FOR 6))
-END
+    -- Sufijo extra si el candidato ya lo ocupa otra fila (evita el UNIQUE).
+    WHEN EXISTS (
+      SELECT 1 FROM "Product" AS q
+      WHERE q."id" <> p."id" AND q."sku" = CASE
+        WHEN r.position = 1 THEN r.base_sku
+        ELSE r.base_sku || '-' || UPPER(SUBSTRING(MD5(r."id") FROM 1 FOR 6))
+      END
+    )
+    THEN (CASE
+      WHEN r.position = 1 THEN r.base_sku
+      ELSE r.base_sku || '-' || UPPER(SUBSTRING(MD5(r."id") FROM 1 FOR 6))
+    END) || '-' || UPPER(SUBSTRING(MD5(p."id") FROM 1 FOR 8))
+    WHEN r.position = 1 THEN r.base_sku
+    ELSE r.base_sku || '-' || UPPER(SUBSTRING(MD5(r."id") FROM 1 FOR 6))
+  END
 FROM ranked AS r
 WHERE p."id" = r."id";
 
+-- Red de seguridad: nunca aplicar NOT NULL con filas sin SKU.
+DO $$
+DECLARE
+  faltantes INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO faltantes
+  FROM "Product"
+  WHERE "sku" IS NULL OR BTRIM("sku") = '';
+
+  IF faltantes > 0 THEN
+    RAISE EXCEPTION 'Abortado: % producto(s) quedaron sin SKU.', faltantes;
+  END IF;
+END $$;
+
 ALTER TABLE "Product" ALTER COLUMN "sku" SET NOT NULL;
 
-CREATE UNIQUE INDEX "Product_sku_key" ON "Product"("sku");
+CREATE UNIQUE INDEX IF NOT EXISTS "Product_sku_key" ON "Product"("sku");
