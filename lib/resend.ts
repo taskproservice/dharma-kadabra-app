@@ -1,23 +1,25 @@
-/**
- * Correos transaccionales con Resend.
- *
- * - Con `RESEND_API_KEY` configurada envía correos reales.
- * - Sin key (desarrollo local) registra el correo en consola y devuelve
- *   `skipped: true`: el flujo de negocio nunca se rompe por falta de email.
- *
- * El remitente se configura con `RESEND_FROM_EMAIL`
- * (por defecto: `Dharma Kadabra <hola@dharmakadabra.mx>`; el dominio debe
- * estar verificado en Resend).
- */
+import type { ReactElement } from "react";
 import { Resend } from "resend";
 
-let client: Resend | null = null;
+const initialApiKey = (process.env.RESEND_API_KEY ?? "").trim();
 
-function getClient(): Resend | null {
+/**
+ * Instancia del cliente de Resend inicializada con `process.env.RESEND_API_KEY`.
+ * Si la variable no está configurada (p. ej. desarrollo local o CI), se mantiene
+ * en `null` para evitar errores al importar el módulo y activar el modo Mock.
+ */
+export const resend: Resend | null = initialApiKey ? new Resend(initialApiKey) : null;
+
+let cachedApiKey: string | null = initialApiKey || null;
+let cachedClient: Resend | null = resend;
+
+function getResendClient(): Resend | null {
   const apiKey = (process.env.RESEND_API_KEY ?? "").trim();
   if (!apiKey) return null;
-  client ??= new Resend(apiKey);
-  return client;
+  if (cachedClient && cachedApiKey === apiKey) return cachedClient;
+  cachedApiKey = apiKey;
+  cachedClient = new Resend(apiKey);
+  return cachedClient;
 }
 
 export function fromEmail(): string {
@@ -25,54 +27,65 @@ export function fromEmail(): string {
 }
 
 /**
- * URL pública del sitio para construir enlaces en los correos.
- * Prefiere `NEXT_PUBLIC_APP_URL`; si no, usa `NEXTAUTH_URL` y, como último
- * recurso, el origen de la petición actual.
+ * URL pública del sitio para construir enlaces absolutos en correos.
+ * Prioriza `NEXT_PUBLIC_APP_URL`, luego `NEXTAUTH_URL`, el origen de la
+ * petición actual y finalmente `http://localhost:3000`.
  */
 export function appBaseUrl(requestOrigin?: string): string {
   const configured =
     (process.env.NEXT_PUBLIC_APP_URL ?? "").trim() || (process.env.NEXTAUTH_URL ?? "").trim();
-  const base = configured || (requestOrigin ?? "").trim();
+  const base = configured || (requestOrigin ?? "").trim() || "http://localhost:3000";
   return base.replace(/\/+$/, "");
 }
 
-export interface TransactionalEmail {
-  to: string;
+export interface SendEmailParams {
+  to: string | string[];
   subject: string;
-  html: string;
+  react: ReactElement;
+  from?: string;
+  replyTo?: string;
 }
 
-export interface SendResult {
+export interface SendEmailResult {
   ok: boolean;
-  /** true cuando no hay RESEND_API_KEY y el correo solo se registró en consola. */
-  skipped?: boolean;
+  mocked: boolean;
+  id?: string;
 }
 
 /**
- * Envía un correo transaccional. Nunca lanza: un fallo de email no debe
- * tumbar la reserva ni el flujo de recuperación.
+ * Función genérica para enviar correos transaccionales con React Email y Resend.
+ *
+ * - Si `RESEND_API_KEY` no está configurada, imprime en consola
+ *   `[Mock Resend] Enviando correo a...` y resuelve sin error para pruebas locales.
+ * - Si `RESEND_API_KEY` está activa, envía el correo real mediante el SDK de Resend.
  */
-export async function sendTransactionalEmail(email: TransactionalEmail): Promise<SendResult> {
-  const resend = getClient();
-  if (!resend) {
-    console.log(`[email:dev] (sin RESEND_API_KEY) → ${email.to} · ${email.subject}`);
-    return { ok: false, skipped: true };
+export async function sendEmail({
+  to,
+  subject,
+  react,
+  from,
+  replyTo,
+}: SendEmailParams): Promise<SendEmailResult> {
+  const recipient = Array.isArray(to) ? to.join(", ") : to;
+  const client = getResendClient();
+
+  if (!client) {
+    console.log(`[Mock Resend] Enviando correo a ${recipient} | Asunto: "${subject}"`);
+    return { ok: true, mocked: true };
   }
 
-  try {
-    const { error } = await resend.emails.send({
-      from: fromEmail(),
-      to: email.to,
-      subject: email.subject,
-      html: email.html,
-    });
-    if (error) {
-      console.error(`[email] Resend rechazó el envío a ${email.to}:`, error);
-      return { ok: false };
-    }
-    return { ok: true };
-  } catch (error) {
-    console.error(`[email] Error al enviar correo a ${email.to}:`, error);
-    return { ok: false };
+  const { data, error } = await client.emails.send({
+    from: from ?? fromEmail(),
+    to,
+    subject,
+    react,
+    ...(replyTo ? { replyTo } : {}),
+  });
+
+  if (error) {
+    console.error(`[Resend] Error al enviar correo a ${recipient}:`, error);
+    throw new Error(error.message || "No fue posible enviar el correo con Resend.");
   }
+
+  return { ok: true, mocked: false, id: data?.id };
 }
