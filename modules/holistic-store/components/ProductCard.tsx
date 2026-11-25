@@ -158,9 +158,9 @@ export function ProductCard({ product, template, isAuthenticated = false, tracka
       <div className="flex min-w-0 flex-1 flex-col px-1 pb-1 pt-2.5">
         <p
           className={`truncate font-mono text-[10px] uppercase tracking-[.18em] ${styles.id}`}
-          title={product.id}
+          title={`SKU ${product.sku} · ${product.id}`}
         >
-          #{product.id}
+          {product.sku}
         </p>
         <h3
           className={`mt-1 line-clamp-1 font-display text-base leading-snug ${styles.name}`}

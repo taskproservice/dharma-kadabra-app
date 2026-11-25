@@ -21,6 +21,11 @@ export type StoreTemplateId = (typeof STORE_TEMPLATES)[number];
 /** Producto tal como lo ve la tienda pública. */
 export type StoreProduct = {
   id: string;
+  /**
+   * SKU de la pieza (ej. "PUL-001"): identificador único que se muestra en la
+   * ficha y que Meta Commerce Manager usará para sincronizar el catálogo.
+   */
+  sku: string;
   name: string;
   description: string;
   price: number;

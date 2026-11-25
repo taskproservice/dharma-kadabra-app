@@ -111,6 +111,7 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
   const isEdit = product !== null;
   const [form, setForm] = useState({
     id: product?.id ?? "",
+    sku: product?.sku ?? "",
     name: product?.name ?? "",
     description: product?.description ?? "",
     category: product?.category ?? "Pulseras",
@@ -147,6 +148,11 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
     const price = Math.round(effectivePrice * 100) / 100;
     const cost = Math.max(0, costNum);
     const stock = Math.max(0, Math.floor(Number(form.stock) || 0));
+    const sku = form.sku.trim().toUpperCase();
+    if (!sku) return setFormError("El SKU es obligatorio (ej. PUL-001).");
+    if (!/^[A-Z0-9][A-Z0-9._-]*$/.test(sku)) {
+      return setFormError("El SKU solo admite letras, números, puntos, guiones y guion bajo (ej. PUL-001).");
+    }
     if (!form.name.trim()) return setFormError("El nombre es obligatorio.");
     if (!isEdit && form.id.trim() && !/^[a-z0-9][a-z0-9-_]*$/i.test(form.id.trim())) {
       return setFormError("El ID solo admite letras, números, guiones y guion bajo.");
@@ -164,6 +170,7 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...(isEdit ? { id: product.id } : form.id.trim() ? { id: form.id.trim() } : {}),
+          sku,
           name: form.name.trim(),
           description: form.description.trim(),
           category: form.category,
@@ -210,6 +217,21 @@ function ProductFormDialog({ product, trigger, notify, onSaved }: ProductFormPro
               />
             </div>
           )}
+          <div>
+            <label htmlFor="f-sku" className={label}>SKU * · identificador para Meta</label>
+            <Input
+              id="f-sku"
+              value={form.sku}
+              onChange={(e) => set("sku", e.target.value.toUpperCase())}
+              placeholder="PUL-001"
+              maxLength={60}
+              required
+              className="font-mono text-xs uppercase tracking-[.08em]"
+            />
+            <p className="mt-1.5 text-[11px] leading-4 text-[#e9e2d2]/40">
+              Identificador único para sincronización con Meta.
+            </p>
+          </div>
           <div>
             <label htmlFor="f-name" className={label}>Nombre *</label>
             <Input id="f-name" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Pulsera de Obsidiana" />
@@ -653,6 +675,7 @@ const SAMPLE_PRODUCT = (
 ): AdminProduct =>
   products.find((p) => p.category === category) ?? {
     id: `demo-${category.toLowerCase()}`,
+    sku: `DEMO-${category.toUpperCase().slice(0, 3)}`,
     name: `Pieza de ${category}`,
     description: "Vista previa de demostración · agrega productos para ver piezas reales",
     price: 350,

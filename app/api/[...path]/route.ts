@@ -12,6 +12,7 @@ import * as customerAuth from "../customer-auth/handler";
 import * as events from "../events/handler";
 import * as checkout from "../pos/checkout/handler";
 import * as products from "../products/handler";
+import * as productMetaExport from "../products/export/meta/handler";
 import * as productUpload from "../products/upload/handler";
 import * as storeProducts from "../store/products/handler";
 import * as storeTemplates from "../store/templates/handler";
@@ -55,6 +56,7 @@ const routeHandlers: Record<string, HandlerGroup> = {
     PUT: products.PUT,
     DELETE: products.DELETE,
   },
+  "products/export/meta": { GET: productMetaExport.GET },
   "products/upload": { POST: productUpload.POST },
   "store/products": { GET: storeProducts.GET },
   "store/templates": { GET: storeTemplates.GET, PUT: storeTemplates.PUT },

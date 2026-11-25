@@ -6,11 +6,18 @@ import { authorize } from "../../../lib/rbac";
 export const dynamic = "force-dynamic";
 
 /**
- * Catálogo del Punto de Venta + Inventario de Holistic Store — 100% Prisma.
- * - GET /api/products → productos de la tabla `Product` (ADMIN, ENGINEER).
- * - POST /api/products → alta de producto (solo ADMIN).
- * - PUT /api/products → edición completa por `id` (solo ADMIN).
+ * Catálogo del Punto de Venta + Inventario de la tienda — 100% Prisma.
+ * - GET /api/products → productos de la tabla `Product` (ADMIN, ENGINEER, MARKETING).
+ * - POST /api/products → alta de producto (ADMIN y MARKETING).
+ * - PUT /api/products → edición completa por `id` (ADMIN y MARKETING).
  * - DELETE /api/products?id=... → baja de producto (solo ADMIN).
+ *
+ * El `sku` es obligatorio y único: es el identificador que Meta Commerce
+ * Manager (Facebook/Instagram) usa para sincronizar el catálogo. Cuando ya
+ * existe se responde 400 con un mensaje amigable («Este SKU ya está en uso»).
+ *
+ * `imageUrl` llega tal cual la devolvió el almacenamiento (Vercel Blob en
+ * producción: `https://<store>.public.blob.vercel-storage.com/...`).
  */
 
 const productSchema = z.object({
@@ -20,6 +27,16 @@ const productSchema = z.object({
     .min(1)
     .max(80)
     .regex(/^[a-z0-9][a-z0-9-_]*$/i, "El ID solo admite letras, números, guiones y guion bajo."),
+  /** SKU comercial único (ej. "PUL-001"): identificador de sincronización con Meta. */
+  sku: z
+    .string({ error: "El SKU es obligatorio." })
+    .trim()
+    .min(1, "El SKU es obligatorio.")
+    .max(60, "El SKU no puede superar los 60 caracteres.")
+    .regex(
+      /^[A-Za-z0-9][A-Za-z0-9._-]*$/,
+      "El SKU solo admite letras, números, puntos, guiones y guion bajo (ej. PUL-001).",
+    ),
   name: z.string().trim().min(1, "El nombre es obligatorio.").max(160),
   description: z.string().trim().max(500).default(""),
   price: z.number().finite().min(0).max(1000000),
@@ -50,6 +67,28 @@ function slugify(text: string): string {
     .slice(0, 60);
   return slug || `producto-${Date.now().toString(36)}`;
 }
+
+/** SKU normalizado: MAYÚSCULAS y sin espacios (Meta lo compara como texto). */
+function normalizeSku(sku: string): string {
+  return sku.trim().toUpperCase();
+}
+
+/** Código de error de Prisma (P2002 = restricción UNIQUE). */
+function prismaErrorCode(error: unknown): string | null {
+  return typeof error === "object" && error !== null && "code" in error
+    ? String((error as { code?: unknown }).code)
+    : null;
+}
+
+/** ¿El conflicto UNIQUE viene de la columna `sku` (y no del `id`)? */
+function isSkuConflict(error: unknown): boolean {
+  if (prismaErrorCode(error) !== "P2002") return false;
+  const target = (error as { meta?: { target?: unknown } }).meta?.target;
+  if (Array.isArray(target)) return target.some((field) => String(field).includes("sku"));
+  return typeof target === "string" ? target.includes("sku") : false;
+}
+
+const SKU_IN_USE = "Este SKU ya está en uso. Elige uno distinto para sincronizar con Meta.";
 
 /** Margen de utilidad (%) redondeado a 1 decimal. Fuente de verdad: costo y precio. */
 function marginFrom(cost: number, price: number): number {
@@ -104,10 +143,17 @@ export async function POST(request: Request) {
   }
 
   const data = parsed.data;
+  const sku = normalizeSku(data.sku);
   try {
+    const existingSku = await prisma.product.findUnique({ where: { sku }, select: { id: true } });
+    if (existingSku) {
+      return NextResponse.json({ error: SKU_IN_USE }, { status: 400 });
+    }
+
     const product = await prisma.product.create({
       data: {
         id: data.id?.trim() || `${slugify(data.name)}-${Date.now().toString(36)}`,
+        sku,
         name: data.name,
         description: data.description,
         price: data.price,
@@ -124,7 +170,10 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ product }, { status: 201 });
   } catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002") {
+    if (isSkuConflict(error)) {
+      return NextResponse.json({ error: SKU_IN_USE }, { status: 400 });
+    }
+    if (prismaErrorCode(error) === "P2002") {
       return NextResponse.json(
         { error: "Ya existe un producto con ese ID. Elige otro." },
         { status: 409 },
@@ -159,10 +208,19 @@ export async function PUT(request: Request) {
   }
 
   const { id, ...data } = parsed.data;
+  const sku = normalizeSku(data.sku);
   try {
+    // El SKU es único entre TODOS los productos: si pertenece a otra pieza,
+    // se rechaza con un mensaje claro (400) antes de tocar la base de datos.
+    const skuOwner = await prisma.product.findUnique({ where: { sku }, select: { id: true } });
+    if (skuOwner && skuOwner.id !== id) {
+      return NextResponse.json({ error: SKU_IN_USE }, { status: 400 });
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data: {
+        sku,
         name: data.name,
         description: data.description,
         price: data.price,
@@ -179,7 +237,10 @@ export async function PUT(request: Request) {
     });
     return NextResponse.json({ product });
   } catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && error.code === "P2025") {
+    if (isSkuConflict(error)) {
+      return NextResponse.json({ error: SKU_IN_USE }, { status: 400 });
+    }
+    if (prismaErrorCode(error) === "P2025") {
       return NextResponse.json({ error: "El producto ya no existe." }, { status: 404 });
     }
     console.error("Error al actualizar el producto:", error);

@@ -54,10 +54,14 @@ function normalize(product) {
  * Las 10 pulseras reales del lanzamiento.
  * `slug` se persiste como `id` del producto (la tabla Product no tiene
  * columna slug; el id legible funciona como slug en toda la app).
+ * `sku` es el identificador comercial único de la pieza (prefijo PUL/CAD +
+ * número) que Meta Commerce Manager usará para sincronizar el catálogo.
  */
 const products = [
   {
     slug: "pulsera-ojo-de-tigre",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-001",
     name: "Pulsera de Ojo de Tigre",
     description: "Piedra volcánica dorada con destellos ámbar.\nProtección, valor y claridad en cada paso de tu camino.",
     price: 450,
@@ -72,6 +76,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-turquesa",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-002",
     name: "Pulsera de Ojo de Tigre con Turquesa",
     description: "El ánimo del tigre unido a la voz serena de la turquesa.\nComunicación con el corazón y temple para quien habla con verdad.",
     price: 520,
@@ -86,6 +92,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-coral",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-003",
     name: "Pulsera de Ojo de Tigre con Coral Rojo",
     description: "Vitalidad ardiente entre cuentas doradas.\nEl coral despierta la sangre; el tigre, la voluntad.",
     price: 540,
@@ -100,6 +108,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-lapislazuli",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-004",
     name: "Pulsera de Ojo de Tigre con Lapislázuli",
     description: "Verdad interior y cielo profundo en una misma pulsera.\nIntuición, palabra y soberanía para quien la porta.",
     price: 560,
@@ -114,6 +124,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-cuarzo",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-005",
     name: "Pulsera de Ojo de Tigre con Cuarzo Champagne",
     description: "Luz suave y claridad absoluta en cada cuenta.\nEl cuarzo amplifica la intención del tigre y ordena la mente.",
     price: 580,
@@ -128,6 +140,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-pluma",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-006",
     name: "Pulsera de Ojo de Tigre con Pluma de Plata",
     description: "La pluma guía; el tigre protege.\nUn camino ligero, firme y siempre acompañado.",
     price: 620,
@@ -142,6 +156,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-san-benito",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-007",
     name: "Pulsera de Ojo de Tigre con Medalla de San Benito",
     description: "Fe ancestral y piedra de poder en un solo lazo.\nUn escudo dorado contra la sombra y la envidia.",
     price: 650,
@@ -156,6 +172,8 @@ const products = [
   },
   {
     slug: "pulsera-triple-proteccion",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-008",
     name: "Pulsera de Protección Triple",
     description: "Ojo de tigre, ágata roja y ónix en una sola trama.\nTres guardianes —tierra, fuego y sombra— para blindar tu energía.",
     price: 680,
@@ -170,6 +188,8 @@ const products = [
   },
   {
     slug: "pulsera-roja-nudo-celta",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-009",
     name: "Pulsera Roja del Nudo Celta",
     description: "El hilo rojo ata la fortuna a tu muñeca.\nNudo eterno de la suerte, la salud y el amor.",
     price: 480,
@@ -184,6 +204,8 @@ const products = [
   },
   {
     slug: "pulsera-ojo-de-tigre-citrino",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "PUL-010",
     name: "Pulsera de Ojo de Tigre con Citrino",
     description: "Abundancia que amanece entre cuentas doradas.\nCitrino y tigre atraen prosperidad, sol interior y confianza creadora.",
     price: 590,
@@ -202,6 +224,8 @@ const products = [
   /* ------------------------------------------------------------------------ */
   {
     slug: "collar-cuarzo-esmerilado-om",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-001",
     name: "Collar de Cuarzo Esmerilado y Om de Plata",
     description: "Cuentas de cuarzo esmerilado consagradas con el mantra Om en plata antigua.\nSerena la mente, purifica el aura y ancla la vibración de paz en el pecho.",
     price: 680,
@@ -216,6 +240,8 @@ const products = [
   },
   {
     slug: "mala-tibetano-granate-carmesi",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-002",
     name: "Mala Tibetano de Granate y Borla Carmesí",
     description: "Cuentas de granate profundo con sellos tibetanos en oro y borla ritual carmesí.\nEnciende la fuerza vital, custodia tus meditaciones y disipa toda densidad.",
     price: 790,
@@ -230,6 +256,8 @@ const products = [
   },
   {
     slug: "collar-amatista",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-003",
     name: "Collar de Amatista",
     description: "Punta natural de amatista engarzada en cobre sobre semillas y piedras de tierra.\nTransmuta la energía densa, despierta la intuición y protege tu campo espiritual.",
     price: 820,
@@ -244,6 +272,8 @@ const products = [
   },
   {
     slug: "collar-mala-loto-sagrado",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-004",
     name: "Collar Mala del Loto Sagrado",
     description: "Rosario oriental de cuentas oscuras con cuenta gurú de turquesa y coral.\nGuía la respiración consciente y sella un círculo de calma alrededor del alma.",
     price: 760,
@@ -258,6 +288,8 @@ const products = [
   },
   {
     slug: "cadena-dorada-cuarzo-cristal",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-005",
     name: "Cadena Dorada con Punta de Cuarzo Cristal",
     description: "Cristal maestro de cuarzo transparente suspendido entre nácar blanco y cuentas doradas.\nAmplifica tus intenciones, ilumina el corazón y eleva tu frecuencia vital.",
     price: 850,
@@ -272,6 +304,8 @@ const products = [
   },
   {
     slug: "collar-turmalina-negra-perla",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-006",
     name: "Collar de Turmalina Negra y Perla Solar",
     description: "Turmalina negra en bruto bañada en oro junto a perla, lava volcánica y ojo de tigre.\nEscudo supremo de arraigo y protección contra envidias y cargas ajenas.",
     price: 880,
@@ -286,6 +320,8 @@ const products = [
   },
   {
     slug: "collar-cuarzo-medallon-om",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-007",
     name: "Collar de Cuarzo Maestro y Medallón Om",
     description: "Esferas de cristal de roca tejidas en hilo rojo con medallón tibetano de turquesa.\nArmoniza los centros de energía y atrae claridad luminosa a tu propósito.",
     price: 780,
@@ -300,6 +336,8 @@ const products = [
   },
   {
     slug: "collar-sodalita-real-sandalo",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-008",
     name: "Collar de Sodalita Real y Sándalo",
     description: "Obelisco natural de sodalita azul entre madera sagrada y piedras de sabiduría.\nAbre la visión interior, templa la palabra y conecta con la verdad profunda.",
     price: 840,
@@ -314,6 +352,8 @@ const products = [
   },
   {
     slug: "cadena-luz-lunar-cuarzo",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-009",
     name: "Cadena de Luz Lunar con Cuarzo Blanco",
     description: "Destellos facetados y cuentas blancas que abrazan una punta pura de cuarzo.\nRenueva la serenidad emocional y envuelve tu presencia en luz cristalina.",
     price: 720,
@@ -328,6 +368,8 @@ const products = [
   },
   {
     slug: "collar-ojo-de-tigre-san-benito",
+    // SKU único de la pieza · identificador de sincronización con Meta.
+    sku: "CAD-010",
     name: "Collar de Ojo de Tigre y San Benito",
     description: "Cuentas de ojo de tigre y destellos dorados coronados por la medalla de San Benito.\nTalismán consagrado de custodia espiritual, firmeza y bendición en tu camino.",
     price: 650,
@@ -359,9 +401,23 @@ try {
   });
 
   // 1) Upsert de las 20 piezas reales (10 pulseras + 10 cadenas).
+  //    Si el SKU ya pertenece a OTRO producto (por ejemplo, un registro que se
+  //    creó a mano con "PUL-001" antes de esta migración), el upsert fallaría
+  //    por la restricción UNIQUE: en ese caso se libera el SKU del intruso
+  //    renombrándolo y se reintenta, para que el catálogo real siempre gane.
   for (const product of seeded) {
     const { slug, ...data } = product;
-    await prisma.product.upsert({ where: { id: product.id }, update: data, create: data });
+    await prisma.product.upsert({ where: { id: product.id }, update: data, create: data }).catch(async (error) => {
+      if (error?.code !== "P2002") throw error;
+      const owner = await prisma.product.findUnique({ where: { sku: product.sku }, select: { id: true } });
+      if (!owner || owner.id === product.id) throw error;
+      const freedSku = `${product.sku}-OLD-${owner.id.slice(-4).toUpperCase()}`;
+      await prisma.product.update({ where: { id: owner.id }, data: { sku: freedSku } });
+      console.warn(
+        `SKU ${product.sku} estaba asignado a «${owner.id}»; se movió a ${freedSku} y se reasignó a «${product.id}».`,
+      );
+      await prisma.product.upsert({ where: { id: product.id }, update: data, create: data });
+    });
   }
 
   // 2) Limpieza (no destructiva): despublica y oculta cualquier producto

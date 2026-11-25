@@ -18,6 +18,7 @@ import type {
 /** Campos públicos: costo, margen y stock interno jamás salen a la web. */
 const PUBLIC_SELECT = {
   id: true,
+  sku: true,
   name: true,
   description: true,
   price: true,
@@ -29,6 +30,7 @@ const PUBLIC_SELECT = {
 
 type PublicRow = {
   id: string;
+  sku: string;
   name: string;
   description: string;
   price: number;
@@ -69,6 +71,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-1.jpg",
     category: "Pulseras",
+    sku: "PUL-001",
     availability: "available",
   },
   {
@@ -79,6 +82,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-2.jpg",
     category: "Pulseras",
+    sku: "PUL-002",
     availability: "available",
   },
   {
@@ -89,6 +93,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-3.jpg",
     category: "Pulseras",
+    sku: "PUL-003",
     availability: "available",
   },
   {
@@ -99,6 +104,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-4.jpg",
     category: "Pulseras",
+    sku: "PUL-004",
     availability: "available",
   },
   {
@@ -109,6 +115,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-5.jpg",
     category: "Pulseras",
+    sku: "PUL-005",
     availability: "available",
   },
   {
@@ -119,6 +126,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-6.jpg",
     category: "Pulseras",
+    sku: "PUL-006",
     availability: "available",
   },
   {
@@ -129,6 +137,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-7.jpg",
     category: "Pulseras",
+    sku: "PUL-007",
     availability: "available",
   },
   {
@@ -139,6 +148,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-8.jpg",
     category: "Pulseras",
+    sku: "PUL-008",
     availability: "available",
   },
   {
@@ -149,6 +159,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-9.jpg",
     category: "Pulseras",
+    sku: "PUL-009",
     availability: "available",
   },
   {
@@ -159,6 +170,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/pulsera-10.jpg",
     category: "Pulseras",
+    sku: "PUL-010",
     availability: "available",
   },
   {
@@ -169,6 +181,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-1.jpg",
     category: "Cadenas",
+    sku: "CAD-001",
     availability: "available",
   },
   {
@@ -179,6 +192,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-2.jpg",
     category: "Cadenas",
+    sku: "CAD-002",
     availability: "available",
   },
   {
@@ -189,6 +203,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-3.jpg",
     category: "Cadenas",
+    sku: "CAD-003",
     availability: "available",
   },
   {
@@ -199,6 +214,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-4.jpg",
     category: "Cadenas",
+    sku: "CAD-004",
     availability: "available",
   },
   {
@@ -209,6 +225,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-5.jpg",
     category: "Cadenas",
+    sku: "CAD-005",
     availability: "available",
   },
   {
@@ -219,6 +236,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-6.jpg",
     category: "Cadenas",
+    sku: "CAD-006",
     availability: "available",
   },
   {
@@ -229,6 +247,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-7.jpg",
     category: "Cadenas",
+    sku: "CAD-007",
     availability: "available",
   },
   {
@@ -239,6 +258,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-8.jpg",
     category: "Cadenas",
+    sku: "CAD-008",
     availability: "available",
   },
   {
@@ -249,6 +269,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-9.jpg",
     category: "Cadenas",
+    sku: "CAD-009",
     availability: "available",
   },
   {
@@ -259,6 +280,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
     currency: "MXN",
     imageUrl: "/images/products/cadena-10.jpg",
     category: "Cadenas",
+    sku: "CAD-010",
     availability: "available",
   },
 ];
@@ -266,6 +288,7 @@ export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
 function toStoreProduct(row: PublicRow): StoreProduct {
   return {
     id: row.id,
+    sku: row.sku,
     name: row.name,
     description: row.description,
     price: row.price,

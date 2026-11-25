@@ -109,12 +109,14 @@ export function StoreCatalog({ products, templates, initialError = null, isFallb
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {visible.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                template={templates[product.category] ?? DEFAULT_CATEGORY_TEMPLATES[product.category] ?? "oro"}
-                trackableView={!isFallback}
-              />
+              // `id` = ancla por SKU: es el `link` que viaja en el feed de Meta.
+              <div key={product.id} id={`producto-${product.sku}`} className="scroll-mt-28">
+                <ProductCard
+                  product={product}
+                  template={templates[product.category] ?? DEFAULT_CATEGORY_TEMPLATES[product.category] ?? "oro"}
+                  trackableView={!isFallback}
+                />
+              </div>
             ))}
           </div>
         )}

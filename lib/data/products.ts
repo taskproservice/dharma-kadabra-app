@@ -21,6 +21,8 @@
  */
 export type Product = {
   id: string;
+  /** SKU único · mismo identificador que se guarda en `Product.sku`. */
+  sku: string;
   name: string;
   description: string;
   /** Precio en USD (se formatea con `formatPrice`). */
@@ -32,6 +34,7 @@ export type Product = {
 export const products: Product[] = [
   {
     id: "talisman-solar",
+    sku: "TAL-001",
     name: "Talismán Solar",
     description: "Medallón de sol en dorado con ámbar · protección y vitalidad",
     price: 88,
@@ -40,6 +43,7 @@ export const products: Product[] = [
   },
   {
     id: "amuleto-lunar",
+    sku: "TAL-002",
     name: "Amuleto Lunar",
     description: "Luna creciente con lapislázuli · intuición y calma",
     price: 96,
@@ -48,6 +52,7 @@ export const products: Product[] = [
   },
   {
     id: "set-runas-antiguas",
+    sku: "RIT-001",
     name: "Set de Runas Antiguas",
     description: "Madera tallada a mano · 24 símbolos del Futhark",
     price: 72,
@@ -56,6 +61,7 @@ export const products: Product[] = [
   },
   {
     id: "cuarzo-claro",
+    sku: "CRI-001",
     name: "Cuarzo Claro",
     description: "Punta pulida · claridad mental y enfoque",
     price: 54,
@@ -64,6 +70,7 @@ export const products: Product[] = [
   },
   {
     id: "vela-de-intencion",
+    sku: "RIT-002",
     name: "Vela de Intención",
     description: "Cera de soya, hierbas y dije dorado · ritual de apertura",
     price: 42,
