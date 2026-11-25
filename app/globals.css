@@ -12,11 +12,15 @@
   --color-obsidian-deep: #0A0C0F;
   --color-obsidian-soft: #161920;
   --color-obsidian-elevated: #1E222B;
-  --color-papyrus: #F5F2EB;
+  --color-papyrus: #F4EFE6;
   --color-papyrus-light: #FCFAF5;
   /* Superficie marfil para tarjetas y campos sobre Beige (BookingDialog, Mi Cuenta). */
   --color-papyrus-soft: #FAF8F3;
   --color-papyrus-warm: #F0EBE0;
+  /* Pergamino y Papiro Oxidado: superficie de papel antiguo para las tarjetas
+     de servicio. La imagen de fondo se posa encima con opacidad muy baja. */
+  --color-papyrus-oxidized: #E8DCC8;
+  --color-papyrus-oxidized-deep: #DFD1BE;
   --color-gold: #C5A059;
   --color-gold-light: #D8BC7F;
   --color-gold-bright: #E3C57C;
@@ -46,12 +50,17 @@
   /*  (Equivalencias del brief: parchmentLight → sanctuary-parchment-light,    */
   /*   woodLight → sanctuary-wood-light, inkSoft → sanctuary-ink-soft, etc.)   */
   /* ----------------------------------------------------------------------- */
-  /* Fondo principal (Beige/Papiro muy claro). */
-  --color-sanctuary-parchment: #F5F2EB;
+  /* Fondo principal (Papiro claro y cálido). */
+  --color-sanctuary-parchment: #F4EFE6;
   --color-sanctuary-parchment-light: #FAF8F3;
   --color-sanctuary-parchment-deep: #EFEAE0;
   /* Marfil de marca para el shell, el header translúcido y las tarjetas. */
-  --color-sanctuary-parchment-warm: #F5F2EB;
+  --color-sanctuary-parchment-warm: #F4EFE6;
+  /* Pergamino oxidado: papel antiguo de las tarjetas de servicio. */
+  --color-sanctuary-papyrus-oxidized: #E8DCC8;
+  --color-sanctuary-papyrus-oxidized-deep: #DFD1BE;
+  /* Madera oscura del pie de página (en lugar del negro/carbón). */
+  --color-sanctuary-darkwood: #2A1F1A;
 
   /* Neutros cálidos para bandas y marcos (reemplazan al verde oliva). */
   --color-sanctuary-wood: #F7F4ED;
@@ -108,7 +117,7 @@
   --gold-300: #E3C57C;
   --cream-100: #F4EFE6;
   --cream-300: #E8E1D5;
-  --papyrus-surface: #F5F2EB;
+  --papyrus-surface: #F4EFE6;
   --papyrus-ink: #2C241B;
   --papyrus-accent-ink: #805F2B;
   --ink-muted: rgba(44, 36, 27, 0.62);
@@ -167,11 +176,11 @@ textarea {
 
 /* Scrollbar cálido solo para el panel de reserva de la Agenda. */
 .custom-scrollbar {
-  scrollbar-color: rgba(128, 95, 43, 0.45) #F5F2EB;
+  scrollbar-color: rgba(128, 95, 43, 0.45) #F4EFE6;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(128, 95, 43, 0.45);
-  border: 2px solid #F5F2EB;
+  border: 2px solid #F4EFE6;
   background-clip: padding-box;
 }
 
@@ -257,6 +266,85 @@ textarea {
     radial-gradient(ellipse at 82% 90%, rgba(197, 160, 89, 0.06), transparent 55%);
 }
 
+/* Banda de pergamino oxidado: el paso intermedio de la página entre el papiro
+   claro y la madera oscura del footer. Aloja las tarjetas de servicio. */
+.sanctuary-leaf-oxidized {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sanctuary-papyrus-oxidized);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255, 252, 245, 0.55), transparent 48%),
+    radial-gradient(ellipse at 88% 100%, rgba(125, 94, 55, 0.14), transparent 55%),
+    linear-gradient(180deg, #F1E8D9 0%, #EADFCC 45%, #E4D7C2 100%);
+  color: var(--color-sanctuary-ink);
+}
+.sanctuary-leaf-oxidized::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Pergamino oxidado · papel antiguo de las tarjetas de servicio             */
+/*  Un plano de papiro quemado con fibra natural y dos manchas de humedad,    */
+/*  la base perfecta para que la fotografía se pose encima con opacidad baja. */
+/* ------------------------------------------------------------------------- */
+.sanctuary-papyrus-oxidized {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sanctuary-papyrus-oxidized);
+  background-image:
+    radial-gradient(ellipse at 18% 12%, rgba(255, 252, 245, 0.55), transparent 52%),
+    radial-gradient(ellipse at 86% 88%, rgba(125, 94, 55, 0.16), transparent 58%),
+    linear-gradient(155deg, #EFE4D2 0%, #E8DCC8 46%, #DFD1BE 100%);
+  color: var(--color-sanctuary-ink);
+  border: 1px solid rgba(140, 109, 66, 0.28);
+}
+
+/* Fibra de papel: el mismo grano del papiro, un poco más presente porque la
+   tarjeta es pequeña y necesita leerse como material, no como color plano. */
+.sanctuary-papyrus-oxidized::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.1;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.40'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Madera oscura · cierre del pie de página                                  */
+/*  Café madera (#2A1F1A) con veta muy sutil, en lugar del negro carbón.      */
+/* ------------------------------------------------------------------------- */
+.sanctuary-darkwood {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sanctuary-darkwood);
+  background-image:
+    radial-gradient(ellipse at 12% 0%, rgba(197, 160, 89, 0.10), transparent 46%),
+    linear-gradient(180deg, #2E231D 0%, #2A1F1A 55%, #241A15 100%);
+  color: var(--color-papyrus);
+}
+
+.sanctuary-darkwood::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55 .04' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)' opacity='.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
 /* Tarjetas: superficies blancas limpias posadas sobre el beige.
    Borde stone muy sutil y sombra extremadamente suave de alta gama. */
 .sanctuary-card {
@@ -324,7 +412,7 @@ textarea {
 
 /* Transición Hero claro → beige. El gradiente inferior vive en el propio
    hero (hero-carousel / akashic-hero / rune-experience) como
-   `bg-gradient-to-b from-transparent to-[#F5F2EB]`, para conectar la portada
+   `bg-gradient-to-b from-transparent to-[#F4EFE6]`, para conectar la portada
    con el fondo beige sin cortes ni bandas visibles. */
 .hero-sanctuary {
   position: relative;
@@ -336,8 +424,8 @@ textarea {
 .sanctuary-dusk {
   background: linear-gradient(
     to bottom,
-    rgba(245, 242, 235, 0) 0%,
-    rgba(245, 242, 235, 0.65) 18%,
+    rgba(244, 239, 230, 0) 0%,
+    rgba(244, 239, 230, 0.65) 18%,
     #FAF8F3 45%,
     #FCFAF5 100%
   );

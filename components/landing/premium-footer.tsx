@@ -31,9 +31,9 @@ function ColumnTitle({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Footer Premium Orgánico: Café muy oscuro / Madera Oscura (#1E1914) como en la
- * referencia, con textos claros (#F5F2EB), acentos dorados (#C5A059) y un filete
- * de oro antiguo en la parte superior para un contraste impecable.
+ * Footer Premium Orgánico: Café Madera Oscura (#2A1F1A) como cierre de la
+ * página, con textos en Marfil (#F4EFE6), enlaces y acentos en Dorado
+ * (#C5A059) y un filete superior de oro antiguo de 1px.
  */
 export function PremiumFooter() {
   const [email, setEmail] = useState("");
@@ -55,34 +55,28 @@ export function PremiumFooter() {
 
   return (
     <footer
-      className="relative isolate overflow-hidden border-t border-[#C5A059]/25 bg-[#241C15] px-5 pb-10 pt-14 text-[#F5F2EB] sm:px-8"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(36, 28, 21, .90), rgba(28, 22, 17, .96)), url('/images/runas/runas-sobre-madera.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center 55%",
-      }}
+      className="sanctuary-darkwood relative isolate overflow-hidden border-t border-[#C5A059]/30 px-5 pb-10 pt-14 text-[#F4EFE6] sm:px-8"
     >
       {/* Filete de oro antiguo: la marca se cierra con una línea de luz. */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(197,160,89,.65),transparent)]"
       />
-      <div className="mx-auto max-w-7xl">
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
           {/* Columna 1 — Marca */}
           <div>
             <Link href="/" aria-label="Dharma Kadabra · Inicio" className="inline-flex items-center gap-3">
               <BrandLogo size={56} />
               <span className="flex flex-col leading-none">
-                <span className="font-display text-base tracking-[.2em] text-[#F5F2EB]">DHARMA</span>
+                <span className="font-display text-base tracking-[.2em] text-[#F4EFE6]">DHARMA</span>
                 <span className="font-display text-base tracking-[.2em] text-[#C5A059]">KADABRA</span>
               </span>
             </Link>
             <p className="mt-5 max-w-xs font-display text-lg italic leading-relaxed text-[#E8E1D5]">
               Un camino hacia ti.
             </p>
-            <p className="mt-3 max-w-xs text-sm font-light leading-6 text-[#F5F2EB]/75">
+            <p className="mt-3 max-w-xs text-sm font-light leading-6 text-[#F4EFE6]/75">
               Sabiduría ancestral para el mundo moderno, con sencillez, amor y profundo respeto por el ritmo de cada alma.
             </p>
             <div className="mt-6 flex items-center gap-3">
@@ -92,7 +86,7 @@ export function PremiumFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram de Dharma Kadabra"
-                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/30 text-[#F5F2EB] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
+                  className="grid size-10 place-items-center rounded-full border border-[#F4EFE6]/30 text-[#F4EFE6] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#2A1F1A]"
                 >
                   <Instagram size={17} />
                 </a>
@@ -103,7 +97,7 @@ export function PremiumFooter() {
                   aria-disabled="true"
                   title="Instagram oficial · Próximamente"
                   aria-label="Instagram de Dharma Kadabra (Próximamente)"
-                  className="grid size-10 cursor-not-allowed place-items-center rounded-full border border-[#F5F2EB]/20 text-[#F5F2EB]/50"
+                  className="grid size-10 cursor-not-allowed place-items-center rounded-full border border-[#F4EFE6]/20 text-[#F4EFE6]/50"
                 >
                   <Instagram size={17} />
                 </button>
@@ -114,7 +108,7 @@ export function PremiumFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook de Dharma Kadabra"
-                  className="grid size-10 place-items-center rounded-full border border-[#F5F2EB]/30 text-[#F5F2EB] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#1E1914]"
+                  className="grid size-10 place-items-center rounded-full border border-[#F4EFE6]/30 text-[#F4EFE6] transition hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-[#2A1F1A]"
                 >
                   <Facebook size={17} />
                 </a>
@@ -125,7 +119,7 @@ export function PremiumFooter() {
                   aria-disabled="true"
                   title="Facebook oficial · Próximamente"
                   aria-label="Facebook de Dharma Kadabra (Próximamente)"
-                  className="grid size-10 cursor-not-allowed place-items-center rounded-full border border-[#F5F2EB]/20 text-[#F5F2EB]/50"
+                  className="grid size-10 cursor-not-allowed place-items-center rounded-full border border-[#F4EFE6]/20 text-[#F4EFE6]/50"
                 >
                   <Facebook size={17} />
                 </button>
@@ -136,22 +130,22 @@ export function PremiumFooter() {
           {/* Columna 2 — Atención a clientes */}
           <nav aria-label="Atención a clientes">
             <ColumnTitle>Atención a Clientes</ColumnTitle>
-            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-[#F5F2EB]/90">
+            <ul className="mt-6 space-y-4 text-sm font-light leading-6 text-[#F4EFE6]/90">
               <li>
-                <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-start gap-3 transition hover:text-[#D8BC7F]">
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-start gap-3 text-[#F4EFE6]/90 transition hover:text-[#C5A059]">
                   <Mail size={16} className="mt-1 shrink-0 text-[#C5A059]" />
                   <span>
-                    <span className="block text-[10px] uppercase tracking-[.2em] text-[#F5F2EB]/60">Email de soporte</span>
+                    <span className="block text-[10px] uppercase tracking-[.2em] text-[#F4EFE6]/60">Email de soporte</span>
                     {SUPPORT_EMAIL}
                   </span>
                 </a>
               </li>
               <li>
                 {whatsappDigits ? (
-                  <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noreferrer" className="flex items-start gap-3 transition hover:text-[#D8BC7F]">
+                  <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noreferrer" className="flex items-start gap-3 text-[#F4EFE6]/90 transition hover:text-[#C5A059]">
                     <MessageCircle size={16} className="mt-1 shrink-0 text-[#C5A059]" />
                     <span>
-                      <span className="block text-[10px] uppercase tracking-[.2em] text-[#F5F2EB]/60">WhatsApp de contacto</span>
+                      <span className="block text-[10px] uppercase tracking-[.2em] text-[#F4EFE6]/60">WhatsApp de contacto</span>
                       +{whatsappDigits}
                     </span>
                   </a>
@@ -159,11 +153,11 @@ export function PremiumFooter() {
                   <span
                     aria-disabled="true"
                     title="Línea directa de WhatsApp · Próximamente"
-                    className="flex cursor-not-allowed items-start gap-3 text-[#F5F2EB]/65"
+                    className="flex cursor-not-allowed items-start gap-3 text-[#F4EFE6]/65"
                   >
                     <MessageCircle size={16} className="mt-1 shrink-0 text-[#C5A059]/60" />
                     <span>
-                      <span className="block text-[10px] uppercase tracking-[.2em] text-[#F5F2EB]/55">WhatsApp de contacto</span>
+                      <span className="block text-[10px] uppercase tracking-[.2em] text-[#F4EFE6]/55">WhatsApp de contacto</span>
                       Próximamente
                     </span>
                   </span>
@@ -172,7 +166,7 @@ export function PremiumFooter() {
               <li className="flex items-start gap-3">
                 <Clock size={16} className="mt-1 shrink-0 text-[#C5A059]" />
                 <span>
-                  <span className="block text-[10px] uppercase tracking-[.2em] text-[#F5F2EB]/60">Horarios</span>
+                  <span className="block text-[10px] uppercase tracking-[.2em] text-[#F4EFE6]/60">Horarios</span>
                   Lun a Sáb · 9:00 a 19:00
                 </span>
               </li>
@@ -182,16 +176,16 @@ export function PremiumFooter() {
           {/* Columna 3 — Políticas */}
           <nav aria-label="Políticas">
             <ColumnTitle>Políticas</ColumnTitle>
-            <ul className="mt-6 space-y-3.5 text-sm font-light text-[#F5F2EB]/90">
+            <ul className="mt-6 space-y-3.5 text-sm font-light text-[#F4EFE6]/90">
               {policies.map((policy) => (
                 <li key={policy.label}>
                   <span
                     aria-disabled="true"
                     title={`${policy.label} · Próximamente`}
-                    className="inline-flex cursor-not-allowed items-center gap-2 text-[#F5F2EB]/75"
+                    className="inline-flex cursor-not-allowed items-center gap-2 text-[#C5A059]/85"
                   >
                     <span>{policy.label}</span>
-                    <span className="rounded-full border border-[#F5F2EB]/25 px-2 py-0.5 text-[9px] uppercase tracking-[.16em] text-[#D8BC7F]">
+                    <span className="rounded-full border border-[#F4EFE6]/25 px-2 py-0.5 text-[9px] uppercase tracking-[.16em] text-[#D8BC7F]">
                       Próximamente
                     </span>
                   </span>
@@ -203,10 +197,10 @@ export function PremiumFooter() {
           {/* Columna 4 — Newsletter */}
           <div>
             <ColumnTitle>Newsletter</ColumnTitle>
-            <p className="mt-6 font-display text-xl leading-snug text-[#F5F2EB]">
+            <p className="mt-6 font-display text-xl leading-snug text-[#F4EFE6]">
               Recibe rituales y novedades
             </p>
-            <p className="mt-2 text-sm font-light leading-6 text-[#F5F2EB]/75">
+            <p className="mt-2 text-sm font-light leading-6 text-[#F4EFE6]/75">
               Una carta breve, una vez al mes. Sin ruido, solo intención.
             </p>
             {status === "done" ? (
@@ -219,7 +213,7 @@ export function PremiumFooter() {
                 <label htmlFor="newsletter-email" className="sr-only">
                   Tu correo electrónico
                 </label>
-                <div className="flex overflow-hidden rounded-xl border border-[#C5A059]/35 bg-[#2A231C] focus-within:border-[#C5A059]">
+                <div className="flex overflow-hidden rounded-xl border border-[#C5A059]/35 bg-[#231A15] focus-within:border-[#C5A059]">
                   <input
                     id="newsletter-email"
                     type="email"
@@ -231,12 +225,12 @@ export function PremiumFooter() {
                       setStatus("idle");
                     }}
                     aria-invalid={status === "error"}
-                    className="min-w-0 flex-1 bg-transparent px-4 py-3.5 text-sm text-[#F5F2EB] outline-none placeholder:text-[#F5F2EB]/45"
+                    className="min-w-0 flex-1 bg-transparent px-4 py-3.5 text-sm text-[#F4EFE6] outline-none placeholder:text-[#F4EFE6]/45"
                   />
                   <button
                     type="submit"
                     aria-label="Suscribirme al newsletter"
-                    className="grid w-14 shrink-0 cursor-pointer place-items-center bg-[#C5A059] text-[#1E1914] transition hover:bg-[#D8BC7F]"
+                    className="grid w-14 shrink-0 cursor-pointer place-items-center bg-[#C5A059] text-[#2A1F1A] transition hover:bg-[#D8BC7F]"
                   >
                     <Send size={16} />
                   </button>
@@ -251,8 +245,8 @@ export function PremiumFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#F5F2EB]/15 pt-7">
-          <p className="text-[11px] uppercase tracking-[.2em] text-[#F5F2EB]/65">
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#C5A059]/25 pt-7">
+          <p className="text-[11px] uppercase tracking-[.2em] text-[#F4EFE6]/65">
             © 2026 Dharma Kadabra · Un camino hacia ti
           </p>
           {/* Único acceso interno del sitio público: lleva a /login y, tras
@@ -260,14 +254,14 @@ export function PremiumFooter() {
               nunca se enlazan desde la vista pública. */}
           <Link
             href="/login"
-            className="text-[11px] uppercase tracking-[.2em] text-[#F5F2EB]/60 transition hover:text-[#D8BC7F]"
+            className="text-[11px] uppercase tracking-[.2em] text-[#C5A059] transition hover:text-[#D8BC7F]"
           >
             Acceso equipo
           </Link>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex cursor-pointer items-center gap-2 text-[11px] uppercase tracking-[.2em] text-[#F5F2EB]/80 transition hover:text-[#D8BC7F]"
+            className="inline-flex cursor-pointer items-center gap-2 text-[11px] uppercase tracking-[.2em] text-[#C5A059] transition hover:text-[#D8BC7F]"
           >
             Volver arriba <ArrowUp size={13} />
           </button>

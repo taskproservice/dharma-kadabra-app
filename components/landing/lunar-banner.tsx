@@ -22,7 +22,7 @@ export function LunarBanner() {
       aria-label="Calendario lunar"
       className="relative z-10 overflow-x-clip px-5 pt-10 sm:px-8 lg:pt-14"
     >
-      <div className="mx-auto grid max-w-7xl gap-7 rounded-3xl border border-stone-200 bg-white p-6 font-montserrat shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:p-8 lg:grid-cols-[1fr_1.4fr_auto] lg:items-center lg:gap-10">
+      <div className="mx-auto grid max-w-7xl gap-7 rounded-3xl border border-stone-200 bg-[#FCFAF5] p-6 font-montserrat shadow-[0_10px_30px_-22px_rgba(44,36,27,.30)] sm:p-8 lg:grid-cols-[1fr_1.4fr_auto] lg:items-center lg:gap-10">
         <div className="flex items-center gap-4">
           <span className="grid size-14 shrink-0 place-items-center rounded-full border border-gold/40 bg-gold/10 text-bronze">
             <MoonStar size={24} aria-hidden="true" />

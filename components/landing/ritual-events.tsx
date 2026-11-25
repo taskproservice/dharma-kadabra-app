@@ -92,7 +92,7 @@ export function RitualEventsSection({
                 className={`flex gap-4 rounded-3xl p-5 ${
                   night
                     ? "border border-gold/15 bg-papyrus/[0.035]"
-                    : "border border-stone-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
+                    : "border border-[#E6DFD1] bg-[#FCFAF5] shadow-[0_10px_30px_-22px_rgba(44,36,27,.30)]"
                 }`}
               >
                 <div

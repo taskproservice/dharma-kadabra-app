@@ -137,7 +137,7 @@ export default async function HomePage() {
       {/* Manifiesto editorial: declaración y fotografía a sangre en dos columnas */}
       <section
         id="manifiesto"
-        className="scroll-mt-24 overflow-hidden bg-[#F5F2EB]"
+        className="scroll-mt-24 overflow-hidden bg-[#F4EFE6]"
       >
         <div className="grid min-h-[390px] grid-cols-1 lg:min-h-[520px] lg:grid-cols-2">
           {/* Columna izquierda · declaración editorial */}
@@ -150,7 +150,7 @@ export default async function HomePage() {
             </p>
           </div>
           {/* Columna derecha · sombra botánica a sangre, a todo el alto */}
-          <div className="relative min-h-[320px] w-full overflow-hidden bg-[#E7DECB] sm:min-h-[420px] lg:min-h-full">
+          <div className="relative min-h-[320px] w-full overflow-hidden bg-[#E8DCC8] sm:min-h-[420px] lg:min-h-full">
             <Image
               src={sombraPlanta}
               alt="Sombra de hojas de palma sobre un muro de cal en tonos beige"
@@ -161,9 +161,9 @@ export default async function HomePage() {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(245,242,235,.45)_0%,rgba(245,242,235,.06)_32%,transparent_100%)]"
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,239,230,.45)_0%,rgba(244,239,230,.06)_32%,transparent_100%)]"
             />
-            <p className="absolute bottom-6 right-5 max-w-52 rounded-sm border-l-2 border-[#C5A059] bg-[#F5F2EB]/80 px-4 py-3 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-[#3A2E1E] backdrop-blur-sm sm:bottom-10 sm:right-10">
+            <p className="absolute bottom-6 right-5 max-w-52 rounded-sm border-l-2 border-[#C5A059] bg-[#FCFAF5]/85 px-4 py-3 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-[#3A2E1E] backdrop-blur-sm sm:bottom-10 sm:right-10">
               Tradición con propósito para la vida real
             </p>
           </div>
@@ -173,7 +173,7 @@ export default async function HomePage() {
       {/* Quiénes somos — Paola sobre madera clara */}
       <section
         id="paola"
-        className="sanctuary-leaf sanctuary-leaf-light relative scroll-mt-24 overflow-hidden border-y border-sanctuary-border-light px-5 py-16 sm:px-8 lg:py-24"
+        className="sanctuary-leaf relative scroll-mt-24 overflow-hidden border-y border-sanctuary-border-light px-5 py-16 sm:px-8 lg:py-24"
       >
         <FlowStone
           src={piedrasTerciopelo}
@@ -189,7 +189,7 @@ export default async function HomePage() {
         <article className="relative z-10 mx-auto max-w-6xl">
           <div className="grid items-center gap-12 md:grid-cols-[.85fr_1.15fr] lg:gap-20">
             <figure className="relative mx-auto w-full max-w-sm pb-16 md:max-w-none md:pb-0">
-              <div className="relative aspect-[2/3] overflow-hidden rounded-3xl border-4 border-white bg-white shadow-[0_24px_60px_rgba(44,36,27,0.10)]">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-3xl border-4 border-[#FCFAF5] bg-[#FCFAF5] shadow-[0_24px_60px_-32px_rgba(44,36,27,0.22)]">
                 <Image
                   src={paolaHernandez}
                   alt="Paola Hernández, fundadora y guía de Dharma Kadabra, sentada en una silla colgante de mimbre vestida de blanco"
@@ -205,14 +205,14 @@ export default async function HomePage() {
                 />
               </div>
               {/* Tarjeta blanca de la fundadora: se posa sobre la fotografía */}
-              <figcaption className="absolute -bottom-2 left-3 right-3 rounded-3xl border border-stone-200 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:left-auto sm:right-0 sm:w-64 lg:-right-6">
+              <figcaption className="absolute -bottom-2 left-3 right-3 rounded-3xl border border-[#E6DFD1] bg-[#FCFAF5] p-5 shadow-[0_10px_30px_-18px_rgba(44,36,27,0.22)] sm:left-auto sm:right-0 sm:w-64 lg:-right-6">
                 <p className="font-display text-xl leading-tight text-[#2C241B]">
                   Paola <em className="italic text-bronze">Hernández</em>
                 </p>
                 <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[.22em] text-ink-muted">
                   Fundadora de Dharma Kadabra
                 </p>
-                <p className="mt-3 border-t border-stone-200 pt-3 font-display text-sm italic text-[#2C241B]">
+                <p className="mt-3 border-t border-[#E6DFD1] pt-3 font-display text-sm italic text-[#2C241B]">
                   &ldquo;Tejedora de Conciencia&rdquo;
                 </p>
               </figcaption>
@@ -292,10 +292,10 @@ export default async function HomePage() {
                  tamaño uniforme y textos centrados debajo. */
               <article
                 key={member.id}
-                className="group flex flex-col items-center rounded-3xl border border-[#E6DFD1] bg-white/80 p-6 text-center shadow-[0_6px_22px_rgba(44,36,27,.045)] transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_12px_30px_rgba(0,0,0,0.07)] lg:p-8"
+                className="group flex flex-col items-center rounded-3xl border border-[#E6DFD1] bg-[#FCFAF5] p-6 text-center shadow-[0_8px_26px_-18px_rgba(44,36,27,.28)] transition duration-300 hover:-translate-y-1 hover:bg-[#FCFAF5] hover:shadow-[0_14px_34px_-20px_rgba(44,36,27,.35)] lg:p-8"
               >
                 {/* Retrato uniforme: mismo diámetro en las tres tarjetas */}
-                <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full border-4 border-white bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.12)] sm:h-44 sm:w-44 lg:h-48 lg:w-48">
+                <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full border-4 border-[#FCFAF5] bg-papyrus-warm shadow-[0_16px_40px_rgba(44,36,27,0.12)] sm:h-44 sm:w-44 lg:h-48 lg:w-48">
                   <Image
                     src={member.photoUrl}
                     alt={`Retrato de ${member.name}`}
@@ -324,10 +324,10 @@ export default async function HomePage() {
       {/* Refugio: mitad editorial oscura y mitad tarjetas de pilares */}
       <section
         id="nosotros"
-        className="scroll-mt-24 overflow-hidden bg-[#F0EBE0]"
+        className="scroll-mt-24 overflow-hidden bg-[#F4EFE6]"
       >
         <div className="grid lg:min-h-[430px] lg:grid-cols-2">
-          <div className="relative flex min-h-[330px] items-end overflow-hidden bg-[#3B4234] px-7 py-10 sm:px-12 sm:py-14 lg:min-h-[430px] lg:px-16 lg:py-16">
+          <div className="relative flex min-h-[330px] items-end overflow-hidden bg-[#E8DCC8] px-7 py-10 sm:px-12 sm:py-14 lg:min-h-[430px] lg:px-16 lg:py-16">
             <Image
               src={bosqueLuz}
               alt="Luz del amanecer entre los árboles de un bosque"
@@ -335,16 +335,22 @@ export default async function HomePage() {
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="h-full w-full object-cover"
             />
+            {/* Lavado de papiro: la fotografía respira dentro de la paleta y el
+                titular café se lee sin necesidad de un bloque negro. */}
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(30,36,26,.90)_0%,rgba(43,50,37,.70)_55%,rgba(48,56,42,.55)_100%),linear-gradient(0deg,rgba(22,26,19,.72)_0%,transparent_65%)]"
+              className="absolute inset-0 bg-[#F4EFE6]/70"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,239,230,.72)_0%,rgba(244,239,230,.30)_58%,transparent_100%)]"
             />
             <div className="relative z-10 max-w-lg">
-              <p className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.3em] text-[#D8BC7F] before:h-px before:w-8 before:bg-[#D8BC7F]/80">Tu bienestar, nuestro propósito</p>
-              <h2 className="mt-5 font-display text-4xl leading-[1.05] text-[#FCFAF5] sm:text-5xl lg:text-[3.4rem]">
-                Un refugio para tu <em className="italic text-[#D8BC7F]">bienestar.</em>
+              <p className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[.3em] text-[#6B4E1E] before:h-px before:w-8 before:bg-[#6B4E1E]/70">Tu bienestar, nuestro propósito</p>
+              <h2 className="mt-5 font-display text-4xl leading-[1.05] text-[#2C241B] sm:text-5xl lg:text-[3.4rem]">
+                Un refugio para tu <em className="italic text-[#6B4E1E]">bienestar.</em>
               </h2>
-              <p className="mt-5 max-w-md text-sm leading-7 text-[#F5F2EB]/90">
+              <p className="mt-5 max-w-md text-sm leading-7 text-[#3D3226]">
                 Tradición, herramientas y personas que te acompañan en cada paso.
               </p>
             </div>
@@ -353,9 +359,9 @@ export default async function HomePage() {
             {pillars.map(({ icon: Icon, title, text }) => (
               <article
                 key={title}
-                className="flex items-start gap-4 rounded-2xl border border-[#E4DDCF] bg-white px-5 py-5 shadow-[0_5px_18px_rgba(44,36,27,.045)] sm:gap-5 sm:px-6"
+                className="flex items-start gap-4 rounded-2xl border border-[#E6DFD1] bg-[#FCFAF5] px-5 py-5 shadow-[0_6px_20px_-16px_rgba(44,36,27,.22)] sm:gap-5 sm:px-6"
               >
-                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#F5F2EB] text-[#805F2B]">
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#F0EBE0] text-[#805F2B]">
                   <Icon size={21} strokeWidth={1.35} aria-hidden="true" />
                 </span>
                 <div>
@@ -419,7 +425,7 @@ export default async function HomePage() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(245,242,235,.74)_0%,rgba(245,242,235,.40)_55%,rgba(245,242,235,.66)_100%)]"
+          className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(244,239,230,.74)_0%,rgba(244,239,230,.40)_55%,rgba(244,239,230,.66)_100%)]"
         />
         <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-3">
           <Eyebrow center>Tu primer paso empieza aquí</Eyebrow>

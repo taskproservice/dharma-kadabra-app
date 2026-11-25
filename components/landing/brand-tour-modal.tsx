@@ -558,7 +558,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
         {/* Escenario central: reproductor 16:9 contenido con exactitud dentro del viewport */}
         <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-3 sm:py-4">
           <div
-            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-stone-200 bg-[#F5F2EB] shadow-[0_16px_50px_-20px_rgba(44,36,27,0.22)]"
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-stone-200 bg-[#F4EFE6] shadow-[0_16px_50px_-20px_rgba(44,36,27,0.22)]"
             style={{
               maxWidth: "min(920px, max(240px, calc((min(90dvh, 860px) - 14.5rem) * 16 / 9)))",
             }}
@@ -571,7 +571,7 @@ export function BrandTourModal({ config = DEFAULT_TOUR, onClose }: BrandTourModa
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#F5F2EB] via-[#F5F2EB]/75 to-[#FCFAF5]/70"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#F4EFE6] via-[#F4EFE6]/75 to-[#FCFAF5]/70"
             />
 
             {/* Estado elegante cuando aún no hay video configurado */}
@@ -833,7 +833,7 @@ export function BrandTourTrigger({ config }: { config: TourVideoConfig }) {
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#F5F2EB]/50 bg-white/5 px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#F5F2EB] backdrop-blur-sm transition duration-300 hover:border-[#C5A059] hover:bg-[#C5A059]/20 hover:text-[#EFD9A4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
+        className="group inline-flex cursor-pointer items-center gap-3 rounded-full border border-[#2C241B]/35 bg-[#FCFAF5]/60 px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[.28em] text-[#2C241B] backdrop-blur-sm transition duration-300 hover:border-[#C5A059] hover:bg-[#FCFAF5] hover:text-[#6B4E1E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059]"
       >
         Quiénes somos
         <Film size={14} className="transition duration-300 group-hover:scale-110" aria-hidden="true" />
