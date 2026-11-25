@@ -48,6 +48,8 @@ export type StaffUserRecord = {
 
 export type ProductRecord = {
   id: string;
+  /** SKU único de la pieza (identificador de sincronización con Meta). */
+  sku: string;
   name: string;
   description: string;
   price: number;

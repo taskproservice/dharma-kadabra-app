@@ -95,6 +95,10 @@ model Customer {
 
 model Product {
   id           String         @id
+  // SKU · identificador único de la pieza (obligatorio). Es el `id` que Meta
+  // Commerce Manager usa para sincronizar el catálogo de Facebook/Instagram,
+  // por eso se guarda en MAYÚSCULAS normalizadas (ej. "PUL-001").
+  sku          String         @unique
   name         String
   description  String
   price        Float

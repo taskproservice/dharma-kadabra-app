@@ -10,6 +10,7 @@ import { usePosCartStore, type Product } from "../../stores/cart";
 
 type DbProduct = {
   id: string;
+  sku: string;
   name: string;
   description: string;
   price: number;
@@ -73,6 +74,9 @@ function ProductCard({
         )}
         <span className="absolute left-2.5 top-2.5 rounded-full bg-[#0b1020]/85 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-[#e9d3a1] shadow-sm backdrop-blur-sm">
           {product.category}
+        </span>
+        <span className="absolute right-2.5 top-2.5 rounded-full bg-[#0b1020]/85 px-2 py-1 font-mono text-[9px] font-semibold tracking-[.08em] text-[#e9e2d2]/70 shadow-sm backdrop-blur-sm">
+          {product.sku}
         </span>
       </div>
       <div className="flex flex-1 flex-col p-3.5 sm:p-4">
@@ -162,7 +166,9 @@ export function PosClient() {
     const q = query.trim().toLowerCase();
     return products.filter((product) => {
       const inCategory = category === "Todos" || product.category === category;
-      const inQuery = !q || `${product.name} ${product.description} ${product.category}`.toLowerCase().includes(q);
+      const inQuery =
+        !q ||
+        `${product.sku} ${product.name} ${product.description} ${product.category}`.toLowerCase().includes(q);
       return inCategory && inQuery;
     });
   }, [products, category, query]);

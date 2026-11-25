@@ -9,14 +9,16 @@ export const dynamic = "force-dynamic";
 
 /**
  * Panel Marketing · Community Manager.
- * Inventario con visibilidad On/Off, subida de productos con imagen y KPIs
- * de visitas / productos más vistos.
+ * Inventario con SKU, visibilidad On/Off, alta y edición de productos con
+ * imagen (Vercel Blob), exportación del catálogo a CSV para Meta Commerce
+ * Manager y KPIs de visitas / productos más vistos.
  */
 async function loadProducts(): Promise<AdminProduct[]> {
   try {
     const rows = await prisma.product.findMany({ orderBy: [{ category: "asc" }, { name: "asc" }] });
     return rows.map((row) => ({
       id: row.id,
+      sku: row.sku,
       name: row.name,
       description: row.description,
       price: row.price,
