@@ -16,9 +16,9 @@ function resolveWhatsappDigits(raw: string | undefined): string {
 }
 
 const policies = [
-  { label: "Aviso de privacidad" },
-  { label: "Términos y condiciones" },
-  { label: "Política de envíos" },
+  { label: "Aviso de privacidad", href: "/aviso-de-privacidad" },
+  { label: "Términos y condiciones", href: "/terminos-y-condiciones" },
+  { label: "Política de envíos", href: "/politica-de-envios" },
 ];
 
 function ColumnTitle({ children }: { children: React.ReactNode }) {
@@ -179,16 +179,15 @@ export function PremiumFooter() {
             <ul className="mt-6 space-y-3.5 text-sm font-light text-[#F4EFE6]/90">
               {policies.map((policy) => (
                 <li key={policy.label}>
-                  <span
-                    aria-disabled="true"
-                    title={`${policy.label} · Próximamente`}
-                    className="inline-flex cursor-not-allowed items-center gap-2 text-[#C5A059]/85"
+                  <Link
+                    href={policy.href}
+                    className="inline-flex items-center gap-2 text-[#F4EFE6]/90 transition hover:text-[#C5A059]"
                   >
                     <span>{policy.label}</span>
-                    <span className="rounded-full border border-[#F4EFE6]/25 px-2 py-0.5 text-[9px] uppercase tracking-[.16em] text-[#D8BC7F]">
-                      Próximamente
+                    <span className="rounded-full border border-[#C5A059]/50 px-2 py-0.5 text-[9px] uppercase tracking-[.16em] text-[#D8BC7F]">
+                      Ver
                     </span>
-                  </span>
+                  </Link>
                 </li>
               ))}
             </ul>

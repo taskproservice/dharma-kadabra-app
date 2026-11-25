@@ -1,14 +1,14 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
 import { authorize } from "../../../../lib/rbac";
+import { storeUpload } from "../../../../lib/storage";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Subida de imagen de producto · Panel de Marketing.
  * Acepta imágenes JPEG/PNG/WebP de hasta 5 MB y devuelve su URL pública
- * (`/uploads/productos/...`), lista para guardarse con `next/image`.
+ * (Vercel Blob en producción, `/uploads/productos/...` en desarrollo),
+ * lista para guardarse con `next/image` y en `Product.imageUrl`.
  */
 
 const ALLOWED_TYPES: Record<string, string> = {
@@ -45,14 +45,11 @@ export async function POST(request: Request) {
   }
 
   const safeName = `producto-${Date.now()}-${Math.random().toString(36).slice(2, 8)}${extension}`;
-  const directory = path.join(process.cwd(), "public", "uploads", "productos");
   try {
-    await mkdir(directory, { recursive: true });
-    await writeFile(path.join(directory, safeName), Buffer.from(await file.arrayBuffer()));
+    const stored = await storeUpload(file, "productos", safeName);
+    return NextResponse.json({ url: stored.url });
   } catch (error) {
     console.error("Error al guardar la imagen del producto:", error);
     return NextResponse.json({ error: "No fue posible guardar la imagen en el servidor." }, { status: 500 });
   }
-
-  return NextResponse.json({ url: `/uploads/productos/${safeName}` });
 }

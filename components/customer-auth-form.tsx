@@ -44,6 +44,8 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
   const [visible, setVisible] = useState(false);
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
+  const [recovering, setRecovering] = useState(false);
+  const [recoverSent, setRecoverSent] = useState(false);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,10 +55,16 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
       const response = await fetch("/api/customer-auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, name, email, phone, password }),
+        body: recovering
+          ? JSON.stringify({ mode: "recover", email })
+          : JSON.stringify({ mode, name, email, phone, password }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "No fue posible acceder a tu cuenta.");
+      if (recovering) {
+        setRecoverSent(true);
+        return;
+      }
       if (callbackUrl) {
         router.push(callbackUrl);
       } else {
@@ -88,15 +96,20 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
               <header className="mb-8 text-left">
                 <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6914]">
                   <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
-                  <span>{login ? "Bienvenido de nuevo" : "Bienvenido a Dharma Kadabra"}</span>
+                  <span>{recovering ? "Recuperar acceso" : login ? "Bienvenido de nuevo" : "Bienvenido a Dharma Kadabra"}</span>
                   <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
                 </p>
                 <h1 className="mt-3 font-display text-5xl leading-[1.04] text-[#2C241B] sm:text-6xl">
-                  {login ? "Iniciar" : "Crear"}{" "}
-                  <em className="italic text-[#C5A059]">{login ? "Sesión" : "cuenta"}</em>
+                  {recovering ? (
+                    <>Recuperar <em className="italic text-[#C5A059]">contraseña</em></>
+                  ) : (
+                    <>{login ? "Iniciar" : "Crear"}{" "}<em className="italic text-[#C5A059]">{login ? "Sesión" : "cuenta"}</em></>
+                  )}
                 </h1>
                 <p className="mt-3 max-w-md text-[15px] leading-7 text-stone-700">
-                  Accede a tu cuenta para gestionar tus reservas, consultar tu historial y recibir novedades.
+                  {recovering
+                    ? "Escribe tu correo y te enviaremos un enlace para elegir una contraseña nueva (válido por 1 hora)."
+                    : "Accede a tu cuenta para gestionar tus reservas, consultar tu historial y recibir novedades."}
                 </p>
               </header>
 
@@ -117,8 +130,23 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
                   </p>
                 </div>
 
+                {recoverSent ? (
+                  <div className="mt-7 rounded-2xl border border-[#C5A059]/50 bg-[#C5A059]/10 p-5 text-center" role="status">
+                    <p className="font-display text-2xl text-[#2C241B]">Revisa tu correo</p>
+                    <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-stone-600">
+                      Si el correo está registrado, recibirás un enlace para restablecer tu contraseña en unos minutos. Revisa también tu carpeta de spam.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => { setRecovering(false); setRecoverSent(false); setError(""); }}
+                      className="mt-5 cursor-pointer font-semibold text-[#8B6914] underline decoration-[#C5A059] underline-offset-4 transition hover:text-[#2C241B]"
+                    >
+                      Volver a iniciar sesión
+                    </button>
+                  </div>
+                ) : (
                 <form onSubmit={submit} className="mt-7 space-y-3.5">
-                  {!login && (
+                  {!login && !recovering && (
                     <>
                       <label className="block text-xs font-semibold text-[#2C241B]">
                         Nombre completo
@@ -162,6 +190,7 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
                     />
                   </label>
 
+                  {!recovering && (
                   <div className="relative">
                     <label htmlFor="customer-password" className="sr-only">
                       Contraseña
@@ -188,8 +217,9 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
                       {visible ? <EyeOff size={17} aria-hidden="true" /> : <Eye size={17} aria-hidden="true" />}
                     </button>
                   </div>
+                  )}
 
-                  {login && (
+                  {login && !recovering && (
                     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
                       <label className="inline-flex cursor-pointer items-center gap-2 text-[#2C241B]">
                         <input
@@ -202,7 +232,7 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
                       </label>
                       <button
                         type="button"
-                        onClick={() => setNotice("Próximamente: recuperación de contraseña.")}
+                        onClick={() => { setRecovering(true); setError(""); setNotice(""); }}
                         className="cursor-pointer font-medium text-stone-600 transition hover:text-[#2C241B] hover:underline"
                       >
                         ¿Olvidaste tu contraseña?
@@ -224,11 +254,25 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
                       disabled={pending}
                       className="flex h-12 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-[#241E18] text-sm font-semibold text-[#FCFAF5] shadow-[0_12px_28px_-12px_rgba(36,30,24,0.55)] transition hover:bg-[#3A3026] disabled:cursor-wait disabled:opacity-60"
                     >
-                      <span>{pending ? "Un momento…" : login ? "Iniciar Sesión" : "Crear mi cuenta"}</span>
+                      <span>{pending ? "Un momento…" : recovering ? "Enviar enlace de recuperación" : login ? "Iniciar Sesión" : "Crear mi cuenta"}</span>
                       <ArrowRight size={16} aria-hidden="true" />
                     </button>
                   </div>
+
+                  {recovering && (
+                    <p className="text-center text-sm text-stone-600">
+                      ¿Ya lo recordaste?{" "}
+                      <button
+                        type="button"
+                        onClick={() => { setRecovering(false); setError(""); }}
+                        className="cursor-pointer font-semibold text-[#8B6914] underline decoration-[#C5A059] underline-offset-4 transition hover:text-[#2C241B]"
+                      >
+                        Volver a iniciar sesión
+                      </button>
+                    </p>
+                  )}
                 </form>
+                )}
 
                 <div className="my-5 flex items-center gap-4 text-xs text-stone-500 before:h-px before:flex-1 before:bg-stone-200 after:h-px after:flex-1 after:bg-stone-200">
                   o

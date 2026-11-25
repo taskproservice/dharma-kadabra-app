@@ -43,7 +43,6 @@ Este documento resume el estado del proyecto tras la auditoría de producción (
 | **Pasarela de Pagos** (`/dashboard/pagos`) | Datos de demostración + conciliación manual. Botones "Configurar · Próximamente". | `app/dashboard/pagos/view.tsx` |
 | **Finanzas/Ventas** (`/dashboard/ventas`) | Transacciones de demostración (exporta CSV real de esos datos mock). | `app/dashboard/ventas/view.tsx` |
 | **Recordatorios WhatsApp** | El motor evalúa citas (7 días / 1 día / 1 hora) y **simula el envío con `console.log`**; marca `notificationsSent` en DB pero ningún mensaje sale. | `lib/notifications.ts`, `agenda-client.tsx` ("Motor de Notificaciones WhatsApp (Simulado)") |
-| **Correos transaccionales** | No hay proveedor de email. Recuperación de contraseña y confirmaciones no envían correo. | — |
 | **Newsletter (footer)** | Validación en cliente + mensaje de éxito; **no persiste** suscriptores ni envía correo. | `premium-footer.tsx` |
 | **Cozy en dashboard** (`/dashboard/cozy`) | Conversación de demostración con estado local; el panel público sí usa `/api/cozy`. | `app/dashboard/cozy/view.tsx` |
 | **Biblioteca multimedia** (Audio/Video) | Datos demo, archivos solo en la sesión del navegador. | `media-library.tsx` |
@@ -52,21 +51,20 @@ Este documento resume el estado del proyecto tras la auditoría de producción (
 | **Diseño / Info / Perfil** | Estado local ("guardada en esta sesión"). | `app/dashboard/diseno|info|perfil/view.tsx` |
 | **Agentes IA** (Ventas/Marketing) | Leads y campañas de demostración. | `ai-agent-dashboard.tsx` |
 | **Video IA comercial** (Inventario) | UI + demo; "la API externa de video se conecta después". | `inventario-client.tsx` |
-| **Subida de imágenes** | Se guardan en el **sistema de archivos local** (`public/uploads/`). En Vercel el FS es efímero: las imágenes se pierden en cada redeploy. | `app/api/products/upload/handler.ts`, `app/api/tour/upload/handler.ts` |
+| **Subida de imágenes y video** | Usa **Vercel Blob** (`put()`) cuando `BLOB_READ_WRITE_TOKEN` está configurado; en local sin token cae a `public/uploads/`. | `lib/storage.ts`, `app/api/products/upload/handler.ts`, `app/api/tour/upload/handler.ts` |
 
 ---
 
 ## 3. Backlog Crítico (P0) — para operar al 100%
 
 1. **Pasarela de pagos (Stripe o equivalente) + webhook.** Cobrar el anticipo del 20% y el pago en línea de la tienda; el webhook marca `depositPaid: true` y confirma la cita. Sin esto no hay cobro automático ni confirmación de reservas.
-2. **Proveedor de email (Resend / SendGrid).** Confirmaciones de reserva, recuperación de contraseña, newsletter real (persistir suscriptores) y avisos operativos.
+2. **Newsletter real (opcional).** Confirmaciones de reserva y recuperación de contraseña ya usan **Resend** (`lib/resend.ts`); falta persistir suscriptores del newsletter del footer.
 3. **WhatsApp Business API (Twilio / Meta).** Reemplazar el `console.log` de `lib/notifications.ts` por envíos reales de recordatorios (7 días / 1 día / 1 hora).
-4. **Almacenamiento durable (Vercel Blob / S3).** Migrar `public/uploads/` a storage persistente; hoy las subidas de Marketing y Tour no sobreviven redeploys.
-5. **Variables de entorno de producción en Vercel.** `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `AUTH_SECRET` (obligatorio; sin él no hay sesiones), `CRON_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_STORE_WHATSAPP`, `OPENAI_API_KEY` (opcional), `NEXT_PUBLIC_INSTAGRAM_URL` / `NEXT_PUBLIC_FACEBOOK_URL` (hoy el footer muestra "Próximamente").
-6. **Datos y cuentas de producción.** Migraciones aplicadas, seed de productos, y cuentas staff (Paola ADMIN, Ingeniería, CM, colaboradoras) vía `scripts/create-staff-user.mjs`.
-7. **Páginas de políticas.** Aviso de privacidad, Términos y Política de envíos (hoy "Próximamente" en el footer) — requeridas antes de vender en línea.
-8. **Conectar datos reales en Finanzas/Pagos** (reemplazar mocks por `Purchase`/`Appointment` reales) y decidir si se mantiene el módulo o se oculta hasta tener pasarela.
-9. **(P1) Video IA comercial** y **(P1) persistencia** de Colaboradores/Redes/Diseño/Info/Perfil si se quieren operar desde el dashboard.
+4. **Conectar variables de entorno en Vercel** (ver `VERCEL_ENV_VARS.md`): `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `AUTH_SECRET`, `CRON_SECRET`, `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN`, `NEXT_PUBLIC_STORE_WHATSAPP`, `OPENAI_API_KEY` (opcional), `NEXT_PUBLIC_INSTAGRAM_URL` / `NEXT_PUBLIC_FACEBOOK_URL`.
+5. **Datos y cuentas de producción.** Migraciones aplicadas (`npm run db:push`), seed de productos, y cuentas staff (Paola ADMIN, Ingeniería, CM, colaboradoras) vía `scripts/create-staff-user.mjs`.
+6. **Personalizar textos legales.** Aviso de privacidad (`/aviso-de-privacidad`), Términos (`/terminos-y-condiciones`) y Política de envíos (`/politica-de-envios`) ya publicados; revisar los datos entre corchetes (razón social, dirección, monto de envío gratis).
+7. **Conectar datos reales en Finanzas/Pagos** (reemplazar mocks por `Purchase`/`Appointment` reales) y decidir si se mantiene el módulo o se oculta hasta tener pasarela.
+8. **(P1) Video IA comercial** y **(P1) persistencia** de Colaboradores/Redes/Diseño/Info/Perfil si se quieren operar desde el dashboard.
 
 ---
 

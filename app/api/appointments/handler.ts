@@ -5,6 +5,8 @@ import { SlotUnavailableError, findSlotConflict, withSlotLock } from "../../../l
 import { prisma, type Appointment, type AppointmentModality, type AppointmentStatus } from "../../../lib/prisma";
 import { authorize } from "../../../lib/rbac";
 import { isTherapistRole } from "../../../lib/therapists";
+import { appBaseUrl, sendTransactionalEmail } from "../../../lib/resend";
+import { appointmentConfirmationEmail } from "../../../lib/email-templates";
 
 export const dynamic = "force-dynamic";
 
@@ -171,6 +173,34 @@ export async function POST(request: Request) {
       },
     };
     if (isCustomer) payload.payment = { required: true, amount: depositPrice, currency: "MXN" };
+
+    // Confirmación por correo (Resend). Nunca bloquea la reserva: si el
+    // envío falla, la cita ya quedó creada y el cliente la ve en Mi Cuenta.
+    if (clientEmail) {
+      try {
+        const dateLabel = new Intl.DateTimeFormat("es-MX", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(date);
+        const base = appBaseUrl(new URL(request.url).origin);
+        const { subject, html } = appointmentConfirmationEmail({
+          clientName,
+          service: serviceName,
+          dateLabel,
+          modality,
+          depositAmount: isCustomer ? depositPrice : null,
+          accountUrl: base ? `${base}/mi-cuenta` : "/mi-cuenta",
+        });
+        await sendTransactionalEmail({ to: clientEmail, subject, html });
+      } catch (error) {
+        console.error("Error al enviar confirmación de cita:", error);
+      }
+    }
+
     return NextResponse.json(payload, { status: 201 });
   } catch (error) {
     if (error instanceof SlotUnavailableError) return slotTakenResponse();
