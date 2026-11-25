@@ -954,6 +954,37 @@ html {
   animation: tour-chapter-in 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/* Navegación · efecto lumbre / glow dorado que respira sutilmente */
+@keyframes nav-ember-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    filter: drop-shadow(0 0 2px rgba(197, 160, 89, 0.45));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(232, 162, 74, 0.78));
+  }
+}
+
+.nav-ember-glow {
+  animation: nav-ember-breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes nav-ember-breathe-subtle {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.nav-ember-glow-subtle {
+  animation: nav-ember-breathe-subtle 3.6s ease-in-out infinite;
+}
+
 /* Tipografía de sección compartida */
 .section-kicker {
   display: inline-flex;
@@ -975,6 +1006,8 @@ html {
   .spin-slow,
   .tour-modal-in,
   .tour-chapter-in,
+  .nav-ember-glow,
+  .nav-ember-glow-subtle,
   .shimmer-line::after {
     animation: none;
   }

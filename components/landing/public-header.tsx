@@ -35,9 +35,7 @@ const NAV_LINKS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Beneficios", href: "#beneficios", icon: Gift },
 ];
 
-/* Premium Orgánico: el enlace activo se subraya con Dorado (#C5A059). */
-const ACTIVE_LINK_UNDERLINE =
-  "relative after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:rounded-full after:bg-gold";
+/* Premium Orgánico: el enlace activo lleva un subrayado dorado con efecto lumbre / glow. */
 
 /** `/tienda` es ruta propia; el resto son anclas de la landing. */
 const isRouteHref = (href: string) => href.startsWith("/");
@@ -125,10 +123,8 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   key={label}
                   href={target}
                   aria-current={active ? "page" : undefined}
-                  className={`group flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 text-[#2C241B] transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
-                    active
-                      ? `font-semibold text-[#2C241B] ${ACTIVE_LINK_UNDERLINE}`
-                      : "relative hover:text-bronze"
+                  className={`group relative flex min-w-0 flex-col items-center gap-1.5 rounded-sm px-2 py-2.5 text-[#2C241B] transition-colors lg:px-2.5 xl:min-w-[88px] xl:px-3 ${
+                    active ? "font-semibold text-[#2C241B]" : "hover:text-bronze"
                   }`}
                 >
                   <Icon
@@ -136,11 +132,19 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                     strokeWidth={1.35}
                     className={
                       active
-                        ? "text-[#C5A059] transition"
+                        ? "text-[#C5A059] transition drop-shadow-[0_0_6px_rgba(197,160,89,0.4)]"
                         : "text-sanctuary-gold-leaf transition group-hover:text-bronze"
                     }
                   />
-                  <span className="whitespace-nowrap">{label}</span>
+                  <div className="relative whitespace-nowrap">
+                    {label}
+                    {active && (
+                      <div
+                        aria-hidden="true"
+                        className="nav-ember-glow pointer-events-none absolute -bottom-2 left-0 h-[2px] w-full rounded-full bg-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,0.9)]"
+                      />
+                    )}
+                  </div>
                 </Link>
               );
             })}
@@ -216,7 +220,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   onClick={() => setMenuOpen(false)}
                   className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[#2C241B] transition ${
                     active
-                      ? "bg-[#C5A059]/15 font-medium text-[#2C241B]"
+                      ? "bg-[#C5A059]/12 font-medium text-[#2C241B]"
                       : "hover:bg-[#F4EFE6] hover:text-bronze"
                   }`}
                 >
@@ -225,7 +229,15 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                     strokeWidth={1.5}
                     className={active ? "text-[#C5A059]" : "text-sanctuary-gold-leaf"}
                   />
-                  {label}
+                  <div className="relative">
+                    {label}
+                    {active && (
+                      <div
+                        aria-hidden="true"
+                        className="nav-ember-glow-subtle pointer-events-none absolute -bottom-0.5 left-0 h-[1.5px] w-full rounded-full bg-[#C5A059] shadow-[0_0_6px_rgba(197,160,89,0.55)]"
+                      />
+                    )}
+                  </div>
                 </Link>
               );
             })}
