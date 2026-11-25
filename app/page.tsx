@@ -10,7 +10,6 @@ import sabiduriaAncestral from "../public/images/hero/sabiduria-ancestral.jpg";
 import altarRitual from "../public/images/hero/altar-ritual.jpg";
 import paolaHernandez from "../public/images/equipo/paola-hernandez.jpg";
 import amuletoLunar from "../public/images/productos/amuleto-lunar.jpg";
-import sombraPlanta from "../public/images/manifiesto/sombra-planta.jpg";
 import bosqueLuz from "../public/images/akashic/bosque-luz.jpg";
 import meditacionAmanecer from "../public/images/akashic/meditacion-amanecer.jpg";
 import piedrasTerciopelo from "../public/images/runas/piedras-terciopelo.jpg";
@@ -134,7 +133,7 @@ export default async function HomePage() {
 
       <LunarBanner />
 
-      {/* Manifiesto editorial: declaración y fotografía a sangre en dos columnas */}
+      {/* Manifiesto editorial: declaración y fotografía artesanal en dos columnas */}
       <section
         id="manifiesto"
         className="scroll-mt-24 overflow-hidden bg-[#F4EFE6]"
@@ -149,21 +148,21 @@ export default async function HomePage() {
               contigo y con el mundo que te rodea.
             </p>
           </div>
-          {/* Columna derecha · sombra botánica a sangre, a todo el alto */}
-          <div className="relative min-h-[320px] w-full overflow-hidden bg-[#E8DCC8] sm:min-h-[420px] lg:min-h-full">
+          {/* Columna derecha · creación artesanal de piezas (50% en desktop, apilada en móvil) */}
+          <div className="relative h-64 w-full overflow-hidden bg-[#E8DCC8] sm:h-80 md:h-96 lg:h-full lg:min-h-[520px] lg:rounded-r-2xl">
             <Image
-              src={sombraPlanta}
-              alt="Sombra de hojas de palma sobre un muro de cal en tonos beige"
+              src="/images/manifiesto-dharma.jpg"
+              alt="Fundadora de Dharma Kadabra elaborando piezas artesanales con piedras naturales, cuenco tibetano e incienso"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              quality={88}
-              className="h-full w-full object-cover object-center"
+              quality={90}
+              className="h-full w-full object-cover object-center lg:rounded-r-2xl"
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,239,230,.45)_0%,rgba(244,239,230,.06)_32%,transparent_100%)]"
+              className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(244,239,230,.38)_0%,rgba(244,239,230,.04)_24%,transparent_100%)] lg:block"
             />
-            <p className="absolute bottom-6 right-5 max-w-52 rounded-sm border-l-2 border-[#C5A059] bg-[#FCFAF5]/85 px-4 py-3 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-[#3A2E1E] backdrop-blur-sm sm:bottom-10 sm:right-10">
+            <p className="absolute bottom-5 left-5 max-w-52 rounded-sm border-l-2 border-[#C5A059] bg-[#FCFAF5]/85 px-4 py-3 font-sans text-[10px] font-semibold uppercase leading-5 tracking-[.24em] text-[#3A2E1E] backdrop-blur-sm sm:bottom-8 sm:left-8">
               Tradición con propósito para la vida real
             </p>
           </div>
