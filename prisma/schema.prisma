@@ -83,6 +83,9 @@ model Customer {
   email          String          @unique
   phone          String?
   passwordHash   String
+  // Recuperación de contraseña: solo se guarda el hash del token + expiración.
+  resetTokenHash      String?
+  resetTokenExpiresAt DateTime?
   appointments   Appointment[]
   purchases      Purchase[]
   audioPurchases AudioPurchase[]

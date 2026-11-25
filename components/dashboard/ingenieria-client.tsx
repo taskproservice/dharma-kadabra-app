@@ -32,6 +32,9 @@ const ENV_LABELS: Record<string, string> = {
   DATABASE_URL_UNPOOLED: "Base de datos (directa)",
   AUTH_SECRET: "Secreto de sesiones",
   CRON_SECRET: "Secreto de Cron",
+  RESEND_API_KEY: "Correos (Resend)",
+  BLOB_READ_WRITE_TOKEN: "Almacenamiento (Vercel Blob)",
+  NEXT_PUBLIC_APP_URL: "URL pública del sitio",
   NEXT_PUBLIC_STORE_WHATSAPP: "WhatsApp de la tienda",
   OPENAI_API_KEY: "OpenAI (Cozy)",
 };

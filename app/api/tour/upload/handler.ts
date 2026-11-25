@@ -1,15 +1,14 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
 import { authorize } from "../../../../lib/rbac";
+import { storeUpload } from "../../../../lib/storage";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Subida del video del Tour de marca (ADMIN / ENGINEER).
- * Acepta MP4/WebM/OGG/MOV y devuelve su URL pública (`/uploads/tour/...`)
- * para que el gestor la use como `videoUrl`. Para despliegues serverless
- * conviene reemplazar el disco local por un almacenamiento de objetos.
+ * Acepta MP4/WebM/OGG/MOV y devuelve su URL pública (Vercel Blob en
+ * producción, `/uploads/tour/...` en desarrollo) para que el gestor la use
+ * como `videoUrl`.
  */
 
 const ALLOWED_TYPES: Record<string, string> = {
@@ -55,10 +54,9 @@ export async function POST(request: Request) {
   }
 
   const safeName = `tour-${Date.now()}-${Math.random().toString(36).slice(2, 8)}${extension}`;
-  const directory = path.join(process.cwd(), "public", "uploads", "tour");
   try {
-    await mkdir(directory, { recursive: true });
-    await writeFile(path.join(directory, safeName), Buffer.from(await file.arrayBuffer()));
+    const stored = await storeUpload(file, "tour", safeName);
+    return NextResponse.json({ url: stored.url });
   } catch (error) {
     console.error("Error al guardar el video del tour:", error);
     return NextResponse.json(
@@ -66,6 +64,4 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
-
-  return NextResponse.json({ url: `/uploads/tour/${safeName}` });
 }
