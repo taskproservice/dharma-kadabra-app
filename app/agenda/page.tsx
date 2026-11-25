@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, CirclePlay } from "lucide-react";
 import { CozyWidget } from "../../components/landing/cozy-widget";
 import { DigitalAgenda } from "../../components/landing/digital-agenda";
 import { PremiumFooter } from "../../components/landing/premium-footer";
@@ -36,29 +37,39 @@ export default async function AgendaPage() {
     <main className="min-h-screen overflow-x-clip bg-papyrus text-ink">
       <PublicHeader tone="papyrus" />
 
-      <section className="relative isolate overflow-hidden px-5 pb-10 pt-32 sm:px-8 sm:pb-14 sm:pt-36">
-        <span aria-hidden="true" className="pointer-events-none absolute -right-36 -top-48 size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.22),transparent_68%)] blur-3xl" />
-        <span aria-hidden="true" className="pointer-events-none absolute -left-48 top-28 size-[30rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.14),transparent_68%)] blur-3xl" />
+      <section className="relative isolate min-h-[350px] overflow-hidden border-b border-[#C5A059]/20 px-5 pb-8 pt-[5.6rem] sm:min-h-[365px] sm:px-8 sm:pb-9 sm:pt-[5.8rem] lg:min-h-[345px]">
+        <Image
+          src="/images/hero/altar-ritual.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[68%_52%]"
+        />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#F4EFE6]/[.97] via-[#F4EFE6]/[.88] via-55% to-[#F4EFE6]/[.15]" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#F4EFE6]/[.12] via-transparent to-[#F4EFE6]/[.2]" />
         <div className="relative mx-auto max-w-7xl">
-          <Link href="/" className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.2em] text-bronze transition hover:text-ink">
-            <ArrowLeft size={13} aria-hidden="true" /> Volver al inicio
+          <Link href="/" className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[10px] font-medium text-[#6B4E1E] transition hover:text-ink">
+            <ArrowLeft size={14} aria-hidden="true" /> Volver al inicio
           </Link>
-          <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div className="max-w-3xl">
-              <p className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.27em] text-bronze">
-                <Sparkles size={14} aria-hidden="true" /> Un espacio para tu intención
-              </p>
-              <h1 className="mt-4 font-cormorant text-6xl font-light leading-[.95] text-ink sm:text-7xl lg:text-[5.5rem]">
-                Agenda <em className="italic text-bronze">Digital</em>
-              </h1>
-              <p className="mt-5 max-w-2xl font-[family-name:var(--font-montserrat)] text-sm leading-7 text-ink-muted sm:text-base sm:leading-8">
-                Elige un momento para tus rituales, lecturas y limpiezas energéticas. Encuentra una fecha en sintonía con la luna y reserva tu espacio con calma.
-              </p>
-            </div>
-            <div className="flex items-center gap-3 border-l border-[#C5A059]/40 pl-4 text-[9px] font-medium uppercase tracking-[.18em] text-ink-muted sm:pl-5 lg:mb-2">
-              <span className="grid size-10 place-items-center rounded-full border border-[#C5A059]/40 bg-white text-bronze"><Sparkles size={16} aria-hidden="true" /></span>
-              <span>Rituales <i className="px-1 text-gold">·</i> Lecturas <i className="px-1 text-gold">·</i> Limpiezas</span>
-            </div>
+          <div className="mt-7 max-w-3xl sm:mt-8">
+            <p className="inline-flex items-center gap-2 font-[family-name:var(--font-montserrat)] text-[9px] font-semibold uppercase tracking-[.25em] text-[#6B4E1E] sm:text-[10px]">
+              <span aria-hidden="true" className="h-px w-6 bg-[#C5A059]" />
+              Calendario mensual
+              <span aria-hidden="true" className="h-px w-6 bg-[#C5A059]" />
+            </p>
+            <h1 className="mt-2 font-cormorant text-[3.35rem] font-light leading-[.92] text-ink sm:text-7xl lg:text-[5.25rem]">
+              Agenda <em className="italic text-[#805F2B]">Digital</em>
+            </h1>
+            <p className="mt-4 max-w-xl font-[family-name:var(--font-montserrat)] text-[13px] leading-6 text-[#3D352B] sm:text-sm sm:leading-7">
+              Elige un momento para tus rituales, lecturas y limpiezas energéticas. Encuentra una fecha en sintonía con la luna y reserva tu espacio con calma.
+            </p>
+            <Link
+              href="#calendario"
+              className="mt-5 inline-flex min-h-10 items-center gap-3 rounded-full border border-[#C5A059] bg-[#FCFAF5]/55 px-5 py-2 font-[family-name:var(--font-montserrat)] text-[11px] font-semibold text-[#5A4116] shadow-[0_5px_18px_-12px_rgba(44,36,27,.45)] transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
+            >
+              Cómo funciona <CirclePlay size={16} aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
