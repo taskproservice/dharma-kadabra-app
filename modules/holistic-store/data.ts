@@ -3,8 +3,7 @@
  *
  * Toda consulta se envuelve en try/catch: la tienda pública NUNCA debe
  * romperse por un problema de base de datos. Si algo falla devolvemos un
- * `StoreDataError` descriptivo y la UI muestra una pantalla de error elegante
- * con opción de reintentar.
+ * catálogo de respaldo para que la tienda siga operativa.
  */
 import { prisma } from "../../lib/prisma";
 import { MAX_PRODUCTS_PER_CATEGORY } from "./constants";
@@ -54,6 +53,60 @@ export type StorefrontData = {
   templates: CategoryTemplateMap;
   error: StoreDataError | null;
 };
+
+export type FeaturedStorefrontData = {
+  products: StoreProduct[];
+  error: StoreDataError | null;
+  /** Indica si los productos provienen del fallback estático. */
+  isFallback: boolean;
+};
+
+/**
+ * Catálogo de respaldo: se muestra cuando la base de datos no está disponible,
+ * garantizando que la tienda nunca quede en estado de error para el visitante.
+ */
+export const FALLBACK_STORE_PRODUCTS: StoreProduct[] = [
+  {
+    id: "fallback-cuarzo",
+    name: "Pulsera de Cuarzo Natural",
+    description: "Claridad y energía positiva en tu día a día.",
+    price: 380,
+    currency: "MXN",
+    imageUrl: "/images/productos/cuarzo-claro.jpg",
+    category: "Pulseras",
+    availability: "available",
+  },
+  {
+    id: "fallback-medallon-solar",
+    name: "Medallón Solar",
+    description: "Protección y luz en cada paso.",
+    price: 450,
+    currency: "MXN",
+    imageUrl: "/images/productos/talisman-solar.jpg",
+    category: "Cadenas",
+    availability: "available",
+  },
+  {
+    id: "fallback-obsidiana",
+    name: "Pulsera de Obsidiana",
+    description: "Equilibrio y fuerza con intención.",
+    price: 420,
+    currency: "MXN",
+    imageUrl: "/images/productos/amuleto-lunar.jpg",
+    category: "Pulseras",
+    availability: "available",
+  },
+  {
+    id: "fallback-amatista",
+    name: "Drusa de Amatista",
+    description: "Armonía y bienestar en tu hogar.",
+    price: 680,
+    currency: "MXN",
+    imageUrl: "/images/productos/set-runas.jpg",
+    category: "Piedras",
+    availability: "available",
+  },
+];
 
 function toStoreProduct(row: PublicRow): StoreProduct {
   return {
@@ -166,9 +219,50 @@ export async function getStorefrontData(
 
     return { products: rows.map(toStoreProduct), counts, templates, error: null };
   } catch (error) {
+    const normalized = normalizeStoreError(error, `no se pudieron leer los productos de ${category}`);
+    // Fallback: muestra catálogo estático para que la tienda nunca quede rota.
+    const fallback = FALLBACK_STORE_PRODUCTS.filter((p) => p.category === category);
+    const fallbackCounts: Record<string, number> = {};
+    for (const p of FALLBACK_STORE_PRODUCTS) {
+      fallbackCounts[p.category] = (fallbackCounts[p.category] ?? 0) + 1;
+    }
     return {
-      ...empty,
-      error: normalizeStoreError(error, `no se pudieron leer los productos de ${category}`),
+      products: fallback.length > 0 ? fallback : FALLBACK_STORE_PRODUCTS,
+      counts: fallbackCounts,
+      templates: {},
+      error: normalized,
+    };
+  }
+}
+
+/**
+ * Productos destacados/publicados para la portada de la tienda.
+ * Devuelve hasta `limit` productos publicados y visibles de cualquier categoría.
+ * En caso de error de DB, retorna un catálogo de respaldo (nunca rompe la página).
+ */
+export async function getFeaturedStoreProducts(limit = 8): Promise<FeaturedStorefrontData> {
+  try {
+    const rows = await prisma.product.findMany({
+      where: { published: true, isVisible: true },
+      select: PUBLIC_SELECT,
+      orderBy: [{ createdAt: "desc" }],
+      take: limit,
+    });
+
+    if (rows.length === 0) {
+      return { products: FALLBACK_STORE_PRODUCTS.slice(0, limit), error: null, isFallback: true };
+    }
+
+    return { products: rows.map(toStoreProduct), error: null, isFallback: false };
+  } catch (error) {
+    const normalized = normalizeStoreError(
+      error,
+      "no se pudieron leer los productos destacados de la tienda",
+    );
+    return {
+      products: FALLBACK_STORE_PRODUCTS.slice(0, limit),
+      error: normalized,
+      isFallback: true,
     };
   }
 }
