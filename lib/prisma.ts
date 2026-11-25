@@ -80,7 +80,28 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Inicialización real y directa. Si falla, Vercel mostrará el error exacto en los logs.
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+/**
+ * Crea el cliente de Prisma sin tumbar el proceso si la inicialización falla
+ * (por ejemplo, DATABASE_URL ausente en el entorno). En ese caso devolvemos
+ * un proxy perezoso que lanza el error original al usarse: como las consultas
+ * del catálogo van envueltas en try/catch, la tienda pública cae al catálogo
+ * de respaldo en lugar de romper el render completo de la página.
+ */
+function createPrismaClient(): PrismaClient {
+  try {
+    return new PrismaClient();
+  } catch (error) {
+    console.error('[prisma] No se pudo inicializar PrismaClient:', error);
+    return new Proxy({} as PrismaClient, {
+      get(_target, prop) {
+        if (prop === 'then') return undefined;
+        throw error;
+      },
+    });
+  }
+}
+
+// Inicialización directa. Si falla, usamos el proxy perezoso (ver arriba).
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

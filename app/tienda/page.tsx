@@ -3,9 +3,9 @@ import { PublicHeader } from "../../components/landing/public-header";
 import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { isMaintenanceMode } from "../../lib/maintenance";
-import { getFeaturedStoreProducts, recordStoreVisit, FALLBACK_STORE_PRODUCTS } from "../../modules/holistic-store/data";
+import { getStorefrontCatalog, recordStoreVisit, FALLBACK_STORE_PRODUCTS } from "../../modules/holistic-store/data";
 import { StorefrontHero } from "../../modules/holistic-store/components/StorefrontHero";
-import { FeaturedProductsGrid } from "../../modules/holistic-store/components/FeaturedProductsGrid";
+import { StoreCatalog } from "../../modules/holistic-store/components/StoreCatalog";
 import { StorePromoBanner } from "../../modules/holistic-store/components/StorePromoBanner";
 import { TrustBadges } from "../../modules/holistic-store/components/TrustBadges";
 
@@ -52,12 +52,25 @@ export default async function TiendaPage() {
     );
   }
 
-  const featured = await getFeaturedStoreProducts(8);
+  // El catálogo completo llega con respaldo incluido: si la DB falla,
+  // `error` viene normalizado y `products` trae el catálogo de respaldo.
+  const catalog = await getStorefrontCatalog(35).catch((error) => {
+    console.error("[Holistic Store] fallo inesperado al cargar el catálogo:", error);
+    return {
+      products: FALLBACK_STORE_PRODUCTS,
+      error: {
+        code: "STORE_UNAVAILABLE",
+        message: "No pudimos cargar la tienda en este momento. Vuelve a intentarlo en unos segundos.",
+      },
+      isFallback: true,
+      templates: {},
+    };
+  });
 
   // Registra visita sin bloquear la respuesta.
   void recordStoreVisit("/tienda");
 
-  const products = featured.products.length > 0 ? featured.products : FALLBACK_STORE_PRODUCTS;
+  const products = catalog.products.length > 0 ? catalog.products : FALLBACK_STORE_PRODUCTS;
   const heroProduct = pickHeroProduct(products, FALLBACK_STORE_PRODUCTS) as typeof products[number];
   // Asegura que el hero product tenga la forma completa
   const heroFull =
@@ -71,8 +84,13 @@ export default async function TiendaPage() {
         <div className="pt-[76px]">
           <StorefrontHero product={heroFull} />
 
-          <div id="productos-destacados">
-            <FeaturedProductsGrid products={products} />
+          <div id="productos-destacados" className="scroll-mt-24">
+            <StoreCatalog
+              products={products}
+              templates={catalog.templates}
+              initialError={catalog.error ? { message: catalog.error.message } : null}
+              isFallback={catalog.isFallback}
+            />
           </div>
 
           <StorePromoBanner />

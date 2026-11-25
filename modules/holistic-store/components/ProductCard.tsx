@@ -69,13 +69,13 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
       : "linear-gradient(150deg, #FAF8F3, #F0EBE0)";
 
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden bg-papyrus">
+    <div className="relative h-36 w-full overflow-hidden bg-papyrus sm:h-40">
       {!failed && product.imageUrl ? (
         <Image
           src={product.imageUrl}
           alt={product.name}
           fill
-          sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw"
           loading="lazy"
           className={`object-cover transition duration-500 group-hover:scale-105 ${out ? "opacity-60 grayscale" : ""}`}
           onError={() => setFailed(true)}
@@ -90,7 +90,7 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
         </div>
       )}
       <span
-        className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[.2em] shadow-sm backdrop-blur-sm ${TEMPLATE_STYLES[template].categoryChip}`}
+        className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[.18em] shadow-sm backdrop-blur-sm ${TEMPLATE_STYLES[template].categoryChip}`}
       >
         {product.category}
       </span>
@@ -155,33 +155,33 @@ export function ProductCard({ product, template, isAuthenticated = false, tracka
       <div className="overflow-hidden rounded-xl">
         <CardImage product={product} template={template} />
       </div>
-      <div className="flex flex-1 flex-col px-1.5 pb-1.5 pt-3.5">
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-2.5">
         <p
           className={`truncate font-mono text-[10px] uppercase tracking-[.18em] ${styles.id}`}
           title={product.id}
         >
           #{product.id}
         </p>
-        <h3 className={`mt-1.5 line-clamp-1 font-display text-lg leading-snug ${styles.name}`}>
+        <h3 className={`mt-1 line-clamp-1 font-display text-base leading-snug ${styles.name}`}>
           {product.name}
         </h3>
-        <p className={`mt-1 line-clamp-2 text-xs leading-5 ${styles.description}`}>
+        <p className={`mt-0.5 line-clamp-2 text-xs leading-4 ${styles.description}`}>
           {product.description}
         </p>
-        <p className="mt-3 flex items-center gap-2">
-          <span className={`text-base font-bold tracking-wide ${styles.price}`}>
+        <p className="mt-2 flex items-center gap-2">
+          <span className={`text-sm font-bold tracking-wide ${styles.price}`}>
             {formatPrice(product.price, product.currency)}
           </span>
         </p>
 
-        <div className="mt-auto flex flex-col gap-2 pt-3.5">
+        <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
           <button
             type="button"
             disabled={outOfStock}
             aria-disabled={outOfStock}
             onClick={handleBuy}
             aria-label={outOfStock ? `${product.name} agotado` : `Agregar ${product.name} al carrito`}
-            className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-3 py-2.5 text-[11px] font-semibold text-ink transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
+            className={`inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-gold px-2 py-2 text-[10px] font-semibold text-ink transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
               outOfStock
                 ? "cursor-not-allowed bg-stone-200 text-ink-muted"
                 : "cursor-pointer hover:bg-gold-light hover:shadow-[0_8px_20px_rgba(197,160,89,0.35)] active:scale-[0.99]"

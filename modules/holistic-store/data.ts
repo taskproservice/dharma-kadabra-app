@@ -61,6 +61,11 @@ export type FeaturedStorefrontData = {
   isFallback: boolean;
 };
 
+export type CatalogStorefrontData = FeaturedStorefrontData & {
+  /** Plantillas visuales por categoría asignadas por el Admin. */
+  templates: CategoryTemplateMap;
+};
+
 /**
  * Catálogo de respaldo: se muestra cuando la base de datos no está disponible,
  * garantizando que la tienda nunca quede en estado de error para el visitante.
@@ -264,6 +269,47 @@ export async function getFeaturedStoreProducts(limit = 8): Promise<FeaturedStore
       error: normalized,
       isFallback: true,
     };
+  }
+}
+
+/**
+ * Catálogo completo de la tienda pública (todas las categorías): productos
+ * publicados y visibles, más la plantilla visual por categoría. En caso de
+ * error de DB devuelve el catálogo de respaldo y `error` normalizado, de
+ * modo que la página nunca se rompe.
+ */
+export async function getStorefrontCatalog(
+  limit = MAX_PRODUCTS_PER_CATEGORY,
+): Promise<CatalogStorefrontData> {
+  try {
+    const [rows, styles] = await Promise.all([
+      prisma.product.findMany({
+        where: { published: true, isVisible: true },
+        select: PUBLIC_SELECT,
+        orderBy: [{ createdAt: "desc" }],
+        take: limit,
+      }),
+      prisma.storeCategoryStyle.findMany().catch(() => []),
+    ]);
+
+    const templates: CategoryTemplateMap = {};
+    for (const style of styles) {
+      if (style.template === "oro" || style.template === "papiro" || style.template === "fuego") {
+        templates[style.category] = style.template;
+      }
+    }
+
+    if (rows.length === 0) {
+      return { products: FALLBACK_STORE_PRODUCTS, error: null, isFallback: true, templates };
+    }
+
+    return { products: rows.map(toStoreProduct), error: null, isFallback: false, templates };
+  } catch (error) {
+    const normalized = normalizeStoreError(
+      error,
+      "no se pudo leer el catálogo completo de la tienda",
+    );
+    return { products: FALLBACK_STORE_PRODUCTS, error: normalized, isFallback: true, templates: {} };
   }
 }
 
