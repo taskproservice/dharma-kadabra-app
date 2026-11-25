@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 function pickHeroProduct(products: { id: string; name: string }[], fallback: typeof FALLBACK_STORE_PRODUCTS) {
-  const byName = products.find((p) => /obsidiana/i.test(p.name));
+  const byName = products.find((p) => /ojo de tigre/i.test(p.name));
   if (byName) return byName;
   return products[0] ?? fallback[2] ?? fallback[0];
 }
