@@ -13,7 +13,6 @@ export interface RoleConfig {
   label: string;
   badge: string;
   description: string;
-  allowedHrefs: string[];
   isAllowed: (path: string) => boolean;
 }
 
@@ -44,7 +43,6 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     label: "Administradora",
     badge: "Acceso Total",
     description: "Acceso completo a todos los módulos y herramientas del sistema.",
-    allowedHrefs: ["*"],
     isAllowed: () => true, // Ve todo
   },
   ENGINEER: {
@@ -52,28 +50,6 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     label: "Ingeniero (Soporte)",
     badge: "Soporte Técnico",
     description: "Opera el sistema, cuida la salud técnica y atiende soporte.",
-    allowedHrefs: [
-      "/dashboard",
-      "/dashboard/ingenieria",
-      "/dashboard/resumen",
-      "/dashboard/perfil",
-      "/dashboard/pos",
-      "/dashboard/agenda",
-      "/dashboard/eventos",
-      "/dashboard/audio",
-      "/dashboard/video",
-      "/dashboard/tour",
-      "/dashboard/diseno",
-      "/dashboard/diseno-base",
-      "/dashboard/redes",
-      "/dashboard/cozy",
-      "/dashboard/agente-ventas",
-      "/dashboard/agente-marketing",
-      "/dashboard/colaboradores",
-      "/dashboard/panel-administrativo",
-      "/dashboard/info",
-      "/dashboard/informacion-general",
-    ],
     // Ve todo excepto: Finanzas, Pasarela de Pagos, Runas, Panel Admin (solo
     // Paola) y Marketing (solo el CM).
     isAllowed: (path: string) => {
@@ -99,12 +75,6 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     label: "Colaboradora",
     badge: "Terapeuta / Guía",
     description: "Solo ve su propia Agenda (sus citas), disponibilidad, Perfil y Audios.",
-    allowedHrefs: [
-      "/dashboard",
-      "/dashboard/agenda",
-      "/dashboard/perfil",
-      "/dashboard/audio",
-    ],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       const allowedPrefixes = [
@@ -124,14 +94,6 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     badge: "Marketing & Redes",
     description: "Administra inventario, visibilidad de la tienda y métricas comerciales.",
     // Panel de Marketing (inventario y KPIs), Redes Sociales y contenido.
-    allowedHrefs: [
-      "/dashboard",
-      "/dashboard/marketing",
-      "/dashboard/redes",
-      "/dashboard/audio",
-      "/dashboard/video",
-      "/dashboard/perfil",
-    ],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       if (clean === "/dashboard") return true;
@@ -150,7 +112,6 @@ export const ROLE_PERMISSIONS: Record<Role, RoleConfig> = {
     label: "Cliente",
     badge: "Comunidad",
     description: "Vista de cliente con acceso a su perfil personal.",
-    allowedHrefs: ["/dashboard", "/dashboard/perfil"],
     isAllowed: (path: string) => {
       const clean = path.split("?")[0].replace(/\/$/, "");
       if (clean === "/dashboard") return true;
