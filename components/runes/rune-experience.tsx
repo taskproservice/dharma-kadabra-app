@@ -416,7 +416,7 @@ function Consultation() {
           <em className="italic text-sanctuary-gold-leaf">Aprende a interpretarlo.</em>
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-sanctuary-ink-soft">
-          Una sesión de 45 minutos para poner tus runas sobre la mesa, escuchar lo que dicen y salir con una decisión concreta.
+          Una sesión de 60 minutos para poner tus runas sobre la mesa, escuchar lo que dicen y salir con una decisión concreta.
         </p>
         <div className="mt-3 flex justify-center">
           <RuneBookingCTA

@@ -33,7 +33,7 @@ export const services: Service[] = [
     essence: "La brújula terrenal",
     description:
       "Las runas son una brújula terrenal: símbolos antiguos que leen tu momento presente y orientan tus próximos pasos con claridad. Donde los Registros guardan la memoria del alma, las runas iluminan el camino concreto que caminas hoy.",
-    duration: "45 min",
+    duration: "60 min",
     price: 1200,
     symbol: "ᚱ",
   },
