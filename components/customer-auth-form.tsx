@@ -16,7 +16,7 @@ function Lotus({ className }: { className?: string }) {
       viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.75"
       strokeLinejoin="round"
       className={className}
     >
@@ -81,250 +81,234 @@ export function CustomerAuthForm({ callbackUrl = "" }: { callbackUrl?: string })
       <div className="flex min-h-screen flex-col bg-[#F4EFE6] text-[#2C241B]">
         <PublicHeader />
 
-        <main className="flex flex-1 items-center pt-[76px]">
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-16">
-            {/* Columna Izquierda: Encabezado editorial + Tarjeta del formulario */}
-              <div className="w-full">
-                <header className="mb-8 text-left">
-                  <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6914]">
-                    <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
-                    <span>{login ? "Bienvenido de nuevo" : "Bienvenido a Dharma Kadabra"}</span>
-                    <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
-                  </p>
-                  <h1 className="mt-3 font-display text-5xl leading-[1.02] text-[#2C241B] sm:text-6xl lg:text-[4.25rem]">
-                    {login ? "Iniciar" : "Crear"}{" "}
-                    <em className="italic text-[#9A7020]">{login ? "Sesión" : "cuenta"}</em>
-                  </h1>
-                  <p className="mt-4 max-w-md text-[15px] leading-7 text-[#514333]">
-                    Accede a tu cuenta para gestionar tus reservas, consultar tu historial y recibir novedades.
-                  </p>
-                </header>
+        <main className="flex-1 pt-[76px]">
+          <div className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-stretch">
+            {/* Columna Izquierda: Título afuera + Tarjeta del formulario */}
+            <div className="flex h-full flex-col">
+              <header className="mb-8 text-left">
+                <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8B6914]">
+                  <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
+                  <span>{login ? "Bienvenido de nuevo" : "Bienvenido a Dharma Kadabra"}</span>
+                  <span aria-hidden="true" className="h-px w-8 bg-[#C5A059]" />
+                </p>
+                <h1 className="mt-3 font-display text-5xl leading-[1.04] text-[#2C241B] sm:text-6xl">
+                  {login ? "Iniciar" : "Crear"}{" "}
+                  <em className="italic text-[#C5A059]">{login ? "Sesión" : "cuenta"}</em>
+                </h1>
+                <p className="mt-3 max-w-md text-[15px] leading-7 text-stone-700">
+                  Accede a tu cuenta para gestionar tus reservas, consultar tu historial y recibir novedades.
+                </p>
+              </header>
 
-                <section
-                  aria-labelledby="account-title"
-                  className="rounded-3xl border border-[#EAE2D3] bg-[#FCFAF5] p-6 shadow-[0_20px_55px_-18px_rgba(44,36,27,0.09)] sm:p-10"
-                >
-                  <div className="text-center">
-                    <Lotus className="mx-auto size-11 text-[#9A7020]" />
-                    <h2
-                      id="account-title"
-                      className="mt-2.5 font-display text-[1.85rem] leading-tight text-[#2C241B] sm:text-[2.05rem]"
-                    >
-                      Tu espacio en Dharma Kadabra
-                    </h2>
-                    <p className="mt-1.5 text-sm text-[#5B5143]">
-                      Conecta, gestiona y sigue tu camino.
-                    </p>
-                  </div>
-
-                  <form onSubmit={submit} className="mt-7 space-y-3.5">
-                    {!login && (
-                      <>
-                        <label className="block text-xs font-semibold text-[#2C241B]">
-                          Nombre completo
-                          <span className="relative mt-1.5 block">
-                            <UserRound aria-hidden="true" className={icon} />
-                            <input
-                              required
-                              minLength={2}
-                              autoComplete="name"
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              placeholder="Tu nombre"
-                              className={`${field} pl-10`}
-                            />
-                          </span>
-                        </label>
-                        <label className="block text-xs font-semibold text-[#2C241B]">
-                          Teléfono <span className="font-normal text-[#6B5D4A]">(opcional)</span>
-                          <input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            autoComplete="tel"
-                            placeholder="+52 664 123 4567"
-                            className={`${field} mt-1.5`}
-                          />
-                        </label>
-                      </>
-                    )}
-
-                    <label className="relative block">
-                      <span className="sr-only">Correo electrónico</span>
-                      <Mail aria-hidden="true" className={icon} />
-                      <input
-                        required
-                        type="email"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Correo electrónico"
-                        className={`${field} pl-10`}
-                      />
-                    </label>
-
-                    <div className="relative">
-                      <label htmlFor="customer-password" className="sr-only">
-                        Contraseña
-                      </label>
-                      <LockKeyhole aria-hidden="true" className={icon} />
-                      <input
-                        id="customer-password"
-                        required
-                        type={visible ? "text" : "password"}
-                        minLength={10}
-                        maxLength={128}
-                        autoComplete={login ? "current-password" : "new-password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder={login ? "Contraseña" : "Contraseña (mínimo 10 caracteres)"}
-                        className={`${field} pl-10 pr-11`}
-                      />
-                      <button
-                        type="button"
-                        aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
-                        onClick={() => setVisible(!visible)}
-                        className="absolute inset-y-1 right-1.5 grid w-9 cursor-pointer place-items-center rounded-lg text-[#6B5D4A] transition hover:bg-[#F4EFE6] hover:text-[#2C241B]"
-                      >
-                        {visible ? <EyeOff size={17} aria-hidden="true" /> : <Eye size={17} aria-hidden="true" />}
-                      </button>
-                    </div>
-
-                    {login && (
-                      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
-                        <label className="inline-flex cursor-pointer items-center gap-2 text-[#2C241B]">
-                          <input
-                            type="checkbox"
-                            checked={remember}
-                            onChange={(e) => setRemember(e.target.checked)}
-                            className="size-4 rounded border-stone-300 accent-[#2C241B]"
-                          />
-                          <span>Mantener mi sesión iniciada</span>
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => setNotice("Próximamente: recuperación de contraseña.")}
-                          className="cursor-pointer font-medium text-[#514333] transition hover:text-[#2C241B] hover:underline"
-                        >
-                          ¿Olvidaste tu contraseña?
-                        </button>
-                      </div>
-                    )}
-
-                    {error && (
-                      <p
-                        role="alert"
-                        className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
-                      >
-                        {error}
-                      </p>
-                    )}
-
-                    <div className="pt-1">
-                      <button
-                        disabled={pending}
-                        className="flex h-12 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-[#241E18] text-sm font-semibold text-[#FCFAF5] shadow-[0_12px_28px_-12px_rgba(36,30,24,0.55)] transition hover:bg-[#3A3026] disabled:cursor-wait disabled:opacity-60"
-                      >
-                        <span>{pending ? "Un momento…" : login ? "Iniciar Sesión" : "Crear mi cuenta"}</span>
-                        <ArrowRight size={16} aria-hidden="true" />
-                      </button>
-                    </div>
-                  </form>
-
-                  <div className="my-5 flex items-center gap-4 text-xs text-[#6B5D4A] before:h-px before:flex-1 before:bg-stone-200 after:h-px after:flex-1 after:bg-stone-200">
-                    o
-                  </div>
-
-                  <div className="mx-auto grid max-w-sm gap-2.5">
-                    {["Google", "Apple"].map((provider) => (
-                      <button
-                        key={provider}
-                        type="button"
-                        onClick={() => setNotice(`Próximamente: acceso con ${provider}.`)}
-                        className="flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-stone-200 bg-transparent px-4 text-xs font-semibold text-[#2C241B] transition hover:border-stone-300 hover:bg-white"
-                      >
-                        <Image
-                          src={`/images/mi-cuenta/${provider.toLowerCase()}.svg`}
-                          width={16}
-                          height={16}
-                          alt=""
-                        />
-                        <span>Continuar con {provider}</span>
-                      </button>
-                    ))}
-                  </div>
-
-                  <p
-                    role="status"
-                    className="text-center text-xs font-semibold text-[#8B6914] empty:hidden not-empty:mt-3"
+              <section
+                aria-labelledby="account-title"
+                className="flex-1 bg-[#FCFAF5] rounded-3xl p-8 shadow-sm border border-stone-200/50"
+              >
+                <div className="text-center">
+                  <Lotus className="mx-auto size-11 text-[#C5A059]" />
+                  <h2
+                    id="account-title"
+                    className="mt-2.5 font-display text-[1.85rem] leading-tight text-[#2C241B] sm:text-[2rem]"
                   >
-                    {notice}
+                    Tu espacio en Dharma Kadabra
+                  </h2>
+                  <p className="mt-1.5 text-sm text-stone-600">
+                    Conecta, gestiona y sigue tu camino.
                   </p>
-
-                  <p className="mt-6 text-center text-xs text-[#514333]">
-                    {login ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}{" "}
-                    <button
-                      type="button"
-                      disabled={pending}
-                      className={textAction}
-                      onClick={() => {
-                        setMode(login ? "register" : "login");
-                        setError("");
-                        setNotice("");
-                        setVisible(false);
-                      }}
-                    >
-                      {login ? "Crear cuenta" : "Iniciar sesión"}
-                    </button>
-                  </p>
-                </section>
-              </div>
-
-              {/* Columna Derecha: Imagen continua integrada en el papiro + Beneficios debajo */}
-              <aside aria-label="Beneficios de tu cuenta" className="flex h-full w-full flex-col justify-between">
-                <div className="relative min-h-[340px] w-full overflow-hidden sm:min-h-[430px] lg:min-h-[500px]">
-                  <Image
-                    src={bowl}
-                    alt="Cuenco tibetano de bronce junto a una drusa de amatista sobre piedra natural"
-                    fill
-                    priority
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="h-full w-full object-cover object-center"
-                  />
-                  {/* Fundidos suaves hacia el papiro (#F4EFE6) para unificar sin bordes de tarjeta */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFE6] via-[#F4EFE6]/40 to-transparent"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#F4EFE6] via-[#F4EFE6]/45 to-transparent"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#F4EFE6] via-transparent to-transparent"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#F4EFE6] via-[#F4EFE6]/65 to-transparent"
-                  />
                 </div>
 
-                <ul className="relative z-10 -mt-4 flex flex-col gap-6 px-2 py-4 sm:px-6 lg:ml-4 lg:border-l lg:border-[#D6CCB8] lg:pl-10">
-                  {benefits.map(({ Icon, title, description }) => (
-                    <li key={title} className="flex items-start gap-4">
-                      <span className="mt-0.5 grid size-9 shrink-0 place-items-center text-[#9A7020]">
-                        <Icon className="size-7" aria-hidden="true" />
-                      </span>
-                      <div>
-                        <h3 className="font-display text-[1.4rem] leading-snug text-[#2C241B]">
-                          {title}
-                        </h3>
-                        <p className="mt-0.5 text-xs leading-5 text-[#2C241B]/80">{description}</p>
-                      </div>
-                    </li>
+                <form onSubmit={submit} className="mt-7 space-y-3.5">
+                  {!login && (
+                    <>
+                      <label className="block text-xs font-semibold text-[#2C241B]">
+                        Nombre completo
+                        <span className="relative mt-1.5 block">
+                          <UserRound aria-hidden="true" className={icon} />
+                          <input
+                            required
+                            minLength={2}
+                            autoComplete="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Tu nombre"
+                            className={`${field} pl-10`}
+                          />
+                        </span>
+                      </label>
+                      <label className="block text-xs font-semibold text-[#2C241B]">
+                        Teléfono <span className="font-normal text-stone-500">(opcional)</span>
+                        <input
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          autoComplete="tel"
+                          placeholder="+52 664 123 4567"
+                          className={`${field} mt-1.5`}
+                        />
+                      </label>
+                    </>
+                  )}
+
+                  <label className="relative block">
+                    <span className="sr-only">Correo electrónico</span>
+                    <Mail aria-hidden="true" className={icon} />
+                    <input
+                      required
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Correo electrónico"
+                      className={`${field} pl-10`}
+                    />
+                  </label>
+
+                  <div className="relative">
+                    <label htmlFor="customer-password" className="sr-only">
+                      Contraseña
+                    </label>
+                    <LockKeyhole aria-hidden="true" className={icon} />
+                    <input
+                      id="customer-password"
+                      required
+                      type={visible ? "text" : "password"}
+                      minLength={10}
+                      maxLength={128}
+                      autoComplete={login ? "current-password" : "new-password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={login ? "Contraseña" : "Contraseña (mínimo 10 caracteres)"}
+                      className={`${field} pl-10 pr-11`}
+                    />
+                    <button
+                      type="button"
+                      aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      onClick={() => setVisible(!visible)}
+                      className="absolute inset-y-1 right-1.5 grid w-9 cursor-pointer place-items-center rounded-lg text-stone-600 transition hover:bg-[#F4EFE6] hover:text-[#2C241B]"
+                    >
+                      {visible ? <EyeOff size={17} aria-hidden="true" /> : <Eye size={17} aria-hidden="true" />}
+                    </button>
+                  </div>
+
+                  {login && (
+                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
+                      <label className="inline-flex cursor-pointer items-center gap-2 text-[#2C241B]">
+                        <input
+                          type="checkbox"
+                          checked={remember}
+                          onChange={(e) => setRemember(e.target.checked)}
+                          className="size-4 rounded border-stone-300 accent-[#2C241B]"
+                        />
+                        <span>Mantener mi sesión iniciada</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setNotice("Próximamente: recuperación de contraseña.")}
+                        className="cursor-pointer font-medium text-stone-600 transition hover:text-[#2C241B] hover:underline"
+                      >
+                        ¿Olvidaste tu contraseña?
+                      </button>
+                    </div>
+                  )}
+
+                  {error && (
+                    <p
+                      role="alert"
+                      className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+                    >
+                      {error}
+                    </p>
+                  )}
+
+                  <div className="pt-1">
+                    <button
+                      disabled={pending}
+                      className="flex h-12 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-[#241E18] text-sm font-semibold text-[#FCFAF5] shadow-[0_12px_28px_-12px_rgba(36,30,24,0.55)] transition hover:bg-[#3A3026] disabled:cursor-wait disabled:opacity-60"
+                    >
+                      <span>{pending ? "Un momento…" : login ? "Iniciar Sesión" : "Crear mi cuenta"}</span>
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </button>
+                  </div>
+                </form>
+
+                <div className="my-5 flex items-center gap-4 text-xs text-stone-500 before:h-px before:flex-1 before:bg-stone-200 after:h-px after:flex-1 after:bg-stone-200">
+                  o
+                </div>
+
+                <div className="mx-auto grid max-w-sm gap-2.5">
+                  {["Google", "Apple"].map((provider) => (
+                    <button
+                      key={provider}
+                      type="button"
+                      onClick={() => setNotice(`Próximamente: acceso con ${provider}.`)}
+                      className="flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-stone-200 bg-white/70 px-4 text-xs font-semibold text-[#2C241B] transition hover:border-stone-300 hover:bg-white"
+                    >
+                      <Image
+                        src={`/images/mi-cuenta/${provider.toLowerCase()}.svg`}
+                        width={16}
+                        height={16}
+                        alt=""
+                      />
+                      <span>Continuar con {provider}</span>
+                    </button>
                   ))}
-                </ul>
-              </aside>
+                </div>
+
+                <p
+                  role="status"
+                  className="text-center text-xs font-semibold text-[#8B6914] empty:hidden not-empty:mt-3"
+                >
+                  {notice}
+                </p>
+
+                <p className="mt-6 text-center text-xs text-stone-600">
+                  {login ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}{" "}
+                  <button
+                    type="button"
+                    disabled={pending}
+                    className={textAction}
+                    onClick={() => {
+                      setMode(login ? "register" : "login");
+                      setError("");
+                      setNotice("");
+                      setVisible(false);
+                    }}
+                  >
+                    {login ? "Crear cuenta" : "Iniciar sesión"}
+                  </button>
+                </p>
+              </section>
+            </div>
+
+            {/* Columna Derecha: Tarjeta Unificada de Imagen + Beneficios */}
+            <aside
+              aria-label="Beneficios de tu cuenta"
+              className="flex h-full flex-col bg-[#FCFAF5] rounded-3xl overflow-hidden shadow-sm border border-stone-200/50"
+            >
+              <div className="relative w-full h-64 lg:flex-1 lg:min-h-64">
+                <Image
+                  src={bowl}
+                  alt="Cuenco tibetano de bronce junto a una drusa de amatista sobre piedra natural"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="w-full h-64 lg:h-full object-cover"
+                />
+              </div>
+
+              <div className="p-8 flex flex-col gap-6">
+                {benefits.map(({ Icon, title, description }) => (
+                  <div key={title} className="flex items-center gap-4">
+                    <span className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-[#F4EFE6] text-[#C5A059]">
+                      <Icon className="w-5 h-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="text-base font-bold leading-snug text-[#2C241B]">{title}</h3>
+                      <p className="mt-0.5 text-sm leading-5 text-stone-600">{description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </aside>
           </div>
         </main>
 
