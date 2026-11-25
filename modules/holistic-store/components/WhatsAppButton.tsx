@@ -28,7 +28,7 @@ export function WhatsAppButton({
   const openWithProduct = useCozyStore((state) => state.openWithProduct);
 
   const baseClasses =
-    "inline-flex w-full items-center justify-center gap-2 rounded-xl border bg-transparent px-3 py-2.5 text-[10px] font-bold uppercase tracking-[.18em] transition-all duration-300";
+    "inline-flex w-full items-center justify-center gap-2 rounded-xl border bg-transparent px-3 py-2 text-[10px] font-bold uppercase tracking-[.18em] transition-all duration-300";
 
   return (
     <button
