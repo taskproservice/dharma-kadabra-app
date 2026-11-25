@@ -74,7 +74,7 @@ export function AkashicBenefits() {
         quality={90}
         className="object-cover opacity-20"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(245,242,235,.94))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(244,239,230,.94))]" />
       <div className="relative z-10 mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
         <span aria-hidden="true" className="text-2xl text-[#C5A059]">✧</span>
         <p className="akashic-display mt-4 text-2xl font-light italic leading-tight text-[#2C241B] sm:text-4xl">

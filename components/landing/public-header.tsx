@@ -227,7 +227,7 @@ export function PublicHeader({ tone = "dark" }: { tone?: "dark" | "papyrus" } = 
                   className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[#2C241B] transition ${
                     active
                       ? "bg-[#C5A059]/15 font-medium text-[#2C241B]"
-                      : "hover:bg-[#F5F2EB] hover:text-bronze"
+                      : "hover:bg-[#F4EFE6] hover:text-bronze"
                   }`}
                 >
                   <Icon

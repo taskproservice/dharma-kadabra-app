@@ -124,7 +124,7 @@ function SiteHeader() {
 
 function Hero() {
   return (
-    <section id="inicio" className="relative flex min-h-[92svh] items-center overflow-hidden bg-gradient-to-b from-[#F5F2EB] to-[#FCFAF5] pt-24 text-[#2C241B]">
+    <section id="inicio" className="relative flex min-h-[92svh] items-center overflow-hidden bg-gradient-to-b from-[#F4EFE6] to-[#FCFAF5] pt-24 text-[#2C241B]">
       <Image
         src={IMAGES.hero}
         alt="Libro antiguo abierto con un círculo de símbolos rúnicos iluminado por una vela"
@@ -134,13 +134,13 @@ function Hero() {
         quality={90}
         className="object-cover opacity-25"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.92)_0%,rgba(245,242,235,.82)_45%,rgba(245,242,235,.96)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.92)_0%,rgba(244,239,230,.82)_45%,rgba(244,239,230,.96)_100%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.16),transparent_68%)] blur-3xl" />
 
       {/* Gradiente inferior: conecta la portada con el fondo beige del santuario */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(110px,18vh,180px)] bg-gradient-to-b from-transparent to-[#F5F2EB]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[clamp(110px,18vh,180px)] bg-gradient-to-b from-transparent to-[#F4EFE6]"
       />
 
       <div className="relative z-10 mx-auto w-full max-w-5xl px-5 py-20 text-center sm:px-8">
@@ -269,7 +269,7 @@ function EditorialBreak() {
         quality={90}
         className="object-cover opacity-20"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(245,242,235,.94))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(252,250,245,.88),rgba(244,239,230,.94))]" />
       <div className="relative z-10 mx-auto max-w-4xl px-5 py-10 text-center sm:px-8">
         <span aria-hidden="true" className="rune-glyph text-2xl text-[#C5A059]">ᛟ</span>
         <p className="rune-display mt-4 text-2xl font-light italic leading-tight text-[#2C241B] sm:text-4xl">

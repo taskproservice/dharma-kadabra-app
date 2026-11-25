@@ -66,7 +66,7 @@ export function ThreeRuneSpread() {
                 >
                   <span className="rune-card-3d relative block h-full w-full" data-flipped={Boolean(rune)}>
                     {/* Dorso */}
-                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-stone-200 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.16),transparent_65%),linear-gradient(155deg,#FCFAF5,#F5F2EB)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                    <span className="rune-face absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-stone-200 bg-[radial-gradient(circle_at_center,rgba(197,160,89,.16),transparent_65%),linear-gradient(155deg,#FCFAF5,#F4EFE6)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
                       <span aria-hidden="true" className="absolute inset-3 rounded-xl border border-[#C5A059]/30" />
                       <span aria-hidden="true" className="rune-glyph mb-1 text-xl text-[#C5A059]">ᛟ</span>
                       <span className="relative text-center text-[8px] font-semibold uppercase leading-4 tracking-[.22em] text-[#2C241B]/70">

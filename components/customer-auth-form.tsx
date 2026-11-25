@@ -7,7 +7,7 @@ import { ArrowLeft, KeyRound, Sparkles, UserRound } from "lucide-react";
 
 /**
  * Login / Registro de clientes · Premium Orgánico.
- * Fondo Beige (#F5F2EB), tarjeta blanca central con bordes muy redondeados
+ * Fondo Beige (#F4EFE6), tarjeta blanca central con bordes muy redondeados
  * (rounded-3xl) y sombra suave; campos limpios con fondo beige muy claro y
  * botón de acción en Café Oscuro.
  */

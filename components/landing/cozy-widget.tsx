@@ -273,7 +273,7 @@ export function CozyWidget() {
         className={`fixed bottom-6 right-6 z-50 flex items-center justify-center bg-transparent p-0 transition-transform duration-300 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C5A059] ${open ? "max-sm:hidden" : ""}`}
       >
         {open ? (
-          <X className="h-8 w-8 text-[#2C241B] drop-shadow-[0_2px_8px_rgba(245,242,235,0.9)]" />
+          <X className="h-8 w-8 text-[#2C241B] drop-shadow-[0_2px_8px_rgba(244,239,230,0.9)]" />
         ) : (
           <Flame
             className="h-16 w-16 text-[#ff7a1a] cozy-flame-live"
