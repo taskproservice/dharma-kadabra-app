@@ -54,7 +54,7 @@ export function BookingDialog({ service, close, initialDate = "", initialTime = 
   const mutedText = papyrus ? "text-ink-muted" : "text-papyrus/55";
   const accentText = papyrus ? "text-bronze" : "text-gold-light";
   const fieldClasses = `h-10 min-w-0 w-full rounded-xl border outline-none focus:ring-2 ${papyrus
-    ? "border-gold/35 bg-papyrus-light text-ink placeholder:text-ink-muted focus:border-bronze focus:ring-gold/25"
+    ? "border-stone-200 bg-white text-ink placeholder:text-ink-muted focus:border-bronze focus:ring-gold/25"
     : "border-gold/20 bg-obsidian-deep/70 text-papyrus placeholder:text-papyrus/40 focus:border-gold focus:ring-gold/20"}`;
 
   const continueToPayment = handleSubmit((values) => {
