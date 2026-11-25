@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { MessageCircle, Sparkles } from "lucide-react";
-import { CATEGORY_META, STORE_WHATSAPP } from "../constants";
+import { CATEGORY_META, DEFAULT_CATEGORY_TEMPLATES, STORE_WHATSAPP } from "../constants";
 import type { CategoryTemplateMap, StoreCategory, StoreProduct } from "../types";
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCard } from "./ProductCard";
@@ -90,7 +90,7 @@ export function StoreExplorer({
   }, [active, loadCategory]);
 
   const products = cache[active] ?? [];
-  const template = templates[active] ?? "oro";
+  const template = templates[active] ?? DEFAULT_CATEGORY_TEMPLATES[active] ?? "oro";
   const meta = CATEGORY_META[active];
 
   const whatsappDigits = STORE_WHATSAPP.replace(/\D/g, "");

@@ -4,6 +4,8 @@ import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
 import { isMaintenanceMode } from "../../lib/maintenance";
 import { getStorefrontCatalog, recordStoreVisit, FALLBACK_STORE_PRODUCTS } from "../../modules/holistic-store/data";
+import { MAX_PRODUCTS_PER_CATEGORY } from "../../modules/holistic-store/constants";
+import { STORE_CATEGORIES } from "../../modules/holistic-store/types";
 import { StorefrontHero } from "../../modules/holistic-store/components/StorefrontHero";
 import { StoreCatalog } from "../../modules/holistic-store/components/StoreCatalog";
 import { StorePromoBanner } from "../../modules/holistic-store/components/StorePromoBanner";
@@ -18,7 +20,12 @@ export const metadata: Metadata = {
 // El catálogo cambia con el inventario: siempre se consulta en vivo.
 export const dynamic = "force-dynamic";
 
-function pickHeroProduct(products: { id: string; name: string }[], fallback: typeof FALLBACK_STORE_PRODUCTS) {
+function pickHeroProduct(
+  products: { id: string; name: string; category?: string }[],
+  fallback: typeof FALLBACK_STORE_PRODUCTS,
+) {
+  const braceletByName = products.find((p) => p.category === "Pulseras" && /ojo de tigre/i.test(p.name));
+  if (braceletByName) return braceletByName;
   const byName = products.find((p) => /ojo de tigre/i.test(p.name));
   if (byName) return byName;
   return products[0] ?? fallback[2] ?? fallback[0];
@@ -54,7 +61,7 @@ export default async function TiendaPage() {
 
   // El catálogo completo llega con respaldo incluido: si la DB falla,
   // `error` viene normalizado y `products` trae el catálogo de respaldo.
-  const catalog = await getStorefrontCatalog(35).catch((error) => {
+  const catalog = await getStorefrontCatalog(MAX_PRODUCTS_PER_CATEGORY * STORE_CATEGORIES.length).catch((error) => {
     console.error("[Holistic Store] fallo inesperado al cargar el catálogo:", error);
     return {
       products: FALLBACK_STORE_PRODUCTS,

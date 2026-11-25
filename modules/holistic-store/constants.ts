@@ -78,6 +78,18 @@ export const CATEGORY_META: Record<StoreCategory, { symbol: string; tagline: str
   Piedras: { symbol: "⬢", tagline: "Cristales y guardianes minerales" },
 };
 
+/**
+ * Plantilla pastel por defecto para cada categoría cuando el Admin aún no ha
+ * guardado una preferencia en `StoreCategoryStyle`. Todas conservan la tarjeta
+ * blanca uniforme y solo distinguen el chip superior (beige / salvia / blush).
+ */
+export const DEFAULT_CATEGORY_TEMPLATES: Record<StoreCategory, StoreTemplateId> = {
+  Pulseras: "oro",
+  Cadenas: "papiro",
+  Runas: "fuego",
+  Piedras: "oro",
+};
+
 export type TemplateMeta = {
   id: StoreTemplateId;
   name: string;
