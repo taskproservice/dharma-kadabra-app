@@ -1,117 +1,88 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, Hammer } from "lucide-react";
 import { PublicHeader } from "../../components/landing/public-header";
 import { CozyWidget } from "../../components/landing/cozy-widget";
 import { PremiumFooter } from "../../components/landing/premium-footer";
-import { getPrincipal } from "../../lib/rbac";
 import { isMaintenanceMode } from "../../lib/maintenance";
-import { DEFAULT_CATEGORY } from "../../modules/holistic-store/constants";
-import { getStorefrontData, recordStoreVisit, type StorefrontData } from "../../modules/holistic-store/data";
-import { StoreBanner } from "../../modules/holistic-store/components/StoreBanner";
-import { StoreErrorPanel } from "../../modules/holistic-store/components/StoreErrorPanel";
-import { StoreExplorer } from "../../modules/holistic-store/components/StoreExplorer";
+import { getFeaturedStoreProducts, recordStoreVisit, FALLBACK_STORE_PRODUCTS } from "../../modules/holistic-store/data";
+import { StorefrontHero } from "../../modules/holistic-store/components/StorefrontHero";
+import { FeaturedProductsGrid } from "../../modules/holistic-store/components/FeaturedProductsGrid";
+import { StorePromoBanner } from "../../modules/holistic-store/components/StorePromoBanner";
+import { TrustBadges } from "../../modules/holistic-store/components/TrustBadges";
 
 export const metadata: Metadata = {
   title: "La Tienda Holística · Dharma Kadabra",
   description:
-    "Pulseras, cadenas, runas y piedras elegidas con intención. Consulta cada pieza por WhatsApp y recíbela en tu altar.",
+    "Pulseras, cadenas, runas y piedras elegidas con intención. Encuentra piezas auténticas para tu bienestar y equilibrio.",
 };
 
 // El catálogo cambia con el inventario: siempre se consulta en vivo.
 export const dynamic = "force-dynamic";
 
+function pickHeroProduct(products: { id: string; name: string }[], fallback: typeof FALLBACK_STORE_PRODUCTS) {
+  const byName = products.find((p) => /obsidiana/i.test(p.name));
+  if (byName) return byName;
+  return products[0] ?? fallback[2] ?? fallback[0];
+}
+
 export default async function TiendaPage() {
   // El Panel de Ingeniería puede retirar la tienda temporalmente.
   const maintenance = await isMaintenanceMode().catch(() => false);
-  // Cada visita alimenta los KPIs del Panel de Marketing.
-  void (await recordStoreVisit("/tienda"));
 
-  let storefront: StorefrontData = { products: [], counts: {}, templates: {}, error: null };
-  let isAuthenticated = false;
-  if (!maintenance) {
-    const [data, principal] = await Promise.all([
-      getStorefrontData(DEFAULT_CATEGORY),
-      getPrincipal().catch(() => null),
-    ]);
-    storefront = data;
-    isAuthenticated = Boolean(principal);
+  if (maintenance) {
+    return (
+      <>
+        <main className="relative min-h-screen bg-papyrus text-ink">
+          <PublicHeader />
+          <div className="mx-auto grid min-h-[70vh] max-w-3xl place-items-center px-5 pt-28 text-center sm:px-8">
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-[.35em] text-[#8B6914]">
+                Holistic Store
+              </p>
+              <h1 className="mt-5 font-display text-5xl text-[#2C241B]">Tienda en mantenimiento</h1>
+              <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[#6B5D4A]">
+                Estamos ajustando detalles para cuidar tu experiencia. Vuelve en unos minutos o
+                escríbenos por WhatsApp y te atendemos con gusto.
+              </p>
+            </div>
+          </div>
+          <PremiumFooter />
+        </main>
+        <CozyWidget />
+      </>
+    );
   }
-  const { products, counts, templates, error } = storefront;
+
+  const featured = await getFeaturedStoreProducts(8);
+
+  // Registra visita sin bloquear la respuesta.
+  void recordStoreVisit("/tienda");
+
+  const products = featured.products.length > 0 ? featured.products : FALLBACK_STORE_PRODUCTS;
+  const heroProduct = pickHeroProduct(products, FALLBACK_STORE_PRODUCTS) as typeof products[number];
+  // Asegura que el hero product tenga la forma completa
+  const heroFull =
+    products.find((p) => p.id === heroProduct.id) ?? FALLBACK_STORE_PRODUCTS[2] ?? products[0];
 
   return (
     <>
-      <main className="relative min-h-screen bg-papyrus text-ink">
+      <main className="relative min-h-screen bg-[#F7F3EA] text-[#2C241B]">
         <PublicHeader />
 
-        {/* Resplandor dorado ambiental sobre el beige luminoso */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] overflow-hidden">
-          <span className="absolute left-1/2 top-[-14rem] size-[42rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(197,160,89,.10),transparent_68%)] blur-3xl" />
-        </div>
+        <div className="pt-[76px]">
+          <StorefrontHero product={heroFull} />
 
-        <div className="relative pt-24">
-          {/* Enlace sutil de regreso al inicio */}
-          <div className="mx-auto max-w-7xl px-5 sm:px-8">
-            <Link
-              href="/"
-              className="group inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[.28em] text-ink-muted transition hover:text-bronze focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
-            >
-              <ArrowLeft size={13} className="transition group-hover:-translate-x-1" aria-hidden="true" />
-              Volver al inicio
-            </Link>
+          <div id="productos-destacados">
+            <FeaturedProductsGrid products={products} />
           </div>
 
-          {/* Encabezado editorial */}
-          <header className="mx-auto max-w-7xl px-5 pb-10 pt-8 text-center sm:px-8 sm:pt-12">
-            <p className="flex items-center justify-center gap-4 text-[10px] font-medium uppercase tracking-[.42em] text-bronze">
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-r from-transparent to-gold/70" />
-              Holistic Store
-              <span aria-hidden="true" className="h-px w-10 bg-gradient-to-l from-transparent to-gold/70" />
-            </p>
-            <h1 className="mt-6 font-cormorant text-[clamp(2.6rem,6.4vw,4.6rem)] font-normal leading-[1.03] tracking-[-0.01em] text-ink">
-              La Tienda{" "}
-              <em className="italic text-bronze">Holística</em>
-            </h1>
-            <p className="mx-auto mt-5 max-w-xl text-sm font-light leading-7 text-ink-muted sm:text-base">
-              Objetos con intención para acompañar tus rituales. Cada pieza se elige a mano y se
-              consulta por WhatsApp: sin prisa, con presencia.
-            </p>
-          </header>
+          <StorePromoBanner />
 
-          {/* Banner comercial · 3 colecciones en rotación */}
-          <StoreBanner />
-
-          {/* Catálogo por categorías */}
-          <section aria-label="Catálogo de la tienda" className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-18">
-            {maintenance ? (
-              <div className="grid place-items-center rounded-3xl border border-stone-200 bg-white px-6 py-20 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
-                <div>
-                  <Hammer size={28} className="mx-auto text-bronze" />
-                  <p className="mt-4 font-display text-3xl text-ink">Tienda en mantenimiento</p>
-                  <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-ink-muted">
-                    Estamos ajustando detalles para cuidar tu experiencia. Vuelve en unos minutos o
-                    escríbenos por WhatsApp y te atendemos con gusto.
-                  </p>
-                </div>
-              </div>
-            ) : error ? (
-              <StoreErrorPanel title="No pudimos cargar la tienda" message={error.message} detail={error.detail} />
-            ) : (
-              <StoreExplorer
-                initialCategory={DEFAULT_CATEGORY}
-                initialProducts={products}
-                initialCounts={counts}
-                templates={templates}
-                isAuthenticated={isAuthenticated}
-              />
-            )}
-          </section>
+          <TrustBadges />
         </div>
 
         <PremiumFooter />
       </main>
 
-      {/* Cozy: embudo de ventas de la tienda (abre desde cada tarjeta) */}
       <CozyWidget />
     </>
   );
