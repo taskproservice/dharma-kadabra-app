@@ -69,15 +69,15 @@ function CardImage({ product, template }: { product: StoreProduct; template: Sto
       : "linear-gradient(150deg, #FAF8F3, #F0EBE0)";
 
   return (
-    <div className="relative h-36 w-full overflow-hidden bg-papyrus sm:h-40">
+    <div className="relative aspect-square w-full overflow-hidden bg-papyrus">
       {!failed && product.imageUrl ? (
         <Image
           src={product.imageUrl}
           alt={product.name}
           fill
-          sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw"
+          sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
           loading="lazy"
-          className={`object-cover transition duration-500 group-hover:scale-105 ${out ? "opacity-60 grayscale" : ""}`}
+          className={`h-full w-full object-cover object-center transition duration-500 group-hover:scale-105 ${out ? "opacity-60 grayscale" : ""}`}
           onError={() => setFailed(true)}
         />
       ) : (
